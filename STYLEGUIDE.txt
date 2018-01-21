@@ -1,0 +1,8 @@
+Class names capitalized properly -> e.g. Animal()
+Everything else is camelcase. e.g. functionName(), variableName()
+Filenames are in this format: FilenameGoesHere.java
+README.txt contains useful information.
+No typos.
+Separate different semantic sectors of code with the below line of forward slashes:
+/////////////////////////////////////////////////////////////////////////////////////////
+this means any areas referring to, say, networking, should all be within a block, class methods should be in another, constructors another, etc.
