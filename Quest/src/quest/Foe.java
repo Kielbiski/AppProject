@@ -6,15 +6,19 @@ public class Foe extends Card {
     private int bonusPointsFromQuest= 0;
     private Quest effectCausingQuest = null;
 
-    public Foe(int paramBattlePoints, int paramBonusPointsFromQuest, Quest paramEffectCausingQuest){
+    public Foe(String paramName, String paramImageFilename, int paramBattlePoints, int paramBonusPointsFromQuest, Quest paramEffectCausingQuest){
         battlePoints = paramBattlePoints;
         bonusPointsFromQuest = paramBonusPointsFromQuest;
         effectCausingQuest = paramEffectCausingQuest;
+        super(paramName, paramImageFilename);
     }
 
-    private int applyQuestEffect(){ //might need to implement checking here
-        battlePoints += bonusPointsFromQuest;
+    private int applyQuestEffect(Quest currentQuest){
+        if(currentQuest.name == effectCausingQuest.name) {
+            battlePoints += bonusPointsFromQuest;
+        }
     }
+
 
     public int getBattlePoints(){
         return battlePoints;
