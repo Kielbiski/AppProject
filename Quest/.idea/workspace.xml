@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b269af07-a3bb-4b2f-b14f-b644680ba29a" name="Default" comment="Added SpecialBehaviour superclass and a few subclasses.">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/vcs.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/quest/SpecialBehaviour.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/quest/SpecialBehaviourQueenGuinevere.java" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/quest/SpecialBehaviourSirGalahad.java" />
+    <list default="true" id="b269af07-a3bb-4b2f-b14f-b644680ba29a" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/src/quest/Ally.java" afterPath="$PROJECT_DIR$/src/quest/Ally.java" />
-      <change beforePath="$PROJECT_DIR$/src/quest/Foe.java" afterPath="$PROJECT_DIR$/src/quest/Foe.java" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -113,7 +107,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="SpecialBehaviour.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="SpecialBehaviour.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/quest/SpecialBehaviour.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="168">
@@ -124,6 +118,16 @@
                 <element signature="e#386#387#0" expanded="true" />
                 <element signature="e#418#419#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="workspace.xml" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -194,6 +198,11 @@
             <path>
               <item name="Quest" type="b2602c69:ProjectViewProjectNode" />
               <item name="Quest" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Quest" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Quest" type="462c0819:PsiDirectoryNode" />
+              <item name=".idea" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="Quest" type="b2602c69:ProjectViewProjectNode" />
@@ -346,7 +355,14 @@
       <option name="project" value="LOCAL" />
       <updated>1517177568045</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Added SpecialBehaviour superclass and a few subclasses.">
+      <created>1517250665691</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1517250665691</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="ToolWindowManager">
@@ -557,6 +573,14 @@
             <element signature="e#386#387#0" expanded="true" />
             <element signature="e#418#419#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/workspace.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
         </state>
       </provider>
     </entry>
