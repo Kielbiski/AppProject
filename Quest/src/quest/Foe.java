@@ -12,14 +12,11 @@ public class Foe extends Card {
         bonusPointsFromQuest = paramBonusPointsFromQuest;
         effectCausingQuest = paramEffectCausingQuest;
     }
-
-    private void applyQuestEffect(Quest currentQuest){
-        if(currentQuest.getName().equals(effectCausingQuest.getName())) {
+    private void applyQuestEffect(Quest currentQuest) {
+        if (currentQuest.getName().equals(effectCausingQuest.getName())) {
             battlePoints += bonusPointsFromQuest;
         }
     }
-
-
     public int getBattlePoints(){
         return battlePoints;
     }
