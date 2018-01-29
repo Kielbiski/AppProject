@@ -1,10 +1,10 @@
 package quest;
 
 public class Card {
-    private String name = "";
-    private String imageFilename = "";
+    private String name;
+    private String imageFilename;
 
-    public Card(String paramName, String paramImageFilename){
+    Card(String paramName, String paramImageFilename){
         name = paramName;
         imageFilename = paramImageFilename;
     }
