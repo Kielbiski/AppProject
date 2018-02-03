@@ -16,13 +16,28 @@ public class GameScreen extends Application {
 
     @Override
     public void start(Stage primaryStage) {
+       initUI(primaryStage);
+
+    }
+
+    public void initUI(Stage primaryStage){
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
+        addControlsToCanvas(canvas);
+        setupCardsAnimation(canvas);
 
-        Scene scene = new Scene(canvas);
+
+        Scene scene = new Scene(canvas, 1366, 768 );
+
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
+    }
+    public void addControlsToCanvas(Pane canvas){
 
     }
+    public void setupCardsAnimation(Pane canvas){
+
+    }
+
 }
