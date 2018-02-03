@@ -1,14 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3242211f-ecc9-4a76-81b3-928d2109b56c" name="Default" comment="Added log 4 j dependency, cards image on gui">
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_api_2_10_0.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_apache_logging_log4j_log4j_core_2_10_0.xml" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/src/main/resources/log4j2.xml" />
+    <list default="true" id="3242211f-ecc9-4a76-81b3-928d2109b56c" name="Default" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/Quest.iml" afterPath="$PROJECT_DIR$/Quest.iml" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" afterPath="$PROJECT_DIR$/pom.xml" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/quest/GameScreen.java" afterPath="$PROJECT_DIR$/src/main/java/quest/GameScreen.java" />
       <change beforePath="$PROJECT_DIR$/target/classes/quest/GameScreen.class" afterPath="$PROJECT_DIR$/target/classes/quest/GameScreen.class" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -350,7 +344,14 @@
       <option name="project" value="LOCAL" />
       <updated>1517693764796</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Added log 4 j dependency, cards image on gui">
+      <created>1517697654851</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1517697654851</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="ToolWindowManager">
