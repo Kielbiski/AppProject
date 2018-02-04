@@ -2,8 +2,10 @@
 .idea/compiler.xml
 .idea/
 *.iws
+workspace.xml
+compiler.xml
+/target/
 /out/
 *.class
-*.DS_Store
 .DS_Store
 *.iml
