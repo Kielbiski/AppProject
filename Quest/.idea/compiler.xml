@@ -10,7 +10,11 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+<<<<<<< HEAD
       <module name="Quest" target="1.7" />
+=======
+      <module name="Quest" target="1.8" />
+>>>>>>> 47e6444ec6c2d2a31608f83ddaf2d28d80237f11
     </bytecodeTargetLevel>
   </component>
 </project>
