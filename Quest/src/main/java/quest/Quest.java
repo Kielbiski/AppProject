@@ -1,9 +1,21 @@
 package quest;
 
-public class Quest extends Card {
+import java.util.ArrayList;
 
-    public Quest(String paramName, String paramImageFilename){
+public class Quest extends Card {
+    ArrayList<QuestStage> stages;
+    ArrayList<Player> players;
+    QuestStage currentStage;
+
+    public Quest(String paramName, String paramImageFilename)
+    {
         super(paramName, paramImageFilename);
+        stages = new ArrayList<>();
+        players = new ArrayList<>();
     }
 
+    void goToNextStage()
+    {
+
+    }
 }
