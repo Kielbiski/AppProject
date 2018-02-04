@@ -1,2 +1,9 @@
 .idea/workspace.xml
+.idea/compiler.xml
+.idea/
+*.iws
+/out/
+*.class
+*.DS_Store
 .DS_Store
+*.iml
