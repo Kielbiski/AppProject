@@ -42,7 +42,7 @@ public class Tournament extends Card {
         return roundsPlayed;
     }
 
-    public ArrayList<Player> getRemainingPlayer(){
+    public ArrayList <Player> getRemainingPlayer(){
         return playerList;
     }
 
