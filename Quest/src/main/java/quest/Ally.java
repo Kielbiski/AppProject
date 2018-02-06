@@ -3,8 +3,14 @@ package quest;
 public class Ally extends Card {
     private int battlePoints;
     private int bids;
+
+    private int bonusBattlePoints;
+    private int bonusBids;
+
+    private BonusCondition bonusCondition;
     private SpecialBehaviour special;
-    public Ally(String paramName, String paramImageFilename, int paramBattlePoints){
+
+    public Ally(String paramName, String paramImageFilename, int paramBattlePoints, int paramBids, int paramBonusBattlePoints, int paramBonusBids){
         super(paramName, paramImageFilename);
         battlePoints = paramBattlePoints;
     }
@@ -26,4 +32,6 @@ public class Ally extends Card {
     public int getBids(){
         return bids;
     }
+    public int getBonusBattlePoints() {return bonusBattlePoints;}
+    public int getBonusBids() {return bonusBids;}
 }

@@ -21,8 +21,11 @@ import java.io.FilenameFilter;
 public class GameScreen extends Application {
 
     private static final Logger logger = LogManager.getLogger(GameScreen.class);
+    private static Game game = new Game(); //Just to show that the basic game loop works
 
-    public static void main(String[] args) {
+    public static void main(String[] args)
+    {
+        game.gameLoop();
         launch(args);
     }
 
@@ -46,9 +49,11 @@ public class GameScreen extends Application {
         primaryStage.setTitle("Quest");
         primaryStage.show();
     }
+
     private void addControlsToCanvas(Pane canvas){
 
     }
+
     private void setupCardsAnimation(Pane canvas){
         Image img = null;
         File cardsDir = new File("src/main/resources/Cards/");
