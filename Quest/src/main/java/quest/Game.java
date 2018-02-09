@@ -3,7 +3,7 @@ package quest;
 import java.util.ArrayList;
 
 public class Game {
-    private GameState state = new GameState();
+    private ArrayList<Player> players = new ArrayList<>();
 
     public Game()
     {
@@ -12,8 +12,8 @@ public class Game {
 
     public void gameLoop()
     {
-        ArrayList<Player> players = state.getPlayers();
-        while(true)
+        boolean gameOver = false;
+        while(!gameOver)
         {
             for (int i = 0; i < players.size(); ++i)
             {
@@ -21,9 +21,11 @@ public class Game {
                 System.out.println(players.get(i).getPlayerName() + " has " + players.get(i).getShields() + " shields");
                 if (players.get(i).getShields() >= 20)
                 {
-                    return;
+                    gameOver = true;
+                    break;
                 }
             }
         }
     }
+
 }
