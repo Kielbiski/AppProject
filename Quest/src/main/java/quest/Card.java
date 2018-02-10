@@ -9,6 +9,13 @@ public class Card {
     protected int bonusBattlePoints;
     protected int bonusBids;
 
+//    protected BonusCondition bonusBattlePointsCondition;
+//    protected BonusCondition bonusBidsCondition;
+//
+    protected CardEffect onCardPlayed;
+//    protected CardEffect onCardPlayedSpecial;
+//    protected CardEffect oncePerTurn;
+
     boolean faceDown;
 
     Card(String paramName, String paramImageFilename){

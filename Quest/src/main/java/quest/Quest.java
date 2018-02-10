@@ -12,6 +12,7 @@ public class Quest extends Card {
         super(paramName, paramImageFilename);
         stages = new ArrayList<>();
         players = new ArrayList<>();
+        onCardPlayed = state -> currentStage = null;
     }
 
     void goToNextStage()

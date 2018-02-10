@@ -10,6 +10,8 @@ public class GameModel
 
     CardCollection adventureDeck = new CardCollection();
     CardCollection storyDeck = new CardCollection();
+    CardCollection adventureDiscardPile = new CardCollection();
+    CardCollection storyDiscardPile = new CardCollection();
 
     public GameModel()
     {
@@ -26,7 +28,7 @@ public class GameModel
 
     public void startGame()
     {
-        if(players.size() > 0)
+        if(players.size() > 0 && adventureDeck.getSize() > 0 && storyDeck.getSize() > 0)
         {
             shuffleAndDeal();
             state.setCurrentTurnPlayer(players.get(currentTurnIndex));
@@ -87,6 +89,15 @@ public class GameModel
     public void drawStoryCard()
     {
         state.setCurrentStory(storyDeck.drawCard());
+        if(state.getCurrentStory() != null)
+        {
+            state.getCurrentStory().onCardPlayed.execute(state);
+        }
+        else
+        {
+            //TODO: when a deck runs out, add the discard pile back into the deck and reshuffle
+            endGame();
+        }
     }
 
     public GameState getState() {return state;}
