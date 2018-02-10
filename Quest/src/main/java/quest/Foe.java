@@ -1,21 +1,27 @@
 package quest;
 
 public class Foe extends Card {
+    BonusCondition bonusCondition;
 
     public Foe(String paramName, String paramImageFilename, int paramBattlePoints, int paramBonusPointsFromQuest, BonusCondition paramBonusCondition)
     {
         super(paramName, paramImageFilename);
         battlePoints = paramBattlePoints;
-        bonusPointsFromQuest = paramBonusPointsFromQuest;
-        effectCausingQuest = paramEffectCausingQuest;
+        bonusBattlePoints = paramBonusPointsFromQuest;
+        bonusCondition = paramBonusCondition;
     }
-    private void applyQuestEffect(Quest currentQuest) {
-        if (currentQuest.getName().equals(effectCausingQuest.getName())) {
-            battlePoints += bonusPointsFromQuest;
+
+    @Override
+    public int getBattlePointsInGame(GameState state)
+    {
+        if(bonusCondition.doesBonusApply(state))
+        {
+            return bonusBattlePoints;
         }
-    }
-    public int getBattlePoints(){
-        return battlePoints;
+        else
+        {
+            return battlePoints;
+        }
     }
 
 }

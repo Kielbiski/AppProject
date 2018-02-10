@@ -1,5 +1,5 @@
 package quest;
 
 public interface BonusCondition {
-    boolean getsBonus();
+    boolean doesBonusApply(GameState state);
 }

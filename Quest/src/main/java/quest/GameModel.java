@@ -5,6 +5,7 @@ import java.util.ArrayList;
 public class GameModel
 {
     ArrayList<Player> players = new ArrayList<>();
+    GameState state;
     int currentTurnIndex = 0;
 
     CardCollection adventureDeck = new CardCollection();
@@ -17,8 +18,10 @@ public class GameModel
         players.add(new Player("Jeremy"));
         players.add(new Player("Robert"));
 
-        adventureDeck.fillWithAdventureCards();
-        storyDeck.fillWithStoryCards();
+        state = new GameState();
+
+//        adventureDeck.fillWithAdventureCards();
+//        storyDeck.fillWithStoryCards();
     }
 
     public void startGame()
@@ -26,7 +29,7 @@ public class GameModel
         if(players.size() > 0)
         {
             shuffleAndDeal();
-            currentTurnPlayer = players.get(currentTurnIndex);
+            state.setCurrentTurnPlayer(players.get(currentTurnIndex));
             startTurn();
         }
         else
@@ -42,7 +45,7 @@ public class GameModel
 
     public void nextTurn()
     {
-        currentStory = null;
+        state.setCurrentStory(null);
         if(players.size() == 0)
         {
             endGame();
@@ -52,7 +55,7 @@ public class GameModel
         {
             currentTurnIndex = 0;
         }
-        currentTurnPlayer = players.get(currentTurnIndex);
+        state.setCurrentTurnPlayer(players.get(currentTurnIndex));
         startTurn();
     }
 
@@ -62,7 +65,7 @@ public class GameModel
         storyDeck.shuffle();
         for(int i = 0; i < players.size(); ++i)
         {
-            players.get(i).addCardsToHand(adventureDeck.drawCards(12));
+            players.get(i).drawCards(12, adventureDeck);
         }
     }
 
@@ -78,14 +81,13 @@ public class GameModel
 
     public void selectCard(Card card)
     {
-        currentTurnPlayer.addCardToPlaying(card);
+        state.getCurrentTurnPlayer().selectCard(card);
     }
 
     public void drawStoryCard()
     {
-        currentStory = storyDeck.drawCard();
+        state.setCurrentStory(storyDeck.drawCard());
     }
 
-    public Card getCurrentStory() {return currentStory;}
-    public Player getCurrentTurnPlayer() {return currentTurnPlayer;}
+    public GameState getState() {return state;}
 }

@@ -2,31 +2,41 @@ package quest;
 
 public class Ally extends Card {
 
-    private BonusCondition bonusCondition;
-    private SpecialBehaviour special;
+    private BonusCondition bonusBattlePointsCondition, bonusBidsCondition;
 
-    public Ally(String paramName, String paramImageFilename, int paramBattlePoints, int paramBids, int paramBonusBattlePoints, int paramBonusBids){
+    public Ally(String paramName, String paramImageFilename, int paramBattlePoints, int paramBids, int paramBonusBattlePoints, int paramBonusBids,
+                BonusCondition pBonusBattlePointsCondition, BonusCondition pBonusBidsCondition){
         super(paramName, paramImageFilename);
         battlePoints = paramBattlePoints;
-    }
-    protected void setSpecialBehaviour(SpecialBehaviour paramSpecialBehaviour){
-        special = paramSpecialBehaviour;
-    }
-    protected void applySpecialBehaviour(){
-
-    }
-    protected void setBattlePoints(int paramBattlePoints){
-        battlePoints = paramBattlePoints;
-    }
-    protected void setBids(int paramBids){
         bids = paramBids;
+        bonusBattlePoints = paramBonusBattlePoints;
+        bonusBids = paramBonusBids;
+        bonusBattlePointsCondition = pBonusBattlePointsCondition;
     }
-    public int getBattlePoints(){
-        return battlePoints;
+
+    @Override
+    public int getBattlePointsInGame(GameState state)
+    {
+        if(bonusBattlePointsCondition.doesBonusApply(state))
+        {
+            return bonusBattlePoints;
+        }
+        else
+        {
+            return battlePoints;
+        }
     }
-    public int getBids(){
-        return bids;
+
+    @Override
+    public int getBidsInGame(GameState state)
+    {
+        if(bonusBidsCondition.doesBonusApply(state))
+        {
+            return bonusBids;
+        }
+        else
+        {
+            return bids;
+        }
     }
-    public int getBonusBattlePoints() {return bonusBattlePoints;}
-    public int getBonusBids() {return bonusBids;}
 }

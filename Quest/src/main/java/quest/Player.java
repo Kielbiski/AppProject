@@ -72,6 +72,17 @@ public class Player {
         cardsPlaying.addCard(paramCard);
     }
 
+    public void selectCard(Card card)
+    {
+        addCardToPlaying(card);
+    }
+
+    //Draw cards from a card collection and add them to the player's hand
+    public void drawCards(int numCards, CardCollection collection)
+    {
+        collection.drawCards(numCards).moveAllCardsToCollection(cardsInHand);
+    }
+
     public void playCards()
     {
         cardsPlaying.moveAllCardsToCollection(cardsOnTable);
@@ -94,7 +105,7 @@ public class Player {
         return playerRank == Rank.KNIGHT_OF_THE_ROUND_TABLE;
     }
 
-    private void calculateBattlePoints()
+    public int calculateBattlePoints(GameState state)
     {
         //Calculate and return the player's total battle points
         battlePoints = 0;
@@ -115,8 +126,10 @@ public class Player {
 
         for(int i = 0; i < cardsOnTable.getSize(); ++i)
         {
-            //battlePoints += cardsOnTable.get(i).get
+            battlePoints += cardsOnTable.getCard(i).getBattlePointsInGame(state);
         }
+
+        return battlePoints;
     }
 
     private int getRequiredShieldsForNextRank()

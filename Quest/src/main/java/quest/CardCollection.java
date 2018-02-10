@@ -2,6 +2,7 @@ package quest;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 
 public class CardCollection
@@ -13,7 +14,8 @@ public class CardCollection
 
     }
 
-    public int getSize() {return cards.size();}
+    public int getSize() { return cards.size(); }
+    public Card getCard(int i) { return cards.get(i);}
 
     public void addCard(Card card)
     {
@@ -48,17 +50,17 @@ public class CardCollection
     {
         if(cards.size() > 0)
         {
-            return drawCards(1).get(0);
+            return cards.remove(cards.size() - 1);
         }
         return null;
     }
 
-    public ArrayList<Card> drawCards(int numCards)
+    public CardCollection drawCards(int numCards)
     {
-        ArrayList cardsDrawn = new ArrayList<>();
+        CardCollection cardsDrawn = new CardCollection();
         for(int i = 0; i < numCards && cards.size() > 0; ++i)
         {
-            cardsDrawn.add(cards.remove(cards.size() - 1));
+            cardsDrawn.addCard(cards.remove(cards.size() - 1));
         }
         return cardsDrawn;
     }

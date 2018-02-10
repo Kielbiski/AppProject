@@ -8,7 +8,7 @@ public class BonusConditionCardOnTable implements BonusCondition {
         cardName = paramCardName;
     }
 
-    public boolean getsBonus()
+    public boolean doesBonusApply(GameState state)
     {
         return false; //Should check if player who owns this card has a card with cardName on the table
     }

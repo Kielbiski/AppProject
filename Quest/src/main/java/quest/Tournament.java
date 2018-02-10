@@ -3,7 +3,7 @@ package quest;
 import java.util.ArrayList;
 
 public class Tournament extends Card {
-    private ArrayList <Player> playerList = new ArrayList<Player>();
+    private ArrayList <Player> playerList = new ArrayList<>();
     private int roundsPlayed;
     private int shields ; //How many shield the winner gets
 
@@ -17,17 +17,18 @@ public class Tournament extends Card {
     /*Loop backward into the collection to find the max point a players has
       and remove player who have less than max from the collection.
      */
-    public void tournamentPlay(){
-        int winnerValue = playerList.get(playerList.size()-1).getCurrentPlayPoints();
-        for(int i=playerList.size()-2 ; i >= 0  ;i--){
-            if(winnerValue > playerList.get(i).getCurrentPlayPoints()){
+    public void tournamentPlay(GameState state){
+        int winnerValue = playerList.get(playerList.size()-1).calculateBattlePoints(state);
+        for(int i=playerList.size()-2; i >= 0; i--){
+            if(winnerValue > playerList.get(i).calculateBattlePoints(state)){
                 playerList.remove(i);
             }
-            else if(winnerValue == playerList.get(i).getCurrentPlayPoints()){
+            else if(winnerValue == playerList.get(i).calculateBattlePoints(state)){
                 //Do nothing.
             }
             else {
-                winnerValue = playerList.get(i).getCurrentPlayPoints();
+                //Set the new winnerValue and remove all players already checked in the list (their Battle Points will always be less than the new value)
+                winnerValue = playerList.get(i).calculateBattlePoints(state);
                 playerList.subList(i+1, playerList.size()).clear();
             }
         }
@@ -42,7 +43,7 @@ public class Tournament extends Card {
         return roundsPlayed;
     }
 
-    public ArrayList<Player> getRemainingPlayer(){
+    public ArrayList<Player> getRemainingPlayers(){
         return playerList;
     }
 
