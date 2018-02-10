@@ -4,18 +4,39 @@ import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class Deck
+public class CardCollection
 {
     ArrayList<Card> cards = new ArrayList<>();
 
-    public Deck()
+    public CardCollection()
     {
 
     }
 
+    public int getSize() {return cards.size();}
+
     public void addCard(Card card)
     {
         cards.add(card);
+    }
+
+    public void addAllCardsFromCollection(CardCollection collection)
+    {
+        collection.cards.addAll(this.cards);
+    }
+
+    public void moveCardToCollection(Card card, CardCollection collection)
+    {
+        if(cards.remove(card))
+        {
+            collection.addCard(card);
+        }
+    }
+
+    public void moveAllCardsToCollection(CardCollection collection)
+    {
+        collection.addAllCardsFromCollection(this);
+        this.cards.clear();
     }
 
     public void shuffle()
@@ -40,15 +61,5 @@ public class Deck
             cardsDrawn.add(cards.remove(cards.size() - 1));
         }
         return cardsDrawn;
-    }
-
-    public void fillWithAdventureCards()
-    {
-
-    }
-
-    public void fillWithStoryCards()
-    {
-
     }
 }

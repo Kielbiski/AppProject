@@ -1,11 +1,6 @@
 package quest;
 
 public class Ally extends Card {
-    private int battlePoints;
-    private int bids;
-
-    private int bonusBattlePoints;
-    private int bonusBids;
 
     private BonusCondition bonusCondition;
     private SpecialBehaviour special;

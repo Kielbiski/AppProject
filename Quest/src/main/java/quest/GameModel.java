@@ -5,12 +5,10 @@ import java.util.ArrayList;
 public class GameModel
 {
     ArrayList<Player> players = new ArrayList<>();
-    Player currentTurnPlayer;
     int currentTurnIndex = 0;
 
-    Deck adventureDeck = new Deck();
-    Deck storyDeck = new Deck();
-    private Card currentStory;
+    CardCollection adventureDeck = new CardCollection();
+    CardCollection storyDeck = new CardCollection();
 
     public GameModel()
     {

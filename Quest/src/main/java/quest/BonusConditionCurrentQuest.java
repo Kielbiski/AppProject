@@ -8,8 +8,8 @@ public class BonusConditionCurrentQuest {
         questName = paramQuestName;
     }
 
-    public boolean getsBonus()
+    public boolean doesBonusApply(GameState state)
     {
-        return false; //Should check game state to see if a quest is happening, and if its name matches questName
+        return state.getCurrentStory() == null;
     }
 }
