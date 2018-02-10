@@ -126,7 +126,10 @@ public class Player {
 
         for(int i = 0; i < cardsOnTable.getSize(); ++i)
         {
-            battlePoints += cardsOnTable.getCard(i).getBattlePointsInGame(state);
+            if(!cardsOnTable.getCard(i).isFaceDown())
+            {
+                battlePoints += cardsOnTable.getCard(i).getBattlePointsInGame(state);
+            }
         }
 
         return battlePoints;

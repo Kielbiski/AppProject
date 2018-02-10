@@ -6,9 +6,10 @@ public class Card {
 
     protected int battlePoints;
     protected int bids;
-
     protected int bonusBattlePoints;
     protected int bonusBids;
+
+    boolean faceDown;
 
     Card(String paramName, String paramImageFilename){
         name = paramName;
@@ -29,6 +30,9 @@ public class Card {
     }
     public int getBonusBattlePoints() {return bonusBattlePoints;}
     public int getBonusBids() {return bonusBids;}
+    public boolean isFaceDown() {return faceDown;}
+
+    public void setFaceDown(boolean pFaceDown) {faceDown = pFaceDown;}
 
     public int getBattlePointsInGame(GameState state){ return battlePoints; }
     public int getBidsInGame(GameState state) { return bids; }
