@@ -20,38 +20,40 @@ public class Tournament extends Card {
     public void tournamentPlay(){
         int winnerValue = playerList.get(playerList.size()-1).getCurrentPlayPoints();
         for(int i=playerList.size()-2 ; i >= 0  ;i--){
-            if(winnerValue > playerList.get(i).getCurrentPlayPoints()){playerList.remove(i);}
-            else if(winnerValue == playerList.get(i).getCurrentPlayPoints()){ System.out.println(""); }
+            if(winnerValue > playerList.get(i).getCurrentPlayPoints()){
+                playerList.remove(i);
+            }
+            else if(winnerValue == playerList.get(i).getCurrentPlayPoints()){
+                //Do nothing.
+            }
             else {
                 winnerValue = playerList.get(i).getCurrentPlayPoints();
-                playerList.remove(i+1);
+                playerList.subList(i+1, playerList.size() ).clear();
             }
         }
+        roundsPlayed++;
     }
 
-    public boolean checkTie(){ return (playerList.size() > 1);}
-
-    public int getRoundsPlayed(){return roundsPlayed;}
-
-    public ArrayList<Player> getRemainingPlayer(){return playerList;}
-
-    public int getShields(){return shields;}
-
-    public void tournamentWinner(){
-        if(playerList.size()>1){
-            System.out.println("The following players won :");
-            for(Player player : playerList){
-                player.setShields(player.getShields() + shields);
-                System.out.println(player.getPlayerName());
-            }
-        }
-        else{
-            System.out.println("The following player won :");
-            playerList.get(0).setShields( playerList.get(0).getShields() + shields);
-            System.out.println(playerList.get(0).getPlayerName());
-        }
-
+    public boolean checkTie(){
+        return (playerList.size() > 1);
     }
 
+    public int getRoundsPlayed(){
+        return roundsPlayed;
+    }
 
+    public ArrayList <Player> getRemainingPlayer(){
+        return playerList;
+    }
+
+    public int getShields(){
+        return shields;
+    }
+
+    public ArrayList <Player>  tournamentWinner() {
+        for (Player player : playerList) {
+            player.setShields(player.getShields() + shields);
+        }
+        return playerList;
+    }
 }
