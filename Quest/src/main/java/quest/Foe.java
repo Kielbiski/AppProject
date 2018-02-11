@@ -1,12 +1,12 @@
 package quest;
 
 public class Foe extends Card {
-
     private int battlePoints;
     private int bonusPointsFromQuest;
     private Quest effectCausingQuest;
 
-    public Foe(String paramName, String paramImageFilename, int paramBattlePoints, int paramBonusPointsFromQuest, Quest paramEffectCausingQuest){
+    public Foe(String paramName, String paramImageFilename, int paramBattlePoints, int paramBonusPointsFromQuest, Quest paramEffectCausingQuest)
+    {
         super(paramName, paramImageFilename);
         battlePoints = paramBattlePoints;
         bonusPointsFromQuest = paramBonusPointsFromQuest;
