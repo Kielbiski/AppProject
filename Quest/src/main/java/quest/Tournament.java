@@ -17,6 +17,7 @@ public class Tournament extends StoryCard {
     /*Loop backward into the collection to find the max point a players has
       and remove player who have less than max from the collection.
      */
+
     public void tournamentPlay(GameState state){
         int winnerValue = playerList.get(playerList.size()-1).calculateBattlePoints(state);
         for(int i=playerList.size()-2; i >= 0; i--){
@@ -44,6 +45,7 @@ public class Tournament extends StoryCard {
     }
 
     public ArrayList<Player> getRemainingPlayers(){
+
         return playerList;
     }
 
@@ -51,18 +53,12 @@ public class Tournament extends StoryCard {
         return shields;
     }
 
-    public void tournamentWinner(){
-        if(playerList.size()>1){
-            System.out.println("The following players won :");
-            for(Player player : playerList){
-                player.setShields(player.getShields() + shields);
-                System.out.println(player.getPlayerName());
-            }
+    public ArrayList <Player>  tournamentWinner() {
+        for (Player player : playerList) {
+            player.setShields(player.getShields() + shields);
         }
-        else{
-            System.out.println("The following player won :");
-            playerList.get(0).setShields( playerList.get(0).getShields() + shields);
-            System.out.println(playerList.get(0).getPlayerName());
-        }
+
+        return playerList;
+
     }
 }
