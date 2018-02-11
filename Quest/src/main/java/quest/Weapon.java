@@ -1,16 +1,10 @@
 package quest;
 
-public class Weapon extends Card {
-
-    private int damage;
-
-    public Weapon(String paramName, String paramImageFilename, int paramDamage){
+public class Weapon extends AdventureCard
+{
+    public Weapon(String paramName, String paramImageFilename, int paramBattlePoints)
+    {
         super(paramName, paramImageFilename);
-        damage = paramDamage;
+        battlePoints = paramBattlePoints;
     }
-
-    public int getDamage(){
-        return damage;
-    }
-
 }

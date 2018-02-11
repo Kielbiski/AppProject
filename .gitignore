@@ -1,11 +1,8 @@
-.idea/workspace.xml
-.idea/compiler.xml
-.idea/
-*.iws
 workspace.xml
 compiler.xml
 /target/
 /out/
+.idea/
 *.class
 .DS_Store
 *.iml

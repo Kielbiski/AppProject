@@ -5,6 +5,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
+import javafx.scene.paint.Color;
+import javafx.scene.paint.Paint;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
@@ -27,13 +31,10 @@ public class GameScreen extends Application {
     @Override
     public void start(Stage primaryStage)throws Exception{
         initUI(primaryStage);
-
     }
     private void initUI(Stage primaryStage) throws Exception{
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
-//        addControlsToCanvas(canvas);
-//        setupCardsAnimation(canvas);
 
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/PlayerView.fxml"));
         Scene scene = new Scene(root);
@@ -41,9 +42,22 @@ public class GameScreen extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
+
+        positionUIElements();
+
+//        readyButton.setOnMouseClicked(event ->
+//        {
+//            if(event.getButton() != MouseButton.PRIMARY)
+//            {
+//                return;
+//            }
+//            model.nextTurn();
+//            readyText.setText("It's your turn, " + model.getState().getCurrentTurnPlayer().getPlayerName() + "!");
+//        });
     }
 
     private void setupCardsAnimation(Pane canvas) {
+
         Image img = null;
         File cardsDir = new File("src/main/resources/Cards/");
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
@@ -72,6 +86,7 @@ public class GameScreen extends Application {
 
     public static void main(String[] args) {
         launch(args);
+
     }
 }
 
