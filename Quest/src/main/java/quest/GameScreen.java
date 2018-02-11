@@ -1,6 +1,8 @@
 package quest;
 
 import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -22,34 +24,26 @@ public class GameScreen extends Application {
 
     private static final Logger logger = LogManager.getLogger(GameScreen.class);
 
-    public static void main(String[] args) {
-        launch(args);
-    }
-
     @Override
-    public void start(Stage primaryStage) {
-        logger.info("hi");
-       initUI(primaryStage);
+    public void start(Stage primaryStage)throws Exception{
+        initUI(primaryStage);
 
     }
-
-    private void initUI(Stage primaryStage){
+    private void initUI(Stage primaryStage) throws Exception{
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
-        addControlsToCanvas(canvas);
-        setupCardsAnimation(canvas);
+//        addControlsToCanvas(canvas);
+//        setupCardsAnimation(canvas);
 
-
-        Scene scene = new Scene(canvas, 1366, 768 );
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/PlayerView.fxml"));
+        Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
     }
-    private void addControlsToCanvas(Pane canvas){
 
-    }
-    private void setupCardsAnimation(Pane canvas){
+    private void setupCardsAnimation(Pane canvas) {
         Image img = null;
         File cardsDir = new File("src/main/resources/Cards/");
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
@@ -57,8 +51,8 @@ public class GameScreen extends Application {
         File[] cardsFile = cardsDir.listFiles(imgFilter);
         Image[] cardsImg = new Image[cardsFile.length];
 
-        int index =0;
-        for (File cardFile : cardsFile){
+        int index = 0;
+        for (File cardFile : cardsFile) {
             try {
                 cardsImg[index++] = new Image(new FileInputStream(cardFile.getPath()));
             } catch (FileNotFoundException e) {
@@ -67,13 +61,17 @@ public class GameScreen extends Application {
         }
 
         ImageView imgView = new ImageView();
-        imgView.setFitHeight(250);
-        imgView.setFitWidth(250);
+        imgView.setFitHeight(100);
+        imgView.setFitWidth(100);
         imgView.setPreserveRatio(true);
-        imgView.setImage(cardsImg[1]);
-        imgView.relocate(20,180);
+        imgView.setImage(cardsImg[4]);
+        imgView.relocate(20, 180);
 
         canvas.getChildren().add(imgView);
     }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
 }
+

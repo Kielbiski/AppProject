@@ -6,4 +6,8 @@ public class Quest extends Card {
         super(paramName, paramImageFilename);
     }
 
+
+
+
+
 }
