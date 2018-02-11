@@ -43,7 +43,6 @@ public class GameScreen extends Application {
         primaryStage.setTitle("Quest");
         primaryStage.show();
 
-        positionUIElements();
 
 //        readyButton.setOnMouseClicked(event ->
 //        {
