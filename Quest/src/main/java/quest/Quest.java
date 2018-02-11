@@ -14,8 +14,16 @@ public class Quest extends StoryCard {
         players = new ArrayList<>();
     }
 
+<<<<<<< HEAD
+
+
+
+
+}
+=======
     void goToNextStage()
     {
 
     }
 }
+>>>>>>> 3ecf9c610e9f55977e8e8cb351bc7b56c47af7f0
