@@ -2,7 +2,7 @@ package quest;
 
 import java.util.ArrayList;
 
-public class Quest extends Card {
+public class Quest extends StoryCard {
     ArrayList<QuestStage> stages;
     ArrayList<Player> players;
     QuestStage currentStage;
