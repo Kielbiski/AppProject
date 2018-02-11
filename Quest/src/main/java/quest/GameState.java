@@ -2,16 +2,20 @@ package quest;
 
 public class GameState
 {
-    private Card currentStory;
-    Player currentTurnPlayer;
+    private StoryCard currentStory;
+    private Player currentTurnPlayer;
+    private int bonusQuestShields;
 
     public GameState()
     {
+        bonusQuestShields = 0;
     }
 
-    public Card getCurrentStory() { return currentStory; }
+    public StoryCard getCurrentStory() { return currentStory; }
     public Player getCurrentTurnPlayer() { return currentTurnPlayer; }
+    public int getBonusQuestShields() {return bonusQuestShields;}
 
-    public void setCurrentStory(Card pCurrentStory) { currentStory = pCurrentStory;}
+    public void setCurrentStory(StoryCard pCurrentStory) { currentStory = pCurrentStory;}
     public void setCurrentTurnPlayer(Player pCurrentTurnPlayer) { currentTurnPlayer = pCurrentTurnPlayer;}
+    public void setBonusQuestShields(int shields) { bonusQuestShields = shields; }
 }

@@ -1,5 +1,6 @@
 package quest;
 
+import java.util.ArrayDeque;
 import java.util.List;
 import java.util.ArrayList;
 
@@ -25,9 +26,9 @@ public class Player {
     private int battlePoints;
     private int shields;
     private Rank playerRank;
-    CardCollection cardsInHand = new CardCollection();
-    CardCollection cardsOnTable = new CardCollection();
-    CardCollection cardsPlaying = new CardCollection();
+    CardCollection<AdventureCard> cardsInHand = new CardCollection<>();
+    CardCollection<AdventureCard> cardsOnTable = new CardCollection<>();
+    CardCollection<AdventureCard> cardsPlaying = new CardCollection<>();
 
     public Player(String paramName){
         playerName = paramName ;
@@ -60,25 +61,25 @@ public class Player {
         playerRank = paramRank;
     }
 
-    public void addCardToHand(Card paramCard){
+    public void addCardToHand(AdventureCard paramCard){
         cardsInHand.addCard(paramCard);
     }
 
-    public void addCardToTable(Card paramCard){
+    public void addCardToTable(AdventureCard paramCard){
         cardsOnTable.addCard(paramCard);
     }
 
-    public void addCardToPlaying(Card paramCard){
+    public void addCardToPlaying(AdventureCard paramCard){
         cardsPlaying.addCard(paramCard);
     }
 
-    public void selectCard(Card card)
+    public void selectCard(AdventureCard card)
     {
         addCardToPlaying(card);
     }
 
     //Draw cards from a card collection and add them to the player's hand
-    public void drawCards(int numCards, CardCollection collection)
+    public void drawCards(int numCards, CardCollection<AdventureCard> collection)
     {
         collection.drawCards(numCards).moveAllCardsToCollection(cardsInHand);
     }
@@ -88,7 +89,7 @@ public class Player {
         cardsPlaying.moveAllCardsToCollection(cardsOnTable);
     }
 
-    public void discard(Card paramCard, CardCollection discardPile){
+    public void discard(AdventureCard paramCard, CardCollection<AdventureCard> discardPile){
         cardsInHand.moveCardToCollection(paramCard, discardPile);
     }
 
@@ -128,7 +129,7 @@ public class Player {
         {
             if(!cardsOnTable.getCard(i).isFaceDown())
             {
-                battlePoints += cardsOnTable.getCard(i).getBattlePointsInGame(state);
+                battlePoints += cardsOnTable.getCard(i).getBattlePointsInGame(state, this);
             }
         }
 

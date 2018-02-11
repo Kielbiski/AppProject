@@ -1,30 +1,16 @@
 package quest;
 
-public class Test extends Card
+public class Test extends AdventureCard
 {
-    BonusCondition bonusCondition;
-    public Test(String name, String imageFilename, int pBids, BonusCondition pBonusCondition)
+    public Test(String name, String imageFilename, int pBids, EffectCondition pBonusBidsCondition)
     {
         super(name, imageFilename);
         bids = pBids;
-        bonusCondition = pBonusCondition;
+        bonusBidsCondition = pBonusBidsCondition;
     }
 
-    public Test(String name, String imageFilename, BonusCondition pBonusCondition)
+    public Test(String name, String imageFilename, EffectCondition pBonusCondition)
     {
         this(name, imageFilename, 3, pBonusCondition);
-    }
-
-    @Override
-    public int getBidsInGame(GameState state)
-    {
-        if(bonusCondition.doesBonusApply(state))
-        {
-            return bonusBids;
-        }
-        else
-        {
-            return bids;
-        }
     }
 }

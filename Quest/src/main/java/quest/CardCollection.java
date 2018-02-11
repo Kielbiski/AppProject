@@ -5,9 +5,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 
-public class CardCollection
+public class CardCollection<T extends Card>
 {
-    ArrayList<Card> cards = new ArrayList<>();
+    ArrayList<T> cards = new ArrayList<>();
 
     public CardCollection()
     {
@@ -15,19 +15,19 @@ public class CardCollection
     }
 
     public int getSize() { return cards.size(); }
-    public Card getCard(int i) { return cards.get(i);}
+    public T getCard(int i) { return cards.get(i);}
 
-    public void addCard(Card card)
+    public void addCard(T card)
     {
         cards.add(card);
     }
 
-    public void addAllCardsFromCollection(CardCollection collection)
+    public void addAllCardsFromCollection(CardCollection<T> collection)
     {
         collection.cards.addAll(this.cards);
     }
 
-    public void moveCardToCollection(Card card, CardCollection collection)
+    public void moveCardToCollection(T card, CardCollection<T> collection)
     {
         if(cards.remove(card))
         {
@@ -35,7 +35,7 @@ public class CardCollection
         }
     }
 
-    public void moveAllCardsToCollection(CardCollection collection)
+    public void moveAllCardsToCollection(CardCollection<T> collection)
     {
         collection.addAllCardsFromCollection(this);
         this.cards.clear();
@@ -46,7 +46,7 @@ public class CardCollection
         Collections.shuffle(cards);
     }
 
-    public Card drawCard()
+    public T drawCard()
     {
         if(cards.size() > 0)
         {
@@ -55,9 +55,9 @@ public class CardCollection
         return null;
     }
 
-    public CardCollection drawCards(int numCards)
+    public CardCollection<T> drawCards(int numCards)
     {
-        CardCollection cardsDrawn = new CardCollection();
+        CardCollection<T> cardsDrawn = new CardCollection<>();
         for(int i = 0; i < numCards && cards.size() > 0; ++i)
         {
             cardsDrawn.addCard(cards.remove(cards.size() - 1));

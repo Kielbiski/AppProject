@@ -1,6 +1,6 @@
 package quest;
 
-public class Amour extends Card
+public class Amour extends AdventureCard
 {
     public Amour(String pName, String pImageFilename)
     {

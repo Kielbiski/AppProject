@@ -8,10 +8,10 @@ public class GameModel
     GameState state;
     int currentTurnIndex = 0;
 
-    CardCollection adventureDeck = new CardCollection();
-    CardCollection storyDeck = new CardCollection();
-    CardCollection adventureDiscardPile = new CardCollection();
-    CardCollection storyDiscardPile = new CardCollection();
+    CardCollection<AdventureCard> adventureDeck = new CardCollection();
+    CardCollection<StoryCard> storyDeck = new CardCollection();
+    CardCollection<AdventureCard> adventureDiscardPile = new CardCollection();
+    CardCollection<StoryCard> storyDiscardPile = new CardCollection();
 
     public GameModel()
     {
@@ -21,9 +21,6 @@ public class GameModel
         players.add(new Player("Robert"));
 
         state = new GameState();
-
-//        adventureDeck.fillWithAdventureCards();
-//        storyDeck.fillWithStoryCards();
     }
 
     public void startGame()
@@ -73,6 +70,7 @@ public class GameModel
 
     public void startTurn()
     {
+        drawStoryCard();
         //Notify view that a new turn has started
     }
 
@@ -81,7 +79,7 @@ public class GameModel
         drawStoryCard();
     }
 
-    public void selectCard(Card card)
+    public void selectCard(AdventureCard card)
     {
         state.getCurrentTurnPlayer().selectCard(card);
     }
@@ -91,7 +89,7 @@ public class GameModel
         state.setCurrentStory(storyDeck.drawCard());
         if(state.getCurrentStory() != null)
         {
-            state.getCurrentStory().onCardPlayed.execute(state);
+//            state.getCurrentStory().onCardPlayed.execute(state);
         }
         else
         {

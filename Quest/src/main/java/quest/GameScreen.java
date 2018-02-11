@@ -62,19 +62,19 @@ public class GameScreen extends Application {
 
         positionUIElements();
 
-        readyButton.setOnMouseClicked(event ->
-        {
-            if(event.getButton() != MouseButton.PRIMARY)
-            {
-                return;
-            }
-            model.nextTurn();
-            readyText.setText("It's your turn, " + model.getCurrentTurnPlayer().getPlayerName() + "!");
-        });
+//        readyButton.setOnMouseClicked(event ->
+//        {
+//            if(event.getButton() != MouseButton.PRIMARY)
+//            {
+//                return;
+//            }
+//            model.nextTurn();
+//            readyText.setText("It's your turn, " + model.getState().getCurrentTurnPlayer().getPlayerName() + "!");
+//        });
     }
 
     private void addControlsToCanvas(Pane canvas){
-        readyText.setText("It's your turn, " + model.getCurrentTurnPlayer().getPlayerName() + "!");
+//        readyText.setText("It's your turn, " + model.getState().getCurrentTurnPlayer().getPlayerName() + "!");
         readyText.setFont(Font.font(72));
         readyText.setFill(Color.WHITE);
 

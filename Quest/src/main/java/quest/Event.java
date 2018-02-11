@@ -1,10 +1,17 @@
 package quest;
 
-public class Event extends Card
+public class Event extends StoryCard
 {
-    public Event(String name, String imageFilename, CardEffect effect)
+    CardEffect effect;
+    public Event(String name, String imageFilename, CardEffect pEffect)
     {
         super(name, imageFilename);
-        onCardPlayed = effect;
+        effect = pEffect;
+    }
+
+    @Override
+    public void startStory(GameState state)
+    {
+        effect.execute(state);
     }
 }
