@@ -5,7 +5,6 @@ import java.util.ArrayList;
 public class GameModel
 {
     ArrayList<Player> players = new ArrayList<>();
-    GameState state;
     int currentTurnIndex = 0;
 
     CardCollection<AdventureCard> adventureDeck = new CardCollection();
@@ -26,7 +25,7 @@ public class GameModel
         if(players.size() > 0 && adventureDeck.getSize() > 0 && storyDeck.getSize() > 0)
         {
             shuffleAndDeal();
-            state.setCurrentTurnPlayer(players.get(currentTurnIndex));
+            //setCurrentTurnPlayer(players.get(currentTurnIndex));
             startTurn();
         }
         else
@@ -94,6 +93,11 @@ public class GameModel
             //TODO: when a deck runs out, add the discard pile back into the deck and reshuffle
             endGame();
         }
+    }
+    
+    while (true) {
+        System.out.println("Game loop.");
+        break;
     }
 
 }
