@@ -19,8 +19,6 @@ public class GameModel
         players.add(new Player("Jay"));
         players.add(new Player("Jeremy"));
         players.add(new Player("Robert"));
-
-        state = new GameState();
     }
 
     public void startGame()
@@ -98,5 +96,4 @@ public class GameModel
         }
     }
 
-    public GameState getState() {return state;}
 }
