@@ -32,14 +32,19 @@ public class Quest extends Card {
     }
 
     public void questPlayStageNoTest() {
-        int winnerValue = hostPlayer.getCurrentPlayPoints();
+        int w = 0;
+        while (w < playerList.size()) {
+            playerList.get(w).calculateBattlePoints();
+            w++;
+        }
+        int winnerValue = hostPlayer.getBattlePoints();
         int i = 0;
         int j = playerList.size();
         while (i < j) {
-            if (winnerValue > playerList.get(i).getCurrentPlayPoints()) {
+            if (winnerValue > playerList.get(i).getBattlePoints()) {
                 playerList.remove(i);
                 j--;
-            } else (winnerValue == playerList.get(i).getCurrentPlayPoints()) {
+            } else (winnerValue == playerList.get(i).getBattlePoints()) {
                 i++;
             }
         }
