@@ -2,15 +2,14 @@ package quest;
 
 public class Test extends AdventureCard
 {
-    public Test(String name, String imageFilename, int pBids, EffectCondition pBonusBidsCondition)
+    private Test(String name, String imageFilename, int pBids)
     {
         super(name, imageFilename);
         bids = pBids;
-        bonusBidsCondition = pBonusBidsCondition;
     }
 
-    public Test(String name, String imageFilename, EffectCondition pBonusCondition)
+    public Test(String name, String imageFilename)
     {
-        this(name, imageFilename, 3, pBonusCondition);
+        this(name, imageFilename, 3);
     }
 }

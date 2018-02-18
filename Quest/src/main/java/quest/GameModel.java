@@ -4,32 +4,26 @@ import java.util.ArrayList;
 
 public class GameModel
 {
-    ArrayList<Player> players = new ArrayList<>();
-    GameState state;
-    int currentTurnIndex = 0;
+    private ArrayList<Player> players = new ArrayList<>();
+    private CardCollection<Card> deckOfCards = new CardCollection<>();
+    private int currentTurnIndex = 0;
 
-    CardCollection<AdventureCard> adventureDeck = new CardCollection();
-    CardCollection<StoryCard> storyDeck = new CardCollection();
-    CardCollection<AdventureCard> adventureDiscardPile = new CardCollection();
-    CardCollection<StoryCard> storyDiscardPile = new CardCollection();
 
     public GameModel()
     {
-        players.add(new Player("Cody"));
+        players.add(new Player("Random"));
         players.add(new Player("Jay"));
         players.add(new Player("Jeremy"));
         players.add(new Player("Robert"));
 
-        state = new GameState();
     }
 
     public void startGame()
     {
-        if(players.size() > 0 && adventureDeck.getSize() > 0 && storyDeck.getSize() > 0)
+        if(players.size() > 0 && deckOfCards.getSize() > 0)
         {
             shuffleAndDeal();
-            state.setCurrentTurnPlayer(players.get(currentTurnIndex));
-            startTurn();
+            //state.setCurrentTurnPlayer(players.get(currentTurnIndex));
         }
         else
         {
@@ -37,14 +31,14 @@ public class GameModel
         }
     }
 
-    public void endGame()
+    private void endGame()
     {
         System.out.println("Game over");
     }
 
     public void nextTurn()
     {
-        state.setCurrentStory(null);
+        //state.setCurrentStory(null);
         if(players.size() == 0)
         {
             endGame();
@@ -54,49 +48,21 @@ public class GameModel
         {
             currentTurnIndex = 0;
         }
-        state.setCurrentTurnPlayer(players.get(currentTurnIndex));
-        startTurn();
+        //state.setCurrentTurnPlayer(players.get(currentTurnIndex));
     }
 
-    public void shuffleAndDeal()
+    private void shuffleAndDeal()
     {
-        adventureDeck.shuffle();
-        storyDeck.shuffle();
-        for(int i = 0; i < players.size(); ++i)
+        deckOfCards.shuffle();
+        for(Player player : players)
         {
-            players.get(i).drawCards(12, adventureDeck);
+            player.drawCards(12, deckOfCards);
         }
-    }
-
-    public void startTurn()
-    {
-        drawStoryCard();
-        //Notify view that a new turn has started
-    }
-
-    public void ready()
-    {
-        drawStoryCard();
     }
 
     public void selectCard(AdventureCard card)
     {
-        state.getCurrentTurnPlayer().selectCard(card);
+        //state.getCurrentTurnPlayer().selectCard(card);
     }
 
-    public void drawStoryCard()
-    {
-        state.setCurrentStory(storyDeck.drawCard());
-        if(state.getCurrentStory() != null)
-        {
-//            state.getCurrentStory().onCardPlayed.execute(state);
-        }
-        else
-        {
-            //TODO: when a deck runs out, add the discard pile back into the deck and reshuffle
-            endGame();
-        }
-    }
-
-    public GameState getState() {return state;}
 }

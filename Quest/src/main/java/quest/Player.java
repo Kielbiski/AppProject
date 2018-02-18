@@ -26,11 +26,11 @@ public class Player {
     private int battlePoints;
     private int shields;
     private Rank playerRank;
-    CardCollection<AdventureCard> cardsInHand = new CardCollection<>();
-    CardCollection<AdventureCard> cardsOnTable = new CardCollection<>();
-    CardCollection<AdventureCard> cardsPlaying = new CardCollection<>();
+    private CardCollection<Card> cardsInHand = new CardCollection<>();
+    private CardCollection<Card> cardsOnTable = new CardCollection<>();
+    private CardCollection<Card> cardsPlaying = new CardCollection<>();
 
-    public Player(String paramName){
+    Player(String paramName){
         playerName = paramName ;
         //currentPlayPoints = 0;
         battlePoints = 0;
@@ -69,7 +69,7 @@ public class Player {
         cardsOnTable.addCard(paramCard);
     }
 
-    public void addCardToPlaying(AdventureCard paramCard){
+    private void addCardToPlaying(AdventureCard paramCard){
         cardsPlaying.addCard(paramCard);
     }
 
@@ -79,7 +79,7 @@ public class Player {
     }
 
     //Draw cards from a card collection and add them to the player's hand
-    public void drawCards(int numCards, CardCollection<AdventureCard> collection)
+    public void drawCards(int numCards, CardCollection<Card> collection)
     {
         collection.drawCards(numCards).moveAllCardsToCollection(cardsInHand);
     }
@@ -89,7 +89,7 @@ public class Player {
         cardsPlaying.moveAllCardsToCollection(cardsOnTable);
     }
 
-    public void discard(AdventureCard paramCard, CardCollection<AdventureCard> discardPile){
+    public void discard(AdventureCard paramCard, CardCollection<Card> discardPile){
         cardsInHand.moveCardToCollection(paramCard, discardPile);
     }
 
@@ -124,15 +124,6 @@ public class Player {
             default:
                 break;
         }
-
-        for(int i = 0; i < cardsOnTable.getSize(); ++i)
-        {
-            if(!cardsOnTable.getCard(i).isFaceDown())
-            {
-                battlePoints += cardsOnTable.getCard(i).getBattlePointsInGame(state, this);
-            }
-        }
-
         return battlePoints;
     }
 

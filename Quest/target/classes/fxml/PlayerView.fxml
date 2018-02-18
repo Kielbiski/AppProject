@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.BorderPane?>
@@ -35,6 +36,8 @@
             <children>
                 <HBox fx:id="alliesHbox" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #C02E2A;" GridPane.columnIndex="1">
                 </HBox>
+            <HBox fx:id="alliesHbox1" alignment="TOP_CENTER" layoutX="466.0" layoutY="10.0" spacing="10.0" style="-fx-background-color: #69BA64;" />
+            <HBox fx:id="alliesHbox11" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0" style="-fx-background-color: #5676D1;" GridPane.columnIndex="2" />
             </children>
         </GridPane>
     </bottom>

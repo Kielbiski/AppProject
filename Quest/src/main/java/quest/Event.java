@@ -1,17 +1,10 @@
 package quest;
 
-public class Event extends StoryCard
-{
-    CardEffect effect;
-    public Event(String name, String imageFilename, CardEffect pEffect)
+public class Event extends Card {
+
+    public Event(String paramName, String paramImageFilename)
     {
-        super(name, imageFilename);
-        effect = pEffect;
+        super(paramName, paramImageFilename);
     }
 
-    @Override
-    public void startStory(GameState state)
-    {
-        effect.execute(state);
-    }
 }

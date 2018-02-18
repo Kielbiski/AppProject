@@ -2,7 +2,7 @@ package quest;
 
 import java.util.ArrayList;
 
-public class Tournament extends StoryCard {
+public class Tournament extends Card {
     private ArrayList <Player> playerList = new ArrayList<>();
     private int roundsPlayed;
     private int shields ; //How many shield the winner gets
@@ -21,11 +21,8 @@ public class Tournament extends StoryCard {
     public void tournamentPlay(GameState state){
         int winnerValue = playerList.get(playerList.size()-1).calculateBattlePoints(state);
         for(int i=playerList.size()-2; i >= 0; i--){
-            if(winnerValue > playerList.get(i).calculateBattlePoints(state)){
+            if(winnerValue >= playerList.get(i).calculateBattlePoints(state)){
                 playerList.remove(i);
-            }
-            else if(winnerValue == playerList.get(i).calculateBattlePoints(state)){
-                //Do nothing.
             }
             else {
                 //Set the new winnerValue and remove all players already checked in the list (their Battle Points will always be less than the new value)
