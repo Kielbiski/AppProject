@@ -17,6 +17,7 @@ public class Controller {
 
     private Model game = new Model();
     //
+    //test
     @FXML
     private BorderPane mainBorderPane ;
     @FXML
