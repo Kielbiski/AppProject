@@ -39,7 +39,6 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
-        System.out.println("kys");
 
 
     }

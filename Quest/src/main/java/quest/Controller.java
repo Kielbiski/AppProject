@@ -3,7 +3,9 @@ package quest;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.control.Label;
 import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 
 import java.util.ResourceBundle;
 import java.awt.*;
@@ -18,29 +20,39 @@ import java.awt.*;
 public class Controller {
 
     private Model game = new Model();
-    //
-    //test
+
     @FXML
     private BorderPane mainBorderPane ;
     @FXML
     private GridPane handGridPane ;
     @FXML
     private HBox alliesHbox ;
+    @FXML
+    private HBox weaponHbox;
+    @FXML
+    private HBox foesHbox;
+    @FXML
+    private VBox playerStatsVbox;
 
     //
     @FXML
-    private TextArea p1TextArea ;
+    private Label player1Label;
     @FXML
-    private TextArea p2TextArea ;
+    private Label player2Label;
     @FXML
-    private TextArea p3TextArea ;
+    private Label player3Label;
     @FXML
-    private TextArea p4TextArea ;
+    private Label player4Label;
+
+    public void update(){
+
+    }
 
 
     public void initialize() {
+       // player1Label.setText(game.getPlayers());
 
-        System.out.println("second");
+
     }
 
 
