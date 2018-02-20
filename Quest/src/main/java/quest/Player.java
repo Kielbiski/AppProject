@@ -22,7 +22,6 @@ enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
 public class Player {
 
     private String playerName;
-    //private int currentPlayPoints;
     private int battlePoints;
     private int shields;
     private Rank playerRank;
@@ -32,31 +31,39 @@ public class Player {
 
     Player(String paramName){
         playerName = paramName ;
-        //currentPlayPoints = 0;
-        battlePoints = 0;
         shields = 0;
+        battlePoints =0;
         playerRank = Rank.SQUIRE;
     }
 
     public String getPlayerName(){
         return playerName;
     }
-    //public int getCurrentPlayPoints(){return currentPlayPoints;}
+    
     public int getShields(){
         return shields;
     }
+    
     public Rank getPlayerRank(){
         return playerRank;
     }
+    
     public int getNumCardsInHand(){
         return cardsInHand.getSize();
     }
-    public int getBattlePoints() {return battlePoints;}
 
-    //public void setCurrentPlayPoints(int paramPlayPoint){ currentPlayPoints = paramPlayPoint;}
+    public void addBonusPoint (int paramBonusPoint){ 
+        battlePoints += paramBonusPoint;
+    }
+    
+    public void resetBattlePoints (){ 
+        battlePoints = 0;
+    }
+    
     public void setShields(int paramShields){
         shields = paramShields;
     }
+    
     public void setPlayerRank(Rank paramRank){
         playerRank = paramRank;
     }
@@ -64,54 +71,43 @@ public class Player {
     public void addCardToHand(AdventureCard paramCard){
         cardsInHand.addCard(paramCard);
     }
-
+    
     public void addCardToTable(AdventureCard paramCard){
         cardsOnTable.addCard(paramCard);
     }
-
-    private void addCardToPlaying(AdventureCard paramCard){
+    
+    public void addCardToPlaying(AdventureCard paramCard){
         cardsPlaying.addCard(paramCard);
     }
 
-    public void selectCard(AdventureCard card)
-    {
-        addCardToPlaying(card);
+    public void removeCardToHand(AdventureCard paramCard){
+        cardsInHand.removeCard(paramCard);
+    }
+    
+    public void removeCardToTable(AdventureCard paramCard){
+        cardsOnTable.removeCard(paramCard);
+    }
+    
+    public void removeCardToPlaying(AdventureCard paramCard){
+        cardsPlaying.removeCard(paramCard);
     }
 
-    //Draw cards from a card collection and add them to the player's hand
-    public void drawCards(int numCards, CardCollection<Card> collection)
-    {
-        collection.drawCards(numCards).moveAllCardsToCollection(cardsInHand);
-    }
-
-    public void playCards()
-    {
-        cardsPlaying.moveAllCardsToCollection(cardsOnTable);
-    }
-
-    public void discard(AdventureCard paramCard, CardCollection<Card> discardPile){
-        cardsInHand.moveCardToCollection(paramCard, discardPile);
-    }
-
-    //public void removeCardFromTable(int paramIndexPos){cardsOnTable.remove(paramIndexPos);}
-    //public void removeCardPlaying(int paramIndexPos){cardsPlaying.remove(paramIndexPos);}
-
-    public boolean tooManyCards()
-    {
+    public boolean tooManyCards(){
         return cardsInHand.getSize() > 12;
     }
 
-    public boolean hasWon()
-    {
-        return playerRank == Rank.KNIGHT_OF_THE_ROUND_TABLE;
+    public int calculCardCollectionPoint(CardCollection<AdventureCard> paramCardList) {
+        int iteratArray =0;
+        int point;
+        while (iteratArray < paramCardList.getSize()) {
+            point += paramCardList.getCard(iteratArray).getBattlePoints();
+            iteratArray++;
+        }
+        return point;
     }
 
-    public int calculateBattlePoints(GameState state)
-    {
-        //Calculate and return the player's total battle points
-        battlePoints = 0;
-        switch (playerRank)
-        {
+    public int calculateBattlePoints() {
+        switch (playerRank){
             case SQUIRE:
                 battlePoints += 5;
                 break;
@@ -124,13 +120,13 @@ public class Player {
             default:
                 break;
         }
+        battlePoints+=calculCardCollectionPoint(this.cardsPlaying);
+        battlePoints+=calculCardCollectionPoint(this.cardsOnTable);
         return battlePoints;
     }
 
-    private int getRequiredShieldsForNextRank()
-    {
-        switch(playerRank)
-        {
+    private int getRequiredShieldsForNextRank() {
+        switch(playerRank){
             case SQUIRE:
                 return 5;
             case KNIGHT:
@@ -142,11 +138,9 @@ public class Player {
         }
     }
 
-    public void changeRank()
-    {
+    public void confirmRank() {
         int requiredShields = getRequiredShieldsForNextRank();
-        if(playerRank != Rank.KNIGHT_OF_THE_ROUND_TABLE && shields >= requiredShields)
-        {
+        if(playerRank != Rank.KNIGHT_OF_THE_ROUND_TABLE && shields >= requiredShields){
             playerRank = playerRank.next();
             shields -= requiredShields;
         }
