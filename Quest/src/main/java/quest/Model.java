@@ -14,6 +14,9 @@ public class Model
         deckOfAdventureCards = new CardCollection<>();
         currentTurnIndex = 0;
         NUM_CARDS = 12;
+        //Initializing all cards
+
+        //
     }
 
     public ArrayList<Player> getPlayers() {
@@ -26,18 +29,6 @@ public class Model
 
     public int getCurrentTurnIndex() {
         return currentTurnIndex;
-    }
-
-    public Player getPlayerWithHighestRank() {
-        int highestShieldCount = 0;
-        Player playerWithHighestRank = players.get(0);
-        for(Player player : players){
-            if (player.getShields() > highestShieldCount) {
-                highestShieldCount = player.getShields();
-                playerWithHighestRank = player;
-            }
-        }
-        return playerWithHighestRank;
     }
 
     public void nextTurn(){

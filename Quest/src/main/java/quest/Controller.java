@@ -6,9 +6,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import java.util.ArrayList;
 
-import java.util.ResourceBundle;
-import java.awt.*;
+//import java.util.ResourceBundle;
+//import java.awt.*;
+
+import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 //GAMEPLAN FOR TOMORROW
 //ALL GAME APP HAS TO DO IS LAUNCH THE APP< NOTHING ELSE THE REST IS IN HERE
@@ -48,12 +51,30 @@ public class Controller {
 
     }
 
+    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
+        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", tournamentParticipants);
+        return knightsOfTheRoundTableTournament.getTournamentWinner();
+    }
+
+    private ArrayList<Player> getWinningPlayers(Model model) {
+        ArrayList<Player> winningPlayers;
+        ArrayList<Player> knightsOfTheRoundTable = new ArrayList<>();
+        for(Player player : model.getPlayers()){
+            if (player.getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) {
+                knightsOfTheRoundTable.add(player);
+            }
+        }
+        if (knightsOfTheRoundTable.size() == 1){
+            winningPlayers = knightsOfTheRoundTable;
+        } else {
+            winningPlayers = finalTournament(knightsOfTheRoundTable);
+        }
+        return winningPlayers;
+    }
 
     public void initialize() {
        // player1Label.setText(game.getPlayers());
 
 
     }
-
-
 }

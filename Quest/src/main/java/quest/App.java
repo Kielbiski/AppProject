@@ -48,9 +48,12 @@ public class App extends Application {
         Image img = null;
         File cardsDir = new File("src/main/resources/Cards/");
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
-
+        int imageArraySize = 0;
         File[] cardsFile = cardsDir.listFiles(imgFilter);
-        Image[] cardsImg = new Image[cardsFile.length];
+        if(cardsFile != null){
+            imageArraySize = cardsFile.length;
+        }
+        Image[] cardsImg = new Image[imageArraySize];
 
         int index = 0;
         for (File cardFile : cardsFile) {

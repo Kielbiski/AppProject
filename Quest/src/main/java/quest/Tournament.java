@@ -7,7 +7,7 @@ public class Tournament extends Card {
     private int roundsPlayed;
     private int shields ; //How many shield the winner gets
 
-    public Tournament(String paramName, String paramImageFilename, ArrayList<Player> paramPlayerList){
+    Tournament(String paramName, String paramImageFilename, ArrayList<Player> paramPlayerList){
         super(paramName, paramImageFilename);
         playerList.addAll(paramPlayerList);
         roundsPlayed = 0;
@@ -50,7 +50,7 @@ public class Tournament extends Card {
         return shields;
     }
 
-    public ArrayList <Player>  tournamentWinner() {
+    public ArrayList<Player> getTournamentWinner() {
         for (Player player : playerList) {
             player.setShields(player.getShields() + shields);
         }
