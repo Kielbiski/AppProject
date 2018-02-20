@@ -19,29 +19,14 @@ import java.io.FilenameFilter;
 
 
 public class App extends Application {
-//    //Initialize Group root for Main Node
-//    Group root = new Group();
-//
-//    //Initialize Scene on group root with specific sizes
-//    Scene scene = new Scene(root, 450, 250);
-//
-//    //Initialize BorderPane and Bind the layout with the scene size.
-//    BorderPane borderPane = new BorderPane();
-//    borderPane.prefHeightProperty().bind(scene.heightProperty());
-//    borderPane.prefWidthProperty().bind(scene.widthProperty());
-//
-//    //Set the TabPane to be centered
-//    borderPane.setCenter(tabPane);
-//
-//    //Adds Layout to Main Node
-//    root.getChildren().add(borderPane);
+
     private static final Logger logger = LogManager.getLogger(App.class);
 
     @Override
     public void start(Stage primaryStage)throws Exception{
         initUI(primaryStage);
     }
-    private void initUI(Stage primaryStage) throws Exception{
+    private void initUI(Stage primaryStage) throws Exception {
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
 
@@ -51,17 +36,6 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
-
-
-//        readyButton.setOnMouseClicked(event ->
-//        {
-//            if(event.getButton() != MouseButton.PRIMARY)
-//            {
-//                return;
-//            }
-//            model.nextTurn();
-//            readyText.setText("It's your turn, " + model.getState().getCurrentTurnPlayer().getPlayerName() + "!");
-//        });
     }
 
     private void setupCardsAnimation(Pane canvas) {
@@ -71,7 +45,7 @@ public class App extends Application {
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
 
         File[] cardsFile = cardsDir.listFiles(imgFilter);
-        Image[] cardsImg = new Image[cardsFile.length];
+        Image[] cardsImg = new Image[cardsFile.length]; //try-catch later
 
         int index = 0;
         for (File cardFile : cardsFile) {

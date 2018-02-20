@@ -5,13 +5,13 @@ import java.util.ArrayList;
 public class Model
 {
     private ArrayList<Player> players ;
-    private CardCollection<AdventureCard> deckOfAdventureCard;
-    private int currentTurnIndex ;
+    private CardCollection<AdventureCard> deckOfAdventureCards;
+    private int currentTurnIndex;
     private int NUM_CARDS ;
 
-    public Model() {
+    Model() {
         players = new ArrayList<>();
-        deckOfAdventureCard = new CardCollection<>();
+        deckOfAdventureCards = new CardCollection<>();
         currentTurnIndex = 0;
         NUM_CARDS = 12;
     }
@@ -20,12 +20,24 @@ public class Model
         return players;
     }
 
-    public CardCollection<Card> getDeckOfCards() {
-        return deckOfAdventureCard;
+    public CardCollection<AdventureCard> getDeckOfCards() {
+        return deckOfAdventureCards;
     }
 
     public int getCurrentTurnIndex() {
         return currentTurnIndex;
+    }
+
+    public Player getPlayerWithHighestRank() {
+        int highestShieldCount = 0;
+        Player playerWithHighestRank = players.get(0);
+        for(Player player : players){
+            if (player.getShields() > highestShieldCount) {
+                highestShieldCount = player.getShields();
+                playerWithHighestRank = player;
+            }
+        }
+        return playerWithHighestRank;
     }
 
     public void nextTurn(){
@@ -38,19 +50,18 @@ public class Model
     }
 
     private void shuffleAndDeal(){
-        deckOfAdventureCard.shuffle();
+        deckOfAdventureCards.shuffle();
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
-                player.addCardToHand((AdventureCard)deckOfAdventureCard.pop());
+                player.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
             }
         }
     }
 
     private void drawAdventureCard( Player playerOne, int x ){ 
         for (int i = 0; i < x; i++) {
-            playerOne.addCardToHand((AdventureCard)deckOfAdventureCard.pop()); 
+            playerOne.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
         }
 
     }
-
 }

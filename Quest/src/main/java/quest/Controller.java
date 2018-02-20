@@ -6,6 +6,8 @@ import javafx.scene.layout.HBox;
 import javafx.fxml.FXML;
 import java.awt.*;
 
+import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
+
 //GAMEPLAN FOR TOMORROW
 //ALL GAME APP HAS TO DO IS LAUNCH THE APP< NOTHING ELSE THE REST IS IN HERE
 //1: make game model class track its gurrent state
@@ -43,7 +45,19 @@ public class Controller {
 
     @FXML
     public void initialize() {
+        Model model = new Model();
         System.out.println("second");
+        //--------------------------------------------------------------
+        //Game Loop --------------------------------------------------------------
+        while(true){
+
+
+
+            if (model.getPlayerWithHighestRank().getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) { // replace this with game-ending condition
+                System.out.println(model.getPlayerWithHighestRank()); //display winning player here
+                break;
+            }
+        }
     }
 
 
