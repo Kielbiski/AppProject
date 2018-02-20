@@ -5,15 +5,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseButton;
-import javafx.scene.paint.Color;
-import javafx.scene.paint.Paint;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
-import javafx.scene.text.Font;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -24,9 +18,24 @@ import java.io.FilenameFilter;
 
 
 
-public class GameScreen extends Application {
-
-    private static final Logger logger = LogManager.getLogger(GameScreen.class);
+public class App extends Application {
+//    //Initialize Group root for Main Node
+//    Group root = new Group();
+//
+//    //Initialize Scene on group root with specific sizes
+//    Scene scene = new Scene(root, 450, 250);
+//
+//    //Initialize BorderPane and Bind the layout with the scene size.
+//    BorderPane borderPane = new BorderPane();
+//    borderPane.prefHeightProperty().bind(scene.heightProperty());
+//    borderPane.prefWidthProperty().bind(scene.widthProperty());
+//
+//    //Set the TabPane to be centered
+//    borderPane.setCenter(tabPane);
+//
+//    //Adds Layout to Main Node
+//    root.getChildren().add(borderPane);
+    private static final Logger logger = LogManager.getLogger(App.class);
 
     @Override
     public void start(Stage primaryStage)throws Exception{

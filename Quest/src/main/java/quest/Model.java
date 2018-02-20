@@ -2,20 +2,32 @@ package quest;
 
 import java.util.ArrayList;
 
-public class GameModel
+public class Model
 {
     private ArrayList<Player> players = new ArrayList<>();
     private CardCollection<Card> deckOfCards = new CardCollection<>();
     private int currentTurnIndex = 0;
 
 
-    public GameModel()
+    public Model()
     {
         players.add(new Player("Random"));
         players.add(new Player("Jay"));
         players.add(new Player("Jeremy"));
         players.add(new Player("Robert"));
 
+    }
+
+    public ArrayList<Player> getPlayers() {
+        return players;
+    }
+
+    public CardCollection<Card> getDeckOfCards() {
+        return deckOfCards;
+    }
+
+    public int getCurrentTurnIndex() {
+        return currentTurnIndex;
     }
 
     public void startGame()
