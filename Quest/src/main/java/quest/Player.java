@@ -25,9 +25,9 @@ public class Player {
     private int battlePoints;
     private int shields;
     private Rank playerRank;
-    private CardCollection<Card> cardsInHand = new CardCollection<>();
-    private CardCollection<Card> cardsOnTable = new CardCollection<>();
-    private CardCollection<Card> cardsPlaying = new CardCollection<>();
+    private CardCollection<AdventureCard> cardsInHand = new CardCollection<>();
+    private CardCollection<AdventureCard> cardsOnTable = new CardCollection<>();
+    private CardCollection<AdventureCard> cardsPlaying = new CardCollection<>();
 
     Player(String paramName){
         playerName = paramName ;
