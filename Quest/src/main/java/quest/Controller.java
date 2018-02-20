@@ -4,6 +4,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.fxml.FXML;
+
+import java.util.ResourceBundle;
 import java.awt.*;
 
 //GAMEPLAN FOR TOMORROW
@@ -36,14 +38,8 @@ public class Controller {
     private TextArea p4TextArea ;
 
 
-
-
-    public Controller() {
-        System.out.println("first");
-    }
-
-    @FXML
     public void initialize() {
+
         System.out.println("second");
     }
 

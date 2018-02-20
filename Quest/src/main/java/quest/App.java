@@ -1,5 +1,6 @@
 package quest;
 
+import com.sun.xml.internal.bind.v2.runtime.output.ForkXmlOutput;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -19,22 +20,7 @@ import java.io.FilenameFilter;
 
 
 public class App extends Application {
-//    //Initialize Group root for Main Node
-//    Group root = new Group();
-//
-//    //Initialize Scene on group root with specific sizes
-//    Scene scene = new Scene(root, 450, 250);
-//
-//    //Initialize BorderPane and Bind the layout with the scene size.
-//    BorderPane borderPane = new BorderPane();
-//    borderPane.prefHeightProperty().bind(scene.heightProperty());
-//    borderPane.prefWidthProperty().bind(scene.widthProperty());
-//
-//    //Set the TabPane to be centered
-//    borderPane.setCenter(tabPane);
-//
-//    //Adds Layout to Main Node
-//    root.getChildren().add(borderPane);
+
     private static final Logger logger = LogManager.getLogger(App.class);
 
     @Override
@@ -44,24 +30,18 @@ public class App extends Application {
     private void initUI(Stage primaryStage) throws Exception{
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PlayerView.fxml"));
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/PlayerView.fxml"));
+        Parent root = loader.load();
+
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
+        System.out.println("kys");
 
 
-//        readyButton.setOnMouseClicked(event ->
-//        {
-//            if(event.getButton() != MouseButton.PRIMARY)
-//            {
-//                return;
-//            }
-//            model.nextTurn();
-//            readyText.setText("It's your turn, " + model.getState().getCurrentTurnPlayer().getPlayerName() + "!");
-//        });
     }
 
     private void setupCardsAnimation(Pane canvas) {
