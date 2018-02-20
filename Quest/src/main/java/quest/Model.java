@@ -15,6 +15,7 @@ public class Model
         players.add(new Player("Jay"));
         players.add(new Player("Jeremy"));
         players.add(new Player("Robert"));
+        //Initializing all variables
 
     }
 
@@ -68,14 +69,14 @@ public class Model
         deckOfCards.shuffle();
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
-                player.addCardToHand((AdventureCard)deckOfCards.pop());
+                if (deckOfCards.pop() instanceof AdventureCard) {
+                    player.addCardToHand((AdventureCard) deckOfCards.pop());
+                }
             }
         }
     }
 
-    public void selectCard(AdventureCard card)
-    {
-        //state.getCurrentTurnPlayer().selectCard(card);
-    }
-
 }
+
+
+
