@@ -1,8 +1,8 @@
 package quest;
 
 public class Card {
-    private String name;
-    private String imageFilename;
+    protected String name;
+    protected String imageFilename;
 
     Card(String paramName, String paramImageFilename){
         name = paramName;
