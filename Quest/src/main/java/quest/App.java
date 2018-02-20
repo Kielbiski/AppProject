@@ -1,5 +1,6 @@
 package quest;
 
+import com.sun.xml.internal.bind.v2.runtime.output.ForkXmlOutput;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -26,16 +27,20 @@ public class App extends Application {
     public void start(Stage primaryStage)throws Exception{
         initUI(primaryStage);
     }
-    private void initUI(Stage primaryStage) throws Exception {
+    private void initUI(Stage primaryStage) throws Exception{
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PlayerView.fxml"));
 
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/PlayerView.fxml"));
+        Parent root = loader.load();
+
         Scene scene = new Scene(root);
 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
+
+
     }
 
     private void setupCardsAnimation(Pane canvas) {
@@ -45,7 +50,7 @@ public class App extends Application {
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
 
         File[] cardsFile = cardsDir.listFiles(imgFilter);
-        Image[] cardsImg = new Image[cardsFile.length]; //try-catch later
+        Image[] cardsImg = new Image[cardsFile.length];
 
         int index = 0;
         for (File cardFile : cardsFile) {
