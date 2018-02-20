@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 public class Quest extends Card {
 
-    private ArrayList<Player> playerList = new ArrayList<Player>();
-    private Player hostPlayer = new Player();
+    private ArrayList <Player> playerList;
+    private Player hostPlayer;
     private int numStage;
     private int curStage;
     private int shields;
@@ -23,6 +23,10 @@ public class Quest extends Card {
         return shields;
     }
 
+    public int getCurStage() {
+        return curStage;
+    }
+
     public int getNumStage() {
         return numStage;
     }
@@ -31,20 +35,19 @@ public class Quest extends Card {
         return hostPlayer;
     }
 
+    public void setCurStage(int x) {
+         curStage = x;
+    }
+
     public void questPlayStageNoTest() {
-        int w = 0;
-        while (w < playerList.size()) {
-            playerList.get(w).calculateBattlePoints();
-            w++;
-        }
-        int winnerValue = hostPlayer.getBattlePoints();
+        int winnerValue = hostPlayer.calculateBattlePoints();
         int i = 0;
         int j = playerList.size();
         while (i < j) {
-            if (winnerValue > playerList.get(i).getBattlePoints()) {
+            if (winnerValue > playerList.get(i).calculateBattlePoints()) {
                 playerList.remove(i);
                 j--;
-            } else (winnerValue == playerList.get(i).getBattlePoints()) {
+            } else {
                 i++;
             }
         }
@@ -60,3 +63,4 @@ public class Quest extends Card {
     }
 
 }
+
