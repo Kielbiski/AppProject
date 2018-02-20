@@ -4,16 +4,16 @@ import java.util.ArrayList;
 
 public class Model
 {
-    private ArrayList<Player> players ;
-    private CardCollection<AdventureCard> deckOfAdventureCards;
-    private int currentTurnIndex;
-    private int NUM_CARDS ;
+    private ArrayList<Player> players = new ArrayList<>();
+    private CardCollection<AdventureCard> deckOfAdventureCards = new CardCollection<>();
+    private int currentTurnIndex = 0;
+    private int NUM_CARDS = 12;
 
     Model() {
-        players = new ArrayList<>();
-        deckOfAdventureCards = new CardCollection<>();
-        currentTurnIndex = 0;
-        NUM_CARDS = 12;
+        players.add(new Player("Robert"));
+        players.add(new Player("Bob"));
+        players.add(new Player("Bobbo"));
+        players.add(new Player("Bobert"));
     }
 
     public ArrayList<Player> getPlayers() {
@@ -49,7 +49,7 @@ public class Model
         }
     }
 
-    private void shuffleAndDeal(){
+    public void shuffleAndDeal(){
         deckOfAdventureCards.shuffle();
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {

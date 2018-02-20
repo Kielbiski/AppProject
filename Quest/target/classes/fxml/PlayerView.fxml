@@ -1,17 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
-<?import javafx.scene.control.TextArea?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.layout.VBox?>
 
 <BorderPane fx:id="mainBorderPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="quest.Controller">
     <right>
@@ -19,12 +9,10 @@
             <padding>
                 <Insets right="5.0" top="5.0" />
             </padding>
-         <children>
             <Label fx:id="player1Label" alignment="TOP_LEFT" prefHeight="100.0" prefWidth="100.0" style="-fx-border-color: #111111; -fx-padding: 1;" text="Label" />
             <Label fx:id="player2Label" alignment="TOP_LEFT" layoutX="10.0" layoutY="15.0" prefHeight="100.0" prefWidth="100.0" style="-fx-border-color: #111111; -fx-padding: 1;" text="Label" />
             <Label fx:id="player3Label" alignment="TOP_LEFT" layoutX="10.0" layoutY="120.0" prefHeight="100.0" prefWidth="100.0" style="-fx-border-color: #111111; -fx-padding: 1;" text="Label" />
             <Label fx:id="player4Label" alignment="TOP_LEFT" layoutX="10.0" layoutY="225.0" prefHeight="100.0" prefWidth="100.0" style="-fx-border-color: #111111; -fx-padding: 1;" text="Label" />
-         </children>
         </VBox>
     </right>
     <bottom>
@@ -37,12 +25,9 @@
             <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
             </rowConstraints>
-           <children>
-                   <HBox fx:id="alliesHbox" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #C02E2A;" GridPane.columnIndex="1">
-                </HBox>
-               <HBox fx:id="alliesHbox1" alignment="TOP_CENTER" layoutX="466.0" layoutY="10.0" spacing="10.0" style="-fx-background-color: #69BA64;" />
-               <HBox fx:id="alliesHbox11" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0" style="-fx-background-color: #5676D1;" GridPane.columnIndex="2" />
-           </children>
+            <HBox fx:id="alliesHbox" alignment="TOP_CENTER" spacing="10.0" style="-fx-background-color: #C02E2A;" GridPane.columnIndex="1"/>
+            <HBox fx:id="foesHbox" alignment="TOP_CENTER" layoutX="466.0" layoutY="10.0" spacing="10.0" style="-fx-background-color: #69BA64;" />
+            <HBox fx:id="weaponHbox" alignment="TOP_CENTER" layoutX="10.0" layoutY="10.0" spacing="10.0" style="-fx-background-color: #5676D1;" GridPane.columnIndex="2" />
         </GridPane>
     </bottom>
 </BorderPane>
