@@ -80,15 +80,15 @@ public class Player {
         cardsPlaying.addCard(paramCard);
     }
 
-    public void removeCardToHand(AdventureCard paramCard){
+    public void removeCardFromHand(AdventureCard paramCard){
         cardsInHand.removeCard(paramCard);
     }
     
-    public void removeCardToTable(AdventureCard paramCard){
+    public void removeCardFromTable(AdventureCard paramCard){
         cardsOnTable.removeCard(paramCard);
     }
     
-    public void removeCardToPlaying(AdventureCard paramCard){
+    public void removeCardFromPlaying(AdventureCard paramCard){
         cardsPlaying.removeCard(paramCard);
     }
 
@@ -96,12 +96,12 @@ public class Player {
         return cardsInHand.getSize() > 12;
     }
 
-    public int calculCardCollectionPoint(CardCollection<AdventureCard> paramCardList) {
-        int iteratArray =0;
-        int point;
-        while (iteratArray < paramCardList.getSize()) {
-            point += paramCardList.getCard(iteratArray).getBattlePoints();
-            iteratArray++;
+    private int calculateCardCollectionPoint(CardCollection<AdventureCard> paramCardList) {
+        int iterateArray =0;
+        int point = 0;
+        while (iterateArray < paramCardList.getSize()) {
+            point += paramCardList.getCard(iterateArray).getBattlePoints();
+            iterateArray++;
         }
         return point;
     }
@@ -120,8 +120,8 @@ public class Player {
             default:
                 break;
         }
-        battlePoints+=calculCardCollectionPoint(this.cardsPlaying);
-        battlePoints+=calculCardCollectionPoint(this.cardsOnTable);
+        battlePoints+=calculateCardCollectionPoint(this.cardsPlaying);
+        battlePoints+=calculateCardCollectionPoint(this.cardsOnTable);
         return battlePoints;
     }
 
@@ -139,7 +139,7 @@ public class Player {
     }
 
     public void confirmRank() {
-        int requiredShields = getRequiredShieldsForNextRank();
+        int requiredShields = this.getRequiredShieldsForNextRank();
         if(playerRank != Rank.KNIGHT_OF_THE_ROUND_TABLE && shields >= requiredShields){
             playerRank = playerRank.next();
             shields -= requiredShields;

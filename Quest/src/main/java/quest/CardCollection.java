@@ -1,16 +1,14 @@
 package quest;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Stack;
 import java.util.Collections;
 
 public class CardCollection<T extends Card>
 {
-    ArrayList<T> cards = new ArrayList<>();
+    private Stack<T> cards;
 
-    public CardCollection(){
-
+    CardCollection(){
+        cards =  new Stack<>();
     }
 
     public int getSize() { 
@@ -23,14 +21,18 @@ public class CardCollection<T extends Card>
     }
 
     public void addCard(T card){
-        cards.add(card);
+        cards.push(card);
+    }
+
+    public Card pop() {
+        return cards.pop();
     }
 
     public void removeCard (T card){
         cards.remove(card);
     }
 
-    public void addAllCardsFromCollection(CardCollection<T> collection){
+    private void addAllCardsFromCollection(CardCollection<T> collection){
         collection.cards.addAll(this.cards);
     }
 

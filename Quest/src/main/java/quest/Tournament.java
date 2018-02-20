@@ -18,20 +18,20 @@ public class Tournament extends Card {
       and remove player who have less than max from the collection.
      */
 
-    public void tournamentPlay(GameState state){
-        int winnerValue = playerList.get(playerList.size()-1).calculateBattlePoints(state);
-        for(int i=playerList.size()-2; i >= 0; i--){
-            if(winnerValue >= playerList.get(i).calculateBattlePoints(state)){
-                playerList.remove(i);
-            }
-            else {
-                //Set the new winnerValue and remove all players already checked in the list (their Battle Points will always be less than the new value)
-                winnerValue = playerList.get(i).calculateBattlePoints(state);
-                playerList.subList(i+1, playerList.size()).clear();
-            }
-        }
-        roundsPlayed++;
-    }
+//    public void tournamentPlay(GameState state){
+//        int winnerValue = playerList.get(playerList.size()-1).calculateBattlePoints(state);
+//        for(int i=playerList.size()-2; i >= 0; i--){
+//            if(winnerValue >= playerList.get(i).calculateBattlePoints(state)){
+//                playerList.remove(i);
+//            }
+//            else {
+//                //Set the new winnerValue and remove all players already checked in the list (their Battle Points will always be less than the new value)
+//                winnerValue = playerList.get(i).calculateBattlePoints(state);
+//                playerList.subList(i+1, playerList.size()).clear();
+//            }
+//        }
+//        roundsPlayed++;
+//    }
 
     public boolean checkTie(){
         return (playerList.size() > 1);

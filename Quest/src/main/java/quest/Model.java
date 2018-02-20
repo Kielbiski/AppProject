@@ -7,7 +7,7 @@ public class Model
     private ArrayList<Player> players = new ArrayList<>();
     private CardCollection<Card> deckOfCards = new CardCollection<>();
     private int currentTurnIndex = 0;
-
+    private int NUM_CARDS = 12;
 
     public Model()
     {
@@ -66,9 +66,10 @@ public class Model
     private void shuffleAndDeal()
     {
         deckOfCards.shuffle();
-        for(Player player : players)
-        {
-            player.drawCards(12, deckOfCards);
+        for(Player player : players) {
+            for (int i = 0; i < NUM_CARDS; i++) {
+                player.addCardToHand((AdventureCard)deckOfCards.pop());
+            }
         }
     }
 
