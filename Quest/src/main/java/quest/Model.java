@@ -4,16 +4,19 @@ import java.util.ArrayList;
 
 public class Model
 {
-    private ArrayList<Player> players = new ArrayList<>();
-    private CardCollection<AdventureCard> deckOfAdventureCards = new CardCollection<>();
-    private int currentTurnIndex = 0;
-    private int NUM_CARDS = 12;
+    private ArrayList<Player> players ;
+    private CardCollection<AdventureCard> deckOfAdventureCards;
+    private int currentTurnIndex;
+    private int NUM_CARDS ;
 
     Model() {
-        players.add(new Player("Robert"));
-        players.add(new Player("Bob"));
-        players.add(new Player("Bobbo"));
-        players.add(new Player("Bobert"));
+        players = new ArrayList<>();
+        deckOfAdventureCards = new CardCollection<>();
+        currentTurnIndex = 0;
+        NUM_CARDS = 12;
+        //Initializing all cards
+
+        //
     }
 
     public ArrayList<Player> getPlayers() {
@@ -28,18 +31,6 @@ public class Model
         return currentTurnIndex;
     }
 
-    public Player getPlayerWithHighestRank() {
-        int highestShieldCount = 0;
-        Player playerWithHighestRank = players.get(0);
-        for(Player player : players){
-            if (player.getShields() > highestShieldCount) {
-                highestShieldCount = player.getShields();
-                playerWithHighestRank = player;
-            }
-        }
-        return playerWithHighestRank;
-    }
-
     public void nextTurn(){
         if(players.size() == currentTurnIndex){
             currentTurnIndex = 0 ;
@@ -49,7 +40,7 @@ public class Model
         }
     }
 
-    public void shuffleAndDeal(){
+    private void shuffleAndDeal(){
         deckOfAdventureCards.shuffle();
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
@@ -58,7 +49,7 @@ public class Model
         }
     }
 
-    private void drawAdventureCard( Player playerOne, int x ){ 
+    private void drawAdventureCard( Player playerOne, int x ){
         for (int i = 0; i < x; i++) {
             playerOne.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
         }
