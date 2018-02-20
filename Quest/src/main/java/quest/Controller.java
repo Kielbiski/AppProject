@@ -5,6 +5,9 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.fxml.FXML;
 import java.awt.*;
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.text.Text;
 
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
@@ -18,23 +21,24 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 public class Controller {
 
     private Model game = new Model();
-    //
-    @FXML
-    private BorderPane mainBorderPane ;
-    @FXML
-    private GridPane handGridPane ;
-    @FXML
-    private HBox alliesHbox ;
-
-    //
-    @FXML
-    private TextArea p1TextArea ;
-    @FXML
-    private TextArea p2TextArea ;
-    @FXML
-    private TextArea p3TextArea ;
-    @FXML
-    private TextArea p4TextArea ;
+    @FXML private Text actiontarget;
+//    //
+//    @FXML
+//    private BorderPane mainBorderPane ;
+//    @FXML
+//    private GridPane handGridPane ;
+//    @FXML
+//    private HBox alliesHbox ;
+//
+//    //
+//    @FXML
+//    private TextArea p1TextArea ;
+//    @FXML
+//    private TextArea p2TextArea ;
+//    @FXML
+//    private TextArea p3TextArea ;
+//    @FXML
+//    private TextArea p4TextArea ;
 
 
 
