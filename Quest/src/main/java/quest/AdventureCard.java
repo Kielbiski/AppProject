@@ -2,10 +2,10 @@ package quest;
 
 public class AdventureCard extends Card
 {
-    protected int battlePoints;
-    protected int bids;
-    protected int bonusBattlePoints;
-    protected int bonusBids;
+    int battlePoints;
+    int bids;
+    int bonusBattlePoints;
+    int bonusBids;
 
     AdventureCard(String name, String imageFilename){
         super(name, imageFilename);

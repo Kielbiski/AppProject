@@ -4,78 +4,64 @@ import java.util.ArrayList;
 
 public class Model
 {
-    private ArrayList<Player> players = new ArrayList<>();
-    private CardCollection<Card> deckOfCards = new CardCollection<>();
-    private int currentTurnIndex = 0;
-    private int NUM_CARDS = 12;
+    private ArrayList<Player> players ;
+    private CardCollection<AdventureCard> deckOfAdventureCards;
+    private int currentTurnIndex;
+    private int NUM_CARDS ;
 
-    public Model()
-    {
-        players.add(new Player("Random"));
-        players.add(new Player("Jay"));
-        players.add(new Player("Jeremy"));
-        players.add(new Player("Robert"));
-
+    Model() {
+        players = new ArrayList<>();
+        deckOfAdventureCards = new CardCollection<>();
+        currentTurnIndex = 0;
+        NUM_CARDS = 12;
     }
 
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public CardCollection<Card> getDeckOfCards() {
-        return deckOfCards;
+    public CardCollection<AdventureCard> getDeckOfCards() {
+        return deckOfAdventureCards;
     }
 
     public int getCurrentTurnIndex() {
         return currentTurnIndex;
     }
 
-    public void startGame()
-    {
-        if(players.size() > 0 && deckOfCards.getSize() > 0)
-        {
-            shuffleAndDeal();
-            //state.setCurrentTurnPlayer(players.get(currentTurnIndex));
+    public Player getPlayerWithHighestRank() {
+        int highestShieldCount = 0;
+        Player playerWithHighestRank = players.get(0);
+        for(Player player : players){
+            if (player.getShields() > highestShieldCount) {
+                highestShieldCount = player.getShields();
+                playerWithHighestRank = player;
+            }
         }
-        else
-        {
-            endGame();
+        return playerWithHighestRank;
+    }
+
+    public void nextTurn(){
+        if(players.size() == currentTurnIndex){
+            currentTurnIndex = 0 ;
+        }
+        else{
+            currentTurnIndex++;
         }
     }
 
-    private void endGame()
-    {
-        System.out.println("Game over");
-    }
-
-    public void nextTurn()
-    {
-        //state.setCurrentStory(null);
-        if(players.size() == 0)
-        {
-            endGame();
-            return;
-        }
-        if(++currentTurnIndex >= players.size())
-        {
-            currentTurnIndex = 0;
-        }
-        //state.setCurrentTurnPlayer(players.get(currentTurnIndex));
-    }
-
-    private void shuffleAndDeal()
-    {
-        deckOfCards.shuffle();
+    private void shuffleAndDeal(){
+        deckOfAdventureCards.shuffle();
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
-                player.addCardToHand((AdventureCard)deckOfCards.pop());
+                player.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
             }
         }
     }
 
-    public void selectCard(AdventureCard card)
-    {
-        //state.getCurrentTurnPlayer().selectCard(card);
-    }
+    private void drawAdventureCard( Player playerOne, int x ){ 
+        for (int i = 0; i < x; i++) {
+            playerOne.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
+        }
 
+    }
 }

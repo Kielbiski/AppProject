@@ -27,7 +27,7 @@ public class App extends Application {
     public void start(Stage primaryStage)throws Exception{
         initUI(primaryStage);
     }
-    private void initUI(Stage primaryStage) throws Exception{
+    private void initUI(Stage primaryStage) throws Exception {
         Pane canvas = new Pane();
         canvas.setStyle("-fx-background-color: #6F737E");
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PlayerView.fxml"));
@@ -39,9 +39,7 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
-        System.out.println("kys");
-
-
+        System.out.println("hi");
     }
 
     private void setupCardsAnimation(Pane canvas) {
@@ -51,7 +49,7 @@ public class App extends Application {
         FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
 
         File[] cardsFile = cardsDir.listFiles(imgFilter);
-        Image[] cardsImg = new Image[cardsFile.length];
+        Image[] cardsImg = new Image[cardsFile.length]; //try-catch later
 
         int index = 0;
         for (File cardFile : cardsFile) {
