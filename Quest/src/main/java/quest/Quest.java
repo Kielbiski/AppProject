@@ -47,7 +47,7 @@ public class Quest extends Card {
             if (winnerValue > playerList.get(i).calculateBattlePoints()) {
                 playerList.remove(i);
                 j--;
-            } else (winnerValue == playerList.get(i).calculateBattlePoints()) {
+            } else {
                 i++;
             }
         }
