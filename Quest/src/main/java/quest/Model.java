@@ -45,6 +45,8 @@ public class Model
         //Quest
 
         Quest boarHunt = new Quest("Boar Hunt", "Q_Boar_Hunt.jpg", 2, boar);
+
+
         }
 
     public ArrayList<Player> getPlayers() {
