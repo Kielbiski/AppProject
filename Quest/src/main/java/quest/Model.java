@@ -16,10 +16,8 @@ public class Model
         currentTurnIndex = 0;
         NUM_CARDS = 12;
         //Initializing all cards
-        //test
 
-        //Quest
-
+        //Allies
 
 
         //Foes
@@ -35,6 +33,18 @@ public class Model
         Foe saxons = new Foe("Saxons", "F_Saxons.jpg", 10, 10);
         Foe thieves = new Foe("Thieves", "F_Thieves.jpg", 5, 0);
 
+        ArrayList<Foe> allFoes = new ArrayList<>();
+        allFoes.add(blackKnight);
+        allFoes.add(boar);
+        allFoes.add(dragon);
+        allFoes.add(evilKnight);
+        allFoes.add(greenKnight);
+        allFoes.add(mordred);
+        allFoes.add(robberKnight);
+        allFoes.add(saxonKnight);
+        allFoes.add(saxons);
+        allFoes.add(thieves);
+
         //Weapons
         Weapon battleax = new Weapon("Battle-ax", "W_Battle-ax.jpg", 15);
         Weapon dagger = new Weapon("Dagger", "W_Dagger.jpg", 5);
@@ -43,12 +53,15 @@ public class Model
         Weapon lance = new Weapon("Lance", "W_Lance.jpg", 20);
         Weapon sword = new Weapon("Sword", "W_Sword.jpg", 10);
 
-        //Quest
-
-        Quest boarHunt = new Quest("Boar Hunt", "Q_Boar_Hunt.jpg", 2, boar);
-
-
-        }
+        ArrayList<Weapon> allWeapons = new ArrayList<>();
+        allWeapons.add(battleax);
+        allWeapons.add(dagger);
+        allWeapons.add(excalibur);
+        allWeapons.add(horse);
+        allWeapons.add(lance);
+        allWeapons.add(sword);
+        //
+    }
 
     public ArrayList<Player> getPlayers() {
         return players;
