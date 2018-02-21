@@ -31,4 +31,8 @@ public class AdventureCard extends Card
         return bonusBids;
     }
 
+    protected void setBattlePoints(int paramBattlePoints) {
+        battlePoints = paramBattlePoints;
+    }
+
 }

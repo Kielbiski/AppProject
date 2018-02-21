@@ -16,6 +16,15 @@ public class Model
         NUM_CARDS = 12;
         //Initializing all cards
 
+        //Allies
+
+        //Weapons
+        Weapon battleax = new Weapon("Battle-ax", "W_Battle-ax.jpg", 15);
+        Weapon dagger = new Weapon("Dagger", "W_Dagger.jpg", 5);
+        Weapon excalibur = new Weapon("Excalibur", "W_Excalibur.jpg", 30);
+        Weapon horse = new Weapon("Horse", "W_Horse.jpg", 10);
+        Weapon lance = new Weapon("Lance", "W_Lance.jpg", 20);
+        Weapon sword = new Weapon("Sword", "W_Sword.jpg", 10);
         //
     }
 
