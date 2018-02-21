@@ -1,5 +1,6 @@
 package quest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Model
@@ -32,6 +33,18 @@ public class Model
         Foe saxons = new Foe("Saxons", "F_Saxons.jpg", 10, 10);
         Foe thieves = new Foe("Thieves", "F_Thieves.jpg", 5, 0);
 
+        ArrayList<Foe> allFoes = new ArrayList<>();
+        allFoes.add(blackKnight);
+        allFoes.add(boar);
+        allFoes.add(dragon);
+        allFoes.add(evilKnight);
+        allFoes.add(greenKnight);
+        allFoes.add(mordred);
+        allFoes.add(robberKnight);
+        allFoes.add(saxonKnight);
+        allFoes.add(saxons);
+        allFoes.add(thieves);
+
         //Weapons
         Weapon battleax = new Weapon("Battle-ax", "W_Battle-ax.jpg", 15);
         Weapon dagger = new Weapon("Dagger", "W_Dagger.jpg", 5);
@@ -39,6 +52,14 @@ public class Model
         Weapon horse = new Weapon("Horse", "W_Horse.jpg", 10);
         Weapon lance = new Weapon("Lance", "W_Lance.jpg", 20);
         Weapon sword = new Weapon("Sword", "W_Sword.jpg", 10);
+
+        ArrayList<Weapon> allWeapons = new ArrayList<>();
+        allWeapons.add(battleax);
+        allWeapons.add(dagger);
+        allWeapons.add(excalibur);
+        allWeapons.add(horse);
+        allWeapons.add(lance);
+        allWeapons.add(sword);
         //
     }
 
