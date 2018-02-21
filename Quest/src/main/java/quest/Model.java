@@ -17,6 +17,7 @@ public class Model
         //Initializing all cards
 
         //Allies
+        //test
 
 
         //Foes
