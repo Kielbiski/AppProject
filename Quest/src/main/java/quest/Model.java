@@ -18,6 +18,20 @@ public class Model
 
         //Allies
 
+
+        //Foes
+        Foe blackKnight = new Foe("Black Knight", "F_Black_Knight.jpg", 25, 10);
+        Foe boar = new Foe("Boar", "F_Boar.jpg", 5, 15);
+        Foe dragon = new Foe("Dragon", "F_Dragon.jpg", 50, 20);
+        Foe evilKnight = new Foe("Evil Knight", "F_Evil_Knight.jpg", 20, 10);
+        Foe giant = new Foe("Giant", "F_Giant.jpg", 40, 0);
+        Foe greenKnight = new Foe("Green Knight", "F_Green_Knight.jpg", 25, 15);
+        Foe mordred = new Foe("Mordred", "F_Mordred.jpg", 30, 0);
+        Foe robberKnight = new Foe("Robber Knight", "F_Robber_Knight.jpg", 15, 0);
+        Foe saxonKnight = new Foe("Saxon Knight", "F_Saxon_Knight.jpg",5, 10);
+        Foe saxons = new Foe("Saxons", "F_Saxons.jpg", 10, 10);
+        Foe thieves = new Foe("Thieves", "F_Thieves.jpg", 5, 0);
+
         //Weapons
         Weapon battleax = new Weapon("Battle-ax", "W_Battle-ax.jpg", 15);
         Weapon dagger = new Weapon("Dagger", "W_Dagger.jpg", 5);
