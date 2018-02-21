@@ -9,14 +9,43 @@ public class Quest extends Card {
     private int numStage;
     private int curStage;
     private int shields;
+    private ArrayList <Foe> questFoes;
 
-    public Quest(String paramName, String paramImageFilename, int paramNumStage, ArrayList<Player> paramPlayerList, Player paramPlayer) {
+
+    public Quest(String paramName, String paramImageFilename, int paramNumStage) {
         super(paramName, paramImageFilename);
-        playerList = paramPlayerList;
-        hostPlayer = paramPlayer;
+
+        questFoes = null;
         numStage = paramNumStage;
         curStage = 0;
         shields = numStage;
+    }
+
+    public Quest(String paramName, String paramImageFilename, int paramNumStage, Foe questFoe) {
+        super(paramName, paramImageFilename);
+
+        questFoes.add(questFoe);
+        numStage = paramNumStage;
+        curStage = 0;
+        shields = numStage;
+    }
+
+    public Quest(String paramName, String paramImageFilename, int paramNumStage, ArrayList<Foe> paramQuestFoes) {
+        super(paramName, paramImageFilename);
+
+        questFoes = paramQuestFoes;
+        numStage = paramNumStage;
+        curStage = 0;
+        shields = numStage;
+    }
+
+
+    public void setPlayerList(ArrayList<Player> playerList) {
+        this.playerList = playerList;
+    }
+
+    public void setHostPlayer(Player hostPlayer) {
+        this.hostPlayer = hostPlayer;
     }
 
     public int getShields() {

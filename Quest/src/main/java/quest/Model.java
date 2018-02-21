@@ -1,5 +1,6 @@
 package quest;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 
 public class Model
@@ -16,8 +17,8 @@ public class Model
         NUM_CARDS = 12;
         //Initializing all cards
 
-        //Allies
-        //test
+        //Quest
+
 
 
         //Foes
@@ -40,8 +41,11 @@ public class Model
         Weapon horse = new Weapon("Horse", "W_Horse.jpg", 10);
         Weapon lance = new Weapon("Lance", "W_Lance.jpg", 20);
         Weapon sword = new Weapon("Sword", "W_Sword.jpg", 10);
-        //
-    }
+
+        //Quest
+
+        Quest boarHunt = new Quest("Boar Hunt", "Q_Boar_Hunt.jpg", 2, boar);
+        }
 
     public ArrayList<Player> getPlayers() {
         return players;
