@@ -16,6 +16,7 @@ public class Model
         currentTurnIndex = 0;
         NUM_CARDS = 12;
         //Initializing all cards
+        //test
 
         //Quest
 
