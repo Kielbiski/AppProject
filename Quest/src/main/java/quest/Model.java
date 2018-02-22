@@ -1,12 +1,14 @@
 package quest;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Stack;
 
 public class Model
 {
     private ArrayList<Player> players = new ArrayList<>();
-    private CardCollection<AdventureCard> deckOfAdventureCards = new CardCollection<>();
+    private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
+    private Stack<StoryCard> deckOfStoryCards = new Stack<>();
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
 
@@ -74,13 +76,28 @@ public class Model
         Quest slayTheDragon = new Quest("Slay The Dragon", "Q_Slay_The_Dragon.jpg", 3, dragon);
         Quest searchForTheHolyGrail = new Quest("Search For The Holy Grail", "Q_Search_For_The_Holy_Grail.jpg", 5, allFoes);
         Quest vanquishKingArthursEnemies = new Quest("Vanquish King Arthur's Enemies", "Q_Vanquish_King_Arthurs_Enemies.jpg", 3);
+
+        ArrayList<Quest> allQuests = new ArrayList<>();
+        allQuests.add(repelTheSaxonRaiders);
+        allQuests.add(rescueTheFairMaiden);
+        allQuests.add(testOfTheGreenKnight);
+        allQuests.add(searchForTheQuestingBeast);
+        allQuests.add(slayTheDragon);
+        allQuests.add(searchForTheHolyGrail);
+        allQuests.add(vanquishKingArthursEnemies);
+
+        //Add all adventure cards to deckOfStoryCards
+        deckOfAdventureCards.addAll(allWeapons);
+        deckOfAdventureCards.addAll(allFoes);
+        //Add all story cards to deckOfStoryCards
+        deckOfStoryCards.addAll(allQuests);
     }
 
     public ArrayList<Player> getPlayers() {
         return players;
     }
 
-    public CardCollection<AdventureCard> getDeckOfCards() {
+    public Stack<AdventureCard> getDeckOfAdventureCards() {
         return deckOfAdventureCards;
     }
 
@@ -101,18 +118,18 @@ public class Model
         players.add(new Player(name));
     }
 
-    private void shuffleAndDeal(){
-        deckOfAdventureCards.shuffle();
+    void shuffleAndDeal(){
+        Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
-                player.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
+                player.addCardToHand(deckOfAdventureCards.pop());
             }
         }
     }
 
-    private void drawAdventureCard( Player playerOne, int x ){
+    void drawAdventureCards( Player playerOne, int x ){
         for (int i = 0; i < x; i++) {
-            playerOne.addCardToHand((AdventureCard)deckOfAdventureCards.pop());
+            playerOne.addCardToHand(deckOfAdventureCards.pop());
         }
 
     }

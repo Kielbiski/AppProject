@@ -3,6 +3,7 @@ package quest;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.ArrayList;
+import java.util.Stack;
 
 
 enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
@@ -25,9 +26,7 @@ public class Player {
     private int battlePoints;
     private int shields;
     private Rank playerRank;
-    private CardCollection<AdventureCard> cardsInHand = new CardCollection<>();
-    private CardCollection<AdventureCard> cardsOnTable = new CardCollection<>();
-    private CardCollection<AdventureCard> cardsPlaying = new CardCollection<>();
+    private Stack<AdventureCard> cardsInHand = new Stack<>();
 
     Player(String paramName){
         playerName = paramName ;
@@ -49,7 +48,7 @@ public class Player {
     }
     
     public int getNumCardsInHand(){
-        return cardsInHand.getSize();
+        return cardsInHand.size();
     }
 
     public void addBonusPoint (int paramBonusPoint){ 
@@ -69,42 +68,42 @@ public class Player {
     }
 
     public void addCardToHand(AdventureCard paramCard){
-        cardsInHand.addCard(paramCard);
+        cardsInHand.add(paramCard);
     }
     
-    public void addCardToTable(AdventureCard paramCard){
-        cardsOnTable.addCard(paramCard);
-    }
+//    public void addCardToTable(AdventureCard paramCard){
+//        cardsOnTable.addCard(paramCard);
+//    }
     
-    public void addCardToPlaying(AdventureCard paramCard){
-        cardsPlaying.addCard(paramCard);
-    }
+//    public void addCardToPlaying(AdventureCard paramCard){
+//        cardsPlaying.addCard(paramCard);
+//    }
 
     public void removeCardFromHand(AdventureCard paramCard){
-        cardsInHand.removeCard(paramCard);
+        cardsInHand.remove(paramCard);
     }
     
-    public void removeCardFromTable(AdventureCard paramCard){
-        cardsOnTable.removeCard(paramCard);
-    }
+//    public void removeCardFromTable(AdventureCard paramCard){
+//        cardsOnTable.removeCard(paramCard);
+//    }
     
-    public void removeCardFromPlaying(AdventureCard paramCard){
-        cardsPlaying.removeCard(paramCard);
-    }
+//    public void removeCardFromPlaying(AdventureCard paramCard){
+//        cardsPlaying.removeCard(paramCard);
+//    }
 
     public boolean tooManyCards(){
-        return cardsInHand.getSize() > 12;
+        return cardsInHand.size() > 12;
     }
 
-    private int calculateCardCollectionPoint(CardCollection<AdventureCard> paramCardList) {
-        int iterateArray =0;
-        int point = 0;
-        while (iterateArray < paramCardList.getSize()) {
-            point += paramCardList.getCard(iterateArray).getBattlePoints();
-            iterateArray++;
-        }
-        return point;
-    }
+//    private int calculateCardCollectionPoint(Stack<AdventureCard> paramCardList) {
+//        int iterateArray =0;
+//        int point = 0;
+//        while (iterateArray < paramCardList.size()) {
+//            point += paramCardList.size(iterateArray).getBattlePoints();
+//            iterateArray++;
+//        }
+//        return point;
+//    }
 
     public int calculateBattlePoints() {
         switch (playerRank){
@@ -120,8 +119,8 @@ public class Player {
             default:
                 break;
         }
-        battlePoints+=calculateCardCollectionPoint(this.cardsPlaying);
-        battlePoints+=calculateCardCollectionPoint(this.cardsOnTable);
+//        battlePoints+=calculateCardCollectionPoint(this.cardsPlaying);
+//        battlePoints+=calculateCardCollectionPoint(this.cardsOnTable);
         return battlePoints;
     }
 
