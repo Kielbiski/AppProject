@@ -1,14 +1,17 @@
 package quest;
 
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
-import javafx.scene.layout.VBox;
 import javafx.scene.control.TextInputDialog;
 
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -55,24 +58,22 @@ public class Controller {
         ArrayList<Player> currentPlayers = game.getPlayers();
 
         if(currentPlayers.size() !=0) {
-            player1Label.setText("Name: " + currentPlayers.get(0).getPlayerName() + "\n" +
+            player1Label.setText(currentPlayers.get(0).getPlayerName() + "\n" +
                     "Rank: " + currentPlayers.get(0).getPlayerRank() + "\n" +
                     "# of Cards: " + currentPlayers.get(0).getNumCardsInHand());
 
-            player2Label.setText("Name: " + currentPlayers.get(1).getPlayerName() + "\n" +
+            player2Label.setText(currentPlayers.get(1).getPlayerName() + "\n" +
                     "Rank: " + currentPlayers.get(1).getPlayerRank() + "\n" +
                     "# of Cards: " + currentPlayers.get(1).getNumCardsInHand());
 
-            player3Label.setText("Name: " + currentPlayers.get(2).getPlayerName() + "\n" +
+            player3Label.setText(currentPlayers.get(2).getPlayerName() + "\n" +
                     "Rank: " + currentPlayers.get(2).getPlayerRank() + "\n" +
                     "# of Cards: " + currentPlayers.get(2).getNumCardsInHand());
 
-            player4Label.setText("Name: " + currentPlayers.get(3).getPlayerName() + "\n" +
+            player4Label.setText(currentPlayers.get(3).getPlayerName() + "\n" +
                     "Rank: " + currentPlayers.get(3).getPlayerRank() + "\n" +
                     "# of Cards: " + currentPlayers.get(3).getNumCardsInHand());
         }
-
-
     }
 
     private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
@@ -114,5 +115,38 @@ public class Controller {
         update();
     }
 
+    private javafx.scene.image.Image getCardImage(String cardFileName){
+        javafx.scene.image.Image img;
+        File cardsDir = new File("src/main/resources/Cards/");
+
+        try {
+            img = new Image(new FileInputStream(cardsDir + cardFileName));//can be url
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            return null;
+        }
+
+        return img;
+    }
+
+
+    private void setupCardsAnimation(Pane canvas) {
+
+        File cardsDir = new File("src/main/resources/Cards/");
+
+
+
+
+
+
+//        ImageView imgView = new ImageView();
+//        imgView.setFitHeight(100);
+//        imgView.setFitWidth(100);
+//        imgView.setPreserveRatio(true);
+//        imgView.setImage(1);
+//        imgView.relocate(20, 180);
+
+      //  canvas.getChildren().add(imgView);
+    }
 
 }

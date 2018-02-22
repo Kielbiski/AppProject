@@ -43,37 +43,6 @@ public class App extends Application {
 
     }
 
-    private void setupCardsAnimation(Pane canvas) {
-
-        Image img = null;
-        File cardsDir = new File("src/main/resources/Cards/");
-        FilenameFilter imgFilter = (dir, name) -> name.toLowerCase().endsWith("jpg");
-        int imageArraySize = 0;
-        File[] cardsFile = cardsDir.listFiles(imgFilter);
-        if(cardsFile != null){
-            imageArraySize = cardsFile.length;
-        }
-        Image[] cardsImg = new Image[imageArraySize];
-
-        int index = 0;
-        for (File cardFile : cardsFile) {
-            try {
-                cardsImg[index++] = new Image(new FileInputStream(cardFile.getPath()));
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ImageView imgView = new ImageView();
-        imgView.setFitHeight(100);
-        imgView.setFitWidth(100);
-        imgView.setPreserveRatio(true);
-        imgView.setImage(cardsImg[4]);
-        imgView.relocate(20, 180);
-
-        canvas.getChildren().add(imgView);
-    }
-
     public static void main(String[] args) {
         launch(args);
 

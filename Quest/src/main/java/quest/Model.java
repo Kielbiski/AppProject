@@ -97,6 +97,10 @@ public class Model
         }
     }
 
+    public void addPlayer(String name){
+        players.add(new Player(name));
+    }
+
     private void shuffleAndDeal(){
         deckOfAdventureCards.shuffle();
         for(Player player : players) {
