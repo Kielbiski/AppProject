@@ -60,7 +60,8 @@ public class Model
         allWeapons.add(horse);
         allWeapons.add(lance);
         allWeapons.add(sword);
-        //
+
+
     }
 
     public ArrayList<Player> getPlayers() {
