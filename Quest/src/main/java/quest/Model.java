@@ -5,21 +5,17 @@ import java.util.ArrayList;
 
 public class Model
 {
-    private ArrayList<Player> players ;
-    private CardCollection<AdventureCard> deckOfAdventureCards;
-    private int currentTurnIndex;
-    private int NUM_CARDS ;
+    private ArrayList<Player> players = new ArrayList<>();
+    private CardCollection<AdventureCard> deckOfAdventureCards= new CardCollection<>();
+    private int currentTurnIndex = 0;
+    private int NUM_CARDS = 12;
 
     Model() {
-        players = new ArrayList<>();
-        deckOfAdventureCards = new CardCollection<>();
-        currentTurnIndex = 0;
-        NUM_CARDS = 12;
-
-        players.add(new Player("rob"));
-        players.add(new Player("n"));
-        players.add(new Player("q"));
-        players.add(new Player("w"));
+//
+//        players.add(new Player("rob"));
+//        players.add(new Player("n"));
+//        players.add(new Player("q"));
+//        players.add(new Player("w"));
 
 
         //Initializing all cards
@@ -77,6 +73,10 @@ public class Model
 
     public ArrayList<Player> getPlayers() {
         return players;
+    }
+
+    public void addPlayer(String name) {
+        players.add(new Player(name));
     }
 
     public CardCollection<AdventureCard> getDeckOfCards() {
