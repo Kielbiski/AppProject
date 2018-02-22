@@ -15,6 +15,7 @@ public class Quest extends Card {
     public Quest(String paramName, String paramImageFilename, int paramNumStage) {
         super(paramName, paramImageFilename);
 
+        questFoes = new ArrayList<>();
         questFoes = null;
         numStage = paramNumStage;
         curStage = 0;
@@ -24,6 +25,7 @@ public class Quest extends Card {
     public Quest(String paramName, String paramImageFilename, int paramNumStage, Foe questFoe) {
         super(paramName, paramImageFilename);
 
+        questFoes = new ArrayList<>();
         questFoes.add(questFoe);
         numStage = paramNumStage;
         curStage = 0;
@@ -33,6 +35,7 @@ public class Quest extends Card {
     public Quest(String paramName, String paramImageFilename, int paramNumStage, ArrayList<Foe> paramQuestFoes) {
         super(paramName, paramImageFilename);
 
+        questFoes = new ArrayList<>();
         questFoes = paramQuestFoes;
         numStage = paramNumStage;
         curStage = 0;

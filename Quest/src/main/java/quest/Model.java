@@ -15,6 +15,13 @@ public class Model
         deckOfAdventureCards = new CardCollection<>();
         currentTurnIndex = 0;
         NUM_CARDS = 12;
+
+        players.add(new Player("rob"));
+        players.add(new Player("n"));
+        players.add(new Player("q"));
+        players.add(new Player("w"));
+
+
         //Initializing all cards
 
         //Allies

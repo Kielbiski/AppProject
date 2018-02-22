@@ -6,8 +6,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.TextInputDialog;
+
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.awt.*;
 
@@ -48,7 +51,7 @@ public class Controller {
     @FXML
     private Label player4Label;
 
-    public void update(){
+    private void update(){
         ArrayList<Player> currentPlayers = game.getPlayers();
 
         player1Label.setText("Name: " + currentPlayers.get(0).getPlayerName() + "\n" +
@@ -92,7 +95,16 @@ public class Controller {
     }
 
     public void initialize() {
-       update();
+        TextInputDialog dialog = new TextInputDialog("Enter Name");
+        dialog.setTitle("Text Input Dialog");
+        dialog.setHeaderText("Look, a Text Input Dialog");
+        dialog.setContentText("Please enter your name:");
+
+        Optional<String> result = dialog.showAndWait();
+
+        // The Java 8 way to get the response value (with lambda expression).
+        result.ifPresent(name -> System.out.println("Your name: " + name));
+        update();
     }
 
 
