@@ -60,7 +60,12 @@ public class Model
         allWeapons.add(horse);
         allWeapons.add(lance);
         allWeapons.add(sword);
-        //
+
+        //Quest
+        Quest boarhunt = new Quest("Boar Hunt", "Q_Boar_HUnt.jpg",2,boar);
+        Quest defendTheQueensHonor = new Quest("Defend The Queen's Honor", "Q_Defend_The_Queens_Honor.jpg",4,allFoes);
+
+
     }
 
     public ArrayList<Player> getPlayers() {
