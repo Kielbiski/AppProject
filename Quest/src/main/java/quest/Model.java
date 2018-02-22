@@ -5,16 +5,15 @@ import java.util.ArrayList;
 
 public class Model
 {
-    private ArrayList<Player> players ;
-    private CardCollection<AdventureCard> deckOfAdventureCards;
-    private int currentTurnIndex;
-    private int NUM_CARDS ;
+    private ArrayList<Player> players = new ArrayList<>();
+    private CardCollection<AdventureCard> deckOfAdventureCards = new CardCollection<>();
+    private int currentTurnIndex = 0;
+    private int NUM_CARDS = 12;
 
     Model() {
-        players = new ArrayList<>();
-        deckOfAdventureCards = new CardCollection<>();
-        currentTurnIndex = 0;
-        NUM_CARDS = 12;
+
+        //Trim white border from cards and convert to .pngs to avoid white bounding box
+
         //Initializing all cards
 
         //Allies
@@ -29,7 +28,7 @@ public class Model
         Foe greenKnight = new Foe("Green Knight", "F_Green_Knight.jpg", 25, 15);
         Foe mordred = new Foe("Mordred", "F_Mordred.jpg", 30, 0);
         Foe robberKnight = new Foe("Robber Knight", "F_Robber_Knight.jpg", 15, 0);
-        Foe saxonKnight = new Foe("Saxon Knight", "F_Saxon_Knight.jpg",5, 10);
+        Foe saxonKnight = new Foe("Saxon Knight", "F_Saxon_Knight.jpg", 5, 10);
         Foe saxons = new Foe("Saxons", "F_Saxons.jpg", 10, 10);
         Foe thieves = new Foe("Thieves", "F_Thieves.jpg", 5, 0);
 
@@ -62,10 +61,19 @@ public class Model
         allWeapons.add(sword);
 
         //Quest
-        Quest boarhunt = new Quest("Boar Hunt", "Q_Boar_HUnt.jpg",2,boar);
-        Quest defendTheQueensHonor = new Quest("Defend The Queen's Honor", "Q_Defend_The_Queens_Honor.jpg",4,allFoes);
-
-
+        Quest boarhunt = new Quest("Boar Hunt", "Q_Boar_Hunt.jpg", 2, boar);
+        Quest defendTheQueensHonor = new Quest("Defend The Queen's Honor", "Q_Defend_The_Queens_Honor.jpg", 4, allFoes);
+        Quest journeyThroughTheEnchantedForest = new Quest("Journey Through The Enchanted Forest", "Q_Journey_Through_The_Enchanted_Forest.jpg", 3, evilKnight);
+        ArrayList<Foe> saxonFoes = new ArrayList<>();
+        saxonFoes.add(saxonKnight);
+        saxonFoes.add(saxons);
+        Quest repelTheSaxonRaiders = new Quest("Repel The Saxon Raiders", "Q_Repel_The_Saxon_Raiders.jpg", 2, saxonFoes);
+        Quest rescueTheFairMaiden = new Quest("Rescue The Fair Maiden", "Q_Rescue_The_Fair_Maiden.jpg", 3, blackKnight);
+        Quest testOfTheGreenKnight = new Quest("Test Of The Green Knight", "Q_Test_Of_The_Green_Knight.jpg", 4, greenKnight);
+        Quest searchForTheQuestingBeast = new Quest("Search For The Questing Beast", "Q_Search_For_The_Questing_Beast.jpg", 4);
+        Quest slayTheDragon = new Quest("Slay The Dragon", "Q_Slay_The_Dragon.jpg", 3, dragon);
+        Quest searchForTheHolyGrail = new Quest("Search For The Holy Grail", "Q_Search_For_The_Holy_Grail.jpg", 5, allFoes);
+        Quest vanquishKingArthursEnemies = new Quest("Vanquish King Arthur's Enemies", "Q_Vanquish_King_Arthurs_Enemies.jpg", 3);
     }
 
     public ArrayList<Player> getPlayers() {

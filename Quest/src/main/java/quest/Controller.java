@@ -48,7 +48,7 @@ public class Controller {
     @FXML
     private Label player4Label;
 
-    public void update(){
+    private void update(){
         ArrayList<Player> currentPlayers = game.getPlayers();
 
         player1Label.setText("Name: " + currentPlayers.get(0).getPlayerName() + "\n" +
@@ -92,6 +92,7 @@ public class Controller {
     }
 
     public void initialize() {
+
        update();
     }
 
