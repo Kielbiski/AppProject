@@ -6,8 +6,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.layout.VBox;
+import javafx.scene.control.TextInputDialog;
+
 
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import java.awt.*;
 
@@ -51,21 +54,23 @@ public class Controller {
     private void update(){
         ArrayList<Player> currentPlayers = game.getPlayers();
 
-        player1Label.setText("Name: " + currentPlayers.get(0).getPlayerName() + "\n" +
-                            "Rank: " + currentPlayers.get(0).getPlayerRank() + "\n" +
-                            "# of Cards: " +currentPlayers.get(0).getNumCardsInHand());
+        if(currentPlayers.size() !=0) {
+            player1Label.setText("Name: " + currentPlayers.get(0).getPlayerName() + "\n" +
+                    "Rank: " + currentPlayers.get(0).getPlayerRank() + "\n" +
+                    "# of Cards: " + currentPlayers.get(0).getNumCardsInHand());
 
-        player2Label.setText("Name: " + currentPlayers.get(1).getPlayerName() + "\n" +
-                              "Rank: " + currentPlayers.get(1).getPlayerRank() + "\n" +
-                             "# of Cards: " +currentPlayers.get(1).getNumCardsInHand());
+            player2Label.setText("Name: " + currentPlayers.get(1).getPlayerName() + "\n" +
+                    "Rank: " + currentPlayers.get(1).getPlayerRank() + "\n" +
+                    "# of Cards: " + currentPlayers.get(1).getNumCardsInHand());
 
-        player3Label.setText("Name: " + currentPlayers.get(2).getPlayerName() + "\n" +
-                            "Rank: " + currentPlayers.get(2).getPlayerRank() + "\n" +
-                            "# of Cards: " +currentPlayers.get(2).getNumCardsInHand());
+            player3Label.setText("Name: " + currentPlayers.get(2).getPlayerName() + "\n" +
+                    "Rank: " + currentPlayers.get(2).getPlayerRank() + "\n" +
+                    "# of Cards: " + currentPlayers.get(2).getNumCardsInHand());
 
-        player4Label.setText("Name: " + currentPlayers.get(3).getPlayerName() + "\n" +
-                            "Rank: " + currentPlayers.get(3).getPlayerRank() + "\n" +
-                            "# of Cards: " +currentPlayers.get(3).getNumCardsInHand());
+            player4Label.setText("Name: " + currentPlayers.get(3).getPlayerName() + "\n" +
+                    "Rank: " + currentPlayers.get(3).getPlayerRank() + "\n" +
+                    "# of Cards: " + currentPlayers.get(3).getNumCardsInHand());
+        }
 
 
     }
@@ -92,8 +97,21 @@ public class Controller {
     }
 
     public void initialize() {
+        update();
 
-       update();
+        for(int i =0; i < 4; i++){
+            TextInputDialog dialog = new TextInputDialog("Enter Name");
+            dialog.setTitle("Set Player name");
+            dialog.setHeaderText("Player " + (i+1) + " enter your name");
+           // dialog.setContentText("Please enter your name:");
+
+            Optional<String> result = dialog.showAndWait();
+
+            // The Java 8 way to get the response value (with lambda expression).
+            result.ifPresent(name -> game.addPlayer(name));
+        }
+
+        update();
     }
 
 
