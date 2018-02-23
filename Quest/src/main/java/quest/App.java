@@ -28,7 +28,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
-        primaryStage.setMaximized(true);
+        primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();

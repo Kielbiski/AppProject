@@ -76,21 +76,19 @@ public class Controller {
         for(Card card : playerHand) {
             ImageView imgView = new ImageView();
             imgView.setPreserveRatio(true);
-            imgView.setFitWidth(130);
-            imgView.setFitHeight(100);
             imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
             imgView.setImage(getCardImage(card.getImageFilename()));
             HBox.setHgrow(imgView, Priority.ALWAYS);
             imgViews.add(imgView);
         }
-        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty().multiply(0.80));
-        cardsHbox.getChildren().addAll(imgViews);
+        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty());
         cardsHbox.widthProperty().addListener(e -> {
-            double fitWidth = cardsHbox.widthProperty().get() / imgViews.size();
-            for (ImageView iv : imgViews) {
-                iv.setFitWidth(fitWidth);
+            double fitWidth = mainBorderPane.widthProperty().get() / imgViews.size();
+            for (ImageView imageView : imgViews) {
+                imageView.setFitWidth(fitWidth);
             }
         });
+        cardsHbox.getChildren().addAll(imgViews);
     }
 
     private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
