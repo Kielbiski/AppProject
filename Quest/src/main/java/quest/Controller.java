@@ -34,20 +34,18 @@ public class Controller {
 
     private Model game = new Model();
     private String resourceFolderPath = "src/main/resources/Cards/";
-
+    private Player activePlayer;
     @FXML
     private BorderPane mainBorderPane ;
-    @FXML
-    private GridPane handGridPane ;
     @FXML
     private HBox cardsHbox;
     @FXML
     private VBox playerStatsVbox;
 
-
-
     private void update(){
+        //Vbox display player data
         ArrayList<Player> currentPlayers = game.getPlayers();
+        playerStatsVbox.getChildren().clear();
         for(Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS = "-fx-border-color: #d6d6d6;\n" +
@@ -64,7 +62,29 @@ public class Controller {
                     "" + player.getNumCardsInHand()+ " cards");
             playerStatsVbox.getChildren().add(playerLabel);
         }
-
+        //Hbox display card images
+        ArrayList<ImageView> imgViews = new ArrayList<>();
+        Stack<AdventureCard> playerHand = activePlayer.getCardsInHand();
+        Collections.sort(playerHand, (object1, object2) -> object1.getClass().getName().compareTo(object2.getClass().getName()));
+        Collections.sort(playerHand, (object1, object2) -> object1.getClass().getSuperclass().getName().compareTo(object2.getClass().getSuperclass().getName()));
+        for(Card card : playerHand) {
+            ImageView imgView = new ImageView();
+            imgView.setPreserveRatio(true);
+            imgView.setFitWidth(130);
+            imgView.setFitHeight(100);
+            imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
+            imgView.setImage(getCardImage(card.getImageFilename()));
+            HBox.setHgrow(imgView, Priority.ALWAYS);
+            imgViews.add(imgView);
+        }
+        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty().multiply(0.80));
+        cardsHbox.getChildren().addAll(imgViews);
+        cardsHbox.widthProperty().addListener(e -> {
+            double fitWidth = cardsHbox.widthProperty().get() / imgViews.size();
+            for (ImageView iv : imgViews) {
+                iv.setFitWidth(fitWidth);
+            }
+        });
     }
 
     private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
@@ -87,56 +107,32 @@ public class Controller {
         }
         return winningPlayers;
     }
-
-    public void initialize() {
-
-        playerStatsVbox.setSpacing(5);
-        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
-
-        update();
-
+    private void setPlayerNames(){
         //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
         for(int i =0; i < 4; i++){
             TextInputDialog dialog = new TextInputDialog("Enter Name");
             dialog.setTitle("Set Player name");
             dialog.setHeaderText("Player " + (i+1) + " enter your name");
-           // dialog.setContentText("Please enter your name:");
+            // dialog.setContentText("Please enter your name:");
 
             Optional<String> result = dialog.showAndWait();
 
             // The Java 8 way to get the response value (with lambda expression).
             result.ifPresent(name -> game.addPlayer(name));
         }
+    }
+    public void initialize() {
+        setPlayerNames();
+
+        activePlayer = game.getPlayers().get(0);
+        playerStatsVbox.setSpacing(5);
+        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
 
         game.shuffleAndDeal();
         //testing
         game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
         game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
-
-        ArrayList<ImageView> imgViews = new ArrayList<>();
-        for(Player player : game.getPlayers()){
-            Stack<AdventureCard> playerHand = player.getCardsInHand();
-            Collections.sort(playerHand, (object1, object2) -> object1.getClass().getName().compareTo(object2.getClass().getName()));
-            for(Card card : playerHand) {
-                ImageView imgView = new ImageView();
-                imgView.setPreserveRatio(true);
-                imgView.setFitWidth(130);
-                imgView.setFitHeight(100);
-                imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
-                imgView.setImage(getCardImage(card.getImageFilename()));
-                HBox.setHgrow(imgView, Priority.ALWAYS);
-                imgViews.add(imgView);
-            }
-            break;
-        }
-        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty().multiply(0.80));
-        cardsHbox.getChildren().addAll(imgViews);
-        cardsHbox.widthProperty().addListener(e -> {
-            double fitWidth = cardsHbox.widthProperty().get() / imgViews.size();
-            for (ImageView iv : imgViews) {
-                iv.setFitWidth(fitWidth);
-            }
-        });
+        //
 
         update();
     }

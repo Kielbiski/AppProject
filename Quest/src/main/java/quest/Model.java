@@ -69,6 +69,7 @@ public class Model
 
         //Add all adventure cards to deckOfStoryCards
         HashMap<AdventureCard, Integer> numberOfEachCard = new HashMap<>();
+        //Foes
         numberOfEachCard.put(new BlackKnight(), 3);
         numberOfEachCard.put(new Boar(), 4);
         numberOfEachCard.put(new Dragon(), 1);
@@ -80,12 +81,21 @@ public class Model
         numberOfEachCard.put(new SaxonKnight(), 8);
         numberOfEachCard.put(new Saxons(), 5);
         numberOfEachCard.put(new Thieves(), 8);
+        //Weapons
+        numberOfEachCard.put(new BattleAx(), 8);
+        numberOfEachCard.put(new Dagger(), 6);
+        numberOfEachCard.put(new Excalibur(), 2);
+        numberOfEachCard.put(new Horse(), 11);
+        numberOfEachCard.put(new Lance(), 6);
+        numberOfEachCard.put(new Sword(), 16);
+
         for(AdventureCard adventureCard : numberOfEachCard.keySet()){
             for(int i = 0; i < numberOfEachCard.get(adventureCard); i++) {
                 deckOfAdventureCards.add(adventureCard);
             }
         }
         //Add all story cards to deckOfStoryCards
+        //NEED TO ADD MULTIPLE OF EACH
         deckOfStoryCards.addAll(allQuests);
     }
 

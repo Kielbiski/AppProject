@@ -4,19 +4,11 @@ import com.sun.xml.internal.bind.v2.runtime.output.ForkXmlOutput;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-
 
 
 public class App extends Application {
@@ -36,7 +28,7 @@ public class App extends Application {
         Parent root = loader.load();
 
         Scene scene = new Scene(root);
-
+        primaryStage.setMaximized(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
