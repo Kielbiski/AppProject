@@ -53,7 +53,6 @@ public class Controller {
         //Vbox display player data
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
-        cardsHbox.getChildren().clear();
         for(Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
@@ -63,10 +62,10 @@ public class Controller {
                 labelCSS = "-fx-border-color: #d6d6d6;\n";
             }
             labelCSS += "-fx-border-insets: 5;\n" +
-                        "-fx-border-width: 4;\n" +
-                        "-fx-border-style: solid;\n" +
-                        "-fx-border-radius: 10;" +
-                        "-fx-padding: 10";
+                    "-fx-border-width: 4;\n" +
+                    "-fx-border-style: solid;\n" +
+                    "-fx-border-radius: 10;" +
+                    "-fx-padding: 10";
 
             playerLabel.setStyle(labelCSS);
             playerLabel.setTextAlignment(TextAlignment.RIGHT);
@@ -85,19 +84,35 @@ public class Controller {
         for(AdventureCard card : playerHand) {
             ImageView imgView = new ImageView();
             imgView.setPreserveRatio(true);
-            imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
+            imgView.setFitHeight(100);
+            // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
+
+            imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    imgView.setFitHeight(300);
+//                    st.setByX(1.5f);
+//                    st.setByY(1.5f);
+//                    st.setCycleCount(4);
+//                    st.setAutoReverse(false);
+//                    st.play();
+
+                }
+            });
+            imgView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    imgView.setFitHeight(100);
+
+                }
+            });
             imgView.setImage(getCardImage(card.getImageFilename()));
-            //HBox.setHgrow(imgView, Priority.ALWAYS);
             imgViews.add(imgView);
             imageToObjectMap.put(imgView, card);
         }
-        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty());
-        cardsHbox.widthProperty().addListener(e -> {
-            double fitWidth = mainBorderPane.widthProperty().get() / imgViews.size();
-            for (ImageView imageView : imgViews) {
-                imageView.setFitWidth(fitWidth);
-            }
-        });
+
         cardsHbox.getChildren().addAll(imgViews);
     }
 
@@ -141,6 +156,7 @@ public class Controller {
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
+        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
 
         game.shuffleAndDeal();
         //testing
