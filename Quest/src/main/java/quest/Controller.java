@@ -72,8 +72,8 @@ public class Controller {
         //Hbox display card images
         ArrayList<ImageView> imgViews = new ArrayList<>();
         Stack<AdventureCard> playerHand = activePlayer.getCardsInHand();
-        Collections.sort(playerHand, (object1, object2) -> object1.getClass().getName().compareTo(object2.getClass().getName()));
-        Collections.sort(playerHand, (object1, object2) -> object1.getClass().getSuperclass().getName().compareTo(object2.getClass().getSuperclass().getName()));
+        playerHand.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
+        playerHand.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
         HashMap<ImageView, AdventureCard> imageToObjectMap = new HashMap<>();
         for(AdventureCard card : playerHand) {
             ImageView imgView = new ImageView();
