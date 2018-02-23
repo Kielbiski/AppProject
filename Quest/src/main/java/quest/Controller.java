@@ -30,6 +30,7 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 public class Controller {
 
     private Model game = new Model();
+    private String resourceFolderPath = "src/main/resources/Cards/";
 
     @FXML
     private BorderPane mainBorderPane ;
@@ -112,15 +113,27 @@ public class Controller {
             result.ifPresent(name -> game.addPlayer(name));
         }
 
+        game.shuffleAndDeal();
+
+        for(int i =0;i<game.getPlayers().get(0).getNumCardsInHand();i++){
+            ImageView imgView = new ImageView();
+            imgView.setFitHeight(100);
+            imgView.setFitWidth(100);
+            imgView.setPreserveRatio(true);
+            imgView.setImage(getCardImage(game.getPlayers().get(0).getCardsInHand().get(i).getImageFilename()));//stop 1 player hardcode
+            imgView.relocate(20, 180);
+            alliesHbox.getChildren().add(imgView);
+
+        }
+
         update();
     }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
         javafx.scene.image.Image img;
-        File cardsDir = new File("src/main/resources/Cards/");
 
         try {
-            img = new Image(new FileInputStream(cardsDir + cardFileName));//can be url
+            img = new Image(new FileInputStream(new File(resourceFolderPath + cardFileName)));//can be url
         } catch (FileNotFoundException e) {
             e.printStackTrace();
             return null;
@@ -129,24 +142,5 @@ public class Controller {
         return img;
     }
 
-
-    private void setupCardsAnimation(Pane canvas) {
-
-        File cardsDir = new File("src/main/resources/Cards/");
-
-
-
-
-
-
-//        ImageView imgView = new ImageView();
-//        imgView.setFitHeight(100);
-//        imgView.setFitWidth(100);
-//        imgView.setPreserveRatio(true);
-//        imgView.setImage(1);
-//        imgView.relocate(20, 180);
-
-      //  canvas.getChildren().add(imgView);
-    }
 
 }
