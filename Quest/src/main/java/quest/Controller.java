@@ -42,6 +42,8 @@ public class Controller {
     private Model game = new Model();
     private String resourceFolderPath = "src/main/resources/Cards/";
     private Player activePlayer;
+    private Card currentlySelected;
+
     @FXML
     private BorderPane mainBorderPane ;
     @FXML
@@ -88,24 +90,23 @@ public class Controller {
             // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
 
             imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-
                 @Override
                 public void handle(MouseEvent event) {
                     imgView.setFitHeight(300);
-//                    st.setByX(1.5f);
-//                    st.setByY(1.5f);
-//                    st.setCycleCount(4);
-//                    st.setAutoReverse(false);
-//                    st.play();
-
                 }
             });
             imgView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-
                 @Override
                 public void handle(MouseEvent event) {
                     imgView.setFitHeight(100);
+                }
+            });
 
+            imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent event) {
+                    currentlySelected = imageToObjectMap.get(imgView);
+                    System.out.println(currentlySelected);
                 }
             });
             imgView.setImage(getCardImage(card.getImageFilename()));
@@ -163,8 +164,17 @@ public class Controller {
         game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
         game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
         //
-
         update();
+        turn();
+    }
+
+    private void turn(){
+        game.drawStoryCard();
+
+        if(game.getCurrentStory() instanceof Quest ){
+            //setup quest
+        }
+
     }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
