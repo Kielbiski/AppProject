@@ -26,12 +26,14 @@ public class App extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 
         Parent root = loader.load();
-
         Scene scene = new Scene(root);
+
+
         primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
+
 
 
     }

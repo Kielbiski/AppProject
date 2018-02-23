@@ -1,14 +1,21 @@
 package quest;
 
+import javafx.animation.FadeTransition;
+import javafx.animation.ScaleTransition;
+import javafx.animation.Timeline;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
+import javafx.animation.Animation;
+import javafx.util.Duration;
 
 
 import java.io.File;
@@ -76,18 +83,46 @@ public class Controller {
         for(Card card : playerHand) {
             ImageView imgView = new ImageView();
             imgView.setPreserveRatio(true);
-            imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
+            imgView.setFitHeight(100);
+           // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
+
+            imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    imgView.setFitHeight(300);
+//                    st.setByX(1.5f);
+//                    st.setByY(1.5f);
+//                    st.setCycleCount(4);
+//                    st.setAutoReverse(false);
+//                    st.play();
+
+                }
+            });
+            imgView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
+
+                @Override
+                public void handle(MouseEvent event) {
+                    imgView.setFitHeight(100);
+
+                }
+            });
+
+
+
+
+            // imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
             imgView.setImage(getCardImage(card.getImageFilename()));
-            HBox.setHgrow(imgView, Priority.ALWAYS);
+            //HBox.setHgrow(imgView, Priority.ALWAYS);
             imgViews.add(imgView);
         }
-        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty());
-        cardsHbox.widthProperty().addListener(e -> {
-            double fitWidth = mainBorderPane.widthProperty().get() / imgViews.size();
-            for (ImageView imageView : imgViews) {
-                imageView.setFitWidth(fitWidth);
-            }
-        });
+//       // cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty());
+//        cardsHbox.widthProperty().addListener(e -> {
+//            double fitWidth = mainBorderPane.widthProperty().get() / imgViews.size();
+//            for (ImageView imageView : imgViews) {
+//                imageView.setFitWidth(fitWidth);
+//            }
+//        });
         cardsHbox.getChildren().addAll(imgViews);
     }
 
@@ -131,6 +166,7 @@ public class Controller {
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
+        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
 
         game.shuffleAndDeal();
         //testing
