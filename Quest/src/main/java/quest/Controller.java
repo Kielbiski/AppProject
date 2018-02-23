@@ -46,6 +46,7 @@ public class Controller {
         //Vbox display player data
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
+        cardsHbox.getChildren().clear();
         for(Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
@@ -73,21 +74,24 @@ public class Controller {
         Stack<AdventureCard> playerHand = activePlayer.getCardsInHand();
         Collections.sort(playerHand, (object1, object2) -> object1.getClass().getName().compareTo(object2.getClass().getName()));
         Collections.sort(playerHand, (object1, object2) -> object1.getClass().getSuperclass().getName().compareTo(object2.getClass().getSuperclass().getName()));
-        for(Card card : playerHand) {
+        HashMap<ImageView, AdventureCard> imageToObjectMap = new HashMap<>();
+        for(AdventureCard card : playerHand) {
             ImageView imgView = new ImageView();
             imgView.setPreserveRatio(true);
-            imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
+            imgView.setFitHeight(150);
+            //imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
             imgView.setImage(getCardImage(card.getImageFilename()));
-            HBox.setHgrow(imgView, Priority.ALWAYS);
+            //HBox.setHgrow(imgView, Priority.ALWAYS);
             imgViews.add(imgView);
+            imageToObjectMap.put(imgView, card);
         }
-        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty());
-        cardsHbox.widthProperty().addListener(e -> {
-            double fitWidth = mainBorderPane.widthProperty().get() / imgViews.size();
-            for (ImageView imageView : imgViews) {
-                imageView.setFitWidth(fitWidth);
-            }
-        });
+//        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty());
+//        cardsHbox.widthProperty().addListener(e -> {
+//            double fitWidth = mainBorderPane.widthProperty().get() / imgViews.size();
+//            for (ImageView imageView : imgViews) {
+//                imageView.setFitWidth(fitWidth);
+//            }
+//        });
         cardsHbox.getChildren().addAll(imgViews);
     }
 
@@ -131,7 +135,7 @@ public class Controller {
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
-
+        cardsHbox.setSpacing(5);
         game.shuffleAndDeal();
         //testing
         game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);

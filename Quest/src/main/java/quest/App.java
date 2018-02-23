@@ -31,7 +31,6 @@ public class App extends Application {
         Scene scene = new Scene(root);
         primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
-        primaryStage.setResizable(false);
         primaryStage.setTitle("Quest");
         primaryStage.show();
 
