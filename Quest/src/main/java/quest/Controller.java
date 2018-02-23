@@ -48,12 +48,18 @@ public class Controller {
         playerStatsVbox.getChildren().clear();
         for(Player player : currentPlayers) {
             Label playerLabel = new Label();
-            String labelCSS = "-fx-border-color: #d6d6d6;\n" +
-                    "-fx-border-insets: 5;\n" +
-                    "-fx-border-width: 4;\n" +
-                    "-fx-border-style: solid;\n" +
-                    "-fx-border-radius: 10;" +
-                    "-fx-padding: 10";
+            String labelCSS;
+            if(player == activePlayer) {
+                labelCSS = "-fx-border-color: #EEE8AA;\n";
+            } else {
+                labelCSS = "-fx-border-color: #d6d6d6;\n";
+            }
+            labelCSS += "-fx-border-insets: 5;\n" +
+                        "-fx-border-width: 4;\n" +
+                        "-fx-border-style: solid;\n" +
+                        "-fx-border-radius: 10;" +
+                        "-fx-padding: 10";
+
             playerLabel.setStyle(labelCSS);
             playerLabel.setTextAlignment(TextAlignment.RIGHT);
             playerLabel.setMinWidth(Region.USE_PREF_SIZE);
