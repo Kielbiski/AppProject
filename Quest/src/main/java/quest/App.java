@@ -29,8 +29,9 @@ public class App extends Application {
     }
     private void initUI(Stage primaryStage) throws Exception{
         Pane canvas = new Pane();
+        String fxmlPath = "/fxml/PlayerView.fxml";
         canvas.setStyle("-fx-background-color: #6F737E");
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PlayerView.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
 
         Parent root = loader.load();
 

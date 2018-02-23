@@ -35,6 +35,10 @@ public class Player {
         playerRank = Rank.SQUIRE;
     }
 
+    public Stack<AdventureCard> getCardsInHand() {
+        return cardsInHand;
+    }
+
     public String getPlayerName(){
         return playerName;
     }

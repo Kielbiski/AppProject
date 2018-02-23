@@ -122,7 +122,9 @@ public class Model
         Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
-                player.addCardToHand(deckOfAdventureCards.pop());
+                if (!(deckOfAdventureCards.empty())) {
+                    player.addCardToHand(deckOfAdventureCards.pop());
+                }
             }
         }
     }
