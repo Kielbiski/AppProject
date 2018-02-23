@@ -24,12 +24,14 @@ public class App extends Application {
         String fxmlPath = "/fxml/PlayerView.fxml";
         canvas.setStyle("-fx-background-color: #6F737E");
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-
         Parent root = loader.load();
+
+        // Controller controller = (Controller) loader.getController(); //use this?
 
         Scene scene = new Scene(root);
         primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
+        primaryStage.setResizable(false);
         primaryStage.setTitle("Quest");
         primaryStage.show();
 
