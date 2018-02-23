@@ -1,23 +1,26 @@
 package quest;
 
+import javafx.geometry.Pos;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextInputDialog;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
 
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FilenameFilter;
-import java.util.ArrayList;
-import java.util.Optional;
-import java.util.ResourceBundle;
+import java.lang.reflect.Array;
+import java.util.*;
 import java.awt.*;
 
 
+import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 //GAMEPLAN FOR TOMORROW
@@ -37,44 +40,31 @@ public class Controller {
     @FXML
     private GridPane handGridPane ;
     @FXML
-    private HBox alliesHbox ;
-    @FXML
-    private HBox weaponHbox;
-    @FXML
-    private HBox foesHbox;
+    private HBox cardsHbox;
     @FXML
     private VBox playerStatsVbox;
 
-    //
-    @FXML
-    private Label player1Label;
-    @FXML
-    private Label player2Label;
-    @FXML
-    private Label player3Label;
-    @FXML
-    private Label player4Label;
+
 
     private void update(){
         ArrayList<Player> currentPlayers = game.getPlayers();
-
-        if(currentPlayers.size() !=0) {
-            player1Label.setText(currentPlayers.get(0).getPlayerName() + "\n" +
-                    "Rank: " + currentPlayers.get(0).getPlayerRank() + "\n" +
-                    "# of Cards: " + currentPlayers.get(0).getNumCardsInHand());
-
-            player2Label.setText(currentPlayers.get(1).getPlayerName() + "\n" +
-                    "Rank: " + currentPlayers.get(1).getPlayerRank() + "\n" +
-                    "# of Cards: " + currentPlayers.get(1).getNumCardsInHand());
-
-            player3Label.setText(currentPlayers.get(2).getPlayerName() + "\n" +
-                    "Rank: " + currentPlayers.get(2).getPlayerRank() + "\n" +
-                    "# of Cards: " + currentPlayers.get(2).getNumCardsInHand());
-
-            player4Label.setText(currentPlayers.get(3).getPlayerName() + "\n" +
-                    "Rank: " + currentPlayers.get(3).getPlayerRank() + "\n" +
-                    "# of Cards: " + currentPlayers.get(3).getNumCardsInHand());
+        for(Player player : currentPlayers) {
+            Label playerLabel = new Label();
+            String labelCSS = "-fx-border-color: #d6d6d6;\n" +
+                    "-fx-border-insets: 5;\n" +
+                    "-fx-border-width: 4;\n" +
+                    "-fx-border-style: solid;\n" +
+                    "-fx-border-radius: 10;" +
+                    "-fx-padding: 10";
+            playerLabel.setStyle(labelCSS);
+            playerLabel.setTextAlignment(TextAlignment.RIGHT);
+            playerLabel.setMinWidth(Region.USE_PREF_SIZE);
+            playerLabel.setText(player.getPlayerName() + "\n" +
+                    "" + player.getPlayerRank() + "\n" +
+                    "" + player.getNumCardsInHand()+ " cards");
+            playerStatsVbox.getChildren().add(playerLabel);
         }
+
     }
 
     private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
@@ -99,8 +89,13 @@ public class Controller {
     }
 
     public void initialize() {
+
+        playerStatsVbox.setSpacing(5);
+        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
+
         update();
 
+        //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
         for(int i =0; i < 4; i++){
             TextInputDialog dialog = new TextInputDialog("Enter Name");
             dialog.setTitle("Set Player name");
@@ -114,17 +109,34 @@ public class Controller {
         }
 
         game.shuffleAndDeal();
+        //testing
+        game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
+        game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
 
-        for(int i =0;i<game.getPlayers().get(0).getNumCardsInHand();i++){
-            ImageView imgView = new ImageView();
-            imgView.setFitHeight(100);
-            imgView.setFitWidth(100);
-            imgView.setPreserveRatio(true);
-            imgView.setImage(getCardImage(game.getPlayers().get(0).getCardsInHand().get(i).getImageFilename()));//stop 1 player hardcode
-            imgView.relocate(20, 180);
-            alliesHbox.getChildren().add(imgView);
-
+        ArrayList<ImageView> imgViews = new ArrayList<>();
+        for(Player player : game.getPlayers()){
+            Stack<AdventureCard> playerHand = player.getCardsInHand();
+            Collections.sort(playerHand, (object1, object2) -> object1.getClass().getName().compareTo(object2.getClass().getName()));
+            for(Card card : playerHand) {
+                ImageView imgView = new ImageView();
+                imgView.setPreserveRatio(true);
+                imgView.setFitWidth(130);
+                imgView.setFitHeight(100);
+                imgView.fitHeightProperty().bind(cardsHbox.heightProperty());
+                imgView.setImage(getCardImage(card.getImageFilename()));
+                HBox.setHgrow(imgView, Priority.ALWAYS);
+                imgViews.add(imgView);
+            }
+            break;
         }
+        cardsHbox.prefWidthProperty().bind(mainBorderPane.widthProperty().multiply(0.80));
+        cardsHbox.getChildren().addAll(imgViews);
+        cardsHbox.widthProperty().addListener(e -> {
+            double fitWidth = cardsHbox.widthProperty().get() / imgViews.size();
+            for (ImageView iv : imgViews) {
+                iv.setFitWidth(fitWidth);
+            }
+        });
 
         update();
     }
