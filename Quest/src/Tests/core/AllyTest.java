@@ -5,55 +5,89 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class AllyTest extends TestCase {
+public class AllyTest{
 
-    Ally maybeSirGalahad = new Ally ("Sir Galahad", "", 0);
+    Ally sirLancelot = new Ally("Sir Lancelot", "", 15,0,25,0);
+    Ally kingPellinor = new Ally("King Pellinor", "", 10,0,0,4);
 
 
 
-    public void testSetSpecialBehaviour() {
+    @Test
+    public void getName()
+    {
 
-        SpecialBehaviourSirGalahad sir = new SpecialBehaviourSirGalahad();
-        maybeSirGalahad.setSpecialBehaviour(sir);
-        maybeSirGalahad.applySpecialBehaviour();
-        assertEquals(15, maybeSirGalahad.getBattlePoints());
-        assertEquals(0, maybeSirGalahad.getBids());
+        assertEquals("Sir Lancelot", sirLancelot.getName());
 
-    }
-
-    public void testSetSpecialBehavivour2 () {
-
-        SpecialBehaviourQueenGuinevere queen = new SpecialBehaviourQueenGuinevere();
-        maybeSirGalahad.setSpecialBehaviour(queen);
-        maybeSirGalahad.applySpecialBehaviour();
-        assertEquals(0, maybeSirGalahad.getBattlePoints());
-        assertEquals(4, maybeSirGalahad.getBids());
+        assertEquals("King Pellinor", kingPellinor.getName());
 
     }
 
-    public void testGetBattlePoints() {
 
-        assertEquals(0,  maybeSirGalahad.getBattlePoints());
+
+    @Test
+    public void getImageFilename()
+    {
+
+        assertEquals("", sirLancelot.getImageFilename());
+
+        assertEquals("", kingPellinor.getImageFilename());
+
+    }
+
+
+
+    @Test
+    public void getBattlePoints()
+    {
+
+        assertEquals(15, sirLancelot.getBattlePoints());
+
+        assertEquals(10, kingPellinor.getBattlePoints());
 
     }
 
-    public void testSetBattlePoints() {
 
-        maybeSirGalahad.setBattlePoints(20);
-        assertEquals(20, maybeSirGalahad.getBattlePoints());
+
+    @Test
+    public void getBids()
+    {
+
+        assertEquals(0, sirLancelot.getBids());
+
+        assertEquals(0, kingPellinor.getBids());
+
+    }
+
+
+
+    @Test
+    public void getBonusBattlePoints()
+    {
+
+        assertEquals(0, kingPellinor.getBonusBattlePoints());
+
+        assertEquals(25, sirLancelot.getBonusBattlePoints());
 
     }
 
-    public void testGetBids() {
 
-        assertEquals(0, maybeSirGalahad.getBids());
+
+    @Test
+    public void getBonusBids()
+    {
+
+        assertEquals(0, sirLancelot.getBids());
+
+        assertEquals(0, sirLancelot.getBonusBids());
+
+        assertEquals(0, kingPellinor.getBids());
+
+        assertEquals(4, kingPellinor.getBonusBids());
+
+
     }
 
-    public void testSetBids() {
 
-        maybeSirGalahad.setBids(3);
-        assertEquals(3, maybeSirGalahad.getBids());
 
-    }
 
 }
