@@ -10,10 +10,16 @@ public class Model
     private ArrayList<Player> players = new ArrayList<>();
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
+    private StoryCard currentStory;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
 
+    public StoryCard getCurrentStory() {
+        return currentStory;
+    }
+
     Model() {
+
 
 
         //Trim white border from cards and convert to .pngs to avoid white bounding box
@@ -144,4 +150,7 @@ public class Model
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
     }
 
+    void drawStoryCard(){
+        currentStory = deckOfStoryCards.pop();
+    }
 }
