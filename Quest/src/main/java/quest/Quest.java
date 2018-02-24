@@ -9,7 +9,7 @@ public class Quest extends StoryCard { //story card
     private int numStage;
     private int curStage;
     private int shields;
-    private ArrayList <Foe> questFoes = new ArrayList<>();
+    ArrayList <Foe> questFoes = new ArrayList<>();
 
 
     Quest(String paramName, String paramImageFilename, int paramNumStage) {

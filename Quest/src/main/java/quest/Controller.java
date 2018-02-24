@@ -1,8 +1,5 @@
 package quest;
 
-import javafx.animation.FadeTransition;
-import javafx.animation.ScaleTransition;
-import javafx.animation.Timeline;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.image.Image;
@@ -13,18 +10,11 @@ import javafx.scene.control.Label;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.TextAlignment;
-import javafx.stage.Stage;
-import javafx.animation.Animation;
-import javafx.util.Duration;
-
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FilenameFilter;
-import java.lang.reflect.Array;
 import java.util.*;
-import java.awt.*;
 
 
 import static quest.Rank.CHAMPION_KNIGHT;
@@ -87,27 +77,13 @@ public class Controller {
             imgView.setFitHeight(100);
             // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
 
-            imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-                    imgView.setFitHeight(300);
+            imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> imgView.setFitHeight(300));
 //                    st.setByX(1.5f);
 //                    st.setByY(1.5f);
 //                    st.setCycleCount(4);
 //                    st.setAutoReverse(false);
 //                    st.play();
-
-                }
-            });
-            imgView.addEventHandler(MouseEvent.MOUSE_EXITED, new EventHandler<MouseEvent>() {
-
-                @Override
-                public void handle(MouseEvent event) {
-                    imgView.setFitHeight(100);
-
-                }
-            });
+            imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imgView.setFitHeight(100));
             imgView.setImage(getCardImage(card.getImageFilename()));
             imgViews.add(imgView);
             imageToObjectMap.put(imgView, card);
@@ -136,6 +112,22 @@ public class Controller {
         }
         return winningPlayers;
     }
+
+    private void setupQuest(Player sponsor, Quest quest){
+        for (int i = 0; i < quest.getNumStage(); i++) {
+            TextInputDialog foeWeaponTestDialog = new TextInputDialog("Foe/Weapon/Test");
+            foeWeaponTestDialog.setTitle("Enter type of card to be played.");
+            foeWeaponTestDialog.setHeaderText("Please enter a type of card for stage " + i);
+            Optional<String> foeWeaponTestResult = foeWeaponTestDialog.showAndWait();
+        }
+    }
+//
+//    for stage in:
+//        alert with foe/weapon/test per stage
+//    check if bp is greater with successive stages
+
+
+
     private void setPlayerNames(){
         //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
         for(int i =0; i < 4; i++){
