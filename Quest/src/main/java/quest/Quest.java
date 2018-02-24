@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public class Quest extends StoryCard { //story card
 
     private ArrayList <Player> playerList;
-    private Player hostPlayer;
+    private Player sponsor;
     private int numStage;
-    private int curStage;
+    private int currentStage;
     private int shields;
     ArrayList <Foe> questFoes = new ArrayList<>();
 
@@ -15,7 +15,7 @@ public class Quest extends StoryCard { //story card
     Quest(String paramName, String paramImageFilename, int paramNumStage) {
         super(paramName, paramImageFilename);
         numStage = paramNumStage;
-        curStage = 0;
+        currentStage = 0;
         shields = numStage;
     }
 
@@ -23,7 +23,7 @@ public class Quest extends StoryCard { //story card
         super(paramName, paramImageFilename);
         questFoes.add(questFoe);
         numStage = paramNumStage;
-        curStage = 0;
+        currentStage = 0;
         shields = numStage;
     }
 
@@ -31,41 +31,49 @@ public class Quest extends StoryCard { //story card
         super(paramName, paramImageFilename);
         questFoes = paramQuestFoes;
         numStage = paramNumStage;
-        curStage = 0;
+        currentStage = 0;
         shields = numStage;
     }
 
+    public ArrayList<Player> getPlayerList() {
+        return playerList;
+    }
 
     public void setPlayerList(ArrayList<Player> playerList) {
         this.playerList = playerList;
     }
 
-    public void setHostPlayer(Player hostPlayer) {
-        this.hostPlayer = hostPlayer;
+    public Player getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(Player sponsor) {
+        this.sponsor = sponsor;
+    }
+
+    public ArrayList<Foe> getQuestFoes() {
+        return questFoes;
     }
 
     public int getShields() {
         return shields;
     }
 
-    public int getCurStage() {
-        return curStage;
+    public int getCurrentStage() {
+        return currentStage;
     }
 
     public int getNumStage() {
         return numStage;
     }
 
-    public Player getHostPlayer() {
-        return hostPlayer;
-    }
 
-    public void setCurStage(int x) {
-         curStage = x;
+    public void setCurrentStage(int currentStage) {
+         this.currentStage = currentStage;
     }
 
     public void questPlayStageNoTest() {
-        int winnerValue = hostPlayer.calculateBattlePoints();
+        int winnerValue = sponsor.calculateBattlePoints();
         int i = 0;
         int j = playerList.size();
         while (i < j) {
@@ -76,7 +84,7 @@ public class Quest extends StoryCard { //story card
                 i++;
             }
         }
-        curStage++;
+        currentStage++;
     }
 
 

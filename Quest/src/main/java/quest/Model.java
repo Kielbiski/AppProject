@@ -151,6 +151,8 @@ public class Model
     }
 
     void drawStoryCard(){
-        currentStory = deckOfStoryCards.pop();
+        if(!(deckOfStoryCards.isEmpty())) {
+            currentStory = deckOfStoryCards.pop();
+        }
     }
 }

@@ -1,6 +1,6 @@
 package quest;
 
-public class Event extends Card {
+public class Event extends StoryCard {
 
     public Event(String paramName, String paramImageFilename)
     {

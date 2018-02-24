@@ -2,7 +2,7 @@ package quest;
 
 import java.util.ArrayList;
 
-public class Tournament extends Card {
+public class Tournament extends StoryCard {
     private ArrayList <Player> playerList = new ArrayList<>();
     private int roundsPlayed;
     private int shields ; //How many shield the winner gets
