@@ -51,6 +51,12 @@ public class Controller {
         //Vbox display player data
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
+        cardsHbox.getChildren().clear();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + activePlayer.getPlayerName() + "'s turn.", ButtonType.OK);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+            System.out.println("It is " + activePlayer.getPlayerName() + "'s turn.");
+        }
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
@@ -198,16 +204,12 @@ private int nextPlayerIndex(int index){
     return nextIndex;
 }
 
-    private void gameLoop() {
+    void gameLoop() {
         int currentPlayerIndex = 0;
         while (true) {
-            update();
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + game.getPlayers().get(currentPlayerIndex).getPlayerName() + "'s turn.", ButtonType.OK);
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.OK) {
-                System.out.println("It is " + game.getPlayers().get(currentPlayerIndex).getPlayerName() + "'s turn.");
-            }
+            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
             activePlayer = game.getPlayers().get(currentPlayerIndex);
+            update();
             //PUT BUTTON HERE
             game.drawStoryCard();
 
@@ -228,6 +230,9 @@ private int nextPlayerIndex(int index){
                         sponsor = game.getPlayers().get(currentPlayerIndex);
                         setupQuest(sponsor, (Quest) game.getCurrentStory());
                         break;
+                    } else {
+                        activePlayer = player;
+                        update();
                     }
                 }
             } else if (game.getCurrentStory() instanceof Event) {
@@ -235,13 +240,10 @@ private int nextPlayerIndex(int index){
             } else if (game.getCurrentStory() instanceof Tournament) {
                 System.out.println("Tournament");
             }
-            currentPlayerIndex++;
-            if (currentPlayerIndex > 3){
-                currentPlayerIndex = 0;
-            }
-            if(isGameOver()){
-                System.exit(0);
-            }
+
+//            if(isGameOver()){
+//                System.exit(0);
+//            }
         }
     }
 

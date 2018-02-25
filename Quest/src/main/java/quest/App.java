@@ -29,6 +29,7 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
+        controller.gameLoop();
     }
 
     public static void main(String[] args) {
