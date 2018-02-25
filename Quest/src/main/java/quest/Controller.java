@@ -18,6 +18,7 @@ import java.awt.font.ImageGraphicAttribute;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.lang.reflect.Array;
 import java.util.*;
 
 
@@ -145,6 +146,7 @@ public class Controller {
 
     private void setupQuest(Player sponsor, Quest quest) {
         quest.setSponsor(sponsor);
+        addQuestPlayers(quest);
         for (int i = 0; i < quest.getNumStage(); i++) {
             if (selectedAdventureCard instanceof Foe) {
                 System.out.println("");
@@ -186,28 +188,56 @@ public class Controller {
         }
     }
 
+private int nextPlayerIndex(int index){
+    int nextIndex = index;
+    if(nextIndex >= 3){
+        nextIndex = 0;
+    } else{
+        nextIndex++;
+    }
+    return nextIndex;
+}
+
     private void gameLoop() {
-        int counter = 0;
+        int currentPlayerIndex = 0;
         while (true) {
             update();
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + game.getPlayers().get(counter).getPlayerName() + "'s turn.", ButtonType.OK);
-            //alert.showAndWait();
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + game.getPlayers().get(currentPlayerIndex).getPlayerName() + "'s turn.", ButtonType.OK);
+            alert.showAndWait();
             if (alert.getResult() == ButtonType.OK) {
-                System.out.println("It is " + game.getPlayers().get(counter).getPlayerName() + "'s turn.");
+                System.out.println("It is " + game.getPlayers().get(currentPlayerIndex).getPlayerName() + "'s turn.");
             }
-            activePlayer = game.getPlayers().get(counter);
+            activePlayer = game.getPlayers().get(currentPlayerIndex);
+            //PUT BUTTON HERE
             game.drawStoryCard();
+
+            ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+            int currentTurn = game.getPlayers().indexOf(activePlayer);
+
+            for(int i = 0; i < NUM_PLAYERS; i++){
+                currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+                currentTurn = nextPlayerIndex(currentTurn);
+            }
+
             if (game.getCurrentStory() instanceof Quest) {
-                addQuestPlayers((Quest) game.getCurrentStory());
-                setupQuest(game.getPlayers().get(counter), (Quest) game.getCurrentStory());
+                Player sponsor;
+                for (Player player : currentPlayerOrder) {//////////////////////////////////////
+                    Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
+                    sponsorQuest.showAndWait();
+                    if (sponsorQuest.getResult() == ButtonType.YES) {
+                        sponsor = game.getPlayers().get(currentPlayerIndex);
+                        setupQuest(sponsor, (Quest) game.getCurrentStory());
+                        break;
+                    }
+                }
             } else if (game.getCurrentStory() instanceof Event) {
                 System.out.println("Event");
             } else if (game.getCurrentStory() instanceof Tournament) {
                 System.out.println("Tournament");
             }
-            counter++;
-            if (counter > 3){
-                counter = 0;
+            currentPlayerIndex++;
+            if (currentPlayerIndex > 3){
+                currentPlayerIndex = 0;
             }
             if(isGameOver()){
                 System.exit(0);
@@ -226,8 +256,7 @@ public class Controller {
         //testing
         game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
         game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
-        update();
-        //gameLoop();
+        gameLoop();
     }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){

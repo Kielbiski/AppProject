@@ -123,7 +123,7 @@ public class Model
     }
 
     public void nextTurn(){
-        if(players.size() == currentTurnIndex){
+        if(currentTurnIndex == 3){
             currentTurnIndex = 0 ;
         }
         else{
