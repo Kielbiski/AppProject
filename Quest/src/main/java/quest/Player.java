@@ -25,6 +25,7 @@ public class Player {
     private String playerName;
     private int battlePoints;
     private int shields;
+    private int currentBid;
     private Rank playerRank;
     private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
     private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
@@ -33,6 +34,7 @@ public class Player {
         playerName = paramName ;
         shields = 0;
         battlePoints =0;
+        currentBid = 0;
         playerRank = Rank.SQUIRE;
     }
 
@@ -67,7 +69,23 @@ public class Player {
     public void resetBattlePoints (){ 
         battlePoints = 0;
     }
-    
+
+    public int getBattlePoints() {
+        return battlePoints;
+    }
+
+    public int getCurrentBid() {
+        return currentBid;
+    }
+
+    public void setCardsOnTable(ArrayList<AdventureCard> cardsOnTable) {
+        this.cardsOnTable = cardsOnTable;
+    }
+
+    public void setCurrentBid(int currentBid) {
+        this.currentBid = currentBid;
+    }
+
     public void setShields(int paramShields){
         shields = paramShields;
     }
@@ -104,14 +122,12 @@ public class Player {
         return cardsInHand.size() > 12;
     }
 
-    private int calculateCardsBP(ArrayList<AdventureCard> paramCardList) {
-        int iterateArray =0;
-        int point = 0;
-        while (iterateArray < paramCardList.size()) {
-            point += paramCardList.get(iterateArray).getBattlePoints();
-            iterateArray++;
+    int calculateCardsBattlePoints(ArrayList<AdventureCard> paramCardList) {
+        int totalBattlePoints = 0;
+        for(AdventureCard adventureCard : paramCardList) {
+            totalBattlePoints += adventureCard.getBattlePoints();
         }
-        return point;
+        return totalBattlePoints;
     }
 
     public int calculateBattlePoints() {
@@ -128,8 +144,7 @@ public class Player {
             default:
                 break;
         }
-//        battlePoints+=calculateCardCollectionPoint(this.cardsPlaying);
-        battlePoints+=calculateCardsBP(this.cardsOnTable);
+        battlePoints += calculateCardsBattlePoints(this.cardsOnTable);
         return battlePoints;
     }
 
