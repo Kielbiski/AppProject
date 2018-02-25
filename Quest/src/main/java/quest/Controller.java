@@ -37,6 +37,7 @@ public class Controller {
     private Model game = new Model();
     private String resourceFolderPath = "src/main/resources/Cards/";
     private Player activePlayer;
+    private Player currentTurnPlayer;
     private int NUM_PLAYERS = 4;
     @FXML
     private BorderPane mainBorderPane;
@@ -52,6 +53,21 @@ public class Controller {
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
+        Label currentTurnLabel = new Label();
+        String currentTurnLabelCSS;
+
+        currentTurnLabelCSS = "-fx-border-color: #d6d6d6;\n" +
+                "-fx-border-insets: 5;\n" +
+                "-fx-border-width: 4;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-border-radius: 10;\n" +
+                "-fx-padding: 10";
+        currentTurnLabel.setStyle(currentTurnLabelCSS);
+        currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
+        currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
+        currentTurnLabel.setText( currentTurnPlayer.getPlayerName() + "'s turn");
+        mainBorderPane.setTop(currentTurnLabel);
+
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
@@ -105,11 +121,7 @@ public class Controller {
             imgViews.add(imgView);
         }
         cardsHbox.getChildren().addAll(imgViews);
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + activePlayer.getPlayerName() + "'s turn.", ButtonType.OK);
-        alert.showAndWait();
-        if (alert.getResult() == ButtonType.OK) {
-            System.out.println("It is " + activePlayer.getPlayerName() + "'s turn.");
-        }
+
     }
 
     private boolean isGameOver(){
@@ -150,6 +162,7 @@ public class Controller {
     }
 
     private void setupQuest(Player sponsor, Quest quest) {
+        game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         for (int i = 0; i < quest.getNumStage(); i++) {
@@ -162,10 +175,14 @@ public class Controller {
     private void addQuestPlayers(Quest currentQuest){
         ArrayList<Player> questPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
-            alert.showAndWait();
-            if (alert.getResult() == ButtonType.YES) {
-                questPlayers.add(game.getPlayers().get(i));
+            if(game.getPlayers().get(i) != game.getSponsor()) {
+                activePlayer = game.getPlayers().get(i);
+                update();
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
+                alert.showAndWait();
+                if (alert.getResult() == ButtonType.YES) {
+                    questPlayers.add(game.getPlayers().get(i));
+                }
             }
         }
         currentQuest.setPlayerList(questPlayers);
@@ -206,6 +223,7 @@ private int nextPlayerIndex(int index){
     void gameLoop() {
         int currentPlayerIndex = 0;
         while (true) {
+            currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
             activePlayer = game.getPlayers().get(currentPlayerIndex);
             update();
             //PUT BUTTON HERE
@@ -222,6 +240,8 @@ private int nextPlayerIndex(int index){
             if (game.getCurrentStory() instanceof Quest) {
                 Player sponsor;
                 for (Player player : currentPlayerOrder) {//////////////////////////////////////
+                    activePlayer = player;
+                    update();
                     Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
                     sponsorQuest.showAndWait();
                     if (sponsorQuest.getResult() == ButtonType.YES) {
@@ -229,10 +249,6 @@ private int nextPlayerIndex(int index){
                         setupQuest(sponsor, (Quest) game.getCurrentStory());
                         break;
                     }
-                    // else {
-//                        activePlayer = player;
-//                        update();
-//                    }
                 }
             } else if (game.getCurrentStory() instanceof Event) {
                 System.out.println("Event");
@@ -250,6 +266,7 @@ private int nextPlayerIndex(int index){
 
     public void initialize() {
         setPlayerNames();
+        currentTurnPlayer = game.getPlayers().get(0);
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
