@@ -65,8 +65,9 @@ public class Controller {
         currentTurnLabel.setStyle(currentTurnLabelCSS);
         currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
-        currentTurnLabel.setText( currentTurnPlayer.getPlayerName() + "'s turn");
+        currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
         mainBorderPane.setTop(currentTurnLabel);
+        BorderPane.setAlignment(currentTurnLabel, Pos.CENTER);
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
@@ -103,11 +104,6 @@ public class Controller {
             // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
             imageToObjectMap.put(imgView, card);
             imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> imgView.setFitHeight(300));
-//                    st.setByX(1.5f);
-//                    st.setByY(1.5f);
-//                    st.setCycleCount(4);
-//                    st.setAutoReverse(false);
-//                    st.play();
             imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imgView.setFitHeight(100));
             imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
                 imgView.setStyle(
@@ -166,9 +162,7 @@ public class Controller {
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         for (int i = 0; i < quest.getNumStage(); i++) {
-            if (selectedAdventureCard instanceof Foe) {
-                System.out.println("");
-            }
+
         }
     }
 
@@ -178,15 +172,15 @@ public class Controller {
             if(game.getPlayers().get(i) != game.getSponsor()) {
                 activePlayer = game.getPlayers().get(i);
                 update();
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
-                alert.showAndWait();
-                if (alert.getResult() == ButtonType.YES) {
+                Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
+                questAlert.setHeaderText("Join " + game.getCurrentStory().getName() + "?");
+                questAlert.showAndWait();
+                if (questAlert.getResult() == ButtonType.YES) {
                     questPlayers.add(game.getPlayers().get(i));
                 }
             }
         }
         currentQuest.setPlayerList(questPlayers);
-        System.out.println(currentQuest.getPlayerList());
     }
 //
 //    for stage in:
@@ -243,6 +237,7 @@ private int nextPlayerIndex(int index){
                     activePlayer = player;
                     update();
                     Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
+                    sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
                     sponsorQuest.showAndWait();
                     if (sponsorQuest.getResult() == ButtonType.YES) {
                         sponsor = game.getPlayers().get(currentPlayerIndex);
