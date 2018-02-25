@@ -52,11 +52,6 @@ public class Controller {
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + activePlayer.getPlayerName() + "'s turn.", ButtonType.OK);
-        alert.showAndWait();
-        if (alert.getResult() == ButtonType.OK) {
-            System.out.println("It is " + activePlayer.getPlayerName() + "'s turn.");
-        }
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
@@ -109,8 +104,12 @@ public class Controller {
             imgView.setImage(getCardImage(card.getImageFilename()));
             imgViews.add(imgView);
         }
-
         cardsHbox.getChildren().addAll(imgViews);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "It is " + activePlayer.getPlayerName() + "'s turn.", ButtonType.OK);
+        alert.showAndWait();
+        if (alert.getResult() == ButtonType.OK) {
+            System.out.println("It is " + activePlayer.getPlayerName() + "'s turn.");
+        }
     }
 
     private boolean isGameOver(){
@@ -164,7 +163,7 @@ public class Controller {
         ArrayList<Player> questPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
-            //alert.showAndWait();
+            alert.showAndWait();
             if (alert.getResult() == ButtonType.YES) {
                 questPlayers.add(game.getPlayers().get(i));
             }
@@ -207,7 +206,6 @@ private int nextPlayerIndex(int index){
     void gameLoop() {
         int currentPlayerIndex = 0;
         while (true) {
-            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
             activePlayer = game.getPlayers().get(currentPlayerIndex);
             update();
             //PUT BUTTON HERE
@@ -230,10 +228,11 @@ private int nextPlayerIndex(int index){
                         sponsor = game.getPlayers().get(currentPlayerIndex);
                         setupQuest(sponsor, (Quest) game.getCurrentStory());
                         break;
-                    } else {
-                        activePlayer = player;
-                        update();
                     }
+                    // else {
+//                        activePlayer = player;
+//                        update();
+//                    }
                 }
             } else if (game.getCurrentStory() instanceof Event) {
                 System.out.println("Event");
@@ -244,6 +243,8 @@ private int nextPlayerIndex(int index){
 //            if(isGameOver()){
 //                System.exit(0);
 //            }
+
+            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
         }
     }
 
@@ -258,7 +259,7 @@ private int nextPlayerIndex(int index){
         //testing
         game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
         game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
-        gameLoop();
+        update();
     }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
