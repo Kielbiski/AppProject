@@ -11,11 +11,20 @@ public class Model
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
     private StoryCard currentStory;
+    private Player sponsor;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
 
     public StoryCard getCurrentStory() {
         return currentStory;
+    }
+
+    public Player getSponsor() {
+        return sponsor;
+    }
+
+    public void setSponsor(Player sponsor) {
+        this.sponsor = sponsor;
     }
 
     Model() {
