@@ -11,7 +11,6 @@ public class Quest extends StoryCard { //story card
     private int shields;
     ArrayList <Foe> questFoes = new ArrayList<>();
 
-
     Quest(String paramName, String paramImageFilename, int paramNumStage) {
         super(paramName, paramImageFilename);
         numStage = paramNumStage;

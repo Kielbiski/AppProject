@@ -26,7 +26,8 @@ public class Player {
     private int battlePoints;
     private int shields;
     private Rank playerRank;
-    private Stack<AdventureCard> cardsInHand = new Stack<>();
+    private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
+    private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
 
     Player(String paramName){
         playerName = paramName ;
@@ -35,7 +36,11 @@ public class Player {
         playerRank = Rank.SQUIRE;
     }
 
-    public Stack<AdventureCard> getCardsInHand() {
+    public ArrayList<AdventureCard> getCardsOnTable() {
+        return cardsOnTable;
+    }
+
+    public ArrayList<AdventureCard> getCardsInHand() {
         return cardsInHand;
     }
 
@@ -75,9 +80,9 @@ public class Player {
         cardsInHand.add(paramCard);
     }
     
-//    public void addCardToTable(AdventureCard paramCard){
-//        cardsOnTable.addCard(paramCard);
-//    }
+    public void addCardToTable(AdventureCard paramCard){
+        cardsOnTable.add(paramCard);
+    }
     
 //    public void addCardToPlaying(AdventureCard paramCard){
 //        cardsPlaying.addCard(paramCard);
@@ -87,9 +92,9 @@ public class Player {
         cardsInHand.remove(paramCard);
     }
     
-//    public void removeCardFromTable(AdventureCard paramCard){
-//        cardsOnTable.removeCard(paramCard);
-//    }
+    public void removeCardFromTable(AdventureCard paramCard){
+        cardsOnTable.remove(paramCard);
+    }
     
 //    public void removeCardFromPlaying(AdventureCard paramCard){
 //        cardsPlaying.removeCard(paramCard);
@@ -99,15 +104,15 @@ public class Player {
         return cardsInHand.size() > 12;
     }
 
-//    private int calculateCardCollectionPoint(Stack<AdventureCard> paramCardList) {
-//        int iterateArray =0;
-//        int point = 0;
-//        while (iterateArray < paramCardList.size()) {
-//            point += paramCardList.size(iterateArray).getBattlePoints();
-//            iterateArray++;
-//        }
-//        return point;
-//    }
+    private int calculateCardsBP(ArrayList<AdventureCard> paramCardList) {
+        int iterateArray =0;
+        int point = 0;
+        while (iterateArray < paramCardList.size()) {
+            point += paramCardList.get(iterateArray).getBattlePoints();
+            iterateArray++;
+        }
+        return point;
+    }
 
     public int calculateBattlePoints() {
         switch (playerRank){
@@ -124,7 +129,7 @@ public class Player {
                 break;
         }
 //        battlePoints+=calculateCardCollectionPoint(this.cardsPlaying);
-//        battlePoints+=calculateCardCollectionPoint(this.cardsOnTable);
+        battlePoints+=calculateCardsBP(this.cardsOnTable);
         return battlePoints;
     }
 
