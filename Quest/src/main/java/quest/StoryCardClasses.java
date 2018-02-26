@@ -1,6 +1,8 @@
 package quest;
 import java.util.ArrayList;
 
+//Quests
+
 class BoarHunt extends Quest {
     BoarHunt() {
         super("Boar Hunt", "Q_Boar_Hunt.jpg", 2, new Boar());
@@ -82,5 +84,81 @@ class TestOfTheGreenKnight extends Quest {
 class VanquishKingArthursEnemies extends Quest {
     VanquishKingArthursEnemies() {
         super("Vanquish King Arthur's Enemies", "Q_Vanquish_King_Arthurs_Enemies.jpg", 3);
+    }
+}
+
+//Events
+
+class ChivalrousDeed extends Event {
+    ChivalrousDeed(){
+        super("Chivalrous Deed", "E_Chivalrous_Deed.jpg");
+    }
+}
+
+class CourtCalledToCamelot extends Event {
+    CourtCalledToCamelot(){
+        super("Court Called To Camelot", "E_Court_Called_To_Camelot.jpg");
+    }
+}
+
+class KingsCallToArms extends Event {
+    KingsCallToArms(){
+        super("King's Call To Arms", "E_Kings_Call_To_Arms.jpg");
+    }
+}
+
+class KingsRecognition extends Event {
+    KingsRecognition(){
+        super("King's Recognition", "E_Kings_Recognition.jpg");
+    }
+}
+
+class Plague extends Event {
+    Plague(){
+        super("Plague", "E_Plague.jpg");
+    }
+}
+
+class Pox extends Event {
+    Pox(){
+        super("Pox", "E_Pox.jpg");
+    }
+}
+
+class ProsperityThroughoutTheRealm extends Event {
+    ProsperityThroughoutTheRealm(){
+        super("Prosperity Throughout The Realm", "E_Prosperity_Throughout_The_Realm.jpg");
+    }
+}
+
+class QueensFavor extends Event {
+    QueensFavor(){
+        super("Queen's Favor", "E_Queens_Favor.jpg");
+    }
+}
+
+//Tournaments
+
+class TournamentAtCamelot extends Tournament {
+    TournamentAtCamelot(){
+        super("Tournament at Camelot", "TM_Camelot.jpg", new ArrayList<>());
+    }
+}
+
+class TournamentAtOrkney extends Tournament {
+    TournamentAtOrkney(){
+        super("Tournament at Orkney", "TM_Orkney.jpg", new ArrayList<>());
+    }
+}
+
+class TournamentAtTintagel extends Tournament {
+    TournamentAtTintagel(){
+        super("Tournament at Tintagel", "TM_Tintagel.jpg", new ArrayList<>());
+    }
+}
+
+class TournamentAtYork extends Tournament {
+    TournamentAtYork(){
+        super("Tournament at York", "TM_York.jpg", new ArrayList<>());
     }
 }

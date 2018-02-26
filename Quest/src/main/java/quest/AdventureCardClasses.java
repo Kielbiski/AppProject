@@ -1,5 +1,7 @@
 package quest;
 
+//Weapons
+
 class BattleAx extends Weapon {
     BattleAx(){
         super("Battle-ax", "W_Battle-ax.jpg", 15);
@@ -34,6 +36,8 @@ class Sword extends Weapon {
         super("Sword", "W_Sword.jpg", 10);
     }
 }
+
+//Foes
 
 class BlackKnight extends Foe {
     BlackKnight(){

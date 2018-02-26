@@ -63,6 +63,8 @@ public class Model
         ArrayList<Quest> allQuests = new ArrayList<>();
 
         allQuests.add(new BoarHunt());
+        allQuests.add(new DefendTheQueensHonor());
+        allQuests.add(new JourneyThroughTheEnchantedForest());
         allQuests.add(new RepelTheSaxonRaiders());
         allQuests.add(new RescueTheFairMaiden());
         allQuests.add(new SearchForTheHolyGrail());
@@ -71,7 +73,22 @@ public class Model
         allQuests.add(new TestOfTheGreenKnight());
         allQuests.add(new VanquishKingArthursEnemies());
 
+        //Events
+        ArrayList<Event> allEvents = new ArrayList<>();
+        allEvents.add(new ChivalrousDeed());
+        allEvents.add(new CourtCalledToCamelot());
+        allEvents.add(new KingsCallToArms());
+        allEvents.add(new KingsRecognition());
+        allEvents.add(new Plague());
+        allEvents.add(new Pox());
+        allEvents.add(new ProsperityThroughoutTheRealm());
+        allEvents.add(new QueensFavor());
+
+
+        //Create HashMap to store number of occurrences of each AdventureCard
+
         HashMap<AdventureCard, Integer> numberOfEachAdventureCard = new HashMap<>();
+
         //Foes
         numberOfEachAdventureCard.put(new BlackKnight(), 3);
         numberOfEachAdventureCard.put(new Boar(), 4);
@@ -84,6 +101,7 @@ public class Model
         numberOfEachAdventureCard.put(new SaxonKnight(), 8);
         numberOfEachAdventureCard.put(new Saxons(), 5);
         numberOfEachAdventureCard.put(new Thieves(), 8);
+
         //Weapons
         numberOfEachAdventureCard.put(new BattleAx(), 8);
         numberOfEachAdventureCard.put(new Dagger(), 6);
@@ -92,14 +110,19 @@ public class Model
         numberOfEachAdventureCard.put(new Lance(), 6);
         numberOfEachAdventureCard.put(new Sword(), 16);
 
+        //Add each AdventureCard to deckOfAdventureCards
+
         for(AdventureCard adventureCard : numberOfEachAdventureCard.keySet()){
             for(int i = 0; i < numberOfEachAdventureCard.get(adventureCard); i++) {
                 deckOfAdventureCards.add(adventureCard);
             }
         }
-        //Add all adventure cards to deckOfStoryCards
+
+        //Create HashMap to store number of occurrences of each StoryCard
+
         HashMap<StoryCard, Integer> numberOfEachStoryCard = new HashMap<>();
-        //Add all story cards to deckOfStoryCards
+
+        //Quests
         numberOfEachStoryCard.put(new BoarHunt(), 2);
         numberOfEachStoryCard.put(new RepelTheSaxonRaiders(), 2);
         numberOfEachStoryCard.put(new RescueTheFairMaiden(), 1);
@@ -108,6 +131,25 @@ public class Model
         numberOfEachStoryCard.put(new SlayTheDragon(),1);
         numberOfEachStoryCard.put(new TestOfTheGreenKnight(), 1);
         numberOfEachStoryCard.put(new VanquishKingArthursEnemies(), 2);
+
+        //Events
+        numberOfEachStoryCard.put(new ChivalrousDeed(), 1);
+        numberOfEachStoryCard.put(new CourtCalledToCamelot(), 2);
+        numberOfEachStoryCard.put(new KingsCallToArms(), 1);
+        numberOfEachStoryCard.put(new KingsRecognition(), 2);
+        numberOfEachStoryCard.put(new Plague(), 1);
+        numberOfEachStoryCard.put(new Pox(), 1);
+        numberOfEachStoryCard.put(new ProsperityThroughoutTheRealm(), 1);
+        numberOfEachStoryCard.put(new QueensFavor(), 2);
+
+        //Tournaments
+        numberOfEachStoryCard.put(new TournamentAtCamelot(), 1);
+        numberOfEachStoryCard.put(new TournamentAtOrkney(), 1);
+        numberOfEachStoryCard.put(new TournamentAtTintagel(), 1);
+        numberOfEachStoryCard.put(new TournamentAtYork(), 1);
+
+        //Add each StoryCard to deckOfStoryCards
+
         for(StoryCard storyCard : numberOfEachStoryCard.keySet()){
             for(int i = 0; i < numberOfEachStoryCard.get(storyCard); i++) {
                 deckOfStoryCards.add(storyCard);
