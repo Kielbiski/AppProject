@@ -25,11 +25,12 @@ public class App extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("resources/CSS/StyleSheet.css");
         //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quest");
         primaryStage.show();
-        controller.gameLoop();
+      //  controller.gameLoop();
     }
 
     public static void main(String[] args) {
