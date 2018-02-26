@@ -1,16 +1,14 @@
 package quest;
 
 import javafx.event.EventHandler;
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
-import javafx.scene.control.Label;
 import javafx.fxml.FXML;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.text.TextAlignment;
 import sun.awt.image.BufImgVolatileSurfaceManager;
 
@@ -40,6 +38,8 @@ public class Controller {
     private Player currentTurnPlayer;
     private int NUM_PLAYERS = 4;
     @FXML
+    private Button continueButton;
+    @FXML
     private BorderPane mainBorderPane;
     @FXML
     private HBox cardsHbox;
@@ -47,6 +47,8 @@ public class Controller {
     private VBox playerStatsVbox;
 
     private AdventureCard selectedAdventureCard;
+    private HashMap<ImageView, AdventureCard> imageToObjectMap = new HashMap<>();
+
 
     private void update() {
         //Vbox display player data
@@ -93,10 +95,9 @@ public class Controller {
         }
         //Hbox display card images
         ArrayList<ImageView> imgViews = new ArrayList<>();
-        Stack<AdventureCard> playerHand = activePlayer.getCardsInHand();
+        ArrayList<AdventureCard> playerHand = activePlayer.getCardsInHand();
         playerHand.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
         playerHand.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
-        HashMap<ImageView, AdventureCard> imageToObjectMap = new HashMap<>();
         for (AdventureCard card : playerHand) {
             ImageView imgView = new ImageView();
             imgView.setPreserveRatio(true);
@@ -157,14 +158,53 @@ public class Controller {
         return winningPlayers;
     }
 
-    private void setupQuest(Player sponsor, Quest quest) {
+    private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
-        for (int i = 0; i < quest.getNumStage(); i++) {
+//        for (int i = 0; i < quest.getNumStage(); i++) {
+//
+//        }
+        activePlayer = sponsor;
+        GridPane sponsorSetup = new GridPane();
+        sponsorSetup.setAlignment(Pos.CENTER);
+        sponsorSetup.setHgap(10);
+        sponsorSetup.setVgap(10);
+        sponsorSetup.setPadding(new Insets(25, 25, 25, 25));
+        ImageView questImgView = new ImageView();
+        questImgView.setPreserveRatio(true);
+        questImgView.setFitHeight(100);
+        questImgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> questImgView.setFitHeight(300));
+        questImgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> questImgView.setFitHeight(100));
+        // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
+        questImgView.setImage(getCardImage(quest.getImageFilename()));
+        sponsorSetup.add(questImgView,0,0);
+        mainBorderPane.setCenter(sponsorSetup);
+        //BorderPane.setAlignment(currentTurnLabel, Pos.CENTER);
 
+        while(true){
+            ArrayList<AdventureCard> sponsorCards = new ArrayList<>();
+            if(selectedAdventureCard != null){
+                sponsor.removeCardFromHand(selectedAdventureCard);
+                sponsor.addCardToTable(selectedAdventureCard);
+                selectedAdventureCard = null;
+            }
+//            if(validCardOrdering()){//insert condition here to check that stages are in ascending order, no duplicate weapons, etc.)
+//                sponsorCards = sponsor.getCardsOnTable();
+//                break;
+//            } else {
+//                for(AdventureCard card : sponsor.getCardsOnTable()) {
+//                    sponsor.addCardToHand(card);
+//                    sponsor.removeCardFromTable(card);
+//                }
+            }
         }
-    }
+
+
+
+
+
+
 
     private void addQuestPlayers(Quest currentQuest){
         ArrayList<Player> questPlayers = new ArrayList<>();
@@ -241,7 +281,7 @@ private int nextPlayerIndex(int index){
                     sponsorQuest.showAndWait();
                     if (sponsorQuest.getResult() == ButtonType.YES) {
                         sponsor = game.getPlayers().get(currentPlayerIndex);
-                        setupQuest(sponsor, (Quest) game.getCurrentStory());
+                        performQuest(sponsor, (Quest) game.getCurrentStory());
                         break;
                     }
                 }
