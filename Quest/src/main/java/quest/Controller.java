@@ -1,5 +1,6 @@
 package quest;
 
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -12,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
 import sun.awt.image.BufImgVolatileSurfaceManager;
 
+import javax.swing.*;
 import java.awt.font.ImageGraphicAttribute;
 import java.io.File;
 import java.io.FileInputStream;
@@ -30,6 +32,10 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 //3: START MAKING METHODS FOR EACH GAME SCENARIO IE SHOW QUEST CARDS ETC LETS GO
 
 
+
+enum CardBehaviour {SPONSOR, QUEST_MEMBER, BID}
+
+
 public class Controller {
 
     private Model game = new Model();
@@ -37,18 +43,72 @@ public class Controller {
     private Player activePlayer;
     private Player currentTurnPlayer;
     private int NUM_PLAYERS = 4;
+    private int currentPlayerIndex = 0;
+    private AdventureCard selectedAdventureCard;
+    private HashMap<ImageView, AdventureCard> imageToAdventureObjectMap = new HashMap<>();
+    private CardBehaviour currentBehaviour;
+
+    ///FXML ELEMENTS
     @FXML
-    private Button continueButton;
+    private Button actionButton;
+    @FXML
+    private ImageView storyDeckImg;
+    @FXML
+    private ImageView activeStoryImg;
     @FXML
     private BorderPane mainBorderPane;
     @FXML
     private HBox cardsHbox;
     @FXML
     private VBox playerStatsVbox;
+    @FXML
+    private ImageView currentCardImage;
 
-    private AdventureCard selectedAdventureCard;
-    private HashMap<ImageView, AdventureCard> imageToObjectMap = new HashMap<>();
 
+
+    private ImageView createAdventureCardImageView(AdventureCard card){
+        ImageView imgView = new ImageView();
+        imgView.setPreserveRatio(true);
+        imgView.setFitHeight(100);
+        // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
+        imageToAdventureObjectMap.put(imgView, card);
+        selectedAdventureCard = imageToAdventureObjectMap.get(imgView);
+        imgView.getStyleClass().add("image-view-hand");
+        imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
+            currentCardImage.setImage(imgView.getImage());
+            currentCardImage.setPreserveRatio(true);
+            currentCardImage.setFitHeight(200);
+
+        });
+        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(null));
+        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+            if(currentBehaviour == CardBehaviour.SPONSOR){
+                game.getSponsor().removeCardFromHand(selectedAdventureCard);
+                game.getSponsor().addCardToTable(selectedAdventureCard);
+                System.out.println(game.getSponsor().getCardsOnTable());
+            }
+            else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+
+            }
+            else if(currentBehaviour ==CardBehaviour.BID){
+
+            }
+            imgView.setStyle(
+                    "-fx-border-color: #ff0000;\n" +
+                            " -fx-border-width: 10;" +
+                            "-fx-border-style: solid;\n");
+        });
+        return imgView;
+    }
+
+    private ImageView createStoryCardImageView(){
+        ImageView imgView = new ImageView();
+        imgView.setPreserveRatio(true);
+        imgView.setFitHeight(100);
+        imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> imgView.setFitHeight(300));
+        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imgView.setFitHeight(100));
+        return imgView;
+    }
 
     private void update() {
         //Vbox display player data
@@ -99,21 +159,7 @@ public class Controller {
         playerHand.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
         playerHand.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
         for (AdventureCard card : playerHand) {
-            ImageView imgView = new ImageView();
-            imgView.setPreserveRatio(true);
-            imgView.setFitHeight(100);
-            // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
-            imageToObjectMap.put(imgView, card);
-            imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> imgView.setFitHeight(300));
-            imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> imgView.setFitHeight(100));
-            imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-                imgView.setStyle(
-                        "-fx-border-color: #ff0000;\n" +
-                                " -fx-border-width: 10;" +
-                                "-fx-border-style: solid;\n");
-                selectedAdventureCard = imageToObjectMap.get(imgView);
-                System.out.println(selectedAdventureCard);
-            });
+            ImageView imgView = createAdventureCardImageView(card);
             imgView.setImage(getCardImage(card.getImageFilename()));
             imgViews.add(imgView);
         }
@@ -166,29 +212,9 @@ public class Controller {
 //
 //        }
         activePlayer = sponsor;
-        GridPane sponsorSetup = new GridPane();
-        sponsorSetup.setAlignment(Pos.CENTER);
-        sponsorSetup.setHgap(10);
-        sponsorSetup.setVgap(10);
-        sponsorSetup.setPadding(new Insets(25, 25, 25, 25));
-        ImageView questImgView = new ImageView();
-        questImgView.setPreserveRatio(true);
-        questImgView.setFitHeight(100);
-        questImgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> questImgView.setFitHeight(300));
-        questImgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> questImgView.setFitHeight(100));
-        // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
-        questImgView.setImage(getCardImage(quest.getImageFilename()));
-        sponsorSetup.add(questImgView,0,0);
-        mainBorderPane.setCenter(sponsorSetup);
-        //BorderPane.setAlignment(currentTurnLabel, Pos.CENTER);
+        currentBehaviour = CardBehaviour.SPONSOR;
 
-        while(true){
-            ArrayList<AdventureCard> sponsorCards = new ArrayList<>();
-            if(selectedAdventureCard != null){
-                sponsor.removeCardFromHand(selectedAdventureCard);
-                sponsor.addCardToTable(selectedAdventureCard);
-                selectedAdventureCard = null;
-            }
+        //ArrayList<AdventureCard> sponsorCards = new ArrayList<>();
 //            if(validCardOrdering()){//insert condition here to check that stages are in ascending order, no duplicate weapons, etc.)
 //                sponsorCards = sponsor.getCardsOnTable();
 //                break;
@@ -197,15 +223,7 @@ public class Controller {
 //                    sponsor.addCardToHand(card);
 //                    sponsor.removeCardFromTable(card);
 //                }
-            }
         }
-
-
-
-
-
-
-
     private void addQuestPlayers(Quest currentQuest){
         ArrayList<Player> questPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
@@ -227,6 +245,76 @@ public class Controller {
 //        alert with foe/weapon/test per stage
 //    check if bp is greater with successive stages
 
+    private int nextPlayerIndex(int index){
+        int nextIndex = index;
+        if(nextIndex >= 3){
+            nextIndex = 0;
+        } else{
+            nextIndex++;
+        }
+        return nextIndex;
+    }
+
+    public void continueAction(ActionEvent event){
+
+    }
+
+    public void storyDeckDraw(MouseEvent event){
+        currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
+        activePlayer = game.getPlayers().get(currentPlayerIndex);
+        game.drawStoryCard();
+        //activeStoryImg = createStoryCardImageView();
+        activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+        update();
+
+        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+        int currentTurn = game.getPlayers().indexOf(activePlayer);
+
+        for(int i = 0; i < NUM_PLAYERS; i++){
+            currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+            currentTurn = nextPlayerIndex(currentTurn);
+        }
+
+        if (game.getCurrentStory() instanceof Quest) {
+            Player sponsor;
+            for (Player player : currentPlayerOrder) {//////////////////////////////////////
+                activePlayer = player;
+                update();
+                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
+                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
+                sponsorQuest.showAndWait();
+                if (sponsorQuest.getResult() == ButtonType.YES) {
+                    sponsor = game.getPlayers().get(currentPlayerIndex);
+                    game.setSponsor(sponsor);
+                    performQuest(sponsor, (Quest) game.getCurrentStory());
+                    break;
+                }
+            }
+        } else if (game.getCurrentStory() instanceof Event) {
+            System.out.println("Event");
+        } else if (game.getCurrentStory() instanceof Tournament) {
+            System.out.println("Tournament");
+        }
+        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+        update();
+    }
+
+    public void initialize() {
+        setPlayerNames();
+        currentTurnPlayer = game.getPlayers().get(0);
+        activePlayer = game.getPlayers().get(0);
+        playerStatsVbox.setSpacing(5);
+        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
+        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
+
+        game.shuffleAndDeal();
+        //testing
+        game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
+        game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
+
+        //storyDeckImg.setOnMouseClicked(this::storyDeckDraw);
+        update();
+    }
 
 
     private void setPlayerNames(){
@@ -242,76 +330,6 @@ public class Controller {
             // The Java 8 way to get the response value (with lambda expression).
             result.ifPresent(name -> game.addPlayer(name));
         }
-    }
-
-private int nextPlayerIndex(int index){
-    int nextIndex = index;
-    if(nextIndex >= 3){
-        nextIndex = 0;
-    } else{
-        nextIndex++;
-    }
-    return nextIndex;
-}
-
-    void gameLoop() {
-        int currentPlayerIndex = 0;
-        while (true) {
-            currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
-            activePlayer = game.getPlayers().get(currentPlayerIndex);
-            update();
-            //PUT BUTTON HERE
-            game.drawStoryCard();
-
-            ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-            int currentTurn = game.getPlayers().indexOf(activePlayer);
-
-            for(int i = 0; i < NUM_PLAYERS; i++){
-                currentPlayerOrder.add(game.getPlayers().get(currentTurn));
-                currentTurn = nextPlayerIndex(currentTurn);
-            }
-
-            if (game.getCurrentStory() instanceof Quest) {
-                Player sponsor;
-                for (Player player : currentPlayerOrder) {//////////////////////////////////////
-                    activePlayer = player;
-                    update();
-                    Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
-                    sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-                    sponsorQuest.showAndWait();
-                    if (sponsorQuest.getResult() == ButtonType.YES) {
-                        sponsor = game.getPlayers().get(currentPlayerIndex);
-                        performQuest(sponsor, (Quest) game.getCurrentStory());
-                        break;
-                    }
-                }
-            } else if (game.getCurrentStory() instanceof Event) {
-                System.out.println("Event");
-            } else if (game.getCurrentStory() instanceof Tournament) {
-                System.out.println("Tournament");
-            }
-
-//            if(isGameOver()){
-//                System.exit(0);
-//            }
-
-            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-        }
-    }
-
-    public void initialize() {
-        setPlayerNames();
-        currentTurnPlayer = game.getPlayers().get(0);
-        activePlayer = game.getPlayers().get(0);
-        playerStatsVbox.setSpacing(5);
-        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
-        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
-
-        game.shuffleAndDeal();
-        //testing
-        game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
-        game.getPlayers().get(1).setPlayerRank(KNIGHT_OF_THE_ROUND_TABLE);
-        update();
     }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
