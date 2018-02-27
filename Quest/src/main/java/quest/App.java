@@ -34,7 +34,7 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        logger.info("App has been Launched ");
         launch(args);
     }
 }
-
