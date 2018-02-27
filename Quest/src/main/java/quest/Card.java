@@ -14,7 +14,7 @@ public class Card {
 
         name = paramName;
         imageFilename = paramImageFilename;
-        logger.info("Successfully called: Card constructor");
+        logger.info("Successfully called Card: "+ name+" constructor");
 
     }
 
