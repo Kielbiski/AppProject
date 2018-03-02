@@ -1,5 +1,8 @@
 package quest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -7,6 +10,8 @@ import java.util.Stack;
 
 public class Model
 {
+    private static final Logger logger = LogManager.getLogger(App.class);
+
     private ArrayList<Player> players = new ArrayList<>();
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
@@ -16,14 +21,17 @@ public class Model
     private int NUM_CARDS = 12;
 
     public StoryCard getCurrentStory() {
+        logger.info("Returning current story.");
         return currentStory;
     }
 
     public Player getSponsor() {
+        logger.info("Returning the sponsor.");
         return sponsor;
     }
 
     public void setSponsor(Player sponsor) {
+        logger.info("Set the sponsor.");
         this.sponsor = sponsor;
     }
 
@@ -49,6 +57,7 @@ public class Model
         allFoes.add(new SaxonKnight());
         allFoes.add(new Saxons());
         allFoes.add(new Thieves());
+        logger.info("storing all foes in allFoess array");
 
         ArrayList<Weapon> allWeapons = new ArrayList<>();
         allWeapons.add(new BattleAx());
@@ -57,6 +66,7 @@ public class Model
         allWeapons.add(new Horse());
         allWeapons.add(new Lance());
         allWeapons.add(new Sword());
+        logger.info("storing all weapons in allWeapons array");
 
         //Quest
 
@@ -72,6 +82,8 @@ public class Model
         allQuests.add(new SlayTheDragon());
         allQuests.add(new TestOfTheGreenKnight());
         allQuests.add(new VanquishKingArthursEnemies());
+        logger.info("storing all quest in allQuests array");
+
 
         //Events
         ArrayList<Event> allEvents = new ArrayList<>();
@@ -83,6 +95,7 @@ public class Model
         allEvents.add(new Pox());
         allEvents.add(new ProsperityThroughoutTheRealm());
         allEvents.add(new QueensFavor());
+        logger.info("storing all events in allEvents array");
 
 
         //Create HashMap to store number of occurrences of each AdventureCard
@@ -101,6 +114,7 @@ public class Model
         numberOfEachAdventureCard.put(new SaxonKnight(), 8);
         numberOfEachAdventureCard.put(new Saxons(), 5);
         numberOfEachAdventureCard.put(new Thieves(), 8);
+        logger.info("storing all foes and their instances in numberOfEachAdventureCard HashMap");
 
         //Weapons
         numberOfEachAdventureCard.put(new BattleAx(), 8);
@@ -109,6 +123,7 @@ public class Model
         numberOfEachAdventureCard.put(new Horse(), 11);
         numberOfEachAdventureCard.put(new Lance(), 6);
         numberOfEachAdventureCard.put(new Sword(), 16);
+        logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
 
         //Add each AdventureCard to deckOfAdventureCards
 
@@ -117,6 +132,7 @@ public class Model
                 deckOfAdventureCards.add(adventureCard);
             }
         }
+        logger.info("storing all adventure cards into the deck of adventure cards.");
 
         //Create HashMap to store number of occurrences of each StoryCard
 
@@ -131,6 +147,7 @@ public class Model
         numberOfEachStoryCard.put(new SlayTheDragon(),1);
         numberOfEachStoryCard.put(new TestOfTheGreenKnight(), 1);
         numberOfEachStoryCard.put(new VanquishKingArthursEnemies(), 2);
+        logger.info("storing all quests and their instances in numberOfEachStoryCard HashMap");
 
         //Events
         numberOfEachStoryCard.put(new ChivalrousDeed(), 1);
@@ -141,12 +158,14 @@ public class Model
         numberOfEachStoryCard.put(new Pox(), 1);
         numberOfEachStoryCard.put(new ProsperityThroughoutTheRealm(), 1);
         numberOfEachStoryCard.put(new QueensFavor(), 2);
+        logger.info("storing all events and their instances in numberOfEachStoryCard HashMap");
 
         //Tournaments
         numberOfEachStoryCard.put(new TournamentAtCamelot(), 1);
         numberOfEachStoryCard.put(new TournamentAtOrkney(), 1);
         numberOfEachStoryCard.put(new TournamentAtTintagel(), 1);
         numberOfEachStoryCard.put(new TournamentAtYork(), 1);
+        logger.info("storing all tournaments and their instances in numberOfEachStoryCard HashMap");
 
         //Add each StoryCard to deckOfStoryCards
 
@@ -155,35 +174,44 @@ public class Model
                 deckOfStoryCards.add(storyCard);
             }
         }
+
+        logger.info("storing all story cards into the deck of story cards.");
     }
 
     public ArrayList<Player> getPlayers() {
+        logger.info("Returning list of player in game.");
         return players;
     }
 
     public Stack<AdventureCard> getDeckOfAdventureCards() {
+        logger.info("Returning deck of adventure cards.");
         return deckOfAdventureCards;
     }
 
     public Stack<StoryCard> getDeckOfStoryCards() {
+        logger.info("Returning deck of story cards.");
         return deckOfStoryCards;
     }
 
     public int getCurrentTurnIndex() {
+        logger.info("Returning current index for player turn.");
         return currentTurnIndex;
     }
 
     public void nextTurn(){
         if(currentTurnIndex == 3){
             currentTurnIndex = 0 ;
+            logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
         else{
             currentTurnIndex++;
+            logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
     }
 
     public void addPlayer(String name){
         players.add(new Player(name));
+        logger.info(name + "is joining the game.");
     }
 
     void shuffleAndDeal(){
@@ -195,16 +223,19 @@ public class Model
                 }
             }
         }
+        logger.info(" Deal 12 cards to each players.");
     }
 
     void drawAdventureCard(Player currentPlayer){
+        logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
     }
 
     void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
             currentStory = deckOfStoryCards.pop();
-            System.out.println("drawStoryCard(): " + currentStory.getName());
+            logger.info("Draw card from story deck.");
         }
     }
 }
+
