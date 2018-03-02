@@ -45,7 +45,6 @@ public class Controller {
     private int NUM_PLAYERS = 4;
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
-    private HashMap<ImageView, AdventureCard> imageToAdventureObjectMap = new HashMap<>();
     private CardBehaviour currentBehaviour;
 
     ///FXML ELEMENTS
@@ -71,8 +70,7 @@ public class Controller {
         imgView.setPreserveRatio(true);
         imgView.setFitHeight(100);
         // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
-        imageToAdventureObjectMap.put(imgView, card);
-        selectedAdventureCard = imageToAdventureObjectMap.get(imgView);
+        selectedAdventureCard = card;
         imgView.getStyleClass().add("image-view-hand");
         imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             currentCardImage.setImage(imgView.getImage());
@@ -262,7 +260,9 @@ public class Controller {
     public void storyDeckDraw(MouseEvent event){
         currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
         activePlayer = game.getPlayers().get(currentPlayerIndex);
+
         game.drawStoryCard();
+        System.out.println("storyDeckDraw(): " + game.getCurrentStory().getName());
         //activeStoryImg = createStoryCardImageView();
         activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
         update();

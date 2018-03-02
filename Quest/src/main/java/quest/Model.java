@@ -204,6 +204,7 @@ public class Model
     void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
             currentStory = deckOfStoryCards.pop();
+            System.out.println("drawStoryCard(): " + currentStory.getName());
         }
     }
 }
