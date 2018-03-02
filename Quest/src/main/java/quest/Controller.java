@@ -7,7 +7,7 @@ import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
@@ -62,6 +62,18 @@ public class Controller {
     private VBox playerStatsVbox;
     @FXML
     private ImageView currentCardImage;
+    @FXML
+    private GridPane stagesGridPane;
+    @FXML
+    private VBox stage1Vbox;
+    @FXML
+    private VBox stage2Vbox;
+    @FXML
+    private VBox stage3Vbox;
+    @FXML
+    private VBox stage4Vbox;
+    @FXML
+    private VBox stage5Vbox;
 
 
 
@@ -70,7 +82,7 @@ public class Controller {
         imgView.setPreserveRatio(true);
         imgView.setFitHeight(100);
         // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
-        selectedAdventureCard = card;
+        //selectedAdventureCard = card;
         imgView.getStyleClass().add("image-view-hand");
         imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             currentCardImage.setImage(imgView.getImage());
@@ -79,23 +91,32 @@ public class Controller {
 
         });
         imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(null));
-        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(currentBehaviour == CardBehaviour.SPONSOR){
-                game.getSponsor().removeCardFromHand(selectedAdventureCard);
-                game.getSponsor().addCardToTable(selectedAdventureCard);
-                System.out.println(game.getSponsor().getCardsOnTable());
-            }
-            else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
-
-            }
-            else if(currentBehaviour ==CardBehaviour.BID){
-
-            }
-            imgView.setStyle(
-                    "-fx-border-color: #ff0000;\n" +
-                            " -fx-border-width: 10;" +
-                            "-fx-border-style: solid;\n");
+        imgView.setOnDragDetected((MouseEvent event) -> {
+            selectedAdventureCard = card;
+            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+            ClipboardContent content = new ClipboardContent();
+            // Store node ID in order to know what is dragged.
+            content.putString(card.getName());
+            db.setContent(content);
+            event.consume();
         });
+//        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+//            if(currentBehaviour == CardBehaviour.SPONSOR){
+//                game.getSponsor().removeCardFromHand(selectedAdventureCard);
+//                game.getSponsor().addCardToTable(selectedAdventureCard);
+//                System.out.println(game.getSponsor().getCardsOnTable());
+//            }
+//            else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+//
+//            }
+//            else if(currentBehaviour ==CardBehaviour.BID){
+//
+//            }
+//            imgView.setStyle(
+//                    "-fx-border-color: #ff0000;\n" +
+//                            " -fx-border-width: 10;" +
+//                            "-fx-border-style: solid;\n");
+//        });
         return imgView;
     }
 
@@ -254,6 +275,34 @@ public class Controller {
     }
 
     public void continueAction(ActionEvent event){
+
+    }
+
+    public void stageSetupDragDropped(DragEvent event){
+//
+//        Dragboard db = event.getDragboard();
+//            // Get item id here, which was stored when the drag started.
+//            boolean success = false;
+//            // If this is a meaningful drop...
+//            if (db.hasString()) {
+//                String nodeId = db.getString();
+//                // ...search for the item on body. If it is there...
+//                ImageView cloth = (ImageView) bodyPane.lookup("#" + nodeId);
+//                if (cloth != null) {
+//                    // ... the item is removed from body
+//                    // and added to an unequipped container.
+//                    bodyPane.getChildren().remove(cloth);
+//                    itemPane.getChildren().add(cloth);
+//                    success = true;
+//                }
+//                // ...anyway, the item is not active or equipped anymore.
+//                items.get(nodeId).takeOff();
+//            }
+//            event.setDropCompleted(success);
+//            event.consume();c
+    }
+
+    public void stageSetupDragOver(DragEvent event){
 
     }
 
