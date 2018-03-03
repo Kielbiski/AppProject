@@ -92,7 +92,7 @@ public class Controller {
             currentCardImage.toBack();
 
         });
-        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(new Image("../Assets/FacedownAdventure.png")));
+        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(new Image("../Cards/FacedownAdventure.png")));
         imgView.setOnDragDetected((MouseEvent event) -> {
             selectedAdventureCard = card;
             Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);

@@ -1,0 +1,17 @@
+.alertDialogs{
+    -fx-background-color: #161616;
+}
+.alertDialogs > *.button-bar > *.container{
+    -fx-background-color: #202020;
+}
+.alertDialogs > *.label.content{
+    -fx-font-size: 14px;
+}
+.alertDialogs:header *.header-panel{
+    -fx-background-color: #161616;
+}
+.alertDialogs:header *.header-panel *.label{
+    -fx-font-size: 14px;
+    -fx-font-style: italic;
+    -fx-fill: #F2F2F2;
+}
