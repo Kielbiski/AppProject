@@ -65,15 +65,15 @@ public class Controller {
     @FXML
     private GridPane stagesGridPane;
     @FXML
-    private VBox stage1Vbox;
+    private FlowPane stage1Flowpane;
     @FXML
-    private VBox stage2Vbox;
+    private FlowPane stage2Flowpane;
     @FXML
-    private VBox stage3Vbox;
+    private FlowPane stage3Flowpane;
     @FXML
-    private VBox stage4Vbox;
+    private FlowPane stage4Flowpane;
     @FXML
-    private VBox stage5Vbox;
+    private FlowPane stage5Flowpane;
 
 
 
@@ -93,15 +93,17 @@ public class Controller {
 
         });
         imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(getCardImage("FacedownAdventure.png")));
-        imgView.setOnDragDetected((MouseEvent event) -> {
-            selectedAdventureCard = card;
-            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            // Store node ID in order to know what is dragged.
-            content.putString(card.getName());
-            db.setContent(content);
-            event.consume();
-        });
+        if(currentBehaviour == CardBehaviour.SPONSOR) {
+            imgView.setOnDragDetected((MouseEvent event) -> {
+                selectedAdventureCard = card;
+                Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+                ClipboardContent content = new ClipboardContent();
+                // Store node ID in order to know what is dragged.
+                content.putString(card.getName());
+                db.setContent(content);
+                event.consume();
+            });
+        }
 //        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 //            if(currentBehaviour == CardBehaviour.SPONSOR){
 //                game.getSponsor().removeCardFromHand(selectedAdventureCard);
@@ -185,6 +187,16 @@ public class Controller {
             imgViews.add(imgView);
         }
         cardsHbox.getChildren().addAll(imgViews);
+
+        if(currentBehaviour == CardBehaviour.SPONSOR) {
+            stage1Flowpane.getChildren().clear();
+            for (AdventureCard card : game.getPreQuestStageSetup()) {
+                ImageView imgView = createAdventureCardImageView(card);
+                imgView.setImage(getCardImage(card.getImageFilename()));
+                imgView.toFront();
+                stage1Flowpane.getChildren().add(imgView);
+            }
+        }
 
     }
 
@@ -287,31 +299,26 @@ public class Controller {
     }
 
     public void stageSetupDragDropped(DragEvent event){
-//
-//        Dragboard db = event.getDragboard();
-//            // Get item id here, which was stored when the drag started.
-//            boolean success = false;
-//            // If this is a meaningful drop...
-//            if (db.hasString()) {
-//                String nodeId = db.getString();
-//                // ...search for the item on body. If it is there...
-//                ImageView cloth = (ImageView) bodyPane.lookup("#" + nodeId);
-//                if (cloth != null) {
-//                    // ... the item is removed from body
-//                    // and added to an unequipped container.
-//                    bodyPane.getChildren().remove(cloth);
-//                    itemPane.getChildren().add(cloth);
-//                    success = true;
-//                }
-//                // ...anyway, the item is not active or equipped anymore.
-//                items.get(nodeId).takeOff();
-//            }
-//            event.setDropCompleted(success);
-//            event.consume();c
+        Dragboard db = event.getDragboard();
+            // Get item id here, which was stored when the drag started.
+            boolean success = false;
+            // If this is a meaningful drop...
+            if (db.hasString()) {
+                game.addToPotentialStage(selectedAdventureCard);
+                game.getSponsor().removeCardFromHand(selectedAdventureCard);
+                success = true;
+            }
+            event.setDropCompleted(success);
+            event.consume();
+            update();
     }
 
     public void stageSetupDragOver(DragEvent event){
-
+        Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+        }
+        event.consume();
     }
 
     public void storyDeckDraw(MouseEvent event){

@@ -13,10 +13,15 @@ public class Model
     private ArrayList<Player> players = new ArrayList<>();
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
+    private ArrayList<AdventureCard> preQuestStageSetup = new ArrayList<>();
     private StoryCard currentStory;
     private Player sponsor;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
+
+    public ArrayList<AdventureCard> getPreQuestStageSetup() {
+        return preQuestStageSetup;
+    }
 
     public StoryCard getCurrentStory() {
         logger.info("Returning current story.");
@@ -264,6 +269,11 @@ public class Model
     void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
+    }
+
+    void addToPotentialStage(AdventureCard card){
+        preQuestStageSetup.add(card);
+
     }
 
     void drawStoryCard(){

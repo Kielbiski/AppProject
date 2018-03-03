@@ -5,10 +5,17 @@
      -fx-background-position: center center;
 }
 .playerLabels {
-    -fx-background-image: url("../Assets/playerIndicators.png");
-     -fx-background-repeat: stretch;
-     -fx-background-size: 1280 720;
-     -fx-background-position: center center;
+     -fx-background-image: url("../Assets/playerIndicators.png");
+      -fx-background-repeat: stretch;
+      -fx-background-size: 1280 720;
+      -fx-background-position: center center;
+ }
+
+.stageCards {
+      -fx-background-image: url("../Assets/stageBanner.png");
+       -fx-background-repeat: no-repeat;
+       -fx-background-size: 300 400;
+       -fx-background-position: center center;
 }
 
 .activeCard {
@@ -63,16 +70,16 @@
     -fx-background-image: url("../Assets/handArea.png");
     -fx-background-repeat: stretch;
     -fx-background-size: 1280 108;
-    -fx-background-position: center center;
+    -fx-background-position: top center;
 
 }
 
 .image-view-hand{
-    -fx-cursor: hand;
     -fx-padding:0 50 0 50;
 }
 
 .image-view-hand:hover{
+    -fx-cursor: hand;
     -fx-translate-y: -10;
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
