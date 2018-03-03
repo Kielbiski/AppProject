@@ -5,3 +5,5 @@ compiler.xml
 .idea/
 *.class
 .DS_Store
+*.log
+*.gz
