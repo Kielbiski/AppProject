@@ -80,14 +80,15 @@ public class Controller {
     private ImageView createAdventureCardImageView(AdventureCard card){
         ImageView imgView = new ImageView();
         imgView.setPreserveRatio(true);
-        imgView.setFitHeight(100);
+        imgView.setFitHeight(75);
         // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
         //selectedAdventureCard = card;
         imgView.getStyleClass().add("image-view-hand");
         imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             currentCardImage.setImage(imgView.getImage());
             currentCardImage.setPreserveRatio(true);
-            currentCardImage.setFitHeight(200);
+            currentCardImage.setFitHeight(250);
+            currentCardImage.toBack();
 
         });
         imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(null));

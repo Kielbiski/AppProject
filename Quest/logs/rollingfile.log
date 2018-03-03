@@ -1,2 +1,273 @@
-[INFO ] 2018-02-04 14:47:01.733 [JavaFX Application Thread] GameScreen - hi
-[INFO ] 2018-02-04 14:47:24.582 [JavaFX Application Thread] GameScreen - hi
+[INFO ] 2018-03-03 12:33:27.486 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.488 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.488 [JavaFX Application Thread] App - Draw card from story deck.
+[INFO ] 2018-03-03 12:33:27.488 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:27.488 [JavaFX Application Thread] App - Returning Card: Tournament at Camelot
+[INFO ] 2018-03-03 12:33:27.488 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:27.488 [JavaFX Application Thread] App - Returning Card: Tournament at Camelot image
+[INFO ] 2018-03-03 12:33:27.549 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.550 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:27.550 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:27.550 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:27.550 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:27.550 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:27.551 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-03 12:33:27.571 [JavaFX Application Thread] App - Returning Card: Boar image
+[INFO ] 2018-03-03 12:33:27.590 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-03 12:33:27.610 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:27.629 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:27.648 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-03 12:33:27.671 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-03 12:33:27.691 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-03 12:33:27.921 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-03 12:33:27.944 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:27.962 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:27.981 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:27.999 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:28.000 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:28.000 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:28.000 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:28.000 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:28.000 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:28.000 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:28.001 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-03 12:33:28.022 [JavaFX Application Thread] App - Returning Card: Boar image
+[INFO ] 2018-03-03 12:33:28.040 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-03 12:33:28.058 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:28.075 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:28.093 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-03 12:33:28.112 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-03 12:33:28.130 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-03 12:33:28.152 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-03 12:33:28.172 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:28.194 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:28.216 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Draw card from story deck.
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Returning Card: Pox
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:29.169 [JavaFX Application Thread] App - Returning Card: Pox image
+[INFO ] 2018-03-03 12:33:29.189 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.190 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.190 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.190 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.190 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.191 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:29.192 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-03 12:33:29.210 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-03 12:33:29.228 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-03 12:33:29.247 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:29.264 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:29.282 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:29.302 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:29.321 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-03 12:33:29.340 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:29.465 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:29.485 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:29.502 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:29.518 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.519 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.520 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.520 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.520 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.520 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.520 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:29.521 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-03 12:33:29.539 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-03 12:33:29.558 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-03 12:33:29.576 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:29.592 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:29.609 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:29.626 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:29.643 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-03 12:33:29.661 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:29.678 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:29.700 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:29.721 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Draw card from story deck.
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Returning Card: Queen's Favor
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:31.325 [JavaFX Application Thread] App - Returning Card: Queen's Favor image
+[INFO ] 2018-03-03 12:33:31.345 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.345 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.346 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.346 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.346 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.346 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.346 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:31.347 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-03 12:33:31.365 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-03 12:33:31.384 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-03 12:33:31.404 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:31.421 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:31.438 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:31.455 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:31.472 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-03 12:33:31.610 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-03 12:33:31.630 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:31.649 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:31.666 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:31.684 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.684 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.684 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.684 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.684 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.684 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.685 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:31.686 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-03 12:33:31.705 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-03 12:33:31.723 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-03 12:33:31.749 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-03 12:33:31.769 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:31.786 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:31.803 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-03 12:33:31.820 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-03 12:33:31.840 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-03 12:33:31.860 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:31.880 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:31.900 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Draw card from story deck.
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Returning Card: Queen's Favor
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:33.271 [JavaFX Application Thread] App - Returning Card: Queen's Favor image
+[INFO ] 2018-03-03 12:33:33.289 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.290 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.290 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.290 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.290 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:33.291 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-03 12:33:33.310 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-03 12:33:33.329 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-03 12:33:33.346 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-03 12:33:33.365 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-03 12:33:33.382 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-03 12:33:33.399 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:33.417 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:33.548 [JavaFX Application Thread] App - Returning Card: Excalibur image
+[INFO ] 2018-03-03 12:33:33.574 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-03 12:33:33.596 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-03 12:33:33.616 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.634 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name rank.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name number of card on hand.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Enter Name cards on hand.
+[INFO ] 2018-03-03 12:33:33.635 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-03 12:33:33.654 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-03 12:33:33.672 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-03 12:33:33.693 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-03 12:33:33.710 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-03 12:33:33.730 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-03 12:33:33.748 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:33.767 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-03 12:33:33.791 [JavaFX Application Thread] App - Returning Card: Excalibur image
+[INFO ] 2018-03-03 12:33:33.814 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-03 12:33:33.836 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-03 12:33:33.857 [JavaFX Application Thread] App - Returning Card: Sword image
