@@ -84,14 +84,15 @@ public class Controller {
         // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
         //selectedAdventureCard = card;
         imgView.getStyleClass().add("image-view-hand");
+        ImageView defaultImage = new ImageView();
         imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             currentCardImage.setImage(imgView.getImage());
             currentCardImage.setPreserveRatio(true);
-            currentCardImage.setFitHeight(250);
+            currentCardImage.setFitHeight(160);
             currentCardImage.toBack();
 
         });
-        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(null));
+        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(new Image("../Assets/FacedownAdventure.png")));
         imgView.setOnDragDetected((MouseEvent event) -> {
             selectedAdventureCard = card;
             Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
@@ -192,6 +193,9 @@ public class Controller {
         if(winningPlayers.size() > 0){
             for(Player winningPlayer : winningPlayers) {
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, winningPlayer.getPlayerName() + " won the game!", ButtonType.OK);
+                DialogPane dialog = alert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
                 alert.showAndWait();
             }
             return true;
@@ -251,6 +255,9 @@ public class Controller {
                 activePlayer = game.getPlayers().get(i);
                 update();
                 Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
+                DialogPane dialog = questAlert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
                 questAlert.setHeaderText("Join " + game.getCurrentStory().getName() + "?");
                 questAlert.showAndWait();
                 if (questAlert.getResult() == ButtonType.YES) {
@@ -331,6 +338,9 @@ public class Controller {
                 activePlayer = player;
                 update();
                 Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
+                DialogPane dialog = sponsorQuest.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
                 sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
                 sponsorQuest.showAndWait();
                 if (sponsorQuest.getResult() == ButtonType.YES) {

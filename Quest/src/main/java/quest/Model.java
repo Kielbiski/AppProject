@@ -3,10 +3,8 @@ package quest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Stack;
+import java.lang.reflect.Array;
+import java.util.*;
 
 public class Model
 {
@@ -34,6 +32,24 @@ public class Model
         logger.info("Set the sponsor.");
         this.sponsor = sponsor;
     }
+
+//    private boolean validQuestStages(ArrayList<List<AdventureCard>> possibleStages) {
+//        int stageBattlePoints = 0;
+//        for (List<AdventureCard> stage : possibleStages) {
+//            for (AdventureCard adventureCard : stage) {
+//                if ((adventureCard instanceof Test) && (stage.size() > 1)) {
+//                    return false;
+//                }
+//                stageBattlePoints += adventureCard.getBattlePoints();
+//            }
+//            if stageBattlePoints >
+//        }
+//        return true;
+//    }
+//
+//    private void generateStages(ArrayList<> possibleStages) {
+
+//    }
 
     Model() {
 

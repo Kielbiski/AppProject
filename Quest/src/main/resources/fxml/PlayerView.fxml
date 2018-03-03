@@ -60,7 +60,7 @@
                   <ImageView fx:id="activeStoryImg" fitHeight="150.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
                   <ImageView fx:id="storyDeckImg" fitHeight="100.0" fitWidth="75.0" onMouseClicked="#storyDeckDraw" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <image>
-                        <Image url="@../Cards/FacedownStory.jpg" />
+                        <Image url="@../Cards/FacedownStory.png" />
                      </image>
                      <cursor>
                         <Cursor fx:constant="HAND" />
