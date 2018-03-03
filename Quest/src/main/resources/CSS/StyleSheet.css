@@ -1,5 +1,29 @@
 .background {
-    -fx-background-color: #1d1d1d;
+    -fx-background-image: url("../Assets/gameBackground.png");
+     -fx-background-repeat: stretch;
+     -fx-background-size: 1280 720;
+     -fx-background-position: center center;
+}
+.playerLabels {
+    -fx-background-image: url("../Assets/playerIndicators.png");
+     -fx-background-repeat: stretch;
+     -fx-background-size: 1280 720;
+     -fx-background-position: center center;
+}
+
+.activeCard {
+    -fx-background-image: url("../Assets/cardBorder.png");
+     -fx-background-repeat: no-repeat;
+     -fx-background-size: 170 250;
+     -fx-background-position: center center;
+}
+
+
+.middleArea {
+    -fx-background-image: url("../Assets/middleArea.png");
+     -fx-background-repeat: no-repeat;
+     -fx-background-size: 900 447;
+     -fx-background-position: center top;
 }
 
 .label {
@@ -25,10 +49,22 @@
 
 .button{
 
-    -fx-background-color:  derive(#1d1d1d,20%);
+    -fx-background-image: url("../Assets/nextTurn.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 126 44;
+    -fx-background-position: center center;
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";
     -fx-text-fill: white;
+}
+
+.hboxHand{
+
+    -fx-background-image: url("../Assets/handArea.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 1280 108;
+    -fx-background-position: center center;
+
 }
 
 .image-view-hand{
@@ -41,63 +77,4 @@
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-scale-z: 1.1;
-}
-
-.table-view {
-    -fx-base: #1d1d1d;
-    -fx-control-inner-background: #1d1d1d;
-    -fx-background-color: #1d1d1d;
-    -fx-table-cell-border-color: transparent;
-    -fx-table-header-border-color: transparent;
-    -fx-padding: 5;
-}
-
-.table-view .column-header-background {
-    -fx-background-color: transparent;
-}
-
-.table-view .column-header, .table-view .filler {
-    -fx-size: 35;
-    -fx-border-width: 0 0 1 0;
-    -fx-background-color: transparent;
-    -fx-border-color:
-        transparent
-        transparent
-        derive(-fx-base, 80%)
-        transparent;
-    -fx-border-insets: 0 10 1 0;
-}
-
-.table-view .column-header .label {
-    -fx-font-size: 20pt;
-    -fx-font-family: "Segoe UI Light";
-    -fx-text-fill: white;
-    -fx-alignment: center-left;
-    -fx-opacity: 1;
-}
-
-.table-view:focused .table-row-cell:filled:focused:selected {
-    -fx-background-color: -fx-focus-color;
-}
-
-.split-pane:horizontal > .split-pane-divider {
-    -fx-border-color: transparent #1d1d1d transparent #1d1d1d;
-    -fx-background-color: transparent, derive(#1d1d1d,20%);
-}
-
-.split-pane {
-    -fx-padding: 1 0 0 0;
-}
-
-.menu-bar {
-    -fx-background-color: derive(#1d1d1d,20%);
-}
-
-.context-menu {
-    -fx-background-color: derive(#1d1d1d,50%);
-}
-
-.menu-bar .label {
-    -fx-font-size: 14pt;
-    -fx-font-family: "Segoe UI Light";
 }
