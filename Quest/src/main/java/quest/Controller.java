@@ -88,11 +88,11 @@ public class Controller {
         imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
             currentCardImage.setImage(imgView.getImage());
             currentCardImage.setPreserveRatio(true);
-            currentCardImage.setFitHeight(160);
+            currentCardImage.setFitHeight(190);
             currentCardImage.toBack();
 
         });
-        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(new Image("../Cards/FacedownAdventure.png")));
+        imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(getCardImage("FacedownAdventure.png")));
         imgView.setOnDragDetected((MouseEvent event) -> {
             selectedAdventureCard = card;
             Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
@@ -255,10 +255,10 @@ public class Controller {
                 activePlayer = game.getPlayers().get(i);
                 update();
                 Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
+                questAlert.setHeaderText("Join " + game.getCurrentStory().getName() + "?");
                 DialogPane dialog = questAlert.getDialogPane();
                 dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
                 dialog.getStyleClass().add("alertDialogs");
-                questAlert.setHeaderText("Join " + game.getCurrentStory().getName() + "?");
                 questAlert.showAndWait();
                 if (questAlert.getResult() == ButtonType.YES) {
                     questPlayers.add(game.getPlayers().get(i));
@@ -383,6 +383,9 @@ public class Controller {
             TextInputDialog dialog = new TextInputDialog("Enter Name");
             dialog.setTitle("Set Player name");
             dialog.setHeaderText("Player " + (i+1) + " enter your name");
+            DialogPane dialogPane = dialog.getDialogPane();
+            dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+            dialogPane.getStyleClass().add("alertDialogs");
             // dialog.setContentText("Please enter your name:");
 
             Optional<String> result = dialog.showAndWait();

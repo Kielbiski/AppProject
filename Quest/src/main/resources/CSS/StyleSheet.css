@@ -50,8 +50,8 @@
 .button{
 
     -fx-background-image: url("../Assets/nextTurn.png");
-    -fx-background-repeat: stretch;
-    -fx-background-size: 126 44;
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 192 48;
     -fx-background-position: center center;
     -fx-font-size: 11pt;
     -fx-font-family: "Segoe UI Semibold";

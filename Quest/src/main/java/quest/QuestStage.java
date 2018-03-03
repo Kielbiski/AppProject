@@ -17,8 +17,11 @@ public class QuestStage {
         this.participatingPlayers = participatingPlayers;
     }
 
-    public ArrayList<Player> getParticipatingPlayers() {
+    ArrayList<Player> getParticipatingPlayers() {
         logger.info("Returning quest stage participants");
         return participatingPlayers;
+    }
+    public void setParticipatingPlayers(ArrayList<Player> participatingPlayers){
+        this.participatingPlayers = participatingPlayers;
     }
 }

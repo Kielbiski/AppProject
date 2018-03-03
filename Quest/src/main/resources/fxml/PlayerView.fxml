@@ -100,13 +100,13 @@
           <RowConstraints maxHeight="382.6982116699219" minHeight="10.0" prefHeight="242.85922241210938" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="actionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#continueAction" prefHeight="44.0" prefWidth="126.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+            <Button fx:id="actionButton" alignment="CENTER" contentDisplay="CENTER" mnemonicParsing="false" onAction="#continueAction" prefHeight="48.0" prefWidth="192.0" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
             <Pane prefHeight="283.0" prefWidth="207.0" styleClass="activeCard" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-            <ImageView fx:id="currentCardImage" fitHeight="150.0" onMouseClicked="#storyDeckDraw" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <ImageView fx:id="currentCardImage" fitHeight="200.0" onMouseClicked="#storyDeckDraw" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

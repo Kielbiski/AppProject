@@ -33,23 +33,42 @@ public class Model
         this.sponsor = sponsor;
     }
 
-//    private boolean validQuestStages(ArrayList<List<AdventureCard>> possibleStages) {
-//        int stageBattlePoints = 0;
-//        for (List<AdventureCard> stage : possibleStages) {
-//            for (AdventureCard adventureCard : stage) {
-//                if ((adventureCard instanceof Test) && (stage.size() > 1)) {
-//                    return false;
-//                }
-//                stageBattlePoints += adventureCard.getBattlePoints();
-//            }
-//            if stageBattlePoints >
-//        }
-//        return true;
-//    }
-//
-//    private void generateStages(ArrayList<> possibleStages) {
+    private QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
+        for(AdventureCard adventureCard : cardsForStage) {
+            if (adventureCard instanceof Foe) {
+                return new FoeStage(cardsForStage, new ArrayList<>());
+            } else if (adventureCard instanceof Test) {
+                return new TestStage(adventureCard, new ArrayList<>());
+            }
+        }
+        return null;
+    }
 
-//    }
+    private boolean validateQuestStages(ArrayList<ArrayList<AdventureCard>> possibleStages) {
+        int lastStageBattlePoints = 0;
+        for (ArrayList<AdventureCard> stage : possibleStages) {
+            int currentStageBattlePoints = 0;
+            int foeCount = 0;
+            for (AdventureCard adventureCard : stage) {
+                if ((adventureCard instanceof Test) && (stage.size() > 1)) {
+                    return false;
+                }
+                currentStageBattlePoints += adventureCard.getBattlePoints();
+                if(adventureCard instanceof Foe) {
+                    foeCount++;
+                }
+            }
+            if (currentStageBattlePoints > lastStageBattlePoints){
+                lastStageBattlePoints = currentStageBattlePoints;
+            } else {
+                return false;
+            }
+            if (foeCount > 1){
+                return  false;
+            }
+        }
+        return true;
+    }
 
     Model() {
 
