@@ -13,19 +13,12 @@ public class Quest extends StoryCard { //story card
     private ArrayList<QuestStage> stages = new ArrayList<>();
     private Player sponsor;
     private int numStage;
-    private int currentStage;
+    private QuestStage currentStage = null;
+    private int currentStageIndex = 0;
     private int shields;
-    private int currentPlayer;
-
-    public void setCurrentPlayer(int currentPlayer) {
-        this.currentPlayer = currentPlayer;
-    }
-
-    public int getCurrentPlayer() {
-
-        return currentPlayer;
-    }
-
+    private int currentTurnIndex;
+    private Player currentPlayer;
+    private boolean isFinished = false;
     ArrayList <Foe> questFoes = new ArrayList<>();
 
     Quest(String paramName, String paramImageFilename, int paramNumStage)
@@ -33,7 +26,6 @@ public class Quest extends StoryCard { //story card
 
         super(paramName, paramImageFilename);
         numStage = paramNumStage;
-        currentStage = 0;
         shields = numStage;
         logger.info("Successfully called : Quest constructor.");
 
@@ -44,7 +36,6 @@ public class Quest extends StoryCard { //story card
         super(paramName, paramImageFilename);
         questFoes.add(questFoe);
         numStage = paramNumStage;
-        currentStage = 0;
         shields = numStage;
         logger.info("Successfully called : Quest constructor.");
 
@@ -56,11 +47,19 @@ public class Quest extends StoryCard { //story card
         super(paramName, paramImageFilename);
         questFoes = paramQuestFoes;
         numStage = paramNumStage;
-        currentStage = 0;
         shields = numStage;
         logger.info("Successfully called : Quest constructor.");
 
     }
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
 
     public void setStages(){
 
@@ -110,12 +109,6 @@ public class Quest extends StoryCard { //story card
         return shields;
     }
 
-    public int getCurrentStage()
-    {
-        logger.info("Returning current stage (" + currentStage + " ) in the "+ this.getName()+" quest.");
-        return currentStage;
-    }
-
     public int getNumStage()
     {
 
@@ -123,45 +116,40 @@ public class Quest extends StoryCard { //story card
         return numStage;
     }
 
-
-    public void setCurrentStage(int currentStage)
-    {
-
-        logger.info("Setting current stage to (" + currentStage+ " ) in the "+ this.getName()+" quest.");
-        this.currentStage = currentStage;
+    public void startQuest(){
+        currentStage = stages.get(currentStageIndex);
+        currentTurnIndex = 0;
+        currentPlayer = playerList.get(currentTurnIndex);
     }
 
-    public void questPlayStageNoTest() {
-
-        int winnerValue = sponsor.calculateBattlePoints();
-        int i = 0;
-        int j = playerList.size();
-
-        while (i < j)
-        {
-            if (winnerValue > playerList.get(i).calculateBattlePoints()) {
-                playerList.remove(i);
-                j--;
-            } else {
-                i++;
-            }
-        }
-
-        logger.info("Eliminating player who did pass the current stage in the "+ this.getName()+" quest");
-        currentStage++;
-
+    public boolean isFinished() {
+        return isFinished;
     }
 
-
-    public ArrayList<Player> questWinners()
-    {
+    public void questWinners() {
         for (Player player : playerList)
         {
             player.setShields(player.getShields() + shields);
         }
+        isFinished = true;
 
         logger.info("Returning player list that won the "+ this.getName()+" quest");
-        return playerList;
+    }
+
+    public void nextTurn(){
+        if(currentTurnIndex == playerList.size()){
+            currentTurnIndex = 0 ;
+            playerList = currentStage.getWinners();
+            currentStageIndex++;
+            if(currentStageIndex >= stages.size()){
+                questWinners();
+            }
+            logger.info("Set current index for player turn to "+ currentTurnIndex +".");
+        }
+        else{
+            currentTurnIndex++;
+            logger.info("Set current index for player turn to "+ currentTurnIndex +".");
+        }
     }
 
 }

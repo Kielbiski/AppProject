@@ -102,6 +102,15 @@
     -fx-background-position: top center;
 
 }
+.hboxTable{
+
+    -fx-background-image: url("../Assets/handArea.png");
+    -fx-background-repeat: stretch;
+    -fx-background-size: 900 108;
+    -fx-background-position: top center;
+
+}
+
 
 .image-view-hand{
     -fx-padding:0 50 0 50;
@@ -110,7 +119,7 @@
 
 .image-view-hand:hover{
     -fx-cursor: hand;
-    -fx-translate-y: -10;
+    -fx-translate-y: 10;
     -fx-scale-x: 1.1;
     -fx-scale-y: 1.1;
     -fx-scale-z: 1.1;
