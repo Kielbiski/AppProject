@@ -39,7 +39,6 @@ public class Model
     }
 
     public Quest getCurrentQuest() {
-
         return currentQuest;
     }
 
