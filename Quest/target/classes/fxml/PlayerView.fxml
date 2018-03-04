@@ -80,7 +80,7 @@
       </AnchorPane>
    </center>
    <left>
-      <GridPane prefHeight="528.0" prefWidth="228.0" BorderPane.alignment="CENTER">
+      <GridPane prefHeight="529.0" prefWidth="191.0" BorderPane.alignment="CENTER">
         <columnConstraints>
           <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
         </columnConstraints>
@@ -89,7 +89,7 @@
           <RowConstraints maxHeight="382.6982116699219" minHeight="10.0" prefHeight="242.85922241210938" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Pane prefHeight="283.0" prefWidth="207.0" styleClass="activeCard" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
+            <Pane prefHeight="283.0" prefWidth="207.0" styleClass="activeCardBorder" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
             <ImageView fx:id="currentCardImage" fitHeight="200.0" onMouseClicked="#storyDeckDraw" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
@@ -106,6 +106,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
+            <Pane prefHeight="283.0" prefWidth="207.0" styleClass="storyDeckBorder" GridPane.rowIndex="1" />
          </children>
          <opaqueInsets>
             <Insets left="10.0" />
