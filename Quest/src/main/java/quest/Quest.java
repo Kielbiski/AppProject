@@ -15,6 +15,17 @@ public class Quest extends StoryCard { //story card
     private int numStage;
     private int currentStage;
     private int shields;
+    private int currentPlayer;
+
+    public void setCurrentPlayer(int currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
+
+    public int getCurrentPlayer() {
+
+        return currentPlayer;
+    }
+
     ArrayList <Foe> questFoes = new ArrayList<>();
 
     Quest(String paramName, String paramImageFilename, int paramNumStage)
