@@ -52,7 +52,7 @@ public class Model
         this.sponsor = sponsor;
     }
 
-    private QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
+    public QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
         for(AdventureCard adventureCard : cardsForStage) {
             if (adventureCard instanceof Foe) {
                 return new FoeStage(cardsForStage, new ArrayList<>());

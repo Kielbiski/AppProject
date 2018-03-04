@@ -328,24 +328,34 @@ public class Controller {
     }
 
     public void continueAction(ActionEvent event){
-        if(game.validateQuestStages()){
-            System.out.println("true");
-        }
-        else{
-            Alert invalidQuest = new Alert(Alert.AlertType.CONFIRMATION,  "Please set up a valid quest " ,ButtonType.YES);
-            DialogPane dialog = invalidQuest.getDialogPane();
-            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-            dialog.getStyleClass().add("alertDialogs");
-            invalidQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-            invalidQuest.showAndWait();
-            for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
-                for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
-                   game.getSponsor().addCardToHand(card);
+        if(currentBehaviour == CardBehaviour.SPONSOR) {
+            if (game.validateQuestStages()) {
+
+                for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
+                    game.getCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
                 }
+                //game.getCurrentQuest().
+
+            } else {
+                Alert invalidQuest = new Alert(Alert.AlertType.CONFIRMATION, "Please set up a valid quest ", ButtonType.YES);
+                DialogPane dialog = invalidQuest.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                invalidQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
+                invalidQuest.showAndWait();
+                for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
+                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                        game.getSponsor().addCardToHand(card);
+                    }
+                }
+                game.resetPotentialStages();
+                update();
             }
-            game.resetPotentialStages();
-            update();
         }
+        else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+
+        }
+
 
     }
 

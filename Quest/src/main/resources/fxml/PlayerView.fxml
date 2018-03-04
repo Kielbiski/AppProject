@@ -106,7 +106,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <Pane prefHeight="283.0" prefWidth="207.0" styleClass="storyDeckBorder" GridPane.rowIndex="1" />
+            <Pane disable="true" prefHeight="283.0" prefWidth="207.0" styleClass="storyDeckBorder" GridPane.rowIndex="1" />
          </children>
          <opaqueInsets>
             <Insets left="10.0" />
