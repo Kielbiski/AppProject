@@ -32,8 +32,26 @@ public class Player {
     private int shields;
     private int currentBid;
     private Rank playerRank;
+    private AbstractAI aI;
     private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
     private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
+
+    Player(String paramName, int i){
+        playerName = paramName ;
+        shields = 0;
+        battlePoints =0;
+        currentBid = 0;
+        playerRank = Rank.SQUIRE;
+        if(i==1)
+        {
+            aI = new Strategy1();
+        }
+        else
+        {
+            aI = new Strategy1();
+        }
+        logger.info("Successfully called  "+this.getPlayerName()+" constructor with strategy: "+ this.aI.typeStrategy+".");
+    }
 
     Player(String paramName){
         playerName = paramName ;
@@ -41,7 +59,8 @@ public class Player {
         battlePoints =0;
         currentBid = 0;
         playerRank = Rank.SQUIRE;
-        logger.info("Successfully called : Player constructor.");
+
+        logger.info("Successfully called  "+this.getPlayerName()+" constructor.");
     }
 
     public ArrayList<AdventureCard> getCardsOnTable()
@@ -189,7 +208,7 @@ public class Player {
         return battlePoints;
     }
 
-    private int getRequiredShieldsForNextRank() {
+    public int getRequiredShieldsForNextRank() {
         switch(playerRank)
         {
             case SQUIRE:
