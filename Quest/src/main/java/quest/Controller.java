@@ -46,7 +46,7 @@ public class Controller {
 
     ///FXML ELEMENTS
     @FXML
-    private Button actionButton;
+    private Button continueButton;
     @FXML
     private ImageView storyDeckImg;
     @FXML
@@ -64,6 +64,7 @@ public class Controller {
     @FXML
     private GridPane stagesGridPane;
     @FXML
+    private Button nextTurnButton;
 
     private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
 
@@ -277,7 +278,7 @@ public class Controller {
         addQuestPlayers(quest);
         activePlayer = sponsor;
         currentBehaviour = CardBehaviour.SPONSOR;
-        actionButton.setVisible(true);
+        continueButton.setVisible(true);
 
         for(int i = 0;i<quest.getNumStage();i++){
             createStagePane(i);
@@ -325,6 +326,7 @@ public class Controller {
         }
         return nextIndex;
     }
+
     public void continueAction(ActionEvent event){
         if(game.validateQuestStages()){
             System.out.println("true");
@@ -347,9 +349,17 @@ public class Controller {
 
     }
 
-    public void storyDeckDraw(MouseEvent event){
+    public void nextTurnAction(ActionEvent event){
         currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
         activePlayer = game.getPlayers().get(currentPlayerIndex);
+        storyDeckImg.setDisable(false);
+        nextTurnButton.setVisible(true);
+        update();
+
+
+    }
+
+    public void storyDeckDraw(MouseEvent event){
 
         game.drawStoryCard();
         System.out.println("storyDeckDraw(): " + game.getCurrentStory().getName());
@@ -382,15 +392,24 @@ public class Controller {
                     performQuest(sponsor, (Quest) game.getCurrentStory());
                     break;
                 }
-                storyDeckImg.setDisable(true);
+                nextTurnButton.setVisible(false);
+                continueButton.setVisible(true);
+            }
+            if(game.getSponsor() == null){
+                activePlayer = currentTurnPlayer;
+                nextTurnButton.setVisible(true);
+                continueButton.setVisible(false);
             }
         } else if (game.getCurrentStory() instanceof Event) {
+            nextTurnButton.setVisible(true);
             System.out.println("Event");
         } else if (game.getCurrentStory() instanceof Tournament) {
+            nextTurnButton.setVisible(true);
             System.out.println("Tournament");
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
         //activePlayer = game.getPlayers().get(currentPlayerIndex);
+        storyDeckImg.setDisable(true);
         update();
 
     }
