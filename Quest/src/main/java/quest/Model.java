@@ -69,10 +69,11 @@ public class Model
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
                 int currentStageBattlePoints = 0;
                 int foeCount = 0;
-                System.out.println("current stage bp: " + currentStageBattlePoints);
-                System.out.println("last stage " + lastStageBattlePoints);
                 for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
                     if ((adventureCard instanceof Test) && (getPreQuestStageSetup().get(i).size() > 1)) {
+                        return false;
+                    }
+                    if ((adventureCard instanceof Ally)) {
                         return false;
                     }
                     currentStageBattlePoints += adventureCard.getBattlePoints();
