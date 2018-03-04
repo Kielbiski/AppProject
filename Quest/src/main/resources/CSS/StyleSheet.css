@@ -23,6 +23,7 @@
      -fx-background-repeat: no-repeat;
      -fx-background-size: 170 250;
      -fx-background-position: center center;
+     -fx-translate-y: 10;
 }
 
 
