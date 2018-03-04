@@ -26,6 +26,13 @@
      -fx-translate-y: 10;
 }
 
+.playerIndicators {
+    -fx-background-image: url("../Assets/defaultPlayerIndicator.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 214 446;
+    -fx-background-position: center center;
+}
+
 
 .middleArea {
     -fx-background-image: url("../Assets/middleArea.png");
