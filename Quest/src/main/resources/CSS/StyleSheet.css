@@ -107,7 +107,7 @@
     -fx-background-image: url("../Assets/handArea.png");
     -fx-background-repeat: stretch;
     -fx-background-size: 900 108;
-    -fx-background-position: top center;
+    -fx-background-position: bottom center;
 
 }
 

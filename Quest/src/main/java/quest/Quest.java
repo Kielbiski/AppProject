@@ -118,6 +118,7 @@ public class Quest extends StoryCard { //story card
 
     public void startQuest(){
         currentStage = stages.get(currentStageIndex);
+        currentStage.setParticipatingPlayers(playerList);
         currentTurnIndex = 0;
         currentPlayer = playerList.get(currentTurnIndex);
     }
@@ -137,17 +138,22 @@ public class Quest extends StoryCard { //story card
     }
 
     public void nextTurn(){
-        if(currentTurnIndex == playerList.size()){
+        currentTurnIndex++;
+        if(currentTurnIndex >= playerList.size()){
             currentTurnIndex = 0 ;
             playerList = currentStage.getWinners();
             currentStageIndex++;
             if(currentStageIndex >= stages.size()){
                 questWinners();
+            } else {
+                currentPlayer = getPlayerList().get(currentTurnIndex);
+                currentStage = stages.get(currentStageIndex);
+                currentStage.setParticipatingPlayers(playerList);
             }
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
         else{
-            currentTurnIndex++;
+            currentPlayer = getPlayerList().get(currentTurnIndex);
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
     }

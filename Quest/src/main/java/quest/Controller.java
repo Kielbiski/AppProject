@@ -87,32 +87,71 @@ public class Controller {
 
         });
         imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(getCardImage("FacedownAdventure.png")));
-        if(currentBehaviour == CardBehaviour.SPONSOR) {
-            imgView.setOnDragDetected((MouseEvent event) -> {
-                selectedAdventureCard = card;
-                Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-                db.setDragView(imgView.getImage());
-                ClipboardContent content = new ClipboardContent();
-                // Store node ID in order to know what is dragged.
-                content.putString(imgView.getParent().getId());
-                db.setContent(content);
-                event.consume();
-            });
-        }
-        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
-                activePlayer.addCardToTable(card);
-                activePlayer.removeCardFromHand(card);
-            }
-            else if(currentBehaviour ==CardBehaviour.BID){
 
-            }
-            imgView.setStyle(
-                    "-fx-border-color: #ff0000;\n" +
-                            " -fx-border-width: 10;" +
-                            "-fx-border-style: solid;\n");
+        imgView.setOnDragDetected((MouseEvent event) -> {
+            selectedAdventureCard = card;
+            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+            db.setDragView(imgView.getImage());
+            ClipboardContent content = new ClipboardContent();
+            // Store node ID in order to know what is dragged.
+            content.putString(imgView.getParent().getId());
+            db.setContent(content);
+            event.consume();
         });
+
+
+//        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
+//            if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+//                activePlayer.addCardToTable(card);
+//                activePlayer.removeCardFromHand(card);
+//                update();
+//            }
+//            else if(currentBehaviour ==CardBehaviour.BID){
+//
+//            }
+//            imgView.setStyle(
+//                    "-fx-border-color: #ff0000;\n" +
+//                            " -fx-border-width: 10;" +
+//                            "-fx-border-style: solid;\n");
+//        });
         return imgView;
+    }
+    public void onTableDragOver(DragEvent event){
+        Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+    public void onTableDragDropped(DragEvent event){
+        Dragboard db = event.getDragboard();
+        // Get item id here, which was stored when the drag started.
+        boolean success = false;
+        // If this is a meaningful drop...
+        if (db.hasString()) {
+            if(db.getString().equals(cardsHbox.getId())) {
+                if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+                    if(!(selectedAdventureCard instanceof Foe) ) {
+                        activePlayer.addCardToTable(selectedAdventureCard);
+                        activePlayer.removeCardFromHand(selectedAdventureCard);
+                        update();
+                    }
+                }
+                else if(currentBehaviour ==CardBehaviour.BID){
+
+                }
+                success = true;
+            }
+//                else{
+//                   // game.removeFromPotentialStage(selectedAdventureCard,);
+//                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
+//                    success = true;
+//                }
+        }
+        event.setDropCompleted(success);
+        update();
+        event.consume();
+
     }
 
     private ImageView createStoryCardImageView(){
@@ -151,7 +190,7 @@ public class Controller {
         stagePane.setOnDragOver(event ->{
             Dragboard db = event.getDragboard();
             if (db.hasString()) {
-                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+                event.acceptTransferModes(TransferMode.MOVE);
             }
             event.consume();
         });
@@ -416,10 +455,10 @@ public class Controller {
                     sponsor = game.getPlayers().get(currentPlayerIndex);
                     game.setSponsor(sponsor);
                     performQuest(sponsor, (Quest) game.getCurrentStory());
+                    nextTurnButton.setVisible(false);
+                    continueButton.setVisible(true);
                     break;
                 }
-                nextTurnButton.setVisible(false);
-                continueButton.setVisible(true);
             }
             if(game.getSponsor() == null){
                 activePlayer = currentTurnPlayer;
