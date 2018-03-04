@@ -132,6 +132,21 @@ public class Model
         allEvents.add(new QueensFavor());
         logger.info("storing all events in allEvents array");
 
+        //Allies
+        ArrayList<Ally> allAllies = new ArrayList<>();
+        allAllies.add(new KingArthur());
+        allAllies.add(new KingPellinore());
+        allAllies.add(new Merlin());
+        allAllies.add(new QueenGuinevere());
+        allAllies.add(new QueenIseult());
+        allAllies.add(new SirGalahad());
+        allAllies.add(new SirGawain());
+        allAllies.add(new SirLancelot());
+        allAllies.add(new SirPercival());
+        allAllies.add(new SirTristan());
+        allAllies.add(new Amour("Amour", "Amour.jpg"));
+        logger.info("storing all allies in allAllies array");
+
 
         //Create HashMap to store number of occurrences of each AdventureCard
 
@@ -158,6 +173,19 @@ public class Model
         numberOfEachAdventureCard.put(new Horse(), 11);
         numberOfEachAdventureCard.put(new Lance(), 6);
         numberOfEachAdventureCard.put(new Sword(), 16);
+        logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
+
+        //Allies
+        numberOfEachAdventureCard.put(new KingArthur(), 1);
+        numberOfEachAdventureCard.put(new KingPellinore(), 1);
+        numberOfEachAdventureCard.put(new Merlin(), 1);
+        numberOfEachAdventureCard.put(new QueenIseult(), 1);
+        numberOfEachAdventureCard.put(new SirGalahad(), 1);
+        numberOfEachAdventureCard.put(new SirGawain(), 1);
+        numberOfEachAdventureCard.put(new SirLancelot(), 1);
+        numberOfEachAdventureCard.put(new SirPercival(), 1);
+        numberOfEachAdventureCard.put(new SirTristan(), 1);
+        numberOfEachAdventureCard.put(new Amour("Amour", "Amour.jpg"), 8);
         logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
 
         //Add each AdventureCard to deckOfAdventureCards

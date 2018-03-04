@@ -10,6 +10,7 @@ public class Quest extends StoryCard { //story card
     private static final Logger logger = LogManager.getLogger(App.class);
 
     private ArrayList <Player> playerList;
+    private ArrayList<QuestStage> stages = new ArrayList<>();
     private Player sponsor;
     private int numStage;
     private int currentStage;
@@ -48,6 +49,14 @@ public class Quest extends StoryCard { //story card
         shields = numStage;
         logger.info("Successfully called : Quest constructor.");
 
+    }
+
+    public void setStages(){
+
+    }
+
+    public void addStage(QuestStage stage){
+        stages.add(stage);
     }
 
     public ArrayList<Player> getPlayerList()
@@ -92,7 +101,7 @@ public class Quest extends StoryCard { //story card
 
     public int getCurrentStage()
     {
-        logger.info("Returning current stage (" + currentStage+ " ) in the "+ this.getName()+" quest.");
+        logger.info("Returning current stage (" + currentStage + " ) in the "+ this.getName()+" quest.");
         return currentStage;
     }
 
