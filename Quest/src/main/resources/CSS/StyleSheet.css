@@ -71,9 +71,21 @@
     -fx-opacity: 1;
 }
 
-.button{
+.nextTurnButton{
 
     -fx-background-image: url("../Assets/nextTurn.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 192 48;
+    -fx-background-position: center center;
+    -fx-font-size: 11pt;
+    -fx-font-family: "Segoe UI Semibold";
+    -fx-text-fill: white;
+}
+
+
+.continueButton{
+
+    -fx-background-image: url("../Assets/continueButton.png");
     -fx-background-repeat: no-repeat;
     -fx-background-size: 192 48;
     -fx-background-position: center center;
