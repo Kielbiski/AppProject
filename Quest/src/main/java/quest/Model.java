@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 import java.lang.reflect.Array;
 import java.util.*;
 
+import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
+
 public class Model
 {
     private static final Logger logger = LogManager.getLogger(App.class);
@@ -19,6 +21,7 @@ public class Model
     private Player sponsor;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
+    private ArrayList<Player> winningPlayers = new ArrayList<>();
 
 
     public StoryCard getCurrentStory() {
@@ -52,7 +55,7 @@ public class Model
         this.sponsor = sponsor;
     }
 
-    private QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
+    public QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
         for(AdventureCard adventureCard : cardsForStage) {
             if (adventureCard instanceof Foe) {
                 return new FoeStage(cardsForStage, new ArrayList<>());
@@ -327,6 +330,35 @@ public class Model
             preQuestStageSetup.put(i,new ArrayList<AdventureCard>());
         }
     }
+
+    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
+        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", tournamentParticipants);
+        return knightsOfTheRoundTableTournament.getTournamentWinner();
+    }
+
+    public ArrayList<Player> getWinningPlayers() {
+        return winningPlayers;
+    }
+
+    public boolean isWinner() {
+        ArrayList<Player> knightsOfTheRoundTable = new ArrayList<>();
+        for(Player player : players){
+            if (player.getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) {
+                knightsOfTheRoundTable.add(player);
+            }
+        }
+        if (knightsOfTheRoundTable.size() == 1 ){
+            winningPlayers = knightsOfTheRoundTable;
+            return true;
+
+        } else if (knightsOfTheRoundTable.size() > 1) {
+            winningPlayers = finalTournament(knightsOfTheRoundTable);
+            return true;
+        }
+        return false;
+
+    }
+
 
     void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {

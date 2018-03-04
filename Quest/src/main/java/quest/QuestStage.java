@@ -5,7 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
-public class QuestStage {
+public abstract class QuestStage {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
@@ -24,4 +24,5 @@ public class QuestStage {
     public void setParticipatingPlayers(ArrayList<Player> participatingPlayers){
         this.participatingPlayers = participatingPlayers;
     }
+    public abstract ArrayList<Player> getWinners();
 }

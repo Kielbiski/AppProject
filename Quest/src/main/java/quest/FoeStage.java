@@ -22,7 +22,7 @@ public class FoeStage extends QuestStage {
 
     }
 
-    ArrayList<Player> getWinningPlayers(){
+    public ArrayList<Player> getWinners(){
         ArrayList<Player> winningPlayers = new ArrayList<>();
         logger.info("FoeStage: Going through participant battle points");
         for(Player player : this.getParticipatingPlayers()){
