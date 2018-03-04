@@ -93,6 +93,7 @@
 
 .image-view-hand{
     -fx-padding:0 50 0 50;
+    -fx-translate-y: 20;
 }
 
 .image-view-hand:hover{
