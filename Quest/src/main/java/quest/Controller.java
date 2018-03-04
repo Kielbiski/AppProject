@@ -25,11 +25,8 @@ import java.util.*;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
-//GAMEPLAN FOR TOMORROW
-//ALL GAME APP HAS TO DO IS LAUNCH THE APP< NOTHING ELSE THE REST IS IN HERE
-//1: make game model class track its gurrent state
-//2: controller init method that creates a new game with players
-//3: START MAKING METHODS FOR EACH GAME SCENARIO IE SHOW QUEST CARDS ETC LETS GO
+//must check tomake sure a player can actually sponsor a quest
+//must add button to advance turn after player draws card
 
 
 
@@ -57,6 +54,8 @@ public class Controller {
     @FXML
     private BorderPane mainBorderPane;
     @FXML
+    private Label currentTurnLabel;
+    @FXML
     private HBox cardsHbox;
     @FXML
     private VBox playerStatsVbox;
@@ -65,15 +64,11 @@ public class Controller {
     @FXML
     private GridPane stagesGridPane;
     @FXML
-    private VBox stage1Vbox;
-    @FXML
-    private VBox stage2Vbox;
-    @FXML
-    private VBox stage3Vbox;
-    @FXML
-    private VBox stage4Vbox;
-    @FXML
-    private VBox stage5Vbox;
+
+    private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
+
+
+
 
 
 
@@ -93,15 +88,18 @@ public class Controller {
 
         });
         imgView.addEventHandler(MouseEvent.MOUSE_EXITED, event -> currentCardImage.setImage(getCardImage("FacedownAdventure.png")));
-        imgView.setOnDragDetected((MouseEvent event) -> {
-            selectedAdventureCard = card;
-            Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-            ClipboardContent content = new ClipboardContent();
-            // Store node ID in order to know what is dragged.
-            content.putString(card.getName());
-            db.setContent(content);
-            event.consume();
-        });
+        if(currentBehaviour == CardBehaviour.SPONSOR) {
+            imgView.setOnDragDetected((MouseEvent event) -> {
+                selectedAdventureCard = card;
+                Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+                db.setDragView(imgView.getImage());
+                ClipboardContent content = new ClipboardContent();
+                // Store node ID in order to know what is dragged.
+                content.putString(imgView.getParent().getId());
+                db.setContent(content);
+                event.consume();
+            });
+        }
 //        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 //            if(currentBehaviour == CardBehaviour.SPONSOR){
 //                game.getSponsor().removeCardFromHand(selectedAdventureCard);
@@ -131,12 +129,46 @@ public class Controller {
         return imgView;
     }
 
+    private void createStagePane(int stageIndex){
+        FlowPane stagePane = new FlowPane();
+        stagePane.setStyle("-fx-border-color: white");
+        stagePane.setOnDragDropped(event -> {
+            Dragboard db = event.getDragboard();
+            // Get item id here, which was stored when the drag started.
+            boolean success = false;
+            // If this is a meaningful drop...
+            if (db.hasString()) {
+                if(db.getString().equals(cardsHbox.getId())) {
+                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                    game.getSponsor().removeCardFromHand(selectedAdventureCard);
+                    success = true;
+                }
+//                else{
+//                   // game.removeFromPotentialStage(selectedAdventureCard,);
+//                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
+//                    success = true;
+//                }
+            }
+            event.setDropCompleted(success);
+            update();
+            event.consume();
+        });
+        stagePane.setOnDragOver(event ->{
+            Dragboard db = event.getDragboard();
+            if (db.hasString()) {
+                event.acceptTransferModes(TransferMode.COPY_OR_MOVE);
+            }
+            event.consume();
+        });
+        flowPaneArray.add(stagePane);
+        stagesGridPane.add(stagePane,stageIndex,0);
+    }
+
     private void update() {
         //Vbox display player data
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
-        Label currentTurnLabel = new Label();
         String currentTurnLabelCSS;
 
         currentTurnLabelCSS = "-fx-border-color: #d6d6d6;\n" +
@@ -149,8 +181,6 @@ public class Controller {
         currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
-        mainBorderPane.setTop(currentTurnLabel);
-        BorderPane.setAlignment(currentTurnLabel, Pos.CENTER);
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
@@ -185,6 +215,18 @@ public class Controller {
             imgViews.add(imgView);
         }
         cardsHbox.getChildren().addAll(imgViews);
+
+        if(currentBehaviour == CardBehaviour.SPONSOR) {
+            for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
+                flowPaneArray.get(i).getChildren().clear();
+                for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                    ImageView imgView = createAdventureCardImageView(card);
+                    imgView.setImage(getCardImage(card.getImageFilename()));
+                    imgView.toFront();
+                    flowPaneArray.get(i).getChildren().add(imgView);
+                }
+            }
+        }
 
     }
 
@@ -230,14 +272,16 @@ public class Controller {
 
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
+        game.setCurrentQuest(quest);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
-//        for (int i = 0; i < quest.getNumStage(); i++) {
-//
-//        }
         activePlayer = sponsor;
         currentBehaviour = CardBehaviour.SPONSOR;
+        actionButton.setVisible(true);
 
+        for(int i = 0;i<quest.getNumStage();i++){
+            createStagePane(i);
+        }
         //ArrayList<AdventureCard> sponsorCards = new ArrayList<>();
 //            if(validCardOrdering()){//insert condition here to check that stages are in ascending order, no duplicate weapons, etc.)
 //                sponsorCards = sponsor.getCardsOnTable();
@@ -281,36 +325,25 @@ public class Controller {
         }
         return nextIndex;
     }
-
     public void continueAction(ActionEvent event){
-
-    }
-
-    public void stageSetupDragDropped(DragEvent event){
-//
-//        Dragboard db = event.getDragboard();
-//            // Get item id here, which was stored when the drag started.
-//            boolean success = false;
-//            // If this is a meaningful drop...
-//            if (db.hasString()) {
-//                String nodeId = db.getString();
-//                // ...search for the item on body. If it is there...
-//                ImageView cloth = (ImageView) bodyPane.lookup("#" + nodeId);
-//                if (cloth != null) {
-//                    // ... the item is removed from body
-//                    // and added to an unequipped container.
-//                    bodyPane.getChildren().remove(cloth);
-//                    itemPane.getChildren().add(cloth);
-//                    success = true;
-//                }
-//                // ...anyway, the item is not active or equipped anymore.
-//                items.get(nodeId).takeOff();
-//            }
-//            event.setDropCompleted(success);
-//            event.consume();c
-    }
-
-    public void stageSetupDragOver(DragEvent event){
+        if(game.validateQuestStages()){
+            System.out.println("true");
+        }
+        else{
+            Alert invalidQuest = new Alert(Alert.AlertType.CONFIRMATION,  "Please set up a valid quest " ,ButtonType.YES);
+            DialogPane dialog = invalidQuest.getDialogPane();
+            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+            dialog.getStyleClass().add("alertDialogs");
+            invalidQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
+            invalidQuest.showAndWait();
+            for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
+                for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                   game.getSponsor().addCardToHand(card);
+                }
+            }
+            game.resetPotentialStages();
+            update();
+        }
 
     }
 
@@ -349,6 +382,7 @@ public class Controller {
                     performQuest(sponsor, (Quest) game.getCurrentStory());
                     break;
                 }
+                storyDeckImg.setDisable(true);
             }
         } else if (game.getCurrentStory() instanceof Event) {
             System.out.println("Event");
@@ -356,7 +390,9 @@ public class Controller {
             System.out.println("Tournament");
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+        //activePlayer = game.getPlayers().get(currentPlayerIndex);
         update();
+
     }
 
     public void initialize() {
@@ -367,6 +403,7 @@ public class Controller {
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
         cardsHbox.setAlignment(Pos.BASELINE_CENTER);
 
+
         game.shuffleAndDeal();
         //testing
         game.getPlayers().get(0).setPlayerRank(CHAMPION_KNIGHT);
@@ -374,6 +411,7 @@ public class Controller {
 
         //storyDeckImg.setOnMouseClicked(this::storyDeckDraw);
         update();
+
     }
 
 

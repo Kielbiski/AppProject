@@ -13,14 +13,34 @@ public class Model
     private ArrayList<Player> players = new ArrayList<>();
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
+    private HashMap<Integer,ArrayList<AdventureCard>> preQuestStageSetup = new HashMap<>();
     private StoryCard currentStory;
+    private Quest currentQuest;
     private Player sponsor;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
 
+
     public StoryCard getCurrentStory() {
         logger.info("Returning current story.");
         return currentStory;
+    }
+
+    public HashMap<Integer, ArrayList<AdventureCard>> getPreQuestStageSetup() {
+        return preQuestStageSetup;
+    }
+
+    public void setCurrentQuest(Quest currentQuest) {
+        this.currentQuest = currentQuest;
+        preQuestStageSetup.clear();
+        for(int i = 0; i<currentQuest.getNumStage();i++){
+            preQuestStageSetup.put(i,new ArrayList<AdventureCard>());
+        }
+    }
+
+    public Quest getCurrentQuest() {
+
+        return currentQuest;
     }
 
     public Player getSponsor() {
@@ -44,28 +64,32 @@ public class Model
         return null;
     }
 
-    private boolean validateQuestStages(ArrayList<ArrayList<AdventureCard>> possibleStages) {
+    public boolean validateQuestStages() {
         int lastStageBattlePoints = 0;
-        for (ArrayList<AdventureCard> stage : possibleStages) {
-            int currentStageBattlePoints = 0;
-            int foeCount = 0;
-            for (AdventureCard adventureCard : stage) {
-                if ((adventureCard instanceof Test) && (stage.size() > 1)) {
+        for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
+                int currentStageBattlePoints = 0;
+                int foeCount = 0;
+                System.out.println("current stage bp: " + currentStageBattlePoints);
+                System.out.println("last stage " + lastStageBattlePoints);
+                for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
+                    if ((adventureCard instanceof Test) && (getPreQuestStageSetup().get(i).size() > 1)) {
+                        return false;
+                    }
+                    currentStageBattlePoints += adventureCard.getBattlePoints();
+                    if (adventureCard instanceof Foe) {
+                        foeCount++;
+                    }
+                }
+                if (currentStageBattlePoints > lastStageBattlePoints) {
+                    lastStageBattlePoints = currentStageBattlePoints;
+                } else {
                     return false;
                 }
-                currentStageBattlePoints += adventureCard.getBattlePoints();
-                if(adventureCard instanceof Foe) {
-                    foeCount++;
+                if (foeCount > 1) {
+                    return false;
                 }
-            }
-            if (currentStageBattlePoints > lastStageBattlePoints){
-                lastStageBattlePoints = currentStageBattlePoints;
-            } else {
-                return false;
-            }
-            if (foeCount > 1){
-                return  false;
-            }
+
+
         }
         return true;
     }
@@ -264,6 +288,16 @@ public class Model
     void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
+    }
+
+    void addToPotentialStage(AdventureCard card, int stageNum){
+        preQuestStageSetup.get(stageNum).add(card);
+    }
+    void resetPotentialStages(){
+        preQuestStageSetup.clear();
+        for(int i = 0; i<currentQuest.getNumStage();i++){
+            preQuestStageSetup.put(i,new ArrayList<AdventureCard>());
+        }
     }
 
     void drawStoryCard(){
