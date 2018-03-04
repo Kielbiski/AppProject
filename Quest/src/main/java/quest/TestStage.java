@@ -18,8 +18,8 @@ public class TestStage extends QuestStage {
         logger.info("Successfully called : TestStage constructor");
     }
 
-    Player getTestWinner() {
-        Player winningPlayer = null;
+    public ArrayList<Player> getWinners() {
+        Player winningPlayer= null;
         int currentHighestBid = 0;
         for(Player player : this.getParticipatingPlayers())
         {
@@ -32,6 +32,8 @@ public class TestStage extends QuestStage {
         }
 
         logger.info("Returning" + winningPlayer +" as the testStage winner." );
-        return winningPlayer;
+        ArrayList<Player> winningPlayerArray = new ArrayList<>();
+        winningPlayerArray.add(winningPlayer);
+        return winningPlayerArray;
     }
 }
