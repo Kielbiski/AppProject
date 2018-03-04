@@ -26,6 +26,7 @@ import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 //must check tomake sure a player can actually sponsor a quest
+//must add button to advance turn after player draws card
 
 
 
@@ -91,6 +92,7 @@ public class Controller {
             imgView.setOnDragDetected((MouseEvent event) -> {
                 selectedAdventureCard = card;
                 Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
+                db.setDragView(imgView.getImage());
                 ClipboardContent content = new ClipboardContent();
                 // Store node ID in order to know what is dragged.
                 content.putString(imgView.getParent().getId());
@@ -388,6 +390,7 @@ public class Controller {
             System.out.println("Tournament");
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+        //activePlayer = game.getPlayers().get(currentPlayerIndex);
         update();
 
     }
