@@ -18,6 +18,12 @@ public class Quest extends StoryCard { //story card
     private int shields;
     private int currentTurnIndex;
     private Player currentPlayer;
+    private boolean isWinner = false;
+
+    public boolean isWinner() {
+        return isWinner;
+    }
+
     private boolean isFinished = false;
     ArrayList <Foe> questFoes = new ArrayList<>();
 
@@ -139,6 +145,7 @@ public class Quest extends StoryCard { //story card
     public void questWinners() {
         for (Player player : playerList)
         {
+            isWinner = true;
             player.setShields(player.getShields() + shields);
 
         }
@@ -204,15 +211,15 @@ public class Quest extends StoryCard { //story card
                 playerList = getTestStageWinners((TestStage) currentStage);
             }
             currentStageIndex++;
-            if(currentStageIndex >= stages.size()){
-                wipeWeapons();
+            if(currentStageIndex >= stages.size()||playerList.size()==0){
                 questWinners();
             } else {
                 currentPlayer = getPlayerList().get(currentTurnIndex);
                 currentStage = stages.get(currentStageIndex);
-                wipeWeapons();
                 currentStage.setParticipatingPlayers(playerList);
             }
+            wipeWeapons();
+
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
         else{

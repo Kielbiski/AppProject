@@ -438,8 +438,17 @@ public class Controller {
 
     }
     private void questOver(){
-        for(Player player: game.getCurrentQuest().getPlayerList()){
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
+        if(game.getCurrentQuest().isWinner()) {
+            for (Player player : game.getCurrentQuest().getPlayerList()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
+                DialogPane dialog = alert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                alert.showAndWait();
+            }
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Quest Has No Winner" , ButtonType.OK);
             DialogPane dialog = alert.getDialogPane();
             dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
             dialog.getStyleClass().add("alertDialogs");
