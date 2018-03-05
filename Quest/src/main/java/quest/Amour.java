@@ -9,7 +9,7 @@ class Amour extends Ally
 
     Amour(String pName, String pImageFilename)
     {
-        super(pName, pImageFilename, 10, 1, 0, 0);
+        super(pName, pImageFilename, 10, 1, 0, 0, "");
         logger.info("Successfully called : Amour constructor");
 
     }

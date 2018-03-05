@@ -153,7 +153,7 @@ public class Player {
 
     public boolean isValidDrop(AdventureCard card){
         for(AdventureCard matchCard: cardsOnTable){
-            if(card.getName().equals(matchCard.getName())){
+            if(card.getName().toLowerCase().equals(matchCard.getName().toLowerCase())){
                 return false;
             }
         }

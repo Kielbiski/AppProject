@@ -503,7 +503,7 @@ public class Controller {
                 sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
                 sponsorQuest.showAndWait();
                 if (sponsorQuest.getResult() == ButtonType.YES) {
-                    sponsor = game.getPlayers().get(currentPlayerIndex);
+                    sponsor = activePlayer;
                     game.setSponsor(sponsor);
                     performQuest(sponsor, (Quest) game.getCurrentStory());
                     nextTurnButton.setVisible(false);
@@ -554,6 +554,7 @@ public class Controller {
             DialogPane dialogPane = dialog.getDialogPane();
             dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
             dialogPane.getStyleClass().add("alertDialogs");
+            dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setDisable(true);
             // dialog.setContentText("Please enter your name:");
 
             Optional<String> result = dialog.showAndWait();

@@ -88,11 +88,16 @@ public class Model
                     if ((adventureCard instanceof Ally)) {
                         return false;
                     }
-                    System.out.println(adventureCard.getName() + " bp:" + adventureCard.getBattlePoints());
-                    currentStageBattlePoints += adventureCard.getBattlePoints();
                     if (adventureCard instanceof Foe) {
+                        for(AdventureCard foe : currentQuest.getQuestFoes()){
+                            if(adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())){
+                                adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
+                                break;
+                            }
+                        }
                         foeCount++;
                     }
+                    currentStageBattlePoints += adventureCard.getBattlePoints();
                 }
                 if (currentStageBattlePoints > lastStageBattlePoints) {
                     lastStageBattlePoints = currentStageBattlePoints;
@@ -227,12 +232,12 @@ public class Model
         logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
 
         //Add each AdventureCard to deckOfAdventureCards
-        deckOfAdventureCards.add(new GreenKnight());
         for(AdventureCard adventureCard : numberOfEachAdventureCard.keySet()){
             for(int i = 0; i < numberOfEachAdventureCard.get(adventureCard); i++) {
                 deckOfAdventureCards.add(adventureCard);
             }
         }
+        deckOfAdventureCards.add(new GreenKnight());
         logger.info("storing all adventure cards into the deck of adventure cards.");
 
         //Create HashMap to store number of occurrences of each StoryCard
@@ -269,12 +274,12 @@ public class Model
         logger.info("storing all tournaments and their instances in numberOfEachStoryCard HashMap");
 
         //Add each StoryCard to deckOfStoryCards
-        deckOfStoryCards.add(new TestOfTheGreenKnight());
         for(StoryCard storyCard : numberOfEachStoryCard.keySet()){
             for(int i = 0; i < numberOfEachStoryCard.get(storyCard); i++) {
                 deckOfStoryCards.add(storyCard);
             }
         }
+        deckOfStoryCards.add(new TestOfTheGreenKnight());
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -316,7 +321,7 @@ public class Model
     }
 
     void shuffleAndDeal(){
-        //Collections.shuffle(deckOfAdventureCards);
+        Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
                 if (!(deckOfAdventureCards.empty())) {

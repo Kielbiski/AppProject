@@ -213,63 +213,60 @@ class Thieves extends Foe {
 //Allies
 class KingArthur extends Ally {
     KingArthur(){
-        super("King Arthur", "A_King_Arthur.jpg", 10, 2, 0, 0);
+        super("King Arthur", "A_King_Arthur.jpg", 10, 2, 0, 0, "");
     }
 }
 
 class KingPellinore extends Ally {
     KingPellinore(){
-        super("King Pellinore", "A_King_Pellinore.jpg", 10, 0, 0, 4);
+        super("King Pellinore", "A_King_Pellinore.jpg", 10, 0, 0, 4, "Search For The Questing Beast");
     }
 }
 
 class Merlin extends Ally {
     Merlin(){
-        super("Merlin", "A_Merlin.jpg", 0, 0, 0, 0);
+        super("Merlin", "A_Merlin.jpg", 0, 0, 0, 0, "");
     }
 }
 
 class QueenGuinevere extends Ally {
     QueenGuinevere(){
-        super("Queen Guinevere", "A_Queen_Quinevere.jpg", 0, 3, 0, 0);
+        super("Queen Guinevere", "A_Queen_Quinevere.jpg", 0, 3, 0, 0, "");
     }
 }
 
 class QueenIseult extends Ally {
     QueenIseult(){
-        super("Queen Iseult", "A_Queen_Iseult.jpg", 0, 2, 0, 2);
+        super("Queen Iseult", "A_Queen_Iseult.jpg", 0, 2, 0, 2, "");
     }
 }
 
 class SirGalahad extends Ally {
     SirGalahad(){
-        super("Sir Galahad", "A_Sir_Galahad.jpg", 15, 0, 0, 0);
+        super("Sir Galahad", "A_Sir_Galahad.jpg", 15, 0, 0, 0, "");
     }
 }
 
 class SirGawain extends Ally {
     SirGawain(){
-        super("Sir Gawain", "A_Sir_Gawain.jpg", 10, 0, 10, 0);
+        super("Sir Gawain", "A_Sir_Gawain.jpg", 10, 0, 10, 0, "Test Of The Green Knight");
     }
 }
 
 class SirLancelot extends Ally {
     SirLancelot(){
-        super("Sir Lancelot", "A_Sir_Lancelot.jpg", 15, 0, 10, 0);
+        super("Sir Lancelot", "A_Sir_Lancelot.jpg", 15, 0, 10, 0, "Defend The Queen's Honor");
     }
 }
 
 class SirPercival extends Ally {
     SirPercival(){
-        super("Sir Percival", "A_Sir_Percival.jpg", 5, 0, 15, 0);
+        super("Sir Percival", "A_Sir_Percival.jpg", 5, 0, 15, 0, "Search For The Holy Grail");
     }
 }
 
 class SirTristan extends Ally {
     SirTristan(){
-        super("Sir Tristan", "A_Sir_Tristan.jpg", 10, 0, 10, 0);
+        super("Sir Tristan", "A_Sir_Tristan.jpg", 10, 0, 10, 0, "Queen Iseult");
     }
 }
-
-
-
