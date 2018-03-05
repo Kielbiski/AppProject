@@ -393,6 +393,16 @@ public class Controller {
 
     public void continueAction(ActionEvent event){
         if(currentBehaviour == behaviour.SPONSOR) {
+            int validCardCount = 0;
+            for(AdventureCard adventureCard : game.getCurrentQuest().getCurrentPlayer().getCardsInHand()){
+                if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+                    validCardCount++;
+                }
+            }
+            if(validCardCount < game.getCurrentQuest().getNumStage()){
+                currentBehaviour = behaviour.DEFAULT;
+            }
+
             if (game.validateQuestStages()) {
 
                 for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
