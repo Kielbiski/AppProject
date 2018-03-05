@@ -140,10 +140,23 @@ public class Quest extends StoryCard { //story card
         for (Player player : playerList)
         {
             player.setShields(player.getShields() + shields);
+
         }
         isFinished = true;
 
         logger.info("Returning player list that won the "+ this.getName()+" quest");
+    }
+
+    private void wipeWeapons(){
+        for(Player player: playerList){
+            ArrayList<AdventureCard> found = new ArrayList<>();
+            for(AdventureCard card: player.getCardsOnTable()){
+                if(card instanceof Weapon){
+                    found.add(card);
+                }
+            }
+            player.getCardsOnTable().removeAll(found);
+        }
     }
 
     public void nextTurn(){
@@ -153,19 +166,12 @@ public class Quest extends StoryCard { //story card
             playerList = currentStage.getWinners();
             currentStageIndex++;
             if(currentStageIndex >= stages.size()){
+                wipeWeapons();
                 questWinners();
             } else {
                 currentPlayer = getPlayerList().get(currentTurnIndex);
                 currentStage = stages.get(currentStageIndex);
-                for(Player player: playerList){
-                    ArrayList<AdventureCard> found = new ArrayList<>();
-                    for(AdventureCard card: player.getCardsOnTable()){
-                        if(card instanceof Weapon){
-                            found.add(card);
-                        }
-                    }
-                    player.getCardsOnTable().removeAll(found);
-                }
+                wipeWeapons();
                 currentStage.setParticipatingPlayers(playerList);
             }
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
