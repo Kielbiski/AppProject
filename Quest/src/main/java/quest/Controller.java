@@ -313,6 +313,8 @@ public class Controller {
         }
         else if(currentBehaviour == CardBehaviour.DEFAULT){
             for(int i =0; i < flowPaneArray.size(); i++){
+                flowPaneArray.get(i).getStyleClass().clear();
+                flowPaneArray.get(i).setStyle(null);
                 flowPaneArray.get(i).getChildren().clear();
             }
         }
@@ -460,9 +462,6 @@ public class Controller {
         game.clearQuest();
         game.setSponsor(null);
         currentBehaviour = CardBehaviour.DEFAULT;
-        currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
-        activePlayer = game.getPlayers().get(currentPlayerIndex);
-        storyDeckImg.setDisable(false);
         nextTurnButton.setVisible(true);
         continueButton.setVisible(false);
         update();
