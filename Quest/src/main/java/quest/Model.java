@@ -78,6 +78,7 @@ public class Model
                     if ((adventureCard instanceof Ally)) {
                         return false;
                     }
+                    System.out.println(adventureCard.getName() + " bp:" + adventureCard.getBattlePoints());
                     currentStageBattlePoints += adventureCard.getBattlePoints();
                     if (adventureCard instanceof Foe) {
                         foeCount++;
@@ -338,6 +339,15 @@ public class Model
 
     public ArrayList<Player> getWinningPlayers() {
         return winningPlayers;
+    }
+
+    public boolean isValidDrop(AdventureCard card, int stageNum){
+        for(AdventureCard matchCard: getPreQuestStageSetup().get(stageNum)){
+            if(card.getName().equals(matchCard.getName())){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isWinner() {

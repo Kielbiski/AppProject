@@ -150,6 +150,16 @@ public class Player {
         logger.info("Removing the following card "+ paramCard.getName()+" from " + this.playerName+ " cards on the table.");
         cardsOnTable.remove(paramCard);
     }
+
+    public boolean isValidDrop(AdventureCard card){
+        for(AdventureCard matchCard: cardsOnTable){
+            if(card.getName().equals(matchCard.getName())){
+                return false;
+            }
+        }
+        return true;
+
+    }
     
 //    public void removeCardFromPlaying(AdventureCard paramCard){
 //        cardsPlaying.removeCard(paramCard);
