@@ -25,9 +25,15 @@ import java.util.*;
 import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
-
+//TO DO IN ORDER OF IMPORTANCE:
 //must check tomake sure a player can actually sponsor a quest
-//must add button to advance turn after player draws card
+//clear board of quest after completion
+//check if allies are working in quest
+//display quest winner
+//implement discard pile for adventure and story cards
+//events?
+//tournaments?
+//ask jermey if he implemented funciton to chekc sponsor eligibility
 
 
 
@@ -100,6 +106,7 @@ public class Controller {
         });
 
 
+
 //        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 //            if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
 //                activePlayer.addCardToTable(card);
@@ -130,23 +137,23 @@ public class Controller {
         // If this is a meaningful drop...
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
-                if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
-                    if(!(selectedAdventureCard instanceof Foe) ) {
-                        activePlayer.addCardToTable(selectedAdventureCard);
-                        activePlayer.removeCardFromHand(selectedAdventureCard);
-                        update();
+                if (activePlayer.isValidDrop(selectedAdventureCard)){
+                    if (currentBehaviour == CardBehaviour.QUEST_MEMBER) {
+                        if (!(selectedAdventureCard instanceof Foe)) {
+                            activePlayer.addCardToTable(selectedAdventureCard);
+                            activePlayer.removeCardFromHand(selectedAdventureCard);
+                            success = true;
+                        }
+                    }
+                    else if (currentBehaviour == CardBehaviour.BID) {
+
                     }
                 }
-                else if(currentBehaviour ==CardBehaviour.BID){
-
+                else{
+                    success = false;
                 }
-                success = true;
+
             }
-//                else{
-//                   // game.removeFromPotentialStage(selectedAdventureCard,);
-//                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
-//                    success = true;
-//                }
         }
         event.setDropCompleted(success);
         update();
@@ -165,7 +172,7 @@ public class Controller {
 
     private void createStagePane(int stageIndex){
         FlowPane stagePane = new FlowPane();
-        stagePane.setStyle("-fx-border-color: white");
+        stagePane.getStyleClass().add("eventStage");
         stagePane.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
             // Get item id here, which was stored when the drag started.
@@ -173,9 +180,14 @@ public class Controller {
             // If this is a meaningful drop...
             if (db.hasString()) {
                 if(db.getString().equals(cardsHbox.getId())) {
-                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
-                    game.getSponsor().removeCardFromHand(selectedAdventureCard);
-                    success = true;
+                    if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
+                        game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                        game.getSponsor().removeCardFromHand(selectedAdventureCard);
+                        success = true;
+                    }
+                    else{
+                        success = false;
+                    }
                 }
 //                else{
 //                   // game.removeFromPotentialStage(selectedAdventureCard,);
@@ -272,6 +284,26 @@ public class Controller {
                     imgView.setImage(getCardImage(card.getImageFilename()));
                     imgView.toFront();
                     flowPaneArray.get(i).getChildren().add(imgView);
+                }
+            }
+        }
+        else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+            for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
+                flowPaneArray.get(i).getChildren().clear();
+                if(game.getCurrentQuest().getCurrentStage() == game.getCurrentQuest().getStages().get(i)) {
+                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                        ImageView imgView = createAdventureCardImageView(card);
+                        imgView.setImage(getCardImage(card.getImageFilename()));
+                        imgView.toFront();
+                        flowPaneArray.get(i).getChildren().add(imgView);
+                    }
+                }
+                else{
+//                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+//                        ImageView imgView = createAdventureCardImageView(card);
+//                        //imgView.setImage(getCardImage("FacedownAdventureCard.png"));
+//                        flowPaneArray.get(i).getChildren().add(imgView);
+//                    }
                 }
             }
         }

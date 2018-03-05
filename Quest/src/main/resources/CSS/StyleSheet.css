@@ -111,6 +111,13 @@
 
 }
 
+.eventStage{
+    -fx-background-image: url("../Assets/stageBanner.png");
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center center;
+    -fx-border-color: white;
+
+}
 
 .image-view-hand{
     -fx-padding:0 50 0 50;
