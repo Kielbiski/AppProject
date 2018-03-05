@@ -180,7 +180,7 @@ class SaxonKnight extends Foe {
 
     SaxonKnight(){
 
-        super("Saxon Knight", "F_Saxon_Knight.jpg", 5, 10);
+        super("Saxon Knight", "F_Saxon_Knight.jpg", 15, 10);
         logger.info("Successfully called : SaxonKnight constructor");
 
     }

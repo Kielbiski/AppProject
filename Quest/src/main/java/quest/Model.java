@@ -37,8 +37,13 @@ public class Model
         this.currentQuest = currentQuest;
         preQuestStageSetup.clear();
         for(int i = 0; i<currentQuest.getNumStage();i++){
-            preQuestStageSetup.put(i,new ArrayList<AdventureCard>());
+            preQuestStageSetup.put(i,new ArrayList<>());
         }
+    }
+
+    public void clearQuest(){
+        //move to discard pile
+        this.currentQuest =null;
     }
 
     public Quest getCurrentQuest() {
@@ -78,6 +83,7 @@ public class Model
                     if ((adventureCard instanceof Ally)) {
                         return false;
                     }
+                    System.out.println(adventureCard.getName() + " bp:" + adventureCard.getBattlePoints());
                     currentStageBattlePoints += adventureCard.getBattlePoints();
                     if (adventureCard instanceof Foe) {
                         foeCount++;
@@ -327,7 +333,7 @@ public class Model
     void resetPotentialStages(){
         preQuestStageSetup.clear();
         for(int i = 0; i<currentQuest.getNumStage();i++){
-            preQuestStageSetup.put(i,new ArrayList<AdventureCard>());
+            preQuestStageSetup.put(i,new ArrayList<>());
         }
     }
 
@@ -338,6 +344,18 @@ public class Model
 
     public ArrayList<Player> getWinningPlayers() {
         return winningPlayers;
+    }
+
+    public boolean isValidDrop(AdventureCard card, int stageNum){
+        if (card instanceof Ally || card instanceof Amour) {//?
+           return false;
+        }
+        for(AdventureCard matchCard: getPreQuestStageSetup().get(stageNum)){
+            if(card.getName().equals(matchCard.getName())){
+                return false;
+            }
+        }
+        return true;
     }
 
     public boolean isWinner() {
