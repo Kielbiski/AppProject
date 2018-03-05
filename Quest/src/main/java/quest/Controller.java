@@ -465,6 +465,7 @@ public class Controller {
             alert.showAndWait();
         }
         stagesGridPane.getChildren().clear();
+        flowPaneArray.clear();
         game.getPreQuestStageSetup().clear();
         game.clearQuest();
         activePlayer = game.getSponsor();
