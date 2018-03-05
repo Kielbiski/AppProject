@@ -26,18 +26,22 @@ import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 //TO DO IN ORDER OF IMPORTANCE:
-//must check tomake sure a player can actually sponsor a quest
+//clear warnings from git
+
 //clear board of quest after completion
 //check if allies are working in quest
-//display quest winner
+//display quest winner[DONE]
 //implement discard pile for adventure and story cards
 //events?
 //tournaments?
 //ask jermey if he implemented funciton to chekc sponsor eligibility
 
 
+//clear weapons AFTER{seems to work}
+//setflowpane to invisible
 
-enum CardBehaviour {SPONSOR, QUEST_MEMBER, BID}
+
+enum CardBehaviour {SPONSOR, QUEST_MEMBER, BID, DEFAULT}
 
 
 public class Controller {
@@ -97,7 +101,7 @@ public class Controller {
         imgView.setOnDragDetected((MouseEvent event) -> {
             selectedAdventureCard = card;
             Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-            db.setDragView(imgView.getImage());
+            //db.setDragView(imgView.getImage());
             ClipboardContent content = new ClipboardContent();
             // Store node ID in order to know what is dragged.
             content.putString(imgView.getParent().getId());
@@ -307,6 +311,11 @@ public class Controller {
                 }
             }
         }
+        else if(currentBehaviour == CardBehaviour.DEFAULT){
+            for(int i =0; i < flowPaneArray.size(); i++){
+                flowPaneArray.get(i).getChildren().clear();
+            }
+        }
 
     }
 
@@ -428,13 +437,7 @@ public class Controller {
                     System.exit(0);
                 }
                 else{
-                    System.out.println("questOver");
-                    currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
-                    activePlayer = game.getPlayers().get(currentPlayerIndex);
-                    storyDeckImg.setDisable(false);
-                    nextTurnButton.setVisible(true);
-                    continueButton.setVisible(false);
-                    update();
+                    questOver();
                 }
             }
             else{
@@ -445,15 +448,32 @@ public class Controller {
 
 
     }
+    private void questOver(){
+        for(Player player: game.getCurrentQuest().getPlayerList()){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
+            DialogPane dialog = alert.getDialogPane();
+            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+            dialog.getStyleClass().add("alertDialogs");
+            alert.showAndWait();
+        }
+        game.getPreQuestStageSetup().clear();
+        game.clearQuest();
+        game.setSponsor(null);
+        currentBehaviour = CardBehaviour.DEFAULT;
+        currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
+        activePlayer = game.getPlayers().get(currentPlayerIndex);
+        storyDeckImg.setDisable(false);
+        nextTurnButton.setVisible(true);
+        continueButton.setVisible(false);
+        update();
+    }
 
     public void nextTurnAction(ActionEvent event){
         currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
         activePlayer = game.getPlayers().get(currentPlayerIndex);
         storyDeckImg.setDisable(false);
-        nextTurnButton.setVisible(true);
+        nextTurnButton.setDisable(true);
         update();
-
-
     }
 
     public void storyDeckDraw(MouseEvent event){
@@ -506,6 +526,7 @@ public class Controller {
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
         //activePlayer = game.getPlayers().get(currentPlayerIndex);
+        nextTurnButton.setDisable(false);
         storyDeckImg.setDisable(true);
         update();
 
@@ -513,6 +534,7 @@ public class Controller {
 
     public void initialize() {
         setPlayerNames();
+        currentBehaviour = CardBehaviour.DEFAULT;
         currentTurnPlayer = game.getPlayers().get(0);
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
