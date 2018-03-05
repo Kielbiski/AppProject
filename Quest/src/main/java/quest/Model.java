@@ -15,6 +15,8 @@ public class Model
     private ArrayList<Player> players = new ArrayList<>();
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
+    private Stack<AdventureCard> discardOfAdventureCards = new Stack<>();
+    private Stack<StoryCard> discardOfStoryCards = new Stack<>();
     private HashMap<Integer,ArrayList<AdventureCard>> preQuestStageSetup = new HashMap<>();
     private StoryCard currentStory;
     private Quest currentQuest;
@@ -42,7 +44,7 @@ public class Model
     }
 
     public void clearQuest(){
-        //move to discard pile
+        this.discardOfStoryCards.add(currentQuest);
         this.currentQuest =null;
     }
 
@@ -232,6 +234,7 @@ public class Model
         logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
 
         //Add each AdventureCard to deckOfAdventureCards
+
         for(AdventureCard adventureCard : numberOfEachAdventureCard.keySet()){
             for(int i = 0; i < numberOfEachAdventureCard.get(adventureCard); i++) {
                 deckOfAdventureCards.add(adventureCard);
@@ -335,6 +338,11 @@ public class Model
     void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
+    }
+
+
+    void addToDiscardAdventure(AdventureCard card){
+        discardOfAdventureCards.add(card);
     }
 
     void addToPotentialStage(AdventureCard card, int stageNum){

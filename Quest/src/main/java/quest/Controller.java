@@ -26,22 +26,17 @@ import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 //TO DO IN ORDER OF IMPORTANCE:
-//clear warnings from git
-
-//clear board of quest after completion
-//check if allies are working in quest
 //display quest winner[DONE]
 //implement discard pile for adventure and story cards
+//amour to be deleted at end of quest
 //events?
 //tournaments?
 //ask jermey if he implemented funciton to chekc sponsor eligibility
 
 
-//clear weapons AFTER{seems to work}
-//setflowpane to invisible
 
 
-enum CardBehaviour {SPONSOR, QUEST_MEMBER, BID, DEFAULT}
+enum behaviour {SPONSOR, QUEST_MEMBER, BID, DEFAULT}
 
 
 public class Controller {
@@ -53,7 +48,7 @@ public class Controller {
     private int NUM_PLAYERS = 4;
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
-    private CardBehaviour currentBehaviour;
+    private behaviour currentBehaviour;
 
     ///FXML ELEMENTS
     @FXML
@@ -142,14 +137,14 @@ public class Controller {
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
                 if (activePlayer.isValidDrop(selectedAdventureCard)){
-                    if (currentBehaviour == CardBehaviour.QUEST_MEMBER) {
+                    if (currentBehaviour == behaviour.QUEST_MEMBER) {
                         if (!(selectedAdventureCard instanceof Foe)) {
                             activePlayer.addCardToTable(selectedAdventureCard);
                             activePlayer.removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
                     }
-                    else if (currentBehaviour == CardBehaviour.BID) {
+                    else if (currentBehaviour == behaviour.BID) {
 
                     }
                 }
@@ -280,7 +275,7 @@ public class Controller {
             tableHbox.getChildren().addAll(tableImgViews);
         }
 
-        if(currentBehaviour == CardBehaviour.SPONSOR) {
+        if(currentBehaviour == behaviour.SPONSOR) {
             for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
                 flowPaneArray.get(i).getChildren().clear();
                 for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
@@ -291,7 +286,7 @@ public class Controller {
                 }
             }
         }
-        else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+        else if(currentBehaviour == behaviour.QUEST_MEMBER){
             for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
                 flowPaneArray.get(i).getChildren().clear();
                 if(game.getCurrentQuest().getCurrentStage() == game.getCurrentQuest().getStages().get(i)) {
@@ -303,22 +298,14 @@ public class Controller {
                     }
                 }
                 else{
-//                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
-//                        ImageView imgView = createAdventureCardImageView(card);
-//                        //imgView.setImage(getCardImage("FacedownAdventureCard.png"));
-//                        flowPaneArray.get(i).getChildren().add(imgView);
-//                    }
+                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                        ImageView imgView = createAdventureCardImageView(card);
+                        imgView.setImage(getCardImage("FacedownAdventure.png"));
+                        flowPaneArray.get(i).getChildren().add(imgView);
+                    }
                 }
             }
         }
-        else if(currentBehaviour == CardBehaviour.DEFAULT){
-            for(int i =0; i < flowPaneArray.size(); i++){
-                flowPaneArray.get(i).getStyleClass().clear();
-                flowPaneArray.get(i).setStyle(null);
-                flowPaneArray.get(i).getChildren().clear();
-            }
-        }
-
     }
 
     private boolean isGameOver(){
@@ -367,7 +354,7 @@ public class Controller {
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         activePlayer = sponsor;
-        currentBehaviour = CardBehaviour.SPONSOR;
+        currentBehaviour = behaviour.SPONSOR;
         continueButton.setVisible(true);
 
         for(int i = 0;i<quest.getNumStage();i++){
@@ -405,14 +392,14 @@ public class Controller {
     }
 
     public void continueAction(ActionEvent event){
-        if(currentBehaviour == CardBehaviour.SPONSOR) {
+        if(currentBehaviour == behaviour.SPONSOR) {
             if (game.validateQuestStages()) {
 
                 for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
                     game.getCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
                 }
                 game.getCurrentQuest().startQuest();
-                currentBehaviour = CardBehaviour.QUEST_MEMBER;
+                currentBehaviour = behaviour.QUEST_MEMBER;
                 activePlayer = game.getCurrentQuest().getCurrentPlayer();
                 update();
             } else {
@@ -431,7 +418,7 @@ public class Controller {
                 update();
             }
         }
-        else if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
+        else if(currentBehaviour == behaviour.QUEST_MEMBER){
             game.getCurrentQuest().nextTurn();
             if(game.getCurrentQuest().isFinished()){
                 if(game.isWinner()){
@@ -458,10 +445,12 @@ public class Controller {
             dialog.getStyleClass().add("alertDialogs");
             alert.showAndWait();
         }
+        stagesGridPane.getChildren().clear();
         game.getPreQuestStageSetup().clear();
         game.clearQuest();
+        activePlayer = game.getSponsor();
         game.setSponsor(null);
-        currentBehaviour = CardBehaviour.DEFAULT;
+        currentBehaviour = behaviour.DEFAULT;
         nextTurnButton.setVisible(true);
         continueButton.setVisible(false);
         update();
@@ -533,7 +522,7 @@ public class Controller {
 
     public void initialize() {
         setPlayerNames();
-        currentBehaviour = CardBehaviour.DEFAULT;
+        currentBehaviour = behaviour.DEFAULT;
         currentTurnPlayer = game.getPlayers().get(0);
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
@@ -554,7 +543,6 @@ public class Controller {
             DialogPane dialogPane = dialog.getDialogPane();
             dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
             dialogPane.getStyleClass().add("alertDialogs");
-            dialog.getDialogPane().lookupButton(ButtonType.CANCEL).setDisable(true);
             // dialog.setContentText("Please enter your name:");
 
             Optional<String> result = dialog.showAndWait();
