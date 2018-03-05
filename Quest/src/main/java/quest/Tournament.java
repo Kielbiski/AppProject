@@ -16,7 +16,7 @@ public class Tournament extends StoryCard {
     Tournament(String paramName, String paramImageFilename, ArrayList<Player> paramPlayerList){
         super(paramName, paramImageFilename);
         playerList.addAll(paramPlayerList);
-        roundsPlayed = 0;
+        roundsPlayed = 1;
         shields = playerList.size();
         logger.info("Successfully called :" + this.getName() + " constructor");
     }
@@ -58,6 +58,16 @@ public class Tournament extends StoryCard {
     public int getShields(){
         logger.info("Returning number of shields this " + this.getName() +" has.");
         return shields;
+    }
+
+    public void setRoundsPlayed(int paramRoundPlayed ){
+        logger.info("Setting " + this.getName() +" round.");
+        roundsPlayed = paramRoundPlayed;
+    }
+
+    public void removePlayer(Player player ){
+        logger.info("Removing from this  " + this.getName() +" the following player: "+ player+".");
+        playerList.remove(player);
     }
 
     public ArrayList<Player> getTournamentWinner() {
