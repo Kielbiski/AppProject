@@ -24,5 +24,5 @@ public abstract class QuestStage {
     public void setParticipatingPlayers(ArrayList<Player> participatingPlayers){
         this.participatingPlayers = participatingPlayers;
     }
-    public abstract ArrayList<Player> getWinners();
+
 }

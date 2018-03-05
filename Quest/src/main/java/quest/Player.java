@@ -170,9 +170,18 @@ public class Player {
         return cardsInHand.size() > 12;
     }
 
-    int calculateCardsBattlePoints(ArrayList<AdventureCard> paramCardList) {
+    int calculateCardsBattlePoints(ArrayList<AdventureCard> paramCardList, Quest currentQuest) {
         int totalBattlePoints = 0;
         for(AdventureCard adventureCard : paramCardList) {
+            if(adventureCard instanceof Ally){
+                for(AdventureCard checkAdventureCard: paramCardList){
+                    if((((Ally) adventureCard).getAffectedEntity().toLowerCase().equals(checkAdventureCard.getName().toLowerCase())) || (((Ally) adventureCard).getAffectedEntity().toLowerCase().equals(currentQuest.getName())) && (adventureCard != checkAdventureCard)){
+                        adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
+                        break;
+                    }
+                }
+            }
+
             totalBattlePoints += adventureCard.getBattlePoints();
         }
 
@@ -194,7 +203,6 @@ public class Player {
             default:
                 break;
         }
-        battlePoints += calculateCardsBattlePoints(this.cardsOnTable);
         logger.info("Returning " + this.playerName +" calculated battle points :" + battlePoints+ " .");
         return battlePoints;
     }

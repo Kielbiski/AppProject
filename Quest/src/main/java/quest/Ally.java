@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 public class Ally extends AdventureCard {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-
+    String affectedEntity;
     public Ally(String paramName, String paramImageFilename, int paramBattlePoints, int paramBids, int paramBonusBattlePoints, int paramBonusBids, String paramAffectedEntities)
     {
         super(paramName, paramImageFilename);
@@ -14,8 +14,12 @@ public class Ally extends AdventureCard {
         bids = paramBids;
         bonusBattlePoints = paramBonusBattlePoints;
         bonusBids = paramBonusBids;
-        String affectedEntity = "";
+        affectedEntity = "";
         logger.info("Successfully called : Ally Card constructor");
 
+    }
+
+    public String getAffectedEntity() {
+        return affectedEntity;
     }
 }

@@ -159,11 +159,50 @@ public class Quest extends StoryCard { //story card
         }
     }
 
+
+    public ArrayList<Player> getFoeStageWinners(FoeStage foeStage){
+        ArrayList<Player> winningPlayers = new ArrayList<>();
+        logger.info("FoeStage: Going through participant battle points");
+        int playerBattlePoints;
+        for(Player player : foeStage.getParticipatingPlayers()){
+            playerBattlePoints = (player.calculateBattlePoints() + player.calculateCardsBattlePoints(player.getCardsOnTable(), this));
+            logger.info("FoeStage: "+ foeStage.getParticipatingPlayers() + " has "+ playerBattlePoints + " battle points");
+            if(playerBattlePoints > foeStage.getTotalBattlePoints()) {
+                winningPlayers.add(player);
+            }
+        }
+        logger.info("FoeStage: Returning list of winning player");
+        return winningPlayers;
+    }
+
+    public ArrayList<Player> getTestStageWinners(TestStage testStage) {
+        Player winningPlayer= null;
+        int currentHighestBid = 0;
+        for(Player player : testStage.getParticipatingPlayers())
+        {
+            if (player.getCurrentBid() > currentHighestBid)
+            {
+                currentHighestBid = player.getCurrentBid();
+                winningPlayer = player;
+                logger.info("Current player with highest bid" + winningPlayer +" for this testStage." );
+            }
+        }
+
+        logger.info("Returning" + winningPlayer +" as the testStage winner." );
+        ArrayList<Player> winningPlayerArray = new ArrayList<>();
+        winningPlayerArray.add(winningPlayer);
+        return winningPlayerArray;
+    }
+
     public void nextTurn(){
         currentTurnIndex++;
         if(currentTurnIndex >= playerList.size()){
             currentTurnIndex = 0;
-            playerList = currentStage.getWinners();
+            if(currentStage instanceof FoeStage) {
+                playerList = getFoeStageWinners((FoeStage) currentStage);
+            } else if(currentStage instanceof TestStage) {
+                playerList = getTestStageWinners((TestStage) currentStage);
+            }
             currentStageIndex++;
             if(currentStageIndex >= stages.size()){
                 wipeWeapons();

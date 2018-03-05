@@ -22,18 +22,7 @@ public class FoeStage extends QuestStage {
 
     }
 
-    public ArrayList<Player> getWinners(){
-        ArrayList<Player> winningPlayers = new ArrayList<>();
-        logger.info("FoeStage: Going through participant battle points");
-        for(Player player : this.getParticipatingPlayers()){
-            int playerBattlePoints = 0;
-            playerBattlePoints += (player.calculateBattlePoints() + player.calculateCardsBattlePoints(player.getCardsOnTable()));
-            logger.info("FoeStage: "+ this.getParticipatingPlayers() +" has "+ playerBattlePoints + " battle points");
-            if(playerBattlePoints > totalBattlePoints) {
-                winningPlayers.add(player);
-            }
-        }
-        logger.info("FoeStage: Returning list of winning player");
-        return winningPlayers;
+    public int getTotalBattlePoints() {
+        return totalBattlePoints;
     }
 }
