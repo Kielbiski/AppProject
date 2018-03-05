@@ -63,6 +63,11 @@ public class Model
     public QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
         for(AdventureCard adventureCard : cardsForStage) {
             if (adventureCard instanceof Foe) {
+                if(currentQuest.getQuestFoes().contains(adventureCard)){
+                    System.out.println("Before" + adventureCard.getName() + " -> " + adventureCard.getBattlePoints());
+                    adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
+                    System.out.println("After" + adventureCard.getName() + " -> " + adventureCard.getBattlePoints());
+                }
                 return new FoeStage(cardsForStage, new ArrayList<>());
             } else if (adventureCard instanceof Test) {
                 return new TestStage(adventureCard, new ArrayList<>());
@@ -222,7 +227,7 @@ public class Model
         logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
 
         //Add each AdventureCard to deckOfAdventureCards
-
+        deckOfAdventureCards.add(new GreenKnight());
         for(AdventureCard adventureCard : numberOfEachAdventureCard.keySet()){
             for(int i = 0; i < numberOfEachAdventureCard.get(adventureCard); i++) {
                 deckOfAdventureCards.add(adventureCard);
@@ -264,7 +269,7 @@ public class Model
         logger.info("storing all tournaments and their instances in numberOfEachStoryCard HashMap");
 
         //Add each StoryCard to deckOfStoryCards
-
+        deckOfStoryCards.add(new TestOfTheGreenKnight());
         for(StoryCard storyCard : numberOfEachStoryCard.keySet()){
             for(int i = 0; i < numberOfEachStoryCard.get(storyCard); i++) {
                 deckOfStoryCards.add(storyCard);
@@ -311,7 +316,7 @@ public class Model
     }
 
     void shuffleAndDeal(){
-        Collections.shuffle(deckOfAdventureCards);
+        //Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
                 if (!(deckOfAdventureCards.empty())) {
