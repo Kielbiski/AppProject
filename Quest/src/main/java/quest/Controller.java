@@ -364,6 +364,7 @@ public class Controller {
 
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
+        game.setCurrentQuest(quest);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         activePlayer = sponsor;
