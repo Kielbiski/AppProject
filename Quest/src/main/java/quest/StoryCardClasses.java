@@ -2,8 +2,11 @@ package quest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Stack;
 
 //Quests
@@ -153,7 +156,7 @@ class ChivalrousDeed extends Event {
     }
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         playersToAffect.sort(Comparator.comparing(Player::getShields));
         Player lowestShields = playersToAffect.get(0);
         lowestShields.setShields(playersToAffect.get(0).getShields() + 3);
@@ -176,7 +179,7 @@ class CourtCalledToCamelot extends Event {
     }
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         for (Player player : playersToAffect) {
             for (AdventureCard adventureCard : player.getCardsOnTable()) {
                 if (adventureCard instanceof Ally) {
@@ -190,6 +193,7 @@ class CourtCalledToCamelot extends Event {
 class KingsCallToArms extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+    private List<PropertyChangeListener> listener = new ArrayList<>();
 
     KingsCallToArms(){
         super("King's Call To Arms", "E_Kings_Call_To_Arms.jpg");
@@ -198,16 +202,25 @@ class KingsCallToArms extends Event {
     }
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
-        System.out.println("////////////////////////////////////////////////////////////////////////////////");
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
+        playersToAffect.sort(Comparator.comparing(Player::getShields));
+        notifyListeners(playersToAffect.get(0),"callToArms");
+    }
+    private void notifyListeners(Object object, String property) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property,"",""));
+        }
+    }
 
+    public void addChangeListener(PropertyChangeListener newListener) {
+        listener.add(newListener);
     }
 }
 
 class KingsRecognition extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+
 
     KingsRecognition(){
         super("King's Recognition", "E_Kings_Recognition.jpg");
@@ -216,9 +229,12 @@ class KingsRecognition extends Event {
     }
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         System.out.println("Boolean kingsRecognition set in Model.");
     }
+
+
+
 }
 
 class Plague extends Event {
@@ -232,7 +248,7 @@ class Plague extends Event {
     }
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         if (activePlayer.getShields() < 2) {
             activePlayer.setShields(0);
         } else {
@@ -252,7 +268,7 @@ class Pox extends Event {
     }
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         for (Player player : playersToAffect) {
             if (player != activePlayer) {
                 if (player.getShields() < 1) {
@@ -268,47 +284,61 @@ class Pox extends Event {
 class ProsperityThroughoutTheRealm extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+    private List<PropertyChangeListener> listener = new ArrayList<>();
+
 
     ProsperityThroughoutTheRealm(){
         super("Prosperity Throughout The Realm", "E_Prosperity_Throughout_The_Realm.jpg");
         logger.info("Successfully called : Prosperity Throughout The Realm constructor.");
 
     }
-    ///////////////////////////////////////////////
-    ///////////////////////////////////////////////
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         for (Player player : playersToAffect) {
-            player.addCardToHand(deckOfAdventureCards.pop());
+            notifyListeners(player, "deckDraw");
         }
     }
 
-    ///////////////////////////////////////////////
-    ///////////////////////////////////////////////
+        private void notifyListeners(Object object, String property) {
+            for (PropertyChangeListener name : listener) {
+                name.propertyChange(new PropertyChangeEvent(object, property,"",""));
+            }
+        }
+
+        public void addChangeListener(PropertyChangeListener newListener) {
+            listener.add(newListener);
+        }
 }
 
 class QueensFavor extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+    private List<PropertyChangeListener> listener = new ArrayList<>();
+
 
     QueensFavor(){
         super("Queen's Favor", "E_Queens_Favor.jpg");
         logger.info("Successfully called : Queen's Favor constructor.");
 
     }
-    ///////////////////////////////////////////////
-    ///////////////////////////////////////////////
 
     @Override
-    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         playersToAffect.sort(Comparator.comparing(Player::getShields));
-        playersToAffect.get(0).addCardToHand(deckOfAdventureCards.pop());
-        playersToAffect.get(0).addCardToHand(deckOfAdventureCards.pop());
+        notifyListeners(playersToAffect.get(0),"deckDraw");
+        notifyListeners(playersToAffect.get(0),"deckDraw");
     }
 
-    ///////////////////////////////////////////////
-    ///////////////////////////////////////////////
+    private void notifyListeners(Object object, String property) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property,"",""));
+        }
+    }
+
+    public void addChangeListener(PropertyChangeListener newListener) {
+        listener.add(newListener);
+    }
 
 }
 

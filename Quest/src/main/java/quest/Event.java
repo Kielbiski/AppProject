@@ -17,7 +17,7 @@ public abstract class Event extends StoryCard {
         logger.info("Successfully called : Event constructor");
 
     }
-    public abstract void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards);
+    public abstract void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer);
 
 }
 
