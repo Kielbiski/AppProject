@@ -145,7 +145,7 @@ public class Controller {
                         }
                     }
                     else if (currentBehaviour == behaviour.BID) {
-
+                        System.out.println("Bid.");
                     }
                 }
                 else{
@@ -350,7 +350,6 @@ public class Controller {
 
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
-        game.setCurrentQuest(quest);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         activePlayer = sponsor;
@@ -393,16 +392,6 @@ public class Controller {
 
     public void continueAction(ActionEvent event){
         if(currentBehaviour == behaviour.SPONSOR) {
-            int validCardCount = 0;
-            for(AdventureCard adventureCard : game.getCurrentQuest().getCurrentPlayer().getCardsInHand()){
-                if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
-                    validCardCount++;
-                }
-            }
-            if(validCardCount < game.getCurrentQuest().getNumStage()){
-                currentBehaviour = behaviour.DEFAULT;
-            }
-
             if (game.validateQuestStages()) {
 
                 for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
@@ -501,10 +490,43 @@ public class Controller {
         }
 
         if (game.getCurrentStory() instanceof Quest) {
-            Player sponsor;
-            for (Player player : currentPlayerOrder) {//////////////////////////////////////
-                activePlayer = player;
+            game.setCurrentQuest((Quest) game.getCurrentStory());
+            questDraw(currentPlayerOrder);
+        } else if (game.getCurrentStory() instanceof Event) {
+            nextTurnButton.setVisible(true);
+            System.out.println("Event");
+        } else if (game.getCurrentStory() instanceof Tournament) {
+            nextTurnButton.setVisible(true);
+            System.out.println("Tournament");
+        }
+        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+        //activePlayer = game.getPlayers().get(currentPlayerIndex);
+        nextTurnButton.setDisable(false);
+        storyDeckImg.setDisable(true);
+        update();
+
+    }
+
+    private void questDraw(ArrayList<Player> currentPlayerOrder) {
+        Player sponsor;
+        for (Player player : currentPlayerOrder) {//////////////////////////////////////
+            activePlayer = player;
+            update();
+            int validCardCount = 0;
+            for(AdventureCard adventureCard : player.getCardsInHand()){
+                if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+                    validCardCount++;
+                }
+            }
+            if(validCardCount < game.getCurrentQuest().getNumStage()){
+                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", ButtonType.OK);
+                DialogPane dialog = sponsorQuest.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
+                sponsorQuest.showAndWait();
                 update();
+            } else {
                 Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
                 DialogPane dialog = sponsorQuest.getDialogPane();
                 dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
@@ -520,24 +542,12 @@ public class Controller {
                     break;
                 }
             }
-            if(game.getSponsor() == null){
-                activePlayer = currentTurnPlayer;
-                nextTurnButton.setVisible(true);
-                continueButton.setVisible(false);
-            }
-        } else if (game.getCurrentStory() instanceof Event) {
-            nextTurnButton.setVisible(true);
-            System.out.println("Event");
-        } else if (game.getCurrentStory() instanceof Tournament) {
-            nextTurnButton.setVisible(true);
-            System.out.println("Tournament");
         }
-        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-        //activePlayer = game.getPlayers().get(currentPlayerIndex);
-        nextTurnButton.setDisable(false);
-        storyDeckImg.setDisable(true);
-        update();
-
+        if(game.getSponsor() == null){
+            activePlayer = currentTurnPlayer;
+            nextTurnButton.setVisible(true);
+            continueButton.setVisible(false);
+        }
     }
 
     public void initialize() {

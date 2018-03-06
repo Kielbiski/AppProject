@@ -324,7 +324,8 @@ public class Model
     }
 
     void shuffleAndDeal(){
-        Collections.shuffle(deckOfAdventureCards);
+        //Collections.shuffle(deckOfAdventureCards);
+
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
                 if (!(deckOfAdventureCards.empty())) {
@@ -365,7 +366,7 @@ public class Model
     }
 
     public boolean isValidDrop(AdventureCard card, int stageNum){
-        if (card instanceof Ally || card instanceof Amour) {//?
+        if ((card instanceof Ally)) {//?
            return false;
         }
         for(AdventureCard matchCard: getPreQuestStageSetup().get(stageNum)){
