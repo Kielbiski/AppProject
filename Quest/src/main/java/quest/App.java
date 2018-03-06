@@ -27,7 +27,7 @@ public class App extends Application {
         Scene scene = new Scene(root);
         //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Quest");
+        primaryStage.setTitle("Viking Thrive Adventure");
         primaryStage.show();
       //  controller.gameLoop();
     }

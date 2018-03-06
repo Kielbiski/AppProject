@@ -3,7 +3,10 @@ package quest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Quest extends StoryCard { //story card
 
@@ -19,10 +22,14 @@ public class Quest extends StoryCard { //story card
     private int currentTurnIndex;
     private Player currentPlayer;
     private boolean isWinner = false;
+    private List<PropertyChangeListener> listener = new ArrayList<>();
+
 
     public boolean isWinner() {
         return isWinner;
     }
+
+
 
     private boolean isFinished = false;
     ArrayList <Foe> questFoes = new ArrayList<>();
@@ -175,7 +182,7 @@ public class Quest extends StoryCard { //story card
         for(Player player : foeStage.getParticipatingPlayers()){
             playerBattlePoints = (player.calculateBattlePoints() + player.calculateCardsBattlePoints(player.getCardsOnTable(), this));
             logger.info("FoeStage: "+ foeStage.getParticipatingPlayers() + " has "+ playerBattlePoints + " battle points");
-            if(playerBattlePoints > foeStage.getTotalBattlePoints()) {
+            if(playerBattlePoints >= foeStage.getTotalBattlePoints()) {
                 winningPlayers.add(player);
             }
         }
@@ -215,6 +222,7 @@ public class Quest extends StoryCard { //story card
             if(currentStageIndex >= stages.size()||playerList.size()==0){
                 questWinners();
             } else {
+                notifyListeners(this,"stage",currentStageIndex-1,currentStageIndex);
                 currentPlayer = getPlayerList().get(currentTurnIndex);
                 currentStage = stages.get(currentStageIndex);
                 currentStage.setParticipatingPlayers(playerList);
@@ -227,6 +235,16 @@ public class Quest extends StoryCard { //story card
             currentPlayer = getPlayerList().get(currentTurnIndex);
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
+    }
+
+    private void notifyListeners(Object object, String property, int oldStage, int newStage) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(this, property, oldStage, newStage));
+        }
+    }
+
+    public void addChangeListener(PropertyChangeListener newListener) {
+        listener.add(newListener);
     }
 
 }

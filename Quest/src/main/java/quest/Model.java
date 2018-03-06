@@ -3,12 +3,14 @@ package quest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.lang.reflect.Array;
 import java.util.*;
 
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
-public class Model
+public class Model implements PropertyChangeListener
 {
     private static final Logger logger = LogManager.getLogger(App.class);
 
@@ -37,6 +39,7 @@ public class Model
 
     public void setCurrentQuest(Quest currentQuest) {
         this.currentQuest = currentQuest;
+        currentQuest.addChangeListener(this);
         preQuestStageSetup.clear();
         for(int i = 0; i<currentQuest.getNumStage();i++){
             preQuestStageSetup.put(i,new ArrayList<>());
@@ -90,9 +93,13 @@ public class Model
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
                 int currentStageBattlePoints = 0;
                 int foeCount = 0;
+                int testCount =0;
                 for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
-                    if ((adventureCard instanceof Test) && (getPreQuestStageSetup().get(i).size() > 1)) {
-                        return false;
+                    if (adventureCard instanceof Test) {
+                        if(getPreQuestStageSetup().get(i).size() > 1) {
+                            return false;
+                        }
+                        testCount++;
                     }
                     if ((adventureCard instanceof Ally)) {
                         return false;
@@ -116,8 +123,9 @@ public class Model
                 if (foeCount > 1) {
                     return false;
                 }
-
-
+                if(foeCount==0 && testCount ==0){
+                    return false;
+                }
         }
         return true;
     }
@@ -290,7 +298,6 @@ public class Model
             }
         }
         deckOfStoryCards.add(new TestOfTheGreenKnight());
-
         logger.info("storing all story cards into the deck of story cards.");
     }
 
@@ -331,7 +338,7 @@ public class Model
     }
 
     void shuffleAndDeal(){
-        //Collections.shuffle(deckOfAdventureCards);
+        Collections.shuffle(deckOfAdventureCards);
 
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
@@ -345,6 +352,7 @@ public class Model
 
     void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
+        //check if hand is full, if so set some state in the player is full. then in controller create an alert that says hand is full.
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
     }
 
@@ -355,6 +363,9 @@ public class Model
 
     void addToPotentialStage(AdventureCard card, int stageNum){
         preQuestStageSetup.get(stageNum).add(card);
+    }
+    void removeFromPotentialStage(AdventureCard card, int stageNum){
+        preQuestStageSetup.get(stageNum).remove(card);
     }
     void resetPotentialStages(){
         preQuestStageSetup.clear();
@@ -409,6 +420,18 @@ public class Model
             currentStory = deckOfStoryCards.pop();
             logger.info("Draw card from story deck.");
         }
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent change) {
+        if (change.getPropertyName().equals("stage")){
+            if (change.getOldValue() != change.getNewValue()){
+                for(Player player:currentQuest.getPlayerList()){
+                    drawAdventureCard(player);
+                }
+            }
+        }
+
     }
 }
 

@@ -26,6 +26,7 @@ enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
 public class Player {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+    private final int HAND_LIMIT = 12;
 
     private String playerName;
     private int battlePoints;
@@ -35,6 +36,7 @@ public class Player {
     private AbstractAI aI;
     private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
     private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
+    private boolean handFull;
 
     Player(String paramName, int i){
         playerName = paramName ;
@@ -67,6 +69,14 @@ public class Player {
     {
         logger.info("Returning " + this.playerName+ " cards on table.");
         return cardsOnTable;
+    }
+
+    public boolean isHandFull() {
+        return handFull;
+    }
+
+    public void setHandFull(boolean handFull) {
+        this.handFull = handFull;
     }
 
     public ArrayList<AdventureCard> getCardsInHand()
@@ -149,6 +159,9 @@ public class Player {
     public void addCardToHand(AdventureCard paramCard){
         logger.info("Adding the following card "+ paramCard.getName()+" to " + this.playerName+ " hand.");
         cardsInHand.add(paramCard);
+        if(cardsInHand.size()>HAND_LIMIT){
+            handFull=true;
+        }
     }
     
     public void addCardToTable(AdventureCard paramCard){
@@ -163,6 +176,11 @@ public class Player {
     public void removeCardFromHand(AdventureCard paramCard){
         logger.info("Removing the following card "+ paramCard.getName()+" from " + this.playerName+ " hand.");
         cardsInHand.remove(paramCard);
+        if(isHandFull()){
+            if(cardsInHand.size()<=HAND_LIMIT){
+                handFull=false;
+            }
+        }
     }
     
     public void removeCardFromTable(AdventureCard paramCard){

@@ -26,12 +26,10 @@ import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 //TO DO IN ORDER OF IMPORTANCE:
-//display quest winner[DONE]
 //implement discard pile for adventure and story cards
-//amour to be deleted at end of quest
 //events?
 //tournaments?
-//ask jermey if he implemented funciton to chekc sponsor eligibility
+
 
 
 
@@ -106,6 +104,7 @@ public class Controller {
 
 
 
+
 //        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
 //            if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
 //                activePlayer.addCardToTable(card);
@@ -136,6 +135,7 @@ public class Controller {
         // If this is a meaningful drop...
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
+                System.out.print(event.getGestureSource());
                 if (activePlayer.isValidDrop(selectedAdventureCard)){
                     if (currentBehaviour == behaviour.QUEST_MEMBER) {
                         if (!(selectedAdventureCard instanceof Foe)) {
@@ -156,7 +156,7 @@ public class Controller {
         }
         event.setDropCompleted(success);
         update();
-        event.consume();
+       event.consume();
 
     }
 
@@ -171,6 +171,7 @@ public class Controller {
 
     private void createStagePane(int stageIndex){
         FlowPane stagePane = new FlowPane();
+        stagePane.setId(Integer.toString(stageIndex));
         stagePane.getStyleClass().add("eventStage");
         stagePane.setOnDragDropped(event -> {
             Dragboard db = event.getDragboard();
@@ -184,10 +185,19 @@ public class Controller {
                         game.getSponsor().removeCardFromHand(selectedAdventureCard);
                         success = true;
                     }
-                    else{
-                        success = false;
-                    }
                 }
+                else
+                    {
+                        for(int i=0;i<game.getCurrentQuest().getNumStage();i++){
+                            if(db.getString().equals(Integer.toString(i))){
+                                if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
+                                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                                    game.removeFromPotentialStage(selectedAdventureCard,i);
+                                    success = true;
+                                }
+                            }
+                        }
+                    }
 //                else{
 //                   // game.removeFromPotentialStage(selectedAdventureCard,);
 //                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
@@ -364,7 +374,6 @@ public class Controller {
 
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
-        game.setCurrentQuest(quest);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         activePlayer = sponsor;
@@ -381,7 +390,7 @@ public class Controller {
             if(game.getPlayers().get(i) != game.getSponsor()) {
                 activePlayer = game.getPlayers().get(i);
                 update();
-                if (yesNoAlert("Join " + game.getCurrentStory().getName() + "?", "Join quest?")) {
+                if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join quest?")) {
                     questPlayers.add(game.getPlayers().get(i));
                 }
             }
