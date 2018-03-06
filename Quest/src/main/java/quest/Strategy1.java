@@ -17,9 +17,9 @@ public class Strategy1 extends AbstractAI {
 
     public boolean doIParticipateInTournament(ArrayList<Player> paramPlayerList, int paramShields)
     {
-        ArrayList<Player> temPlayer = paramPlayerList;
+        ArrayList<Player> teamPlayer = paramPlayerList;
 
-        for(Player player : temPlayer) {
+        for(Player player : teamPlayer) {
             if (paramShields >= player.getRequiredShieldsForNextRank()) {
                 return true;
             }

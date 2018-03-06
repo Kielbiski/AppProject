@@ -32,6 +32,8 @@ import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 //TO DO IN ORDER OF IMPORTANCE:
 //implement discard pile for adventure and story cards
+
+//ERROR TO HANDEL ->> NOBODY JOINS QUEST CRASHES GAME
 //events?
 //tournaments?
 
@@ -39,7 +41,7 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 
 
-enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, DEFAULT}
+enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, DEFAULT}
 
 
 public class Controller implements PropertyChangeListener {
@@ -53,8 +55,8 @@ public class Controller implements PropertyChangeListener {
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
     private  Behaviour previousBehaviour;
-
     private Behaviour currentBehaviour;
+    int callToArmsFoes = 0;
 
     ///FXML ELEMENTS
     @FXML
@@ -104,7 +106,7 @@ public class Controller implements PropertyChangeListener {
         imgView.setOnDragDetected((MouseEvent event) -> {
             selectedAdventureCard = card;
             Dragboard db = imgView.startDragAndDrop(TransferMode.MOVE);
-            //db.setDragView(imgView.getImage());
+            db.setDragView(getCardImage("SmallAdventureCard.png"));
             ClipboardContent content = new ClipboardContent();
             // Store node ID in order to know what is dragged.
             content.putString(imgView.getParent().getId());
@@ -200,7 +202,6 @@ public class Controller implements PropertyChangeListener {
         // If this is a meaningful drop...
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
-                if (activePlayer.isValidDrop(selectedAdventureCard)){
                     if (currentBehaviour == Behaviour.DISCARD) {
                             activePlayer.removeCardFromHand(selectedAdventureCard);
                             if(activePlayer.isHandFull()){
@@ -214,7 +215,45 @@ public class Controller implements PropertyChangeListener {
                             }
                             success = true;
                     }
-                }
+                    else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
+                        if (selectedAdventureCard instanceof Weapon){
+                            activePlayer.removeCardFromHand((selectedAdventureCard));
+                            currentBehaviour = previousBehaviour;
+                            previousBehaviour = null;
+                            discardPane.setVisible(false);
+                            nextTurnButton.setDisable(false);
+                            success=true;
+                            update();
+                        }
+                        else {
+                            boolean hasWeapon = false;
+                            int foeCount =0;
+                            for (AdventureCard card : activePlayer.getCardsInHand()) {
+                                if (card instanceof Weapon) {
+                                    hasWeapon = true;
+                                }
+                                if (card instanceof Foe) {
+                                    foeCount++;
+                                }
+                            }
+                            if (hasWeapon) {
+                                success = false;
+                            }
+                            else if (callToArmsFoes < 2 && selectedAdventureCard instanceof Foe){
+                                activePlayer.removeCardFromHand((selectedAdventureCard));
+                                callToArmsFoes++;
+                                if(callToArmsFoes==2||(foeCount<2 && callToArmsFoes==foeCount)){
+                                    currentBehaviour = previousBehaviour;
+                                    previousBehaviour = null;
+                                    discardPane.setVisible(false);
+                                    callToArmsFoes=0;
+                                    nextTurnButton.setDisable(false);
+                                    success=true;
+                                    update();
+                                }
+                            }
+                        }
+                    }
                 else{
                     success = false;
                 }
@@ -562,30 +601,31 @@ public class Controller implements PropertyChangeListener {
     private void callEventEffect(Event event){
         switch (event.getName()) {
             case "Chivalrous Deed":
-                event.applyEvent(game.getPlayers(), null, null);
+                event.applyEvent(game.getPlayers(), null);
                 break;
             case "Court Called To Camelot":
-                event.applyEvent(game.getPlayers(), null, null);
+                event.applyEvent(game.getPlayers(), null);
                 break;
             case "King's Call To Arms":
+                event.applyEvent(game.getPlayers(),activePlayer);
                 break;
             case "King's Recognition":
-                event.applyEvent(null, null, null);
+                event.applyEvent(null, null);
                 break;
             case "Plague":
-                event.applyEvent(null, activePlayer, null);
+                event.applyEvent(null, activePlayer);
                 break;
             case "Pox":
-                event.applyEvent(game.getPlayers(), activePlayer, null);
+                event.applyEvent(game.getPlayers(), activePlayer);
                 break;
             ///////////////////////////////////////////////
             ///////////////////////////////////////////////
 
             case "Prosperity Throughout The Realm":
-                event.applyEvent(game.getPlayers(), null, game.getDeckOfAdventureCards());
+                event.applyEvent(game.getPlayers(), null);
                 break;
             case "Queen's Favor": {
-                event.applyEvent(game.getPlayers(), null, game.getDeckOfAdventureCards());
+                event.applyEvent(game.getPlayers(), null);
                 break;
             }
 
@@ -678,17 +718,38 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void handFull(Player player){
+    private void handFull(Player player){
         previousBehaviour =currentBehaviour;
         currentBehaviour = Behaviour.DISCARD;
         update();
         okAlert(player.getPlayerName() + "You must Play or Discard a card","Hand Full");
         discardPane.setVisible(true);
+    }
 
+    private void callToArms(Player player){
+        previousBehaviour =currentBehaviour;
+        currentBehaviour = Behaviour.CALL_TO_ARMS;
+        update();
+        int foeCount =0;
+        int weaponCount =0;
+        for(AdventureCard card: player.getCardsInHand()){
+            if(card instanceof Foe){ foeCount++;}
+            if(card instanceof Weapon){ weaponCount++;}
+        }
+        okAlert(player.getPlayerName() + " You must Discard 1 Weapon. If you have no weapons, Discard 2 Foes ","Call to Arms");
+        if(foeCount==0 && weaponCount==0){
+            okAlert("No Weapons or foes to discard","Notice:");
+            currentBehaviour = previousBehaviour;
+        }
+        else{
+            nextTurnButton.setDisable(true);
+            discardPane.setVisible(true);
+        }
 
     }
 
-    public void setActivePlayer(Player player){
+
+    private void setActivePlayer(Player player){
         activePlayer = player;
         if(player.isHandFull()){
             handFull(player);
@@ -743,14 +804,17 @@ public class Controller implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent change) {
-//        if (change.getPropertyName().equals("handFull")){
-//            if ((boolean) change.getNewValue() ){
-//                handFull((Player)change.getSource());
-//            }
-//        }
+        if (change.getPropertyName().equals("handFull")){
+            if ((boolean) change.getNewValue() ){
+                handFull((Player)change.getSource());
+            }
+        }
+        else if(change.getPropertyName().equals("callToArms")){
+            Player drawPlayer = (Player)change.getSource();
+            callToArms(drawPlayer);
+        }
 
 
     }
-
 
 }

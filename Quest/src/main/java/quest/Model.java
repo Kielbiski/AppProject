@@ -286,14 +286,23 @@ public class Model implements PropertyChangeListener
         logger.info("storing all quests and their instances in numberOfEachStoryCard HashMap");
 
         //Events
+        ProsperityThroughoutTheRealm prosp = new ProsperityThroughoutTheRealm();
+        prosp.addChangeListener(this);
+
+        QueensFavor fav = new QueensFavor();
+        fav.addChangeListener(this);
+
+        KingsCallToArms call = new KingsCallToArms();
+        call.addChangeListener(this);
+
         numberOfEachStoryCard.put(new ChivalrousDeed(), 1);
         numberOfEachStoryCard.put(new CourtCalledToCamelot(), 2);
-        numberOfEachStoryCard.put(new KingsCallToArms(), 1);
+        numberOfEachStoryCard.put(call, 1);
         numberOfEachStoryCard.put(new KingsRecognition(), 2);
         numberOfEachStoryCard.put(new Plague(), 1);
         numberOfEachStoryCard.put(new Pox(), 1);
-        numberOfEachStoryCard.put(new ProsperityThroughoutTheRealm(), 1);
-        numberOfEachStoryCard.put(new QueensFavor(), 2);
+        numberOfEachStoryCard.put(prosp, 1);
+        numberOfEachStoryCard.put(fav, 2);
         logger.info("storing all events and their instances in numberOfEachStoryCard HashMap");
 
         //Tournaments
@@ -309,7 +318,8 @@ public class Model implements PropertyChangeListener
                 deckOfStoryCards.add(storyCard);
             }
         }
-        deckOfStoryCards.add(new TestOfTheGreenKnight());
+        deckOfStoryCards.add(call);
+
         logger.info("storing all story cards into the deck of story cards.");
     }
 
@@ -441,12 +451,21 @@ public class Model implements PropertyChangeListener
 
     void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI
-        notifyListeners(player,oldFull,true);//never used currently
+        notifyListeners(player,oldFull,true);
 
+    }
+    void callToArms(Player player){
+        //later do somethign different here if player type is AI
+        notifyListeners(player);
     }
     private void notifyListeners(Object object, boolean oldFull, boolean newFull) {
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, "handFull", oldFull, newFull));
+        }
+    }
+    private void notifyListeners(Object object) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, "callToArms","",""));
         }
     }
 
@@ -465,8 +484,21 @@ public class Model implements PropertyChangeListener
         }
         else if(change.getPropertyName().equals("handFull")){
             if((Boolean)change.getNewValue()){
-               handFull((Player)change.getSource(),(Boolean)change.getOldValue());
+                //reneable with AI when jay fixes his shit
+              // handFull((Player)change.getSource(),(Boolean)change.getOldValue());
             }
+        }
+        else if(change.getPropertyName().equals("deckDraw")){
+             Player drawPlayer = (Player)change.getSource();
+             boolean wasFull = drawPlayer.isHandFull();
+             drawPlayer.addCardToHand(deckOfAdventureCards.pop());
+             if(drawPlayer.isHandFull()){
+                 handFull(drawPlayer,wasFull);
+             }
+        }
+        else if(change.getPropertyName().equals("callToArms")){
+            Player drawPlayer = (Player)change.getSource();
+            callToArms(drawPlayer);
         }
     }
 }
