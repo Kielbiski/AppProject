@@ -44,6 +44,13 @@ public class Model
     }
 
     public void clearQuest(){
+        for(Player player: players){
+            for(AdventureCard card:player.getCardsOnTable()){
+                if(card instanceof Amour){
+                    player.getCardsOnTable().remove(card);
+                }
+            }
+        }
         this.discardOfStoryCards.add(currentQuest);
         this.currentQuest =null;
     }
@@ -340,11 +347,6 @@ public class Model
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
     }
 
-
-    void addToDiscardAdventure(AdventureCard card){
-        discardOfAdventureCards.add(card);
-    }
-
     void addToPotentialStage(AdventureCard card, int stageNum){
         preQuestStageSetup.get(stageNum).add(card);
     }
@@ -365,7 +367,7 @@ public class Model
     }
 
     public boolean isValidDrop(AdventureCard card, int stageNum){
-        if (card instanceof Ally || card instanceof Amour) {//?
+        if (card instanceof Ally) {//?
            return false;
         }
         for(AdventureCard matchCard: getPreQuestStageSetup().get(stageNum)){

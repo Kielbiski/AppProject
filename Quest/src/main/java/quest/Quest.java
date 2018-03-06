@@ -151,6 +151,7 @@ public class Quest extends StoryCard { //story card
         }
         isFinished = true;
 
+
         logger.info("Returning player list that won the "+ this.getName()+" quest");
     }
 
