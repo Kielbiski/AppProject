@@ -3,6 +3,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Stack;
 
 //Quests
 
@@ -149,6 +151,18 @@ class ChivalrousDeed extends Event {
         super("Chivalrous Deed", "E_Chivalrous_Deed.jpg");
         logger.info("Successfully called : Chivalrous Deed constructor.");
     }
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        playersToAffect.sort(Comparator.comparing(Player::getShields));
+        Player lowestShields = playersToAffect.get(0);
+        lowestShields.setShields(playersToAffect.get(0).getShields() + 3);
+        playersToAffect.sort(Comparator.comparing(Player::getPlayerRank));
+        Player lowestRank = playersToAffect.get(0);
+        if (lowestRank != lowestShields) {
+            lowestRank.setShields(playersToAffect.get(0).getShields() + 3);
+        }
+    }
 }
 
 class CourtCalledToCamelot extends Event {
@@ -160,6 +174,17 @@ class CourtCalledToCamelot extends Event {
         super("Court Called To Camelot", "E_Court_Called_To_Camelot.jpg");
         logger.info("Successfully called : Court Called To Camelot constructor.");
     }
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        for (Player player : playersToAffect) {
+            for (AdventureCard adventureCard : player.getCardsOnTable()) {
+                if (adventureCard instanceof Ally) {
+                    player.removeCardFromTable(adventureCard);
+                }
+            }
+        }
+    }
 }
 
 class KingsCallToArms extends Event {
@@ -169,6 +194,13 @@ class KingsCallToArms extends Event {
     KingsCallToArms(){
         super("King's Call To Arms", "E_Kings_Call_To_Arms.jpg");
         logger.info("Successfully called : King's Call To Arms constructor.");
+
+    }
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        System.out.println("////////////////////////////////////////////////////////////////////////////////");
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////
 
     }
 }
@@ -182,6 +214,11 @@ class KingsRecognition extends Event {
         logger.info("Successfully called : King's Recognition constructor.");
 
     }
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        System.out.println("Boolean kingsRecognition set in Model.");
+    }
 }
 
 class Plague extends Event {
@@ -192,6 +229,15 @@ class Plague extends Event {
         super("Plague", "E_Plague.jpg");
         logger.info("Successfully called : Plague constructor.");
 
+    }
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        if (activePlayer.getShields() < 2) {
+            activePlayer.setShields(0);
+        } else {
+            activePlayer.setShields(playersToAffect.get(0).getShields() - 2);
+        }
     }
 }
 
@@ -204,6 +250,19 @@ class Pox extends Event {
         logger.info("Successfully called : Pox constructor.");
 
     }
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        for (Player player : playersToAffect) {
+            if (player != activePlayer) {
+                if (player.getShields() < 1) {
+                    player.setShields(0);
+                } else {
+                    player.setShields(activePlayer.getShields() - 1);
+                }
+            }
+        }
+    }
 }
 
 class ProsperityThroughoutTheRealm extends Event {
@@ -215,6 +274,18 @@ class ProsperityThroughoutTheRealm extends Event {
         logger.info("Successfully called : Prosperity Throughout The Realm constructor.");
 
     }
+    ///////////////////////////////////////////////
+    ///////////////////////////////////////////////
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        for (Player player : playersToAffect) {
+            player.addCardToHand(deckOfAdventureCards.pop());
+        }
+    }
+
+    ///////////////////////////////////////////////
+    ///////////////////////////////////////////////
 }
 
 class QueensFavor extends Event {
@@ -226,6 +297,19 @@ class QueensFavor extends Event {
         logger.info("Successfully called : Queen's Favor constructor.");
 
     }
+    ///////////////////////////////////////////////
+    ///////////////////////////////////////////////
+
+    @Override
+    public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer, Stack<AdventureCard> deckOfAdventureCards) {
+        playersToAffect.sort(Comparator.comparing(Player::getShields));
+        playersToAffect.get(0).addCardToHand(deckOfAdventureCards.pop());
+        playersToAffect.get(0).addCardToHand(deckOfAdventureCards.pop());
+    }
+
+    ///////////////////////////////////////////////
+    ///////////////////////////////////////////////
+
 }
 
 //Tournaments

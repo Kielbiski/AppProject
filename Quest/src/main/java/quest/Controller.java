@@ -49,7 +49,6 @@ public class Controller {
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
     private Behaviour currentBehaviour;
-    private boolean kingsRecognition = false;
 
     ///FXML ELEMENTS
     @FXML
@@ -456,9 +455,9 @@ public class Controller {
     private void questOver(){
         if(game.getCurrentQuest().isWinner()) {
             for (Player player : game.getCurrentQuest().getPlayerList()) {
-                if(kingsRecognition){
+                if(game.isKingsRecognition()){
                     player.setShields(player.getShields() + 3);
-                    kingsRecognition = false;
+                    game.setKingsRecognition(false);
                 }
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
                 DialogPane dialog = alert.getDialogPane();
@@ -496,67 +495,37 @@ public class Controller {
 
     private void callEventEffect(Event event){
         switch (event.getName()) {
-            case "Chivalrous Deed": {
-                ArrayList<Player> sortedByShields = game.getPlayers();
-                sortedByShields.sort(Comparator.comparing(Player::getShields));
-                Player lowestShields = sortedByShields.get(0);
-                lowestShields.setShields(sortedByShields.get(0).getShields() + 3);
-                ArrayList<Player> sortedByRank = game.getPlayers();
-                sortedByShields.sort(Comparator.comparing(Player::getPlayerRank));
-                Player lowestRank = sortedByShields.get(0);
-                if (lowestRank != lowestShields) {
-                    lowestRank.setShields(sortedByShields.get(0).getShields() + 3);
-                }
-
+            case "Chivalrous Deed":
+                event.applyEvent(game.getPlayers(), null, null);
                 break;
-            }
             case "Court Called To Camelot":
-                for (Player player : game.getPlayers()) {
-                    for (AdventureCard adventureCard : player.getCardsOnTable()) {
-                        if (adventureCard instanceof Ally) {
-                            player.removeCardFromTable(adventureCard);
-                        }
-                    }
-                }
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////
+                event.applyEvent(game.getPlayers(), null, null);
                 break;
             case "King's Call To Arms":
-                System.out.println("////////////////////////////////////////////////////////////////////////////////");
-                ///////////////////////////////////////////////////////////////////////////////////////////////////////
                 break;
             case "King's Recognition":
-                kingsRecognition = true;
+                event.applyEvent(null, null, null);
                 break;
             case "Plague":
-                if (activePlayer.getShields() < 2) {
-                    activePlayer.setShields(0);
-                } else {
-                    activePlayer.setShields(activePlayer.getShields() - 2);
-                }
+                event.applyEvent(null, activePlayer, null);
                 break;
             case "Pox":
-                for (Player player : game.getPlayers()) {
-                    if (player != activePlayer) {
-                        if (player.getShields() < 1) {
-                            player.setShields(0);
-                        } else {
-                            player.setShields(activePlayer.getShields() - 1);
-                        }
-                    }
-                }
+                event.applyEvent(game.getPlayers(), activePlayer, null);
                 break;
+            ///////////////////////////////////////////////
+            ///////////////////////////////////////////////
+
             case "Prosperity Throughout The Realm":
-                for (Player player : game.getPlayers()) {
-                    game.drawAdventureCard(player);
-                }
+                event.applyEvent(game.getPlayers(), null, game.getDeckOfAdventureCards());
                 break;
             case "Queen's Favor": {
-                ArrayList<Player> sortedByShields = game.getPlayers();
-                sortedByShields.sort(Comparator.comparing(Player::getShields));
-                game.drawAdventureCard(sortedByShields.get(0));
-                game.drawAdventureCard(sortedByShields.get(0));
+                event.applyEvent(game.getPlayers(), null, game.getDeckOfAdventureCards());
                 break;
             }
+
+            ///////////////////////////////////////////////
+            ///////////////////////////////////////////////
+
         }
         System.out.println(event.getName() + " was activated.");
         for(Player player : game.getPlayers()){

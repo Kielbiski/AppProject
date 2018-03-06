@@ -26,6 +26,7 @@ public class Model implements PropertyChangeListener
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
     private ArrayList<Player> winningPlayers = new ArrayList<>();
+    private boolean kingsRecognition = false;
 
 
     public StoryCard getCurrentStory() {
@@ -60,6 +61,14 @@ public class Model implements PropertyChangeListener
 
     public Quest getCurrentQuest() {
         return currentQuest;
+    }
+
+    public boolean isKingsRecognition() {
+        return kingsRecognition;
+    }
+
+    public void setKingsRecognition(boolean kingsRecognition) {
+        this.kingsRecognition = kingsRecognition;
     }
 
     public Player getSponsor() {
@@ -350,7 +359,7 @@ public class Model implements PropertyChangeListener
         logger.info(" Deal 12 cards to each players.");
     }
 
-    void drawAdventureCard(Player currentPlayer){
+    private void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         //check if hand is full, if so set some state in the player is full. then in controller create an alert that says hand is full.
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
@@ -418,6 +427,9 @@ public class Model implements PropertyChangeListener
     void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
             currentStory = deckOfStoryCards.pop();
+            if(currentStory instanceof KingsRecognition){
+                kingsRecognition = true;
+            }
             logger.info("Draw card from story deck.");
         }
     }
