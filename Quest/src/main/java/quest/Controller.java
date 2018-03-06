@@ -307,16 +307,30 @@ public class Controller {
             }
         }
     }
+    private boolean yesNoAlert(String text, String headerText){
+        Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, text, ButtonType.YES, ButtonType.NO);
+        questAlert.setHeaderText(headerText);
+        DialogPane dialog = questAlert.getDialogPane();
+        dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+        dialog.getStyleClass().add("alertDialogs");
+        questAlert.showAndWait();
+        return (questAlert.getResult() == ButtonType.YES);
+    }
+
+    private void okAlert(String contentText, String headerText){
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, contentText, ButtonType.OK);
+        DialogPane dialog = alert.getDialogPane();
+        alert.setHeaderText(headerText);
+        dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+        dialog.getStyleClass().add("alertDialogs");
+        alert.showAndWait();
+    }
 
     private boolean isGameOver(){
         ArrayList<Player> winningPlayers = getWinningPlayers(game);
         if(winningPlayers.size() > 0){
             for(Player winningPlayer : winningPlayers) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, winningPlayer.getPlayerName() + " won the game!", ButtonType.OK);
-                DialogPane dialog = alert.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                alert.showAndWait();
+                okAlert(winningPlayer.getPlayerName() + " won the game!", "Winner.");
             }
             return true;
         }
@@ -366,13 +380,7 @@ public class Controller {
             if(game.getPlayers().get(i) != game.getSponsor()) {
                 activePlayer = game.getPlayers().get(i);
                 update();
-                Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, game.getPlayers().get(i).getPlayerName() + " would you like to join " + currentQuest.getName() + " ?", ButtonType.YES, ButtonType.NO);
-                questAlert.setHeaderText("Join " + game.getCurrentStory().getName() + "?");
-                DialogPane dialog = questAlert.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                questAlert.showAndWait();
-                if (questAlert.getResult() == ButtonType.YES) {
+                if (yesNoAlert("Join " + game.getCurrentStory().getName() + "?", "Join quest?")) {
                     questPlayers.add(game.getPlayers().get(i));
                 }
             }
@@ -402,12 +410,7 @@ public class Controller {
                 activePlayer = game.getCurrentQuest().getCurrentPlayer();
                 update();
             } else {
-                Alert invalidQuest = new Alert(Alert.AlertType.CONFIRMATION, "Please set up a valid quest ", ButtonType.YES);
-                DialogPane dialog = invalidQuest.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                invalidQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-                invalidQuest.showAndWait();
+                okAlert("Please set up a valid quest ","Error in quest stages.");
                 for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
                     for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
                         game.getSponsor().addCardToHand(card);
