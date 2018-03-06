@@ -331,7 +331,8 @@ public class Model
     }
 
     void shuffleAndDeal(){
-        Collections.shuffle(deckOfAdventureCards);
+        //Collections.shuffle(deckOfAdventureCards);
+
         for(Player player : players) {
             for (int i = 0; i < NUM_CARDS; i++) {
                 if (!(deckOfAdventureCards.empty())) {
@@ -345,6 +346,11 @@ public class Model
     void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
+    }
+
+
+    void addToDiscardAdventure(AdventureCard card){
+        discardOfAdventureCards.add(card);
     }
 
     void addToPotentialStage(AdventureCard card, int stageNum){

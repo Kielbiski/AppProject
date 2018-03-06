@@ -26,10 +26,12 @@ import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 //TO DO IN ORDER OF IMPORTANCE:
-//implement discard pile for adventure and story cards//Not done lol
+//display quest winner[DONE]
+//implement discard pile for adventure and story cards
 //amour to be deleted at end of quest
 //events?
 //tournaments?
+//ask jermey if he implemented funciton to chekc sponsor eligibility
 
 
 
@@ -143,7 +145,7 @@ public class Controller {
                         }
                     }
                     else if (currentBehaviour == behaviour.BID) {
-
+                        System.out.println("Bid.");
                     }
                 }
                 else{
@@ -472,33 +474,6 @@ public class Controller {
         update();
     }
 
-    private void questDraw(ArrayList<Player> currentPlayerOrder){
-        Player sponsor;
-        for (Player player : currentPlayerOrder) {//////////////////////////////////////
-            activePlayer = player;
-            update();
-            Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
-            DialogPane dialog = sponsorQuest.getDialogPane();
-            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-            dialog.getStyleClass().add("alertDialogs");
-            sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-            sponsorQuest.showAndWait();
-            if (sponsorQuest.getResult() == ButtonType.YES) {
-                sponsor = activePlayer;
-                game.setSponsor(sponsor);
-                performQuest(sponsor, (Quest) game.getCurrentStory());
-                nextTurnButton.setVisible(false);
-                continueButton.setVisible(true);
-                break;
-            }
-        }
-        if(game.getSponsor() == null){
-            activePlayer = currentTurnPlayer;
-            nextTurnButton.setVisible(true);
-            continueButton.setVisible(false);
-        }
-    }
-
     public void storyDeckDraw(MouseEvent event){
 
         game.drawStoryCard();
@@ -516,8 +491,8 @@ public class Controller {
         }
 
         if (game.getCurrentStory() instanceof Quest) {
+            game.setCurrentQuest((Quest) game.getCurrentStory());
             questDraw(currentPlayerOrder);
-
         } else if (game.getCurrentStory() instanceof Event) {
             nextTurnButton.setVisible(true);
             System.out.println("Event");
@@ -531,6 +506,49 @@ public class Controller {
         storyDeckImg.setDisable(true);
         update();
 
+    }
+
+    private void questDraw(ArrayList<Player> currentPlayerOrder) {
+        Player sponsor;
+        for (Player player : currentPlayerOrder) {//////////////////////////////////////
+            activePlayer = player;
+            update();
+            int validCardCount = 0;
+            for(AdventureCard adventureCard : player.getCardsInHand()){
+                if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+                    validCardCount++;
+                }
+            }
+            if(validCardCount < game.getCurrentQuest().getNumStage()){
+                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", ButtonType.OK);
+                DialogPane dialog = sponsorQuest.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
+                sponsorQuest.showAndWait();
+                update();
+            } else {
+                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
+                DialogPane dialog = sponsorQuest.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
+                sponsorQuest.showAndWait();
+                if (sponsorQuest.getResult() == ButtonType.YES) {
+                    sponsor = activePlayer;
+                    game.setSponsor(sponsor);
+                    performQuest(sponsor, (Quest) game.getCurrentStory());
+                    nextTurnButton.setVisible(false);
+                    continueButton.setVisible(true);
+                    break;
+                }
+            }
+        }
+        if(game.getSponsor() == null){
+            activePlayer = currentTurnPlayer;
+            nextTurnButton.setVisible(true);
+            continueButton.setVisible(false);
+        }
     }
 
     public void initialize() {
