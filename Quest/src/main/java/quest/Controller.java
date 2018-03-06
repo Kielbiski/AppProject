@@ -11,6 +11,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import sun.awt.image.BufImgVolatileSurfaceManager;
 
 import javax.swing.*;
@@ -36,11 +38,11 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 
 
-enum behaviour {SPONSOR, QUEST_MEMBER, BID, DEFAULT}
+enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DEFAULT}
 
 
 public class Controller {
-
+    private static final Logger logger = LogManager.getLogger(App.class);
     private Model game = new Model();
     private String resourceFolderPath = "src/main/resources/Cards/";
     private Player activePlayer;
@@ -48,7 +50,8 @@ public class Controller {
     private int NUM_PLAYERS = 4;
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
-    private behaviour currentBehaviour;
+    private Behaviour currentBehaviour;
+    private boolean kingsRecognition = false;
 
     ///FXML ELEMENTS
     @FXML
@@ -137,14 +140,14 @@ public class Controller {
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
                 if (activePlayer.isValidDrop(selectedAdventureCard)){
-                    if (currentBehaviour == behaviour.QUEST_MEMBER) {
+                    if (currentBehaviour == Behaviour.QUEST_MEMBER) {
                         if (!(selectedAdventureCard instanceof Foe)) {
                             activePlayer.addCardToTable(selectedAdventureCard);
                             activePlayer.removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
                     }
-                    else if (currentBehaviour == behaviour.BID) {
+                    else if (currentBehaviour == Behaviour.BID) {
                         System.out.println("Bid.");
                     }
                 }
@@ -247,6 +250,7 @@ public class Controller {
             playerLabel.setMinWidth(Region.USE_PREF_SIZE);
             playerLabel.setText(player.getPlayerName() + "\n" +
                     "" + player.getPlayerRank() + "\n" +
+                    "" + player.getShields() + "shields \n" +
                     "" + player.getNumCardsInHand() + " cards");
             playerStatsVbox.getChildren().add(playerLabel);
         }
@@ -275,7 +279,7 @@ public class Controller {
             tableHbox.getChildren().addAll(tableImgViews);
         }
 
-        if(currentBehaviour == behaviour.SPONSOR) {
+        if(currentBehaviour == Behaviour.SPONSOR) {
             for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
                 flowPaneArray.get(i).getChildren().clear();
                 for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
@@ -286,7 +290,7 @@ public class Controller {
                 }
             }
         }
-        else if(currentBehaviour == behaviour.QUEST_MEMBER){
+        else if(currentBehaviour == Behaviour.QUEST_MEMBER){
             for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
                 flowPaneArray.get(i).getChildren().clear();
                 if(game.getCurrentQuest().getCurrentStage() == game.getCurrentQuest().getStages().get(i)) {
@@ -368,7 +372,7 @@ public class Controller {
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
         activePlayer = sponsor;
-        currentBehaviour = behaviour.SPONSOR;
+        currentBehaviour = Behaviour.SPONSOR;
         continueButton.setVisible(true);
 
         for(int i = 0;i<quest.getNumStage();i++){
@@ -400,14 +404,14 @@ public class Controller {
     }
 
     public void continueAction(ActionEvent event){
-        if(currentBehaviour == behaviour.SPONSOR) {
+        if(currentBehaviour == Behaviour.SPONSOR) {
             if (game.validateQuestStages()) {
 
                 for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
                     game.getCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
                 }
                 game.getCurrentQuest().startQuest();
-                currentBehaviour = behaviour.QUEST_MEMBER;
+                currentBehaviour = Behaviour.QUEST_MEMBER;
                 activePlayer = game.getCurrentQuest().getCurrentPlayer();
                 update();
             } else {
@@ -421,7 +425,7 @@ public class Controller {
                 update();
             }
         }
-        else if(currentBehaviour == behaviour.QUEST_MEMBER){
+        else if(currentBehaviour == Behaviour.QUEST_MEMBER){
             game.getCurrentQuest().nextTurn();
             if(game.getCurrentQuest().isFinished()){
                 if(game.isWinner()){
@@ -443,6 +447,10 @@ public class Controller {
     private void questOver(){
         if(game.getCurrentQuest().isWinner()) {
             for (Player player : game.getCurrentQuest().getPlayerList()) {
+                if(kingsRecognition){
+                    player.setShields(player.getShields() + 3);
+                    kingsRecognition = false;
+                }
                 Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
                 DialogPane dialog = alert.getDialogPane();
                 dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
@@ -463,7 +471,7 @@ public class Controller {
         game.clearQuest();
         activePlayer = game.getSponsor();
         game.setSponsor(null);
-        currentBehaviour = behaviour.DEFAULT;
+        currentBehaviour = Behaviour.DEFAULT;
         nextTurnButton.setVisible(true);
         continueButton.setVisible(false);
         update();
@@ -475,6 +483,77 @@ public class Controller {
         storyDeckImg.setDisable(false);
         nextTurnButton.setDisable(true);
         update();
+    }
+
+    private void callEventEffect(Event event){
+        switch (event.getName()) {
+            case "Chivalrous Deed": {
+                ArrayList<Player> sortedByShields = game.getPlayers();
+                sortedByShields.sort(Comparator.comparing(Player::getShields));
+                Player lowestShields = sortedByShields.get(0);
+                lowestShields.setShields(sortedByShields.get(0).getShields() + 3);
+                ArrayList<Player> sortedByRank = game.getPlayers();
+                sortedByShields.sort(Comparator.comparing(Player::getPlayerRank));
+                Player lowestRank = sortedByShields.get(0);
+                if (lowestRank != lowestShields) {
+                    lowestRank.setShields(sortedByShields.get(0).getShields() + 3);
+                }
+
+                break;
+            }
+            case "Court Called To Camelot":
+                for (Player player : game.getPlayers()) {
+                    for (AdventureCard adventureCard : player.getCardsOnTable()) {
+                        if (adventureCard instanceof Ally) {
+                            player.removeCardFromTable(adventureCard);
+                        }
+                    }
+                }
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
+                break;
+            case "King's Call To Arms":
+                System.out.println("////////////////////////////////////////////////////////////////////////////////");
+                ///////////////////////////////////////////////////////////////////////////////////////////////////////
+                break;
+            case "King's Recognition":
+                kingsRecognition = true;
+                break;
+            case "Plague":
+                if (activePlayer.getShields() < 2) {
+                    activePlayer.setShields(0);
+                } else {
+                    activePlayer.setShields(activePlayer.getShields() - 2);
+                }
+                break;
+            case "Pox":
+                for (Player player : game.getPlayers()) {
+                    if (player != activePlayer) {
+                        if (player.getShields() < 1) {
+                            player.setShields(0);
+                        } else {
+                            player.setShields(activePlayer.getShields() - 1);
+                        }
+                    }
+                }
+                break;
+            case "Prosperity Throughout The Realm":
+                for (Player player : game.getPlayers()) {
+                    game.drawAdventureCard(player);
+                }
+                break;
+            case "Queen's Favor": {
+                ArrayList<Player> sortedByShields = game.getPlayers();
+                sortedByShields.sort(Comparator.comparing(Player::getShields));
+                game.drawAdventureCard(sortedByShields.get(0));
+                game.drawAdventureCard(sortedByShields.get(0));
+                break;
+            }
+        }
+        System.out.println(event.getName() + " was activated.");
+        for(Player player : game.getPlayers()){
+            System.out.println(player.getShields());
+        }
+        logger.info("Successfully called : Event constructor");
     }
 
     public void storyDeckDraw(MouseEvent event){
@@ -498,7 +577,9 @@ public class Controller {
             questDraw(currentPlayerOrder);
         } else if (game.getCurrentStory() instanceof Event) {
             nextTurnButton.setVisible(true);
-            System.out.println("Event");
+            System.out.println(game.getCurrentStory().getName());
+            Event gameEvent = (Event) game.getCurrentStory();
+            callEventEffect(gameEvent);
         } else if (game.getCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
             System.out.println("Tournament");
@@ -508,7 +589,6 @@ public class Controller {
         nextTurnButton.setDisable(false);
         storyDeckImg.setDisable(true);
         update();
-
     }
 
     private void questDraw(ArrayList<Player> currentPlayerOrder) {
@@ -556,7 +636,7 @@ public class Controller {
 
     public void initialize() {
         setPlayerNames();
-        currentBehaviour = behaviour.DEFAULT;
+        currentBehaviour = Behaviour.DEFAULT;
         currentTurnPlayer = game.getPlayers().get(0);
         activePlayer = game.getPlayers().get(0);
         playerStatsVbox.setSpacing(5);
