@@ -1,5 +1,6 @@
 package quest;
 
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -17,6 +18,8 @@ import sun.awt.image.BufImgVolatileSurfaceManager;
 
 import javax.swing.*;
 import java.awt.font.ImageGraphicAttribute;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -36,10 +39,11 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 
 
-enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DEFAULT}
+enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, DEFAULT}
 
 
-public class Controller {
+public class Controller implements PropertyChangeListener {
+
     private static final Logger logger = LogManager.getLogger(App.class);
     private Model game = new Model();
     private String resourceFolderPath = "src/main/resources/Cards/";
@@ -48,6 +52,8 @@ public class Controller {
     private int NUM_PLAYERS = 4;
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
+    private  Behaviour previousBehaviour;
+
     private Behaviour currentBehaviour;
 
     ///FXML ELEMENTS
@@ -73,6 +79,8 @@ public class Controller {
     private Button nextTurnButton;
     @FXML
     private HBox tableHbox;
+    @FXML
+    private Pane discardPane;
 
     private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
 
@@ -146,6 +154,22 @@ public class Controller {
                             success = true;
                         }
                     }
+                    else if(currentBehaviour == Behaviour.DISCARD){
+                        if (!(selectedAdventureCard instanceof Foe) && !(selectedAdventureCard instanceof Weapon)) {
+                            activePlayer.addCardToTable(selectedAdventureCard);
+                            activePlayer.removeCardFromHand(selectedAdventureCard);
+                            if(activePlayer.isHandFull()){
+                                handFull(activePlayer);
+                            }
+                            else{
+                                currentBehaviour = previousBehaviour;
+                                previousBehaviour = null;
+                                discardPane.setVisible(false);
+                                update();
+                            }
+                            success = true;
+                        }
+                    }
                     else if (currentBehaviour == Behaviour.BID) {
                         System.out.println("Bid.");
                     }
@@ -161,6 +185,48 @@ public class Controller {
        event.consume();
 
     }
+
+    public void onDiscardDragOver(DragEvent event){
+        Dragboard db = event.getDragboard();
+        if (db.hasString()) {
+            event.acceptTransferModes(TransferMode.MOVE);
+        }
+        event.consume();
+    }
+    public void onDiscardDragDropped(DragEvent event){
+        Dragboard db = event.getDragboard();
+        // Get item id here, which was stored when the drag started.
+        boolean success = false;
+        // If this is a meaningful drop...
+        if (db.hasString()) {
+            if(db.getString().equals(cardsHbox.getId())) {
+                if (activePlayer.isValidDrop(selectedAdventureCard)){
+                    if (currentBehaviour == Behaviour.DISCARD) {
+                            activePlayer.removeCardFromHand(selectedAdventureCard);
+                            if(activePlayer.isHandFull()){
+                                handFull(activePlayer);
+                            }
+                            else{
+                                currentBehaviour = previousBehaviour;
+                                previousBehaviour = null;
+                                discardPane.setVisible(false);
+                                update();
+                            }
+                            success = true;
+                    }
+                }
+                else{
+                    success = false;
+                }
+
+            }
+        }
+        event.setDropCompleted(success);
+        update();
+        event.consume();
+
+    }
+
 
     private ImageView createStoryCardImageView(){
         ImageView imgView = new ImageView();
@@ -379,7 +445,7 @@ public class Controller {
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
         addQuestPlayers(quest);
-        activePlayer = sponsor;
+        setActivePlayer(sponsor);
         currentBehaviour = Behaviour.SPONSOR;
         continueButton.setVisible(true);
 
@@ -391,7 +457,7 @@ public class Controller {
         ArrayList<Player> questPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
             if(game.getPlayers().get(i) != game.getSponsor()) {
-                activePlayer = game.getPlayers().get(i);
+                setActivePlayer(game.getPlayers().get(i));
                 update();
                 if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join quest?")) {
                     questPlayers.add(game.getPlayers().get(i));
@@ -420,7 +486,7 @@ public class Controller {
                 }
                 game.getCurrentQuest().startQuest();
                 currentBehaviour = Behaviour.QUEST_MEMBER;
-                activePlayer = game.getCurrentQuest().getCurrentPlayer();
+                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
                 update();
             } else {
                 okAlert("Please set up a valid quest ","Error in quest stages.");
@@ -445,7 +511,7 @@ public class Controller {
                 }
             }
             else{
-                activePlayer = game.getCurrentQuest().getCurrentPlayer();
+               setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
             }
             update();
         }
@@ -477,7 +543,7 @@ public class Controller {
         flowPaneArray.clear();
         game.getPreQuestStageSetup().clear();
         game.clearQuest();
-        activePlayer = game.getSponsor();
+        setActivePlayer(game.getSponsor());
         game.setSponsor(null);
         currentBehaviour = Behaviour.DEFAULT;
         nextTurnButton.setVisible(true);
@@ -487,7 +553,7 @@ public class Controller {
 
     public void nextTurnAction(ActionEvent event){
         currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
-        activePlayer = game.getPlayers().get(currentPlayerIndex);
+        setActivePlayer(game.getPlayers().get(currentPlayerIndex));
         storyDeckImg.setDisable(false);
         nextTurnButton.setDisable(true);
         update();
@@ -572,7 +638,7 @@ public class Controller {
     private void questDraw(ArrayList<Player> currentPlayerOrder) {
         Player sponsor;
         for (Player player : currentPlayerOrder) {//////////////////////////////////////
-            activePlayer = player;
+            setActivePlayer(player);
             update();
             int validCardCount = 0;
             for(AdventureCard adventureCard : player.getCardsInHand()){
@@ -606,9 +672,26 @@ public class Controller {
             }
         }
         if(game.getSponsor() == null){
-            activePlayer = currentTurnPlayer;
+            setActivePlayer(currentTurnPlayer);
             nextTurnButton.setVisible(true);
             continueButton.setVisible(false);
+        }
+    }
+
+    public void handFull(Player player){
+        previousBehaviour =currentBehaviour;
+        currentBehaviour = Behaviour.DISCARD;
+        update();
+        okAlert(player.getPlayerName() + "You must Play or Discard a card","Hand Full");
+        discardPane.setVisible(true);
+
+
+    }
+
+    public void setActivePlayer(Player player){
+        activePlayer = player;
+        if(player.isHandFull()){
+            handFull(player);
         }
     }
 
@@ -616,11 +699,12 @@ public class Controller {
         setPlayerNames();
         currentBehaviour = Behaviour.DEFAULT;
         currentTurnPlayer = game.getPlayers().get(0);
-        activePlayer = game.getPlayers().get(0);
+        setActivePlayer(game.getPlayers().get(0));
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
         cardsHbox.setAlignment(Pos.BASELINE_CENTER);
         game.shuffleAndDeal();
+        game.addChangeListener(this);
         update();
 
     }
@@ -655,6 +739,17 @@ public class Controller {
         }
 
         return img;
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent change) {
+//        if (change.getPropertyName().equals("handFull")){
+//            if ((boolean) change.getNewValue() ){
+//                handFull((Player)change.getSource());
+//            }
+//        }
+
+
     }
 
 

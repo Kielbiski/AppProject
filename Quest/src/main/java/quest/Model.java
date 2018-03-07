@@ -25,6 +25,7 @@ public class Model implements PropertyChangeListener
     private Player sponsor;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;
+    private List<PropertyChangeListener> listener = new ArrayList<>();
     private ArrayList<Player> winningPlayers = new ArrayList<>();
     private boolean kingsRecognition = false;
 
@@ -49,11 +50,13 @@ public class Model implements PropertyChangeListener
 
     public void clearQuest(){
         for(Player player: players){
+            ArrayList<AdventureCard> found = new ArrayList<>();
             for(AdventureCard card:player.getCardsOnTable()){
                 if(card instanceof Amour){
-                    player.getCardsOnTable().remove(card);
+                    found.add(card);
                 }
             }
+            player.getCardsOnTable().removeAll(found);
         }
         this.discardOfStoryCards.add(currentQuest);
         this.currentQuest =null;
@@ -342,7 +345,9 @@ public class Model implements PropertyChangeListener
     }
 
     public void addPlayer(String name){
-        players.add(new Player(name));
+        Player newPlayer = new Player(name);
+        newPlayer.addChangeListener(this);
+        players.add(newPlayer);
         logger.info(name + "is joining the game.");
     }
 
@@ -434,6 +439,21 @@ public class Model implements PropertyChangeListener
         }
     }
 
+    void handFull(Player player,boolean oldFull){
+        //later do somethign different here if player type is AI
+        notifyListeners(player,oldFull,true);//never used currently
+
+    }
+    private void notifyListeners(Object object, boolean oldFull, boolean newFull) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, "handFull", oldFull, newFull));
+        }
+    }
+
+    public void addChangeListener(PropertyChangeListener newListener) {
+        listener.add(newListener);
+    }
+
     @Override
     public void propertyChange(PropertyChangeEvent change) {
         if (change.getPropertyName().equals("stage")){
@@ -443,7 +463,11 @@ public class Model implements PropertyChangeListener
                 }
             }
         }
-
+        else if(change.getPropertyName().equals("handFull")){
+            if((Boolean)change.getNewValue()){
+               handFull((Player)change.getSource(),(Boolean)change.getOldValue());
+            }
+        }
     }
 }
 

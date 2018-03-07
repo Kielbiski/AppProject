@@ -3,6 +3,8 @@ package quest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class Player {
     private AbstractAI aI;
     private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
     private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
+    private List<PropertyChangeListener> listener = new ArrayList<>();
     private boolean handFull;
 
     Player(String paramName, int i){
@@ -75,8 +78,11 @@ public class Player {
         return handFull;
     }
 
-    public void setHandFull(boolean handFull) {
-        this.handFull = handFull;
+    public void setHandFull(boolean full) {
+        boolean previousState = this.handFull;
+        this.handFull = full;
+        notifyListeners(this,"handFull",previousState,this.handFull);
+
     }
 
     public ArrayList<AdventureCard> getCardsInHand()
@@ -160,7 +166,7 @@ public class Player {
         logger.info("Adding the following card "+ paramCard.getName()+" to " + this.playerName+ " hand.");
         cardsInHand.add(paramCard);
         if(cardsInHand.size()>HAND_LIMIT){
-            handFull=true;
+            setHandFull(true);
         }
     }
     
@@ -178,7 +184,7 @@ public class Player {
         cardsInHand.remove(paramCard);
         if(isHandFull()){
             if(cardsInHand.size()<=HAND_LIMIT){
-                handFull=false;
+                setHandFull(false);
             }
         }
     }
@@ -270,4 +276,14 @@ public class Player {
         }
         logger.info("Confirming " + this.playerName +" rank.");
     }
+    private void notifyListeners(Object object, String property, boolean oldFull, boolean newFull) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(this, property, oldFull, newFull));
+        }
+    }
+
+    public void addChangeListener(PropertyChangeListener newListener) {
+        listener.add(newListener);
+    }
+
 }
