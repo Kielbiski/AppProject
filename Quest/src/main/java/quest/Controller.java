@@ -29,15 +29,6 @@ import java.util.*;
 import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
-//TO DO IN ORDER OF IMPORTANCE:
-//implement discard pile for adventure and story cards
-
-//ERROR TO HANDEL ->> NOBODY JOINS QUEST CRASHES GAME
-//events?
-//tournaments?
-
-
-
 
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
@@ -55,7 +46,7 @@ public class Controller implements PropertyChangeListener {
     private AdventureCard selectedAdventureCard;
     private  Behaviour previousBehaviour;
     private Behaviour currentBehaviour;
-    int callToArmsFoes = 0;
+    private int callToArmsFoes = 0;
 
     ///FXML ELEMENTS
     @FXML
@@ -343,20 +334,26 @@ public class Controller implements PropertyChangeListener {
         currentTurnLabel.setStyle(currentTurnLabelCSS);
         currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
+        currentTurnLabel.setStyle("-fx-border-color: #aaaaaa;\n" +
+                "-fx-background-color: rgba(0,0,0,0.8);\n"+
+            "-fx-border-insets: 5;\n" +
+            "-fx-border-width: 4;\n" +
+            "-fx-border-style: solid;\n" +
+            "-fx-padding: 10;");
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
             if (player == activePlayer) {
-                labelCSS = "-fx-border-color: #EEE8AA;\n";
+                labelCSS = "-fx-border-color: #f44242;\n";
             } else {
-                labelCSS = "-fx-border-color: #d6d6d6;\n";
+                labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
-            labelCSS += "-fx-border-insets: 5;\n" +
+            labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
+                    "-fx-border-insets: 5;\n" +
                     "-fx-border-width: 4;\n" +
                     "-fx-border-style: solid;\n" +
-                    "-fx-border-radius: 10;\n" +
                     "-fx-padding: 10";
 
             playerLabel.setStyle(labelCSS);
@@ -364,7 +361,7 @@ public class Controller implements PropertyChangeListener {
             playerLabel.setMinWidth(Region.USE_PREF_SIZE);
             playerLabel.setText(player.getPlayerName() + "\n" +
                     "" + player.getPlayerRank() + "\n" +
-                    "" + player.getShields() + "shields \n" +
+                    "" + player.getShields() + " shields \n" +
                     "" + player.getNumCardsInHand() + " cards");
             playerStatsVbox.getChildren().add(playerLabel);
         }
@@ -461,7 +458,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants) {
-        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", tournamentParticipants);
+        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", 0, tournamentParticipants);
         return knightsOfTheRoundTableTournament.getTournamentWinner();
     }
 
@@ -569,7 +566,7 @@ public class Controller implements PropertyChangeListener {
         previousBehaviour =currentBehaviour;
         currentBehaviour = Behaviour.DISCARD;
         nextTurnButton.setDisable(true);
-        okAlert(player.getPlayerName() + "You must Play or Discard a card","Hand Full");
+        okAlert(player.getPlayerName() + ", you must play or discard a card.","Hand full.");
         discardPane.setVisible(true);
     }
 
@@ -624,21 +621,10 @@ public class Controller implements PropertyChangeListener {
                 }
             }
             if(validCardCount < game.getCurrentQuest().getNumStage()){
-                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", ButtonType.OK);
-                DialogPane dialog = sponsorQuest.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-                sponsorQuest.showAndWait();
-                update();
+                okAlert(player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", "Sponsorship failed.");
             } else {
-                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
-                DialogPane dialog = sponsorQuest.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-                sponsorQuest.showAndWait();
-                if (sponsorQuest.getResult() == ButtonType.YES) {
+                boolean alertResult = yesNoAlert(player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", "Sponsor " + game.getCurrentStory().getName() + "?");
+                if (alertResult) {
                     sponsor = activePlayer;
                     game.setSponsor(sponsor);
                     performQuest(sponsor, (Quest) game.getCurrentStory());
@@ -662,19 +648,11 @@ public class Controller implements PropertyChangeListener {
                     player.setShields(player.getShields() + 3);
                     game.setKingsRecognition(false);
                 }
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
-                DialogPane dialog = alert.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                alert.showAndWait();
+                okAlert(player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", "Quest won!");
             }
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Quest Has No Winner" , ButtonType.OK);
-            DialogPane dialog = alert.getDialogPane();
-            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-            dialog.getStyleClass().add("alertDialogs");
-            alert.showAndWait();
+            okAlert("Quest has no winner.", "Quest failed!");
         }
         stagesGridPane.getChildren().clear();
         flowPaneArray.clear();
@@ -790,9 +768,9 @@ public class Controller implements PropertyChangeListener {
             if(card instanceof Foe){ foeCount++;}
             if(card instanceof Weapon){ weaponCount++;}
         }
-        okAlert(player.getPlayerName() + " You must Discard 1 Weapon. If you have no weapons, Discard 2 Foes ","Call to Arms");
+        okAlert(player.getPlayerName() + ", you must discard 1 Weapon. If you have no weapons, you must discard 2 Foes ","Call to Arms");
         if(foeCount==0 && weaponCount==0){
-            okAlert("No Weapons or foes to discard","Notice:");
+            okAlert("No weapons or foes to discard","Notice:");
             currentBehaviour = previousBehaviour;
         }
         else{

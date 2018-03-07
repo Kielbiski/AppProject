@@ -14,7 +14,7 @@ public abstract class AbstractAI extends Player{
 
     String strategy;
     DoIParticipateInTournamentAI TournamentAnswer ;
-    nextBid nextBid ;
+    NextBid nextBid ;
     DoIParticipateInQuest quest;
     private DoISponsorAQuest sponsorQuest;
 
@@ -27,14 +27,14 @@ public abstract class AbstractAI extends Player{
     }
 
 
-    public void setNextBid(nextBid paramNextBid)
+    public void setNextBid(NextBid paramNextBid)
     {
         logger.info(this.getPlayerName() + " is using " +this.strategy+" for his bids.");
         this.nextBid = paramNextBid;
 
     }
 
-    public String getNextBid(nextBid paramNextBid)
+    public String getNextBid(NextBid paramNextBid)
     {
         logger.info(this.getPlayerName() + " is using " +this.strategy+" .");
         return this.strategy;
