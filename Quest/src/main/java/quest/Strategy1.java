@@ -1,5 +1,7 @@
 package quest;
 
+package quest;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -28,10 +30,7 @@ public class Strategy1 extends AbstractAI {
     }
 
 
-    public  boolean DoISponsorAQuest(){ return true;}
 
-
-    public  boolean doIParticipateInQuest(){ return true;}
 
 
 
