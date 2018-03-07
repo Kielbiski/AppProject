@@ -1,6 +1,5 @@
 package quest;
 
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -257,7 +256,6 @@ public class Controller implements PropertyChangeListener {
                 else{
                     success = false;
                 }
-
             }
         }
         event.setDropCompleted(success);
@@ -483,7 +481,6 @@ public class Controller implements PropertyChangeListener {
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
-        addQuestPlayers(quest);
         setActivePlayer(sponsor);
         currentBehaviour = Behaviour.SPONSOR;
         continueButton.setVisible(true);
@@ -491,6 +488,8 @@ public class Controller implements PropertyChangeListener {
         for(int i = 0;i<quest.getNumStage();i++){
             createStagePane(i);
         }
+        addQuestPlayers(quest);
+
     }
     private void addQuestPlayers(Quest currentQuest){
         ArrayList<Player> questPlayers = new ArrayList<>();
@@ -503,7 +502,12 @@ public class Controller implements PropertyChangeListener {
                 }
             }
         }
-        currentQuest.setPlayerList(questPlayers);
+        if(questPlayers.size() == 0){
+            questOver();
+        }
+        else {
+            currentQuest.setPlayerList(questPlayers);
+        }
     }
 
     private int nextPlayerIndex(int index){
@@ -586,6 +590,8 @@ public class Controller implements PropertyChangeListener {
         game.setSponsor(null);
         currentBehaviour = Behaviour.DEFAULT;
         nextTurnButton.setVisible(true);
+        nextTurnButton.setDisable(false);
+        nextTurnButton.setDisable(false);
         continueButton.setVisible(false);
         update();
     }
@@ -602,36 +608,37 @@ public class Controller implements PropertyChangeListener {
         switch (event.getName()) {
             case "Chivalrous Deed":
                 event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
                 break;
             case "Court Called To Camelot":
                 event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
                 break;
             case "King's Call To Arms":
                 event.applyEvent(game.getPlayers(),activePlayer);
                 break;
             case "King's Recognition":
                 event.applyEvent(null, null);
+                nextTurnButton.setDisable(false);
                 break;
             case "Plague":
                 event.applyEvent(null, activePlayer);
+                nextTurnButton.setDisable(false);
                 break;
             case "Pox":
                 event.applyEvent(game.getPlayers(), activePlayer);
+                nextTurnButton.setDisable(false);
                 break;
-            ///////////////////////////////////////////////
-            ///////////////////////////////////////////////
 
             case "Prosperity Throughout The Realm":
                 event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
                 break;
             case "Queen's Favor": {
                 event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
                 break;
             }
-
-            ///////////////////////////////////////////////
-            ///////////////////////////////////////////////
-
         }
         System.out.println(event.getName() + " was activated.");
         for(Player player : game.getPlayers()){
@@ -667,10 +674,10 @@ public class Controller implements PropertyChangeListener {
         } else if (game.getCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
             System.out.println("Tournament");
+            nextTurnButton.setDisable(false);
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
         //activePlayer = game.getPlayers().get(currentPlayerIndex);
-        nextTurnButton.setDisable(false);
         storyDeckImg.setDisable(true);
         update();
     }
@@ -721,7 +728,7 @@ public class Controller implements PropertyChangeListener {
     private void handFull(Player player){
         previousBehaviour =currentBehaviour;
         currentBehaviour = Behaviour.DISCARD;
-        update();
+        nextTurnButton.setDisable(true);
         okAlert(player.getPlayerName() + "You must Play or Discard a card","Hand Full");
         discardPane.setVisible(true);
     }
@@ -744,10 +751,10 @@ public class Controller implements PropertyChangeListener {
         else{
             nextTurnButton.setDisable(true);
             discardPane.setVisible(true);
+            update();
         }
 
     }
-
 
     private void setActivePlayer(Player player){
         activePlayer = player;
