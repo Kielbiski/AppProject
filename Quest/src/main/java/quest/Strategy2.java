@@ -1,69 +1,34 @@
 package quest;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.*;
 
 public class Strategy2 extends AbstractAI {
 
+    private static final Logger logger = LogManager.getLogger(App.class);
 
-    Strategy2(){
-
-        this.strategy=2;
-        this.typeStrategy = "Strategy 2";
-    }
-
-
-    public boolean doIParticipateInTournament(ArrayList<Player> paramPlayerList, int paramShields)
+    Strategy2(String paramName)
     {
-
-        return true;
+        logger.info("Calling strategy2 AI constructor for: "+paramName+".");
+        this.playerName = paramName ;
+        this.shields = 0;
+        this.battlePoints =0;
+        this.currentBid = 0;
+        this.playerRank = Rank.SQUIRE;
+        this.strategy ="Strategy 2 is used";
+        this.TournamentAnswer = new doIParticipateInTournamentSt2();
+        this.nextBid= new nextBidSt2();
+        this.quest= new doIParticipateInQuestSt2();
 
     }
 
 
-    public boolean doIParticipateInQuest(Player paramPlayer, int paramNumStage)
-    {
-        ArrayList<AdventureCard> foeList;
-
-        foeList = getListCard(paramPlayer);
-
-        if (foeList.size() > 2 ){
-
-            int totalStagePoint=0;
-            int numAlly = 0;
-            for(AdventureCard card : paramPlayer.getCardsInHand()) {
-                if ((card instanceof Ally) ||  (card instanceof Weapon))
-                {
-                    totalStagePoint += card.getBattlePoints();
-                }
-                if(card instanceof Ally){
-                    numAlly++;
-                }
-
-                if((numAlly>=paramNumStage) && (paramNumStage==3) && (totalStagePoint >= 30)){
-                    return true;
-                }
-
-                if((numAlly>=paramNumStage) && (paramNumStage==2) && (totalStagePoint >= 30)){
-                    return true;
-                }
-
-                if((numAlly>=paramNumStage) && (paramNumStage==1) && (totalStagePoint >= 10)){
-                    return true;
-                }
-
-                return false;
-
-            }
-
-        }
-
-        return false;
-    }
 
 
-    public ArrayList<AdventureCard> discardAfterWinningTest (Player paramPlayer, int paramHighestBid)
-    {
-        return this.nextBid(paramPlayer, paramHighestBid);
-    }
+
+
+
 }
