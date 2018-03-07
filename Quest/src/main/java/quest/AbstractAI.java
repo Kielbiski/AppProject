@@ -1,96 +1,136 @@
 package quest;
 
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-public abstract class AbstractAI {
+public abstract class AbstractAI extends Player{
 
-    protected int strategy;
-    protected String typeStrategy;
+    private static final Logger logger = LogManager.getLogger(App.class);
 
-    public boolean doISponsorAQuest(ArrayList<Player> paramPlayerList, int paramShields , Player paramPlayer)
+    protected String strategy;
+    protected doIParticipateInTournamentAI TournamentAnswer ;
+    protected nextBid nextBid ;
+    protected doIParticipateInQuest quest;
+    protected DoISponsorAQuest sponsorQuest;
+
+
+    public void setDoIParticipateInTournamentAI(doIParticipateInTournamentAI paramTournamentAnswer)
     {
-        ArrayList<Player> temPlayer = paramPlayerList;
-        temPlayer.remove(paramPlayer);
-
-        for(Player player : temPlayer) {
-            if (paramShields >= player.getRequiredShieldsForNextRank()) {
-                return false;
-            }
-        }
-
-        int needThreeToParticipate=0;
-        Set<Integer> set = new TreeSet<>();
-
-        for(AdventureCard card : paramPlayer.getCardsInHand()) {
-            if (card instanceof Foe) {
-                set.add(card.getBattlePoints());
-            }
-            if(card instanceof Test){
-                needThreeToParticipate++;
-            }
-        }
-
-        if((set.size()+needThreeToParticipate)>= 3){
-            return true;
-        }
-
-        return false;
+        logger.info(this.getPlayerName() + " is using " +this.strategy+" to determine if he wants to participate.");
+        this.TournamentAnswer = paramTournamentAnswer;
 
     }
 
-    public abstract boolean doIParticipateInTournament(ArrayList<Player> paramPlayerList, int paramShields);
 
-    public abstract boolean doIParticipateInQuest(Player paramPlayer, int paramNumStage);
-
-    public ArrayList<AdventureCard> nextBid (Player paramPlayer, int paramHighestBid)
+    public void setNextBid(nextBid paramNextBid)
     {
-
-        ArrayList<AdventureCard> foeList;
-
-        foeList = getListCard(paramPlayer);
-
-        if(foeList.size() > paramHighestBid)
-        {
-
-            return foeList;
-
-        }
-
-        foeList.clear();
-
-        return foeList;
+        logger.info(this.getPlayerName() + " is using " +this.strategy+" for his bids.");
+        this.nextBid = paramNextBid;
 
     }
 
-    public abstract ArrayList<AdventureCard> discardAfterWinningTest (Player paramPlayer, int paramHighestBid);
-
-    public ArrayList<AdventureCard> getListCard (Player paramPlayer)
+    public String getNextBid(nextBid paramNextBid)
     {
-        int i;
-
-        if(this.strategy== 1)
-        {
-
-            i = 20;
-        }
-
-        else
-        {
-            i = 25;
-        }
-        ArrayList<AdventureCard> foeList= new ArrayList<>();
-        for(AdventureCard card : paramPlayer.getCardsInHand())
-        {
-            if ((card instanceof Foe) && (card.getBattlePoints() < i))
-            {
-                foeList.add(card);
-            }
-        }
-
-        return foeList;
+        logger.info(this.getPlayerName() + " is using " +this.strategy+" .");
+        return this.strategy;
 
     }
+
+    public boolean doIParticipateInTournament(ArrayList<Player> paramPlayerList, int paramShields)
+    {
+
+        logger.info(this.getPlayerName() + " is deciding on participating in the tournament, using strategy: "+this.strategy+" .");
+        return TournamentAnswer.doIParticipateInTournament( paramPlayerList,  paramShields);
+
+    }
+
+
+    public boolean doISponsor(ArrayList<Player> paramPlayerList, ArrayList<AdventureCard> paramCard, int paramNumstage, int paramShields)
+    {
+
+        logger.info(this.getPlayerName() + " is deciding on participating in the sponsoring a quest, using strategy: "+this.strategy+" .");
+        return sponsorQuest.doISponsor( paramPlayerList, paramCard,paramNumstage,  paramShields);
+
+    }
+
+
+    public ArrayList<AdventureCard> questFirstStage(ArrayList<AdventureCard> paramCard)
+    {
+
+        logger.info(this.getPlayerName() + " is returning the first stage setup cards, using strategy: "+this.strategy+" .");
+        return sponsorQuest.firstStage(  paramCard);
+
+    }
+
+
+    public AdventureCard questMidStage(ArrayList<AdventureCard> paramCard)
+    {
+
+        logger.info(this.getPlayerName() + " is returning the mid stage setup cards, using strategy: "+this.strategy+" .");
+        return sponsorQuest.midStage(  paramCard);
+
+    }
+
+    public ArrayList<AdventureCard>  questLastStage(ArrayList<AdventureCard> paramCard)
+    {
+
+        logger.info(this.getPlayerName() + " is returning the last stage setup cards, using strategy: "+this.strategy+" .");
+        return sponsorQuest.lastStage(  paramCard);
+
+    }
+
+    public ArrayList<AdventureCard> playStage (ArrayList<AdventureCard> paraCard)
+    {
+
+        logger.info(this.getPlayerName() + " is playing a stage using strategy: "+this.strategy+" .");
+        return this.quest.playStage(paraCard);
+
+    }
+
+    public ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paraCard)
+    {
+
+        logger.info(this.getPlayerName() + " is playing a the last stage using strategy: "+this.strategy+" .");
+        return this.quest.lastStage(paraCard);
+
+    }
+
+    public ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard)
+    {
+
+        logger.info(this.getPlayerName() + " is return the following card using: "+this.strategy+" to play  .");
+        return TournamentAnswer.whatIPlay( paramCard);
+
+    }
+
+    public abstract boolean DoISponsorAQuest();
+
+    public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int numStage)
+    {
+        logger.info(this.getPlayerName() + " is determining if he wants to join a quest using: "+this.strategy+" to play");
+        return this.quest.doIParticipateInQuest(paramCard, numStage);
+
+    }
+
+    public  ArrayList<AdventureCard> discardAfterWinningTest(ArrayList<AdventureCard>  paramCardList)
+    {
+        logger.info("The cards that "+this.getPlayerName()+" wants to bids." );
+        return this.nextBid.discardAfterWinningTest(paramCardList) ;
+
+    }
+
+    public  int  nextBid(ArrayList<AdventureCard>  paramCardList)
+    {
+        logger.info(this.getPlayerName()+" is bidding :" );
+        return this.nextBid.nextBid(paramCardList).size() ;
+
+    }
+
+
+
 }
