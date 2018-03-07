@@ -28,19 +28,22 @@ enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
 public class Player {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-    private final int HAND_LIMIT = 12;
+    protected final int HAND_LIMIT = 12;
 
-    private String playerName;
-    private int battlePoints;
-    private int shields;
-    private int currentBid;
-    private Rank playerRank;
-    private AbstractAI aI;
-    private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
-    private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
-    private List<PropertyChangeListener> listener = new ArrayList<>();
-    private boolean handFull;
+    protected String playerName;
+    protected int battlePoints;
+    protected int shields;
+    protected int currentBid;
+    protected Rank playerRank;
+    //private AbstractAI aI;
+    protected ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
+    protected ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
+    protected List<PropertyChangeListener> listener = new ArrayList<>();
+    protected boolean handFull;
 
+    Player(){}
+
+    /*
     Player(String paramName, int i){
         playerName = paramName ;
         shields = 0;
@@ -55,9 +58,10 @@ public class Player {
         {
             aI = new Strategy1();
         }
-        logger.info("Successfully called  "+this.getPlayerName()+" constructor with strategy: "+ this.aI.typeStrategy+".");
+        //logger.info("Successfully called  "+this.getPlayerName()+" constructor with strategy: "+ this.aI.typeStrategy+".");
     }
 
+    */
     Player(String paramName){
         playerName = paramName ;
         shields = 0;
