@@ -15,10 +15,9 @@ public abstract class DoISponsorAQuest {
     public boolean doISponsor(ArrayList<Player> paramPlayerList, ArrayList<AdventureCard> paramCard, int paramNumstage, int paramShields) {
         logger.info("Strategy 2 : Answering  do I sponsor quest?");
 
-        ArrayList<Player> teamPlayer = paramPlayerList;
         ArrayList<AdventureCard> tempCard = cardList(paramCard);
 
-        for (Player player : teamPlayer) {
+        for (Player player : paramPlayerList) {
             if (paramShields >= player.getRequiredShieldsForNextRank()) {
 
                 logger.info("The answer is no.");
@@ -38,7 +37,7 @@ public abstract class DoISponsorAQuest {
     }
 
 
-    public ArrayList<AdventureCard> cardList(ArrayList<AdventureCard> paramCard) {
+    private ArrayList<AdventureCard> cardList(ArrayList<AdventureCard> paramCard) {
 
         ArrayList<AdventureCard> cardList = new ArrayList<>();
         for (AdventureCard card : paramCard) {
@@ -49,9 +48,6 @@ public abstract class DoISponsorAQuest {
 
         return cardList;
     }
-
-
-
 
     public  AdventureCard midStage (ArrayList<AdventureCard> paramCard)
     {

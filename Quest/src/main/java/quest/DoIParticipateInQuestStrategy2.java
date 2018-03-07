@@ -3,7 +3,7 @@ package quest;
 import java.util.*;
 import java.util.Comparator;
 
-public class doIParticipateInQuestSt2 extends doIParticipateInQuest{
+public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
 
     public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int paramNumStage){
 
@@ -13,36 +13,24 @@ public class doIParticipateInQuestSt2 extends doIParticipateInQuest{
 
         foeList = foeList(paramCard, 25);
 
-        if (foeList.size() > 2 )
-        {
+        if (foeList.size() > 2 ) {
 
-            int totalStagePoint=0;
+            int totalStagePoint = 0;
             int numAlly = 0;
-            for(AdventureCard card : paramCard)
-            {
-                if ((card instanceof Ally) ||  (card instanceof Weapon))
-                {
+            for (AdventureCard card : paramCard) {
+                if ((card instanceof Ally) || (card instanceof Weapon)) {
 
                     totalStagePoint += card.getBattlePoints();
 
                 }
-                if(card instanceof Ally)
-                {
+                if (card instanceof Ally) {
 
                     numAlly++;
 
                 }
 
             }
-            if((paramNumStage==3) && (totalStagePoint >= 60))
-            {
-                return true;
-            }
-
-            if((paramNumStage==2) && (totalStagePoint >= 30))
-            {
-                return true;
-            }
+            return (paramNumStage == 3) && (totalStagePoint >= 60) || (paramNumStage == 2) && (totalStagePoint >= 30);
 
         }
 
@@ -55,7 +43,7 @@ public class doIParticipateInQuestSt2 extends doIParticipateInQuest{
 
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
         int totalPoint= 0;
-        paramCard.sort(Comparator.comparing(object2 -> object2.getBattlePoints()));
+        paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
         for(AdventureCard card : paramCard)
         {
             if ((card instanceof Ally) ||  (card instanceof Weapon))

@@ -6,7 +6,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class DoISponsorAQuestSt2 extends   DoISponsorAQuest {
+public class DoISponsorAQuestStrategy2 extends DoISponsorAQuest {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
@@ -19,10 +19,10 @@ public class DoISponsorAQuestSt2 extends   DoISponsorAQuest {
         {
             if ((card instanceof Foe) ||  (card instanceof Weapon) ){
                 if (totalPoint <= 40) {
-                    totalPoint += card.battlePoints;
+                    totalPoint += card.getBattlePoints();
                     cardPlaying.add(card);
-                    return cardPlaying;
-
+                } else {
+                    break;
                 }
             }
 
@@ -35,7 +35,7 @@ public class DoISponsorAQuestSt2 extends   DoISponsorAQuest {
 
     public  ArrayList<AdventureCard> firstStage (ArrayList<AdventureCard> paramCard){
 
-        paramCard.sort(Comparator.comparing(object2 -> object2.getBattlePoints()));
+        paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
         for(AdventureCard card : paramCard)
         {

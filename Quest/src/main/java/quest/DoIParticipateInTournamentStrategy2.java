@@ -6,11 +6,11 @@ import org.apache.logging.log4j.Logger;
 import java.util.ArrayList;
 import java.util.Comparator;
 
-public class doIParticipateInTournamentSt2 extends doIParticipateInTournamentAI {
+public class DoIParticipateInTournamentStrategy2 extends DoIParticipateInTournamentAI {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    doIParticipateInTournamentSt2()
+    DoIParticipateInTournamentStrategy2()
     {
 
         logger.info("Calling do doIParticipateInTournamentSt2 (strategy 2) constructor");
@@ -30,8 +30,8 @@ public class doIParticipateInTournamentSt2 extends doIParticipateInTournamentAI 
     public ArrayList<AdventureCard> whatIPlay (ArrayList<AdventureCard> paramCard)
     {
 
-        ArrayList<AdventureCard> tempCard = AllieAndWeapons(paramCard);
-        tempCard.sort(Comparator.comparing(object2 -> object2.getBattlePoints()));
+        ArrayList<AdventureCard> tempCard = AlliesAndWeapons(paramCard);
+        tempCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
         int battlePoints = 0;
         int i =0;
         ArrayList<AdventureCard> tempCard2 = new ArrayList<>() ;

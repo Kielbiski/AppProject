@@ -3,38 +3,24 @@ package quest;
 import java.util.*;
 import java.util.Comparator;
 
-public class doIParticipateInQuestSt1 extends doIParticipateInQuest {
+public class DoIParticipateInQuestStrategy1 extends DoIParticipateInQuest {
 
-    public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int paramNumStage){
-        ArrayList<AdventureCard> weaponList= new ArrayList<>();
-        ArrayList<AdventureCard> allyList= new ArrayList<>();
-        ArrayList<AdventureCard> foeList= foeList(paramCard, 20);
-        for(AdventureCard card : paramCard)
-        {
-            if (card instanceof Ally)
-            {
+    public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int paramNumStage) {
+        ArrayList<AdventureCard> weaponList = new ArrayList<>();
+        ArrayList<AdventureCard> allyList = new ArrayList<>();
+        ArrayList<AdventureCard> foeList = foeList(paramCard, 20);
+        for (AdventureCard card : paramCard) {
+            if (card instanceof Ally) {
                 allyList.add(card);
             }
 
-            if (card instanceof Weapon)
-            {
+            if (card instanceof Weapon) {
                 weaponList.add(card);
             }
 
         }
 
-        if (((allyList.size()/paramNumStage)> 2 ) || ((weaponList.size()/paramNumStage)> 2 ) || ((( allyList.size()+ weaponList.size())/paramNumStage)>2 )){
-
-
-            if(foeList.size()>2){
-                return true;
-            }
-
-            return false;
-
-        }
-
-        return false;
+        return (((allyList.size() / paramNumStage) > 2) || ((weaponList.size() / paramNumStage) > 2) || (((allyList.size() + weaponList.size()) / paramNumStage) > 2)) && foeList.size() > 2;
 
 
     }
@@ -46,7 +32,7 @@ public class doIParticipateInQuestSt1 extends doIParticipateInQuest {
         ArrayList<AdventureCard> cardPlayingAllie = new ArrayList<>();
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
         int totalPoint= 0;
-        paramCard.sort(Comparator.comparing(object2 -> object2.getBattlePoints()));
+        paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
         for(AdventureCard card : paramCard)
         {
             if (card instanceof Ally)
@@ -87,7 +73,7 @@ public class doIParticipateInQuestSt1 extends doIParticipateInQuest {
 
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
         int totalPoint= 0;
-        paramCard.sort(Comparator.comparing(object2 -> object2.getBattlePoints()));
+        paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
         for(AdventureCard card : paramCard)
         {
             if ((card instanceof Ally) ||  (card instanceof Weapon))

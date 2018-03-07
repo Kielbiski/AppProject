@@ -4,11 +4,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import  java.util.*;
 
-public class doIParticipateInTournamentSt1 extends doIParticipateInTournamentAI{
+public class DoIParticipateInTournamentStrategy1 extends DoIParticipateInTournamentAI{
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    doIParticipateInTournamentSt1()
+    DoIParticipateInTournamentStrategy1()
     {
 
         logger.info("Calling do doIParticipateInTournamentSt1 (strategy 1) constructor. ");
@@ -20,9 +20,7 @@ public class doIParticipateInTournamentSt1 extends doIParticipateInTournamentAI{
     {
         logger.info("Strategy 1 : Answering to a tournament");
 
-        ArrayList<Player> teamPlayer = paramPlayerList;
-
-        for(Player player : teamPlayer)
+        for(Player player : paramPlayerList)
         {
             if (paramShields >= player.getRequiredShieldsForNextRank())
             {
@@ -43,7 +41,7 @@ public class doIParticipateInTournamentSt1 extends doIParticipateInTournamentAI{
     {
 
         logger.info("Return strategy 1 cards to play for the tournament.");
-        return AllieAndWeapons(paramCard);
+        return AlliesAndWeapons(paramCard);
 
     }
 

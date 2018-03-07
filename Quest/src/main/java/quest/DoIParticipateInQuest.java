@@ -2,7 +2,7 @@ package quest;
 
 import java.util.ArrayList;
 
-public abstract class doIParticipateInQuest {
+public abstract class DoIParticipateInQuest {
 
     int lastStagePoints;
 
@@ -12,7 +12,7 @@ public abstract class doIParticipateInQuest {
 
     public abstract ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paramCard);
 
-    public ArrayList<AdventureCard>  foeList (ArrayList<AdventureCard> paramCard, int paramPoints)
+    ArrayList<AdventureCard>  foeList (ArrayList<AdventureCard> paramCard, int paramPoints)
     {
 
         ArrayList<AdventureCard> foeList= new ArrayList<>();
