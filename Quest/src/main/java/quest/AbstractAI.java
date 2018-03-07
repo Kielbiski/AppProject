@@ -59,7 +59,7 @@ public abstract class AbstractAI extends Player{
     }
 
 
-    public ArrayList<AdventureCard> questFirstStage(ArrayList<AdventureCard> paramCard)
+    public ArrayList<AdventureCard> sponsorQuestFirstStage(ArrayList<AdventureCard> paramCard)
     {
 
         logger.info(this.getPlayerName() + " is returning the first stage setup cards, using strategy: "+this.strategy+" .");
@@ -68,7 +68,7 @@ public abstract class AbstractAI extends Player{
     }
 
 
-    public AdventureCard questMidStage(ArrayList<AdventureCard> paramCard)
+    public AdventureCard sponsorQuestMidStage(ArrayList<AdventureCard> paramCard)
     {
 
         logger.info(this.getPlayerName() + " is returning the mid stage setup cards, using strategy: "+this.strategy+" .");
@@ -76,7 +76,7 @@ public abstract class AbstractAI extends Player{
 
     }
 
-    public ArrayList<AdventureCard>  questLastStage(ArrayList<AdventureCard> paramCard)
+    public ArrayList<AdventureCard>  sponsorQuestLastStage(ArrayList<AdventureCard> paramCard)
     {
 
         logger.info(this.getPlayerName() + " is returning the last stage setup cards, using strategy: "+this.strategy+" .");
@@ -108,7 +108,6 @@ public abstract class AbstractAI extends Player{
 
     }
 
-    public abstract boolean DoISponsorAQuest();
 
     public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int numStage)
     {
@@ -134,3 +133,4 @@ public abstract class AbstractAI extends Player{
 
 
 }
+
