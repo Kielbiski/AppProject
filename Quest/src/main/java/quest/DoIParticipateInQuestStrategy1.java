@@ -17,12 +17,8 @@ public class DoIParticipateInQuestStrategy1 extends DoIParticipateInQuest {
             if (card instanceof Weapon) {
                 weaponList.add(card);
             }
-
         }
-
         return (((allyList.size() / paramNumStage) > 2) || ((weaponList.size() / paramNumStage) > 2) || (((allyList.size() + weaponList.size()) / paramNumStage) > 2)) && foeList.size() > 2;
-
-
     }
 
 
