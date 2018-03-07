@@ -1,6 +1,5 @@
 package quest;
 
-import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -41,7 +40,7 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 
 
-enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, DEFAULT}
+enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
 
 
 public class Controller implements PropertyChangeListener {
@@ -133,6 +132,7 @@ public class Controller implements PropertyChangeListener {
 //        });
         return imgView;
     }
+
     public void onTableDragOver(DragEvent event){
         Dragboard db = event.getDragboard();
         if (db.hasString()) {
@@ -140,6 +140,7 @@ public class Controller implements PropertyChangeListener {
         }
         event.consume();
     }
+
     public void onTableDragDropped(DragEvent event){
         Dragboard db = event.getDragboard();
         // Get item id here, which was stored when the drag started.
@@ -195,6 +196,7 @@ public class Controller implements PropertyChangeListener {
         }
         event.consume();
     }
+
     public void onDiscardDragDropped(DragEvent event){
         Dragboard db = event.getDragboard();
         // Get item id here, which was stored when the drag started.
@@ -257,7 +259,6 @@ public class Controller implements PropertyChangeListener {
                 else{
                     success = false;
                 }
-
             }
         }
         event.setDropCompleted(success);
@@ -265,7 +266,6 @@ public class Controller implements PropertyChangeListener {
         event.consume();
 
     }
-
 
     private ImageView createStoryCardImageView(){
         ImageView imgView = new ImageView();
@@ -425,6 +425,10 @@ public class Controller implements PropertyChangeListener {
             }
         }
     }
+
+    //ALERTS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     private boolean yesNoAlert(String text, String headerText){
         Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, text, ButtonType.YES, ButtonType.NO);
         questAlert.setHeaderText(headerText);
@@ -480,32 +484,9 @@ public class Controller implements PropertyChangeListener {
         return winningPlayers;
     }
 
-    private void performQuest(Player sponsor, Quest quest) {
-        game.setSponsor(sponsor);
-        quest.setSponsor(sponsor);
-        addQuestPlayers(quest);
-        setActivePlayer(sponsor);
-        currentBehaviour = Behaviour.SPONSOR;
-        continueButton.setVisible(true);
-
-        for(int i = 0;i<quest.getNumStage();i++){
-            createStagePane(i);
-        }
-    }
-    private void addQuestPlayers(Quest currentQuest){
-        ArrayList<Player> questPlayers = new ArrayList<>();
-        for(int i = 0; i < NUM_PLAYERS; i++){
-            if(game.getPlayers().get(i) != game.getSponsor()) {
-                setActivePlayer(game.getPlayers().get(i));
-                update();
-                if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join quest?")) {
-                    questPlayers.add(game.getPlayers().get(i));
-                }
-            }
-        }
-        currentQuest.setPlayerList(questPlayers);
-    }
-
+    //TURNS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     private int nextPlayerIndex(int index){
         int nextIndex = index;
         if(nextIndex >= 3){
@@ -554,40 +535,23 @@ public class Controller implements PropertyChangeListener {
             }
             update();
         }
-
-
-    }
-    private void questOver(){
-        if(game.getCurrentQuest().isWinner()) {
-            for (Player player : game.getCurrentQuest().getPlayerList()) {
-                if(game.isKingsRecognition()){
-                    player.setShields(player.getShields() + 3);
-                    game.setKingsRecognition(false);
+        else if(currentBehaviour == Behaviour.TOURNAMENT){
+            //game.getCurrentTournament().nextTurn();
+            if(game.getCurrentQuest().isFinished()){
+                if(game.isWinner()){
+                    System.out.println("gameover," + game.getWinningPlayers().get(0) + " wins");
+                    System.exit(0);
                 }
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
-                DialogPane dialog = alert.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                alert.showAndWait();
+                else{
+                    questOver();
+                }
             }
+            else{
+                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+            }
+            update();
         }
-        else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Quest Has No Winner" , ButtonType.OK);
-            DialogPane dialog = alert.getDialogPane();
-            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-            dialog.getStyleClass().add("alertDialogs");
-            alert.showAndWait();
-        }
-        stagesGridPane.getChildren().clear();
-        flowPaneArray.clear();
-        game.getPreQuestStageSetup().clear();
-        game.clearQuest();
-        setActivePlayer(game.getSponsor());
-        game.setSponsor(null);
-        currentBehaviour = Behaviour.DEFAULT;
-        nextTurnButton.setVisible(true);
-        continueButton.setVisible(false);
-        update();
+
     }
 
     public void nextTurnAction(ActionEvent event){
@@ -598,46 +562,15 @@ public class Controller implements PropertyChangeListener {
         update();
     }
 
-    private void callEventEffect(Event event){
-        switch (event.getName()) {
-            case "Chivalrous Deed":
-                event.applyEvent(game.getPlayers(), null);
-                break;
-            case "Court Called To Camelot":
-                event.applyEvent(game.getPlayers(), null);
-                break;
-            case "King's Call To Arms":
-                event.applyEvent(game.getPlayers(),activePlayer);
-                break;
-            case "King's Recognition":
-                event.applyEvent(null, null);
-                break;
-            case "Plague":
-                event.applyEvent(null, activePlayer);
-                break;
-            case "Pox":
-                event.applyEvent(game.getPlayers(), activePlayer);
-                break;
-            ///////////////////////////////////////////////
-            ///////////////////////////////////////////////
-
-            case "Prosperity Throughout The Realm":
-                event.applyEvent(game.getPlayers(), null);
-                break;
-            case "Queen's Favor": {
-                event.applyEvent(game.getPlayers(), null);
-                break;
-            }
-
-            ///////////////////////////////////////////////
-            ///////////////////////////////////////////////
-
-        }
-        System.out.println(event.getName() + " was activated.");
-        for(Player player : game.getPlayers()){
-            System.out.println(player.getShields());
-        }
-        logger.info("Successfully called : Event constructor");
+    //HAND AND DECK
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void handFull(Player player){
+        previousBehaviour =currentBehaviour;
+        currentBehaviour = Behaviour.DISCARD;
+        nextTurnButton.setDisable(true);
+        okAlert(player.getPlayerName() + "You must Play or Discard a card","Hand Full");
+        discardPane.setVisible(true);
     }
 
     public void storyDeckDraw(MouseEvent event){
@@ -666,15 +599,19 @@ public class Controller implements PropertyChangeListener {
             callEventEffect(gameEvent);
         } else if (game.getCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
-            System.out.println("Tournament");
+            game.setCurrentTournament((Tournament)game.getCurrentStory());
+            questDraw(currentPlayerOrder);
+            nextTurnButton.setDisable(false);
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
         //activePlayer = game.getPlayers().get(currentPlayerIndex);
-        nextTurnButton.setDisable(false);
         storyDeckImg.setDisable(true);
         update();
     }
 
+    //QUESTS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void questDraw(ArrayList<Player> currentPlayerOrder) {
         Player sponsor;
         for (Player player : currentPlayerOrder) {//////////////////////////////////////
@@ -718,12 +655,129 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    private void handFull(Player player){
-        previousBehaviour =currentBehaviour;
-        currentBehaviour = Behaviour.DISCARD;
+    private void questOver(){
+        if(game.getCurrentQuest().isWinner()) {
+            for (Player player : game.getCurrentQuest().getPlayerList()) {
+                if(game.isKingsRecognition()){
+                    player.setShields(player.getShields() + 3);
+                    game.setKingsRecognition(false);
+                }
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
+                DialogPane dialog = alert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                alert.showAndWait();
+            }
+        }
+        else{
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Quest Has No Winner" , ButtonType.OK);
+            DialogPane dialog = alert.getDialogPane();
+            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+            dialog.getStyleClass().add("alertDialogs");
+            alert.showAndWait();
+        }
+        stagesGridPane.getChildren().clear();
+        flowPaneArray.clear();
+        game.getPreQuestStageSetup().clear();
+        game.clearQuest();
+        setActivePlayer(game.getSponsor());
+        game.setSponsor(null);
+        currentBehaviour = Behaviour.DEFAULT;
+        nextTurnButton.setVisible(true);
+        nextTurnButton.setDisable(false);
+        nextTurnButton.setDisable(false);
+        continueButton.setVisible(false);
         update();
-        okAlert(player.getPlayerName() + "You must Play or Discard a card","Hand Full");
-        discardPane.setVisible(true);
+    }
+
+    private void performQuest(Player sponsor, Quest quest) {
+        game.setSponsor(sponsor);
+        quest.setSponsor(sponsor);
+        setActivePlayer(sponsor);
+        currentBehaviour = Behaviour.SPONSOR;
+        continueButton.setVisible(true);
+
+        for(int i = 0;i<quest.getNumStage();i++){
+            createStagePane(i);
+        }
+        addQuestPlayers(quest);
+
+    }
+
+    private void addQuestPlayers(Quest currentQuest){
+        ArrayList<Player> questPlayers = new ArrayList<>();
+        for(int i = 0; i < NUM_PLAYERS; i++){
+            if(game.getPlayers().get(i) != game.getSponsor()) {
+                setActivePlayer(game.getPlayers().get(i));
+                update();
+                if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join quest?")) {
+                    questPlayers.add(game.getPlayers().get(i));
+                }
+            }
+        }
+        if(questPlayers.size() == 0){
+            questOver();
+        }
+        else {
+            currentQuest.setPlayerList(questPlayers);
+        }
+    }
+
+    //TOURNAMENT
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void performTournment(ArrayList<Player> currentPlayerOrder,Tournament tournament) {
+        currentBehaviour = Behaviour.TOURNAMENT;
+        continueButton.setVisible(true);
+
+    }
+
+
+    //EVENTS
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private void callEventEffect(Event event){
+        switch (event.getName()) {
+            case "Chivalrous Deed":
+                event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
+                break;
+            case "Court Called To Camelot":
+                event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
+                break;
+            case "King's Call To Arms":
+                event.applyEvent(game.getPlayers(),activePlayer);
+                break;
+            case "King's Recognition":
+                event.applyEvent(null, null);
+                nextTurnButton.setDisable(false);
+                break;
+            case "Plague":
+                event.applyEvent(null, activePlayer);
+                nextTurnButton.setDisable(false);
+                break;
+            case "Pox":
+                event.applyEvent(game.getPlayers(), activePlayer);
+                nextTurnButton.setDisable(false);
+                break;
+
+            case "Prosperity Throughout The Realm":
+                event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
+                break;
+            case "Queen's Favor": {
+                event.applyEvent(game.getPlayers(), null);
+                nextTurnButton.setDisable(false);
+                break;
+            }
+        }
+        System.out.println(event.getName() + " was activated.");
+        for(Player player : game.getPlayers()){
+            System.out.println(player.getShields());
+        }
+        logger.info("Successfully called : Event constructor");
     }
 
     private void callToArms(Player player){
@@ -744,10 +798,14 @@ public class Controller implements PropertyChangeListener {
         else{
             nextTurnButton.setDisable(true);
             discardPane.setVisible(true);
+            update();
         }
 
     }
 
+    //Player related
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void setActivePlayer(Player player){
         activePlayer = player;
