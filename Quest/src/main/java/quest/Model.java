@@ -34,11 +34,13 @@ public class Model implements PropertyChangeListener
 
     private Player sponsor;
     private int currentTurnIndex = 0;
-    private int NUM_CARDS = 12;
     private List<PropertyChangeListener> listener = new ArrayList<>();
     private ArrayList<Player> winningPlayers = new ArrayList<>();
     private boolean kingsRecognition = false;
 
+    /////////////////////////////////////////////////
+
+    /////////////////////////////////////////////////
 
     public StoryCard getCurrentStory() {
         logger.info("Returning current story.");
@@ -375,6 +377,7 @@ public class Model implements PropertyChangeListener
         Collections.shuffle(deckOfAdventureCards);
 
         for(Player player : players) {
+            int NUM_CARDS = 12;
             for (int i = 0; i < NUM_CARDS; i++) {
                 if (!(deckOfAdventureCards.empty())) {
                     player.addCardToHand(deckOfAdventureCards.pop());
@@ -409,7 +412,7 @@ public class Model implements PropertyChangeListener
     }
 
     private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
-        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", tournamentParticipants);
+        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", 0, tournamentParticipants);
         return knightsOfTheRoundTableTournament.getTournamentWinner();
     }
 
@@ -459,12 +462,12 @@ public class Model implements PropertyChangeListener
         }
     }
 
-    void handFull(Player player,boolean oldFull){
+    private void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI
         notifyListeners(player,oldFull,true);
 
     }
-    void callToArms(Player player){
+    private void callToArms(Player player){
         //later do somethign different here if player type is AI
         notifyListeners(player);
     }
@@ -485,30 +488,35 @@ public class Model implements PropertyChangeListener
 
     @Override
     public void propertyChange(PropertyChangeEvent change) {
-        if (change.getPropertyName().equals("stage")){
-            if (change.getOldValue() != change.getNewValue()){
-                for(Player player:currentQuest.getPlayerList()){
-                    drawAdventureCard(player);
+        switch (change.getPropertyName()) {
+            case "stage":
+                if (change.getOldValue() != change.getNewValue()) {
+                    for (Player player : currentQuest.getPlayerList()) {
+                        drawAdventureCard(player);
+                    }
                 }
+                break;
+            case "handFull":
+                if ((Boolean) change.getNewValue()) {
+                    System.out.println("");
+                    //reneable with AI when jay fixes his shit
+                    // handFull((Player)change.getSource(),(Boolean)change.getOldValue());
+                }
+                break;
+            case "deckDraw": {
+                Player drawPlayer = (Player) change.getSource();
+                boolean wasFull = drawPlayer.isHandFull();
+                drawPlayer.addCardToHand(deckOfAdventureCards.pop());
+                if (drawPlayer.isHandFull()) {
+                    handFull(drawPlayer, wasFull);
+                }
+                break;
             }
-        }
-        else if(change.getPropertyName().equals("handFull")){
-            if((Boolean)change.getNewValue()){
-                //reneable with AI when jay fixes his shit
-              // handFull((Player)change.getSource(),(Boolean)change.getOldValue());
+            case "callToArms": {
+                Player drawPlayer = (Player) change.getSource();
+                callToArms(drawPlayer);
+                break;
             }
-        }
-        else if(change.getPropertyName().equals("deckDraw")){
-             Player drawPlayer = (Player)change.getSource();
-             boolean wasFull = drawPlayer.isHandFull();
-             drawPlayer.addCardToHand(deckOfAdventureCards.pop());
-             if(drawPlayer.isHandFull()){
-                 handFull(drawPlayer,wasFull);
-             }
-        }
-        else if(change.getPropertyName().equals("callToArms")){
-            Player drawPlayer = (Player)change.getSource();
-            callToArms(drawPlayer);
         }
     }
 }

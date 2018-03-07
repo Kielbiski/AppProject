@@ -349,7 +349,7 @@ class TournamentAtCamelot extends Tournament {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     TournamentAtCamelot(){
-        super("Tournament at Camelot", "TM_Camelot.jpg", new ArrayList<>());
+        super("Tournament at Camelot", "TM_Camelot.jpg", 3, new ArrayList<>());
         logger.info("Successfully called : Tournament at Camelot constructor.");
     }
 }
@@ -359,7 +359,7 @@ class TournamentAtOrkney extends Tournament {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     TournamentAtOrkney(){
-        super("Tournament at Orkney", "TM_Orkney.jpg", new ArrayList<>());
+        super("Tournament at Orkney", "TM_Orkney.jpg", 2, new ArrayList<>());
         logger.info("Successfully called : Tournament at Orkney constructor.");
     }
 }
@@ -369,7 +369,7 @@ class TournamentAtTintagel extends Tournament {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     TournamentAtTintagel(){
-        super("Tournament at Tintagel", "TM_Tintagel.jpg", new ArrayList<>());
+        super("Tournament at Tintagel", "TM_Tintagel.jpg", 1, new ArrayList<>());
         logger.info("Successfully called : Tournament at Tintagel constructor.");
     }
 }
@@ -379,7 +379,7 @@ class TournamentAtYork extends Tournament {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     TournamentAtYork(){
-        super("Tournament at York", "TM_York.jpg", new ArrayList<>());
+        super("Tournament at York", "TM_York.jpg", 0, new ArrayList<>());
         logger.info("Successfully called : Tournament at York constructor.");
     }
 }

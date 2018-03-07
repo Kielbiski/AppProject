@@ -12,14 +12,14 @@ public abstract class AbstractAI extends Player{
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    protected String strategy;
-    protected doIParticipateInTournamentAI TournamentAnswer ;
-    protected nextBid nextBid ;
-    protected doIParticipateInQuest quest;
-    protected DoISponsorAQuest sponsorQuest;
+    String strategy;
+    DoIParticipateInTournamentAI TournamentAnswer ;
+    nextBid nextBid ;
+    DoIParticipateInQuest quest;
+    private DoISponsorAQuest sponsorQuest;
 
 
-    public void setDoIParticipateInTournamentAI(doIParticipateInTournamentAI paramTournamentAnswer)
+    public void setDoIParticipateInTournamentAI(DoIParticipateInTournamentAI paramTournamentAnswer)
     {
         logger.info(this.getPlayerName() + " is using " +this.strategy+" to determine if he wants to participate.");
         this.TournamentAnswer = paramTournamentAnswer;
@@ -92,11 +92,11 @@ public abstract class AbstractAI extends Player{
 
     }
 
-    public ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paraCard)
+    public ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paramCard)
     {
 
         logger.info(this.getPlayerName() + " is playing a the last stage using strategy: "+this.strategy+" .");
-        return this.quest.lastStage(paraCard);
+        return this.quest.lastStage(paramCard);
 
     }
 
