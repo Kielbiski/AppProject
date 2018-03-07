@@ -22,6 +22,16 @@ public class Model implements PropertyChangeListener
     private HashMap<Integer,ArrayList<AdventureCard>> preQuestStageSetup = new HashMap<>();
     private StoryCard currentStory;
     private Quest currentQuest;
+    private Tournament currentTournament;
+
+    public Tournament getCurrentTournament() {
+        return currentTournament;
+    }
+
+    public void setCurrentTournament(Tournament currentTournament) {
+        this.currentTournament = currentTournament;
+    }
+
     private Player sponsor;
     private int currentTurnIndex = 0;
     private int NUM_CARDS = 12;

@@ -21,6 +21,8 @@ public class Tournament extends StoryCard {
         logger.info("Successfully called :" + this.getName() + " constructor");
     }
 
+
+
     /*Loop backward into the collection to find the max point a players has
       and remove player who have less than max from the collection.
      */

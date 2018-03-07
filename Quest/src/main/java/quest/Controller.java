@@ -40,7 +40,7 @@ import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 
 
-enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, DEFAULT}
+enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
 
 
 public class Controller implements PropertyChangeListener {
@@ -535,7 +535,22 @@ public class Controller implements PropertyChangeListener {
             }
             update();
         }
-
+        else if(currentBehaviour == Behaviour.TOURNAMENT){
+            //game.getCurrentTournament().nextTurn();
+            if(game.getCurrentQuest().isFinished()){
+                if(game.isWinner()){
+                    System.out.println("gameover," + game.getWinningPlayers().get(0) + " wins");
+                    System.exit(0);
+                }
+                else{
+                    questOver();
+                }
+            }
+            else{
+                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+            }
+            update();
+        }
 
     }
 
@@ -584,7 +599,8 @@ public class Controller implements PropertyChangeListener {
             callEventEffect(gameEvent);
         } else if (game.getCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
-            System.out.println("Tournament");
+            game.setCurrentTournament((Tournament)game.getCurrentStory());
+            questDraw(currentPlayerOrder);
             nextTurnButton.setDisable(false);
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
@@ -706,6 +722,16 @@ public class Controller implements PropertyChangeListener {
             currentQuest.setPlayerList(questPlayers);
         }
     }
+
+    //TOURNAMENT
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void performTournment(ArrayList<Player> currentPlayerOrder,Tournament tournament) {
+        currentBehaviour = Behaviour.TOURNAMENT;
+        continueButton.setVisible(true);
+
+    }
+
 
     //EVENTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////
