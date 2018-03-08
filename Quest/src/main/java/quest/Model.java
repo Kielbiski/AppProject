@@ -339,11 +339,7 @@ public class Model implements PropertyChangeListener
             }
         }
 
-        deckOfStoryCards.add(new Pox());
-        deckOfStoryCards.add(new ChivalrousDeed());
-
-
-
+        deckOfStoryCards.add(new SearchForTheHolyGrail());
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -407,7 +403,7 @@ public class Model implements PropertyChangeListener
         logger.info(" Deal 12 cards to each players.");
     }
 
-    private void drawAdventureCard(Player currentPlayer){
+    public void drawAdventureCard(Player currentPlayer){
         logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
         //check if hand is full, if so set some state in the player is full. then in controller create an alert that says hand is full.
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
