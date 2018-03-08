@@ -323,15 +323,6 @@ public class Controller implements PropertyChangeListener {
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
-        String currentTurnLabelCSS;
-
-        currentTurnLabelCSS = "-fx-border-color: #d6d6d6;\n" +
-                "-fx-border-insets: 5;\n" +
-                "-fx-border-width: 4;\n" +
-                "-fx-border-style: solid;\n" +
-                "-fx-border-radius: 10;\n" +
-                "-fx-padding: 10";
-        currentTurnLabel.setStyle(currentTurnLabelCSS);
         currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
         currentTurnLabel.setStyle("-fx-border-color: #aaaaaa;\n" +
@@ -792,8 +783,44 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    public int getNumberOfPlayers(){
+        List<String> choices = new ArrayList<>();
+        choices.add("2 Players");
+        choices.add("3 Players");
+        choices.add("4 Players");
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("4 Players", choices);
+        dialog.setTitle("Number of Players?");
+        dialog.setHeaderText("How many players would you like?");
+        dialog.setContentText("Please select number of players:");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+        dialogPane.getStyleClass().add("alertDialogs");
+        Optional<String> result = dialog.showAndWait();
+        // The Java 8 way to get the response value (with lambda expression).
+        if (result.isPresent()) {
+            String number = result.get();
+            switch (number) {
+                case "2 Players":
+                    return 2;
+                case "3 Players":
+                    return 3;
+                case "4 Players":
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
+        return 0;
+    }
+
     public void initialize() {
-        setPlayerNames();
+        int numberOfPlayersResult = getNumberOfPlayers();
+        if(numberOfPlayersResult == 0){
+            okAlert("Error starting game, not enough players!", "Error.");
+            exit(0);
+        }
+        setPlayerNames(numberOfPlayersResult);
         currentBehaviour = Behaviour.DEFAULT;
         currentTurnPlayer = game.getPlayers().get(0);
         setActivePlayer(game.getPlayers().get(0));
@@ -807,9 +834,9 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    private void setPlayerNames(){
+    private void setPlayerNames(int numberOfPlayers){
         //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
-        for(int i =0; i < NUM_PLAYERS; i++){
+        for(int i =0; i < numberOfPlayers; i++){
             TextInputDialog dialog = new TextInputDialog("Enter Name");
             dialog.setTitle("Set Player name");
             dialog.setHeaderText("Player " + (i+1) + " enter your name");
