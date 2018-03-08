@@ -79,17 +79,8 @@ public class DoIParticipateInQuestStrategy1Test {
 
         SirGalahad sirGalahad = new SirGalahad();
         SirGalahad sirGalahad2 = new SirGalahad();
-        SirGalahad sirGalahad3 = new SirGalahad();
-        SirGalahad sirGalahad4 = new SirGalahad();
-        SirGalahad sirGalahad5 = new SirGalahad();
-        SirGalahad sirGalahad6 = new SirGalahad();
-
         BattleAx battleAx = new BattleAx();
         BattleAx battleAx2 = new BattleAx();
-        BattleAx battleAx3 = new BattleAx();
-        BattleAx battleAx4 = new BattleAx();
-        BattleAx battleAx5 = new BattleAx();
-        BattleAx battleAx6 = new BattleAx();
         Dagger dagger = new Dagger();
 
 
@@ -117,6 +108,32 @@ public class DoIParticipateInQuestStrategy1Test {
         paramCard.remove(sirGalahad2);
         paramCard.remove(battleAx);
         paramCard.remove(battleAx2);
+
+        assertEquals(paramCard2,quest1.playStage(paramCard) );
+
+    }
+
+    @Test
+    public void lastStage(){
+
+        SirGalahad sirGalahad = new SirGalahad();
+        BattleAx battleAx = new BattleAx();
+        BattleAx battleAx2 = new BattleAx();
+        Dagger dagger = new Dagger();
+
+
+        paramCard.add(sirGalahad);
+        paramCard.add(dagger);
+        paramCard.add(battleAx);
+        paramCard.add(battleAx2);
+
+        paramCard2.add(sirGalahad);
+        paramCard2.add(dagger);
+        paramCard.add(battleAx);
+        paramCard.add(battleAx2);
+
+
+        DoIParticipateInQuest quest1 = new DoIParticipateInQuestStrategy1();
 
         assertEquals(paramCard2,quest1.playStage(paramCard) );
 
