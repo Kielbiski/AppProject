@@ -27,7 +27,7 @@ public class DoIParticipateInTournamentStrategy2 extends DoIParticipateInTournam
 
     }
 
-    public ArrayList<AdventureCard> whatIPlay (ArrayList<AdventureCard> paramCard)
+    public ArrayList<AdventureCard> whatIPlay (ArrayList<AdventureCard> paramCard, ArrayList<Player> paramPlayerList, int paramInt)
     {
 
         ArrayList<AdventureCard> tempCard = AlliesAndWeapons(paramCard);
