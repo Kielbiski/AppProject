@@ -41,7 +41,7 @@ public class Controller implements PropertyChangeListener {
     private String resourceFolderPath = "src/main/resources/Cards/";
     private Player activePlayer;
     private Player currentTurnPlayer;
-    private int NUM_PLAYERS = 4;
+    private int NUM_PLAYERS = game.getPlayers().size();
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
     private  Behaviour previousBehaviour;
@@ -513,7 +513,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private int nextPlayerIndex(int index){
         int nextIndex = index;
-        if(nextIndex >= 3){
+        if(nextIndex >= NUM_PLAYERS){
             nextIndex = 0;
         } else{
             nextIndex++;

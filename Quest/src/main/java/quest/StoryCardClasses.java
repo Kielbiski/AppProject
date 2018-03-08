@@ -274,7 +274,7 @@ class Pox extends Event {
                 if (player.getShields() <= 1) {
                     player.setShields(0);
                 } else {
-                    player.setShields(activePlayer.getShields() - 1);
+                    player.setShields(player.getShields() - 1);
                 }
             }
         }
