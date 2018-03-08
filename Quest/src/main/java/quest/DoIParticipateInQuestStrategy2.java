@@ -5,6 +5,10 @@ import java.util.Comparator;
 
 public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
 
+    DoIParticipateInQuestStrategy2(){
+        lastStagePoints=0;
+    }
+
     public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int paramNumStage){
 
         lastStagePoints=0;
@@ -13,7 +17,7 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
 
         foeList = foeList(paramCard, 25);
 
-        if (foeList.size() > 2 ) {
+        if (foeList.size() >= 2 ) {
 
             int totalStagePoint = 0;
             for (AdventureCard card : paramCard) {
@@ -24,7 +28,7 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
                 }
 
             }
-            return (paramNumStage == 3) && (totalStagePoint >= 60) || (paramNumStage == 2) && (totalStagePoint >= 30);
+            return (((paramNumStage == 3) && (totalStagePoint >= 60)) || ((paramNumStage == 2) && (totalStagePoint >= 30)));
 
         }
 
@@ -55,9 +59,8 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
         }
 
         return cardPlaying;
-        
-    }
 
+    }
 
 
 
