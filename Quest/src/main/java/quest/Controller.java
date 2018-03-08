@@ -352,7 +352,7 @@ public class Controller implements PropertyChangeListener {
             "-fx-border-width: 4;\n" +
             "-fx-border-style: solid;\n" +
             "-fx-padding: 10;\n" +
-            "-fx-translate-x: -60;");
+            "-fx-translate-x: -80;");
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
 
         for (Player player : currentPlayers) {
@@ -513,7 +513,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private int nextPlayerIndex(int index){
         int nextIndex = index;
-        if(nextIndex >= 3){
+        if(nextIndex >= (NUM_PLAYERS-1)){
             nextIndex = 0;
         } else{
             nextIndex++;

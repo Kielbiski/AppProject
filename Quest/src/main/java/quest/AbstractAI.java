@@ -18,7 +18,6 @@ public abstract class AbstractAI extends Player{
     DoIParticipateInQuest quest;
     private DoISponsorAQuest sponsorQuest;
 
-
     public void setDoIParticipateInTournamentAI(DoIParticipateInTournamentAI paramTournamentAnswer)
     {
         logger.info(this.getPlayerName() + " is using " +this.strategy+" to determine if he wants to participate.");
