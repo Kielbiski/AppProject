@@ -21,9 +21,9 @@ public class Strategy1 extends AbstractAI {
         this.currentBid = 0;
         this.playerRank = Rank.SQUIRE;
         this.strategy ="Strategy 1 is used";
-        this.TournamentAnswer = new doIParticipateInTournamentSt1();
+        this.TournamentAnswer = new DoIParticipateInTournamentStrategy1();
         this.nextBid= new nextBidSt1();
-        this.quest= new doIParticipateInQuestSt1();
+        this.quest= new DoIParticipateInQuestStrategy1();
 
         logger.info("Calling strategy1 AI constructor for: "+paramName+".");
     }
