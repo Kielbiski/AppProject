@@ -21,8 +21,17 @@ public class Model implements PropertyChangeListener
     private Stack<StoryCard> discardOfStoryCards = new Stack<>();
     private HashMap<Integer,ArrayList<AdventureCard>> preQuestStageSetup = new HashMap<>();
     private StoryCard currentStory;
+    private Player currentPlayer;
     private Quest currentQuest;
     private Tournament currentTournament;
+
+    public Player getCurrentPlayer() {
+        return currentPlayer;
+    }
+
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+    }
 
     public Tournament getCurrentTournament() {
         return currentTournament;
@@ -279,7 +288,6 @@ public class Model implements PropertyChangeListener
                 deckOfAdventureCards.add(adventureCard);
             }
         }
-        deckOfAdventureCards.add(new GreenKnight());
         logger.info("storing all adventure cards into the deck of adventure cards.");
 
         //Create HashMap to store number of occurrences of each StoryCard
@@ -330,7 +338,12 @@ public class Model implements PropertyChangeListener
                 deckOfStoryCards.add(storyCard);
             }
         }
-        deckOfStoryCards.add(call);
+
+        deckOfStoryCards.add(new Pox());
+        deckOfStoryCards.add(new ChivalrousDeed());
+
+
+
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -418,10 +431,10 @@ public class Model implements PropertyChangeListener
         }
     }
 
-    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
-        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", 0, tournamentParticipants);
-        return knightsOfTheRoundTableTournament.getTournamentWinner();
-    }
+//    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
+//        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", 0, tournamentParticipants);
+//        return knightsOfTheRoundTableTournament.getTournamentWinner();
+//    }
 
     public ArrayList<Player> getWinningPlayers() {
         return winningPlayers;
@@ -450,10 +463,11 @@ public class Model implements PropertyChangeListener
             winningPlayers = knightsOfTheRoundTable;
             return true;
 
-        } else if (knightsOfTheRoundTable.size() > 1) {
-            winningPlayers = finalTournament(knightsOfTheRoundTable);
-            return true;
         }
+//        else if (knightsOfTheRoundTable.size() > 1) {
+//            winningPlayers = finalTournament(knightsOfTheRoundTable);
+//            return true;
+//        }
         return false;
 
     }

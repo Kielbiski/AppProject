@@ -47,7 +47,7 @@
                   <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                </opaqueInsets>
                <children>
-                  <ImageView fx:id="activeStoryImg" fitHeight="150.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
+                  <ImageView fx:id="activeStoryImg" fitHeight="150.0" fitWidth="90.0" onMouseEntered="#onMouseEnterStory" onMouseExited="#onMouseExitStory" pickOnBounds="true" preserveRatio="true" GridPane.halignment="LEFT" GridPane.valignment="CENTER" />
                   <GridPane fx:id="stagesGridPane" prefHeight="227.0" prefWidth="619.0" GridPane.columnIndex="1">
                     <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -88,7 +88,7 @@
         </rowConstraints>
          <children>
             <Pane prefHeight="283.0" prefWidth="207.0" styleClass="activeCardBorder" GridPane.halignment="CENTER" GridPane.valignment="TOP" />
-            <ImageView fx:id="currentCardImage" disable="true" fitHeight="200.0" onMouseClicked="#storyDeckDraw" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <ImageView fx:id="currentCardImage" disable="true" fitHeight="190.0" onMouseClicked="#storyDeckDraw" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <cursor>
                   <Cursor fx:constant="HAND" />
                </cursor>

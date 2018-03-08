@@ -132,6 +132,21 @@ public class Controller implements PropertyChangeListener {
         event.consume();
     }
 
+    public void onMouseEnterStory(MouseEvent event){
+        if(game.getCurrentStory() !=null) {
+            currentCardImage.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+            currentCardImage.setPreserveRatio(true);
+            currentCardImage.setFitHeight(190);
+            currentCardImage.toBack();
+        }
+    }
+    public void onMouseExitStory(MouseEvent event){
+        currentCardImage.setImage(getCardImage("FacedownAdventure.png"));
+        currentCardImage.setPreserveRatio(true);
+        currentCardImage.setFitHeight(190);
+        currentCardImage.toBack();
+    }
+
     public void onTableDragDropped(DragEvent event){
         Dragboard db = event.getDragboard();
         // Get item id here, which was stored when the drag started.
@@ -139,7 +154,6 @@ public class Controller implements PropertyChangeListener {
         // If this is a meaningful drop...
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
-                System.out.print(event.getGestureSource());
                 if (activePlayer.isValidDrop(selectedAdventureCard)){
                     if (currentBehaviour == Behaviour.QUEST_MEMBER) {
                         if (!(selectedAdventureCard instanceof Foe)) {
@@ -167,6 +181,13 @@ public class Controller implements PropertyChangeListener {
                     else if (currentBehaviour == Behaviour.BID) {
                         System.out.println("Bid.");
                     }
+                    else if(currentBehaviour == Behaviour.TOURNAMENT){
+                        if (!(selectedAdventureCard instanceof Foe)) {
+                            activePlayer.addCardToTournamnet(selectedAdventureCard);
+                            activePlayer.removeCardFromHand(selectedAdventureCard);
+                            success = true;
+                        }
+                    }
                 }
                 else{
                     success = false;
@@ -176,7 +197,7 @@ public class Controller implements PropertyChangeListener {
         }
         event.setDropCompleted(success);
         update();
-       event.consume();
+        event.consume();
 
     }
 
@@ -379,8 +400,22 @@ public class Controller implements PropertyChangeListener {
                 imgView.setImage(getCardImage(card.getImageFilename()));
                 tableImgViews.add(imgView);
             }
+        }
+
+        ArrayList<AdventureCard> playerTournamentCards = activePlayer.getTournamentCards();
+        if(playerTournamentCards != null) {
+            playerTournamentCards.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
+            playerTournamentCards.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
+            for (AdventureCard card : playerTournamentCards) {
+                ImageView imgView = createAdventureCardImageView(card);
+                imgView.setImage(getCardImage(card.getImageFilename()));
+                tableImgViews.add(imgView);
+            }
+        }
+        if(playerTournamentCards != null||playerTableCards != null) {
             tableHbox.getChildren().addAll(tableImgViews);
         }
+
 
         if(currentBehaviour == Behaviour.SPONSOR) {
             for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
@@ -449,27 +484,27 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants) {
-        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", 0, tournamentParticipants);
-        return knightsOfTheRoundTableTournament.getTournamentWinner();
-    }
+//    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants) {
+//        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", tournamentParticipants);
+//        return knightsOfTheRoundTableTournament.getTournamentWinner();
+//    }
 
     private ArrayList<Player> getWinningPlayers(Model model) {
-        ArrayList<Player> winningPlayers;
-        ArrayList<Player> knightsOfTheRoundTable;
-        knightsOfTheRoundTable = new ArrayList<>();
-        for (Player player : model.getPlayers()) {
-            if (player.getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) {
-                knightsOfTheRoundTable.add(player);
-            }
-        }
-        if (knightsOfTheRoundTable.isEmpty()){
-            winningPlayers = new ArrayList<>();
-        } else if (knightsOfTheRoundTable.size() == 1) {
-            winningPlayers = knightsOfTheRoundTable;
-        } else {
-            winningPlayers = finalTournament(knightsOfTheRoundTable);
-        }
+        ArrayList<Player> winningPlayers = new ArrayList<>();
+//        ArrayList<Player> knightsOfTheRoundTable;
+//        knightsOfTheRoundTable = new ArrayList<>();
+//        for (Player player : model.getPlayers()) {
+//            if (player.getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) {
+//                knightsOfTheRoundTable.add(player);
+//            }
+//        }
+//        if (knightsOfTheRoundTable.isEmpty()){
+//        } else (knightsOfTheRoundTable.size() == 1) {
+//            winningPlayers = knightsOfTheRoundTable;
+//        }
+////        else {
+////            //winningPlayers = finalTournament(knightsOfTheRoundTable);
+////        }
         return winningPlayers;
     }
 
@@ -525,18 +560,18 @@ public class Controller implements PropertyChangeListener {
             update();
         }
         else if(currentBehaviour == Behaviour.TOURNAMENT){
-            //game.getCurrentTournament().nextTurn();
-            if(game.getCurrentQuest().isFinished()){
+            game.getCurrentTournament().nextTurn();
+            if(game.getCurrentTournament().isTournamentOver()){
                 if(game.isWinner()){
                     System.out.println("gameover," + game.getWinningPlayers().get(0) + " wins");
                     System.exit(0);
                 }
                 else{
-                    questOver();
+                    tournamentOver();
                 }
             }
             else{
-                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+                setActivePlayer(game.getCurrentTournament().getCurrentPlayer());
             }
             update();
         }
@@ -555,11 +590,13 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
-        previousBehaviour =currentBehaviour;
-        currentBehaviour = Behaviour.DISCARD;
-        nextTurnButton.setDisable(true);
-        okAlert(player.getPlayerName() + ", you must play or discard a card.","Hand full.");
-        discardPane.setVisible(true);
+        if(player == game.getCurrentPlayer()) {
+            previousBehaviour = currentBehaviour;
+            currentBehaviour = Behaviour.DISCARD;
+            nextTurnButton.setDisable(true);
+            okAlert(player.getPlayerName() + "You must Play or Discard a card", "Hand Full");
+            discardPane.setVisible(true);
+        }
     }
 
     public void storyDeckDraw(MouseEvent event){
@@ -577,7 +614,6 @@ public class Controller implements PropertyChangeListener {
             currentPlayerOrder.add(game.getPlayers().get(currentTurn));
             currentTurn = nextPlayerIndex(currentTurn);
         }
-
         if (game.getCurrentStory() instanceof Quest) {
             game.setCurrentQuest((Quest) game.getCurrentStory());
             questDraw(currentPlayerOrder);
@@ -589,7 +625,7 @@ public class Controller implements PropertyChangeListener {
         } else if (game.getCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
             game.setCurrentTournament((Tournament)game.getCurrentStory());
-            questDraw(currentPlayerOrder);
+            performTournment(currentPlayerOrder, game.getCurrentTournament());
             nextTurnButton.setDisable(false);
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
@@ -678,7 +714,7 @@ public class Controller implements PropertyChangeListener {
         ArrayList<Player> questPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
             if(game.getPlayers().get(i) != game.getSponsor()) {
-                setActivePlayer(game.getPlayers().get(i));
+                activePlayer = game.getPlayers().get(i);
                 update();
                 if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join quest?")) {
                     questPlayers.add(game.getPlayers().get(i));
@@ -698,8 +734,57 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void performTournment(ArrayList<Player> currentPlayerOrder,Tournament tournament) {
         currentBehaviour = Behaviour.TOURNAMENT;
-        continueButton.setVisible(true);
+        addTournamentPlayers(tournament);
+        if(!tournament.isTournamentOver()){
+            tournament.setCurrentPlayer(tournament.getPlayerList().get(0));
+            activePlayer=tournament.getCurrentPlayer();
+            if(tournament.getPlayerList().size()==1){
+                tournament.setTournamentOver(true);
+                tournament.setWinners(tournament.getPlayerList());
+                tournament.rewardWinner(tournament.getPlayerList().get(0));
+                tournamentOver();
+            }else {
+                update();
+                nextTurnButton.setVisible(false);
+                continueButton.setVisible(true);
+            }
+        }
 
+    }
+
+    private void addTournamentPlayers(Tournament currentTournament){
+        ArrayList<Player> tournamentPlayers = new ArrayList<>();
+        for(int i = 0; i < NUM_PLAYERS; i++){
+            activePlayer = game.getPlayers().get(i);
+            update();
+            if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
+                tournamentPlayers.add(game.getPlayers().get(i));
+            }
+        }
+        if(tournamentPlayers.size() == 0){
+            tournamentOver();
+        }
+        else {
+            currentTournament.setPlayerList(tournamentPlayers);
+        }
+    }
+    private void tournamentOver(){
+
+        for (Player player : game.getCurrentTournament().getWinners()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament!, +" + game.getCurrentTournament().getShields() + " shields", ButtonType.OK);
+            DialogPane dialog = alert.getDialogPane();
+            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+            dialog.getStyleClass().add("alertDialogs");
+            alert.showAndWait();
+        }
+        game.getCurrentTournament().setTournamentOver(true);
+        game.setCurrentTournament(null);
+        currentBehaviour = Behaviour.DEFAULT;
+        nextTurnButton.setVisible(true);
+        nextTurnButton.setDisable(false);
+        continueButton.setVisible(false);
+        setActivePlayer(game.getPlayers().get(game.getCurrentTurnIndex()));
+        update();
     }
 
 
@@ -779,6 +864,7 @@ public class Controller implements PropertyChangeListener {
 
     private void setActivePlayer(Player player){
         activePlayer = player;
+        game.setCurrentPlayer(player);
         if(player.isHandFull()){
             handFull(player);
         }
@@ -884,6 +970,7 @@ public class Controller implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent change) {
+
         if (change.getPropertyName().equals("handFull")){
             if ((boolean) change.getNewValue() ){
                 handFull((Player)change.getSource());

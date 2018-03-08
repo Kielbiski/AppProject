@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.List;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class Player {
     //private AbstractAI aI;
     protected ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
     protected ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
+    protected ArrayList<AdventureCard> tournamentCards = new ArrayList<>();
     protected List<PropertyChangeListener> listener = new ArrayList<>();
     protected boolean handFull;
 
@@ -70,6 +72,10 @@ public class Player {
         playerRank = Rank.SQUIRE;
 
         logger.info("Successfully called  "+this.getPlayerName()+" constructor.");
+    }
+
+    public ArrayList<AdventureCard> getTournamentCards() {
+        return tournamentCards;
     }
 
     public ArrayList<AdventureCard> getCardsOnTable()
@@ -178,10 +184,26 @@ public class Player {
         logger.info("Adding the following card "+ paramCard.getName()+" to " + this.playerName+ " cards on the table.");
         cardsOnTable.add(paramCard);
     }
+    public void addCardToTournamnet(AdventureCard paramCard){
+        logger.info("Adding the following card "+ paramCard.getName()+" to " + this.playerName+ " cards on the table.");
+        tournamentCards.add(paramCard);
+    }
     
 //    public void addCardToPlaying(AdventureCard paramCard){
 //        cardsPlaying.addCard(paramCard);
 //    }
+
+    public void moveFromTournamentToTable(){
+        ArrayList<AdventureCard> cardsToMove = new ArrayList<>();
+        for(AdventureCard card: tournamentCards){
+            if(card instanceof Ally){
+                cardsToMove.add(card);
+            }
+        }
+        //send to discard
+        tournamentCards.clear();
+        cardsOnTable.addAll(cardsToMove);
+    }
 
     public void removeCardFromHand(AdventureCard paramCard){
         logger.info("Removing the following card "+ paramCard.getName()+" from " + this.playerName+ " hand.");
@@ -200,12 +222,13 @@ public class Player {
 
     public boolean isValidDrop(AdventureCard card){
         for(AdventureCard matchCard: cardsOnTable){
-            if(card.getName().toLowerCase().equals(matchCard.getName().toLowerCase())){
-                return false;
+            if(matchCard instanceof Weapon|| matchCard instanceof Amour){
+                if(card.getName().toLowerCase().equals(matchCard.getName().toLowerCase())){
+                    return false;
+                }
             }
         }
         return true;
-
     }
     
 //    public void removeCardFromPlaying(AdventureCard paramCard){
@@ -233,19 +256,25 @@ public class Player {
         }
 
         return totalBattlePoints;
-
+    }
+    int calculateCardsBattlePoints(ArrayList<AdventureCard> paramCardList) {
+        int totalBattlePoints = 0;
+        for(AdventureCard adventureCard : paramCardList) {
+            totalBattlePoints += adventureCard.getBattlePoints();
+        }
+        return totalBattlePoints;
     }
 
-    public int calculateBattlePoints() {
+    public int getRankBattlePoints() {
         switch (playerRank){
             case SQUIRE:
-                battlePoints += 5;
+                battlePoints = 5;
                 break;
             case KNIGHT:
-                battlePoints += 10;
+                battlePoints = 10;
                 break;
             case CHAMPION_KNIGHT:
-                battlePoints += 20;
+                battlePoints = 20;
                 break;
             default:
                 break;
