@@ -18,9 +18,9 @@ public class Strategy2 extends AbstractAI {
         this.battlePoints =0;
         this.currentBid = 0;
         this.playerRank = Rank.SQUIRE;
-        this.strategy ="Strategy 2 is used";
+        this.strategy ="Strategy 2 was used";
         this.TournamentAnswer = new DoIParticipateInTournamentStrategy2();
-        this.nextBid= new nextBidSt2();
+        this.nextBid= new NextBidStrategy2();
         this.quest= new DoIParticipateInQuestStrategy2();
 
     }

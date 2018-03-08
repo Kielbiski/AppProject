@@ -2,20 +2,15 @@ package quest;
 
 import java.util.ArrayList;
 
-public class nextBidSt1 extends nextBid {
+public class NextBidStrategy1 extends NextBid {
 
-    nextBidSt1() {
+    NextBidStrategy1() {
 
     }
 
 
     public ArrayList<AdventureCard> nextBid (ArrayList<AdventureCard> paramCardList){
-
-
-        ArrayList<AdventureCard> tempCard = new ArrayList<>();
-         tempCard= foeList(paramCardList, 20);
-         return tempCard;
-
+        return foeList(paramCardList, 20);
     }
 
     public ArrayList<AdventureCard> discardAfterWinningTest (ArrayList<AdventureCard> paramCardList ){

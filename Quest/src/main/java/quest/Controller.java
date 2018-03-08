@@ -29,15 +29,6 @@ import java.util.*;
 import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
-//TO DO IN ORDER OF IMPORTANCE:
-//implement discard pile for adventure and story cards
-
-//ERROR TO HANDEL ->> NOBODY JOINS QUEST CRASHES GAME
-//events?
-//tournaments?
-
-
-
 
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
@@ -353,31 +344,28 @@ public class Controller implements PropertyChangeListener {
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
-        String currentTurnLabelCSS;
-
-        currentTurnLabelCSS = "-fx-border-color: #d6d6d6;\n" +
-                "-fx-border-insets: 5;\n" +
-                "-fx-border-width: 4;\n" +
-                "-fx-border-style: solid;\n" +
-                "-fx-border-radius: 10;\n" +
-                "-fx-padding: 10";
-        currentTurnLabel.setStyle(currentTurnLabelCSS);
         currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
+        currentTurnLabel.setStyle("-fx-border-color: #aaaaaa;\n" +
+                "-fx-background-color: rgba(0,0,0,0.8);\n"+
+            "-fx-border-insets: 5;\n" +
+            "-fx-border-width: 4;\n" +
+            "-fx-border-style: solid;\n" +
+            "-fx-padding: 10;");
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
             if (player == activePlayer) {
-                labelCSS = "-fx-border-color: #EEE8AA;\n";
+                labelCSS = "-fx-border-color: #f44242;\n";
             } else {
-                labelCSS = "-fx-border-color: #d6d6d6;\n";
+                labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
-            labelCSS += "-fx-border-insets: 5;\n" +
+            labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
+                    "-fx-border-insets: 5;\n" +
                     "-fx-border-width: 4;\n" +
                     "-fx-border-style: solid;\n" +
-                    "-fx-border-radius: 10;\n" +
                     "-fx-padding: 10";
 
             playerLabel.setStyle(labelCSS);
@@ -385,7 +373,7 @@ public class Controller implements PropertyChangeListener {
             playerLabel.setMinWidth(Region.USE_PREF_SIZE);
             playerLabel.setText(player.getPlayerName() + "\n" +
                     "" + player.getPlayerRank() + "\n" +
-                    "" + player.getShields() + "shields \n" +
+                    "" + player.getShields() + " shields \n" +
                     "" + player.getNumCardsInHand() + " cards");
             playerStatsVbox.getChildren().add(playerLabel);
         }
@@ -660,21 +648,10 @@ public class Controller implements PropertyChangeListener {
                 }
             }
             if(validCardCount < game.getCurrentQuest().getNumStage()){
-                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", ButtonType.OK);
-                DialogPane dialog = sponsorQuest.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-                sponsorQuest.showAndWait();
-                update();
+                okAlert(player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", "Sponsorship failed.");
             } else {
-                Alert sponsorQuest = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", ButtonType.YES, ButtonType.NO);
-                DialogPane dialog = sponsorQuest.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                sponsorQuest.setHeaderText("Sponsor " + game.getCurrentStory().getName() + "?");
-                sponsorQuest.showAndWait();
-                if (sponsorQuest.getResult() == ButtonType.YES) {
+                boolean alertResult = yesNoAlert(player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", "Sponsor " + game.getCurrentStory().getName() + "?");
+                if (alertResult) {
                     sponsor = activePlayer;
                     game.setSponsor(sponsor);
                     performQuest(sponsor, (Quest) game.getCurrentStory());
@@ -698,19 +675,11 @@ public class Controller implements PropertyChangeListener {
                     player.setShields(player.getShields() + 3);
                     game.setKingsRecognition(false);
                 }
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", ButtonType.OK);
-                DialogPane dialog = alert.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                alert.showAndWait();
+                okAlert(player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", "Quest won!");
             }
         }
         else{
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Quest Has No Winner" , ButtonType.OK);
-            DialogPane dialog = alert.getDialogPane();
-            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-            dialog.getStyleClass().add("alertDialogs");
-            alert.showAndWait();
+            okAlert("Quest has no winner.", "Quest failed!");
         }
         stagesGridPane.getChildren().clear();
         flowPaneArray.clear();
@@ -875,9 +844,9 @@ public class Controller implements PropertyChangeListener {
             if(card instanceof Foe){ foeCount++;}
             if(card instanceof Weapon){ weaponCount++;}
         }
-        okAlert(player.getPlayerName() + " You must Discard 1 Weapon. If you have no weapons, Discard 2 Foes ","Call to Arms");
+        okAlert(player.getPlayerName() + ", you must discard 1 Weapon. If you have no weapons, you must discard 2 Foes ","Call to Arms");
         if(foeCount==0 && weaponCount==0){
-            okAlert("No Weapons or foes to discard","Notice:");
+            okAlert("No weapons or foes to discard","Notice:");
             currentBehaviour = previousBehaviour;
         }
         else{
@@ -900,8 +869,44 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    public int getNumberOfPlayers(){
+        List<String> choices = new ArrayList<>();
+        choices.add("2 Players");
+        choices.add("3 Players");
+        choices.add("4 Players");
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("4 Players", choices);
+        dialog.setTitle("Number of Players?");
+        dialog.setHeaderText("How many players would you like?");
+        dialog.setContentText("Please select number of players:");
+        DialogPane dialogPane = dialog.getDialogPane();
+        dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+        dialogPane.getStyleClass().add("alertDialogs");
+        Optional<String> result = dialog.showAndWait();
+        // The Java 8 way to get the response value (with lambda expression).
+        if (result.isPresent()) {
+            String number = result.get();
+            switch (number) {
+                case "2 Players":
+                    return 2;
+                case "3 Players":
+                    return 3;
+                case "4 Players":
+                    return 4;
+                default:
+                    return 0;
+            }
+        }
+        return 0;
+    }
+
     public void initialize() {
-        setPlayerNames();
+        int numberOfPlayersResult = getNumberOfPlayers();
+        if(numberOfPlayersResult == 0){
+            okAlert("Error starting game, not enough players!", "Error.");
+            exit(0);
+        }
+        setPlayerNames(numberOfPlayersResult);
         currentBehaviour = Behaviour.DEFAULT;
         currentTurnPlayer = game.getPlayers().get(0);
         setActivePlayer(game.getPlayers().get(0));
@@ -915,9 +920,9 @@ public class Controller implements PropertyChangeListener {
     }
 
 
-    private void setPlayerNames(){
+    private void setPlayerNames(int numberOfPlayers){
         //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
-        for(int i =0; i < NUM_PLAYERS; i++){
+        for(int i =0; i < numberOfPlayers; i++){
             TextInputDialog dialog = new TextInputDialog("Enter Name");
             dialog.setTitle("Set Player name");
             dialog.setHeaderText("Player " + (i+1) + " enter your name");
