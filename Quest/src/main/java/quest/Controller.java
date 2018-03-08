@@ -325,12 +325,13 @@ public class Controller implements PropertyChangeListener {
         tableHbox.getChildren().clear();
         currentTurnLabel.setTextAlignment(TextAlignment.CENTER);
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
-        currentTurnLabel.setStyle("-fx-border-color: #aaaaaa;\n" +
+        currentTurnLabel.setStyle("-fx-border-color: #dd3b3b;\n" +
                 "-fx-background-color: rgba(0,0,0,0.8);\n"+
             "-fx-border-insets: 5;\n" +
             "-fx-border-width: 4;\n" +
             "-fx-border-style: solid;\n" +
-            "-fx-padding: 10;");
+            "-fx-padding: 10;\n" +
+            "-fx-translate-x: -60;");
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
 
         for (Player player : currentPlayers) {
@@ -783,7 +784,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public int getNumberOfPlayers(){
+    private int getNumberOfPlayers(){
         List<String> choices = new ArrayList<>();
         choices.add("2 Players");
         choices.add("3 Players");
@@ -793,9 +794,6 @@ public class Controller implements PropertyChangeListener {
         dialog.setTitle("Number of Players?");
         dialog.setHeaderText("How many players would you like?");
         dialog.setContentText("Please select number of players:");
-        DialogPane dialogPane = dialog.getDialogPane();
-        dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-        dialogPane.getStyleClass().add("alertDialogs");
         Optional<String> result = dialog.showAndWait();
         // The Java 8 way to get the response value (with lambda expression).
         if (result.isPresent()) {
@@ -837,18 +835,37 @@ public class Controller implements PropertyChangeListener {
     private void setPlayerNames(int numberOfPlayers){
         //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
         for(int i =0; i < numberOfPlayers; i++){
+            List<String> choices = new ArrayList<>();
+            choices.add("Human");
+            choices.add("CPU");
+            ChoiceDialog<String> playerTypeDialog = new ChoiceDialog<>("Human", choices);
+            playerTypeDialog.setTitle("Human or CPU?");
+            playerTypeDialog.setHeaderText("Player/AI");
+            playerTypeDialog.setContentText("Please select if you would like Player " + (i+1) + " to be a human or CPU.");
+            Optional<String> playerTypeResult = playerTypeDialog.showAndWait();
+            // The Java 8 way to get the response value (with lambda expression).
+            String playerType = "Human";
+            if (playerTypeResult.isPresent()) {
+                playerType = playerTypeResult.get();
+            }
+            final String playerTypeFinal = playerType;
             TextInputDialog dialog = new TextInputDialog("Enter Name");
-            dialog.setTitle("Set Player name");
-            dialog.setHeaderText("Player " + (i+1) + " enter your name");
-            DialogPane dialogPane = dialog.getDialogPane();
-            dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-            dialogPane.getStyleClass().add("alertDialogs");
+            if(playerType.equals("CPU")){
+                dialog.setTitle("Set CPU name");
+                dialog.setHeaderText("Please enter the name for CPU" + (i+1) + ".");
+            } else {
+                dialog.setTitle("Set Player name");
+                dialog.setHeaderText("Player " + (i + 1) + ", please enter your name.");
+            }
+//            DialogPane dialogPane = dialog.getDialogPane();
+//            dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+//            dialogPane.getStyleClass().add("alertDialogs");
             // dialog.setContentText("Please enter your name:");
 
             Optional<String> result = dialog.showAndWait();
 
             // The Java 8 way to get the response value (with lambda expression).
-            result.ifPresent(name -> game.addPlayer(name));
+            result.ifPresent(name -> game.addPlayer(playerTypeFinal, name));
         }
     }
 

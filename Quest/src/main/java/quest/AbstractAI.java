@@ -26,6 +26,13 @@ public abstract class AbstractAI extends Player{
 
     }
 
+    @Override
+    public String getPlayerName()
+    {
+        logger.info("Returning " + this.playerName+ " (CPU).");
+        return playerName + " (CPU)";
+    }
+
 
     public void setNextBid(NextBid paramNextBid)
     {
