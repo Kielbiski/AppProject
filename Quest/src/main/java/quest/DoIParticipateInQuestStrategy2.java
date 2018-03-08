@@ -55,25 +55,10 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
         }
 
         return cardPlaying;
-
-
+        
     }
 
 
-    public  ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paramCard){
-
-        ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
-        for(AdventureCard card : paramCard)
-        {
-            if ((card instanceof Ally) ||  (card instanceof Weapon))
-            {
-                cardPlaying.add(card);
-            }
-
-        }
-
-        return cardPlaying;
-    }
 
 
 }
