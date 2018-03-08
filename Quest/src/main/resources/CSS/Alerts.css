@@ -4,11 +4,16 @@
 .alertDialogs > *.button-bar > *.container{
     -fx-background-color: #202020;
 }
-.alertDialogs > .content.label{
+.alertDialogs > *.label.content{
     -fx-font-size: 18px;
-    -fx-background-color: #202020;
     -fx-text-fill: #adadad;
 }
+
+.alertDialogs > .content.label{
+    -fx-font-size: 18px;
+    -fx-text-fill: #adadad;
+}
+
 .alertDialogs:header *.header-panel{
     -fx-background-color: #202020;
     -fx-font-size: 20px;

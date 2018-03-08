@@ -379,10 +379,17 @@ public class Model implements PropertyChangeListener
         }
     }
 
-    public void addPlayer(String name){
-        Player newPlayer = new Player(name);
-        newPlayer.addChangeListener(this);
-        players.add(newPlayer);
+    public void addPlayer(String playerType, String name){
+        if(playerType.equals("Human")){
+            Player newPlayer = new Player(name);
+            newPlayer.addChangeListener(this);
+            players.add(newPlayer);
+        } else {
+            Strategy1 aI = new Strategy1(name);
+            aI.addChangeListener(this);
+            players.add(aI);
+        }
+
         logger.info(name + "is joining the game.");
     }
 
