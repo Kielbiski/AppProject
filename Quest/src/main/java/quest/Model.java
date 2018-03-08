@@ -128,6 +128,7 @@ public class Model implements PropertyChangeListener
                 int foeCount = 0;
                 int testCount =0;
                 for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
+                    int adventureCardBattlePoints = adventureCard.getBattlePoints();
                     if (adventureCard instanceof Test) {
                         if(getPreQuestStageSetup().get(i).size() > 1) {
                             return false;
@@ -139,14 +140,15 @@ public class Model implements PropertyChangeListener
                     }
                     if (adventureCard instanceof Foe) {
                         for(AdventureCard foe : currentQuest.getQuestFoes()){
+
                             if(adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())){
-                                adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
+                                adventureCardBattlePoints += adventureCard.getBonusBattlePoints();
                                 break;
                             }
                         }
                         foeCount++;
                     }
-                    currentStageBattlePoints += adventureCard.getBattlePoints();
+                    currentStageBattlePoints += adventureCardBattlePoints;
                 }
                 if (currentStageBattlePoints > lastStageBattlePoints) {
                     lastStageBattlePoints = currentStageBattlePoints;

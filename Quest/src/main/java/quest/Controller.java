@@ -521,7 +521,7 @@ public class Controller implements PropertyChangeListener {
         return nextIndex;
     }
 
-    public void continueAction(ActionEvent event){
+    public void continueAction(){
         if(currentBehaviour == Behaviour.SPONSOR) {
             if (game.validateQuestStages()) {
 
@@ -547,7 +547,7 @@ public class Controller implements PropertyChangeListener {
             game.getCurrentQuest().nextTurn();
             if(game.getCurrentQuest().isFinished()){
                 if(game.isWinner()){
-                    System.out.println("gameover," + game.getWinningPlayers().get(0) + " wins");
+                    System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
                     System.exit(0);
                 }
                 else{
@@ -557,13 +557,12 @@ public class Controller implements PropertyChangeListener {
             else{
                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
             }
-            update();
         }
         else if(currentBehaviour == Behaviour.TOURNAMENT){
             game.getCurrentTournament().nextTurn();
             if(game.getCurrentTournament().isTournamentOver()){
                 if(game.isWinner()){
-                    System.out.println("gameover," + game.getWinningPlayers().get(0) + " wins");
+                    System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
                     System.exit(0);
                 }
                 else{
@@ -573,12 +572,12 @@ public class Controller implements PropertyChangeListener {
             else{
                 setActivePlayer(game.getCurrentTournament().getCurrentPlayer());
             }
-            update();
         }
+        update();
 
     }
 
-    public void nextTurnAction(ActionEvent event){
+    public void nextTurnAction(){
         currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
         setActivePlayer(game.getPlayers().get(currentPlayerIndex));
         storyDeckImg.setDisable(false);
@@ -599,7 +598,7 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
-    public void storyDeckDraw(MouseEvent event){
+    public void storyDeckDraw(){
 
         game.drawStoryCard();
         System.out.println("storyDeckDraw(): " + game.getCurrentStory().getName());
@@ -699,7 +698,6 @@ public class Controller implements PropertyChangeListener {
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
-        setActivePlayer(sponsor);
         currentBehaviour = Behaviour.SPONSOR;
         continueButton.setVisible(true);
 
@@ -707,7 +705,7 @@ public class Controller implements PropertyChangeListener {
             createStagePane(i);
         }
         addQuestPlayers(quest);
-
+        setActivePlayer(sponsor);
     }
 
     private void addQuestPlayers(Quest currentQuest){
