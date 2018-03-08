@@ -51,7 +51,7 @@ public class DoIParticipateInQuestStrategy2Test {
     public void playStage() {
 
         SirGalahad sirGalahad = new SirGalahad();
-        SirGalahad sirGalahad2 = new SirGalahad();
+
         BattleAx battleAx = new BattleAx();
         BattleAx battleAx2 = new BattleAx();
         Dagger dagger = new Dagger();
@@ -90,4 +90,32 @@ public class DoIParticipateInQuestStrategy2Test {
 
 
     }
+
+    @Test
+    public void lastStage(){
+
+        SirGalahad sirGalahad = new SirGalahad();
+        BattleAx battleAx = new BattleAx();
+        BattleAx battleAx2 = new BattleAx();
+        Dagger dagger = new Dagger();
+
+
+        paramCard.add(sirGalahad);
+        paramCard.add(dagger);
+        paramCard.add(battleAx);
+        paramCard.add(battleAx2);
+
+        paramCard2.add(sirGalahad);
+        paramCard2.add(dagger);
+        paramCard.add(battleAx);
+        paramCard.add(battleAx2);
+
+
+        DoIParticipateInQuest quest1 = new DoIParticipateInQuestStrategy1();
+
+        assertEquals(paramCard2,quest1.playStage(paramCard) );
+
+    }
+
+
 }
