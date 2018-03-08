@@ -375,7 +375,7 @@ public class Controller implements PropertyChangeListener {
             playerLabel.setTextAlignment(TextAlignment.RIGHT);
             playerLabel.setMinWidth(Region.USE_PREF_SIZE);
             playerLabel.setText(player.getPlayerName() + "\n" +
-                    "" + player.getPlayerRank() + "\n" +
+                    "" + player.stringifyRank() + "\n" +
                     "" + player.getShields() + " shields \n" +
                     "" + player.getNumCardsInHand() + " cards");
             playerStatsVbox.getChildren().add(playerLabel);
@@ -446,14 +446,14 @@ public class Controller implements PropertyChangeListener {
                     for(Card card : activePlayer.getCardsInHand()){
                         if (card instanceof Merlin) hasMerlin = true;
                     }
-                    if(hasMerlin) {
-                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
-                            ImageView imgView = createAdventureCardImageView(card);
-                            imgView.setImage(getCardImage(card.getImageFilename()));
-                            imgView.toFront();
-                            flowPaneArray.get(i+1).getChildren().add(imgView);
-                        }
-                    }
+//                    if(hasMerlin) {
+//                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
+//                            ImageView imgView = createAdventureCardImageView(card);
+//                            imgView.setImage(getCardImage(card.getImageFilename()));
+//                            imgView.toFront();
+//                            flowPaneArray.get(i+1).getChildren().add(imgView);
+//                        }
+//                    }
                 }
             }
         }

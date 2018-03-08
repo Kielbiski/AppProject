@@ -1,5 +1,6 @@
 package quest;
 
+import javafx.scene.control.ChoiceDialog;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -7,6 +8,7 @@ import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Quest extends StoryCard { //story card
 
@@ -191,18 +193,41 @@ public class Quest extends StoryCard { //story card
     }
 
     private ArrayList<Player> getTestStageWinners(TestStage testStage) {
-        Player winningPlayer= null;
+        Player winningPlayer= testStage.getParticipatingPlayers().get(0);
         int currentHighestBid = 0;
-        for(Player player : testStage.getParticipatingPlayers())
-        {
-            if (player.getCurrentBid() > currentHighestBid)
-            {
-                currentHighestBid = player.getCurrentBid();
+        int currentBid;
+        int minBids = 3;
+        for(Player player : testStage.getParticipatingPlayers()) {
+            if(name.equals("Search For The Questing Beast") && (testStage.getSponsorTestCard().getName().equals("Test Of The Questing Beast"))){
+                minBids = 4;
+            }
+            List<String> choices = new ArrayList<>();
+            for(int i = minBids; i < player.getNumCardsInHand(); i++){
+                choices.add(Integer.toString(i+1));
+            }
+            choices.add("Drop Out");
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(minBids), choices);
+            dialog.setTitle("Bid.");
+            dialog.setHeaderText("Number of cards to bid?");
+            dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
+            Optional<String> result = dialog.showAndWait();
+            // The Java 8 way to get the response value (with lambda expression).
+            String cardsToBid = "Drop Out";
+            if (result.isPresent()) {
+                cardsToBid = result.get();
+            }
+            if(cardsToBid.equals("Drop Out")){
+                currentBid = 0;
+            } else {
+                currentBid = Integer.parseInt(cardsToBid);
+            }
+            if(currentBid > currentHighestBid){
+                currentHighestBid = currentBid;
                 winningPlayer = player;
                 logger.info("Current player with highest bid" + winningPlayer +" for this testStage." );
             }
         }
-
+        winningPlayer.setCurrentBid(currentHighestBid);
         logger.info("Returning" + winningPlayer +" as the testStage winner." );
         ArrayList<Player> winningPlayerArray = new ArrayList<>();
         winningPlayerArray.add(winningPlayer);

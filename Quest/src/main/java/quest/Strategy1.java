@@ -8,18 +8,13 @@ import java.util.ArrayList;
 import java.util.Set;
 import java.util.TreeSet;
 
-public class Strategy1 extends AbstractAI {
+class Strategy1 extends AbstractAI {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
     Strategy1(String paramName)
     {
-
-        this.playerName = paramName ;
-        this.shields = 0;
-        this.battlePoints =0;
-        this.currentBid = 0;
-        this.playerRank = Rank.SQUIRE;
+        super(paramName);
         this.strategy ="Strategy 1 was used";
         this.TournamentAnswer = new DoIParticipateInTournamentStrategy1();
         this.nextBid= new NextBidStrategy1();

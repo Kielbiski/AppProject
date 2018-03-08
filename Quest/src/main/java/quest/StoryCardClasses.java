@@ -271,7 +271,7 @@ class Pox extends Event {
     public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         for (Player player : playersToAffect) {
             if (player != activePlayer) {
-                if (player.getShields() <= 1) {
+                if (player.getShields() == 0) {
                     player.setShields(0);
                 } else {
                     player.setShields(player.getShields() - 1);

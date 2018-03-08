@@ -109,9 +109,7 @@ public class Model implements PropertyChangeListener
         for(AdventureCard adventureCard : cardsForStage) {
             if (adventureCard instanceof Foe) {
                 if(currentQuest.getQuestFoes().contains(adventureCard)){
-                    System.out.println("Before" + adventureCard.getName() + " -> " + adventureCard.getBattlePoints());
                     adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
-                    System.out.println("After" + adventureCard.getName() + " -> " + adventureCard.getBattlePoints());
                 }
                 return new FoeStage(cardsForStage, new ArrayList<>());
             } else if (adventureCard instanceof Test) {
@@ -134,31 +132,25 @@ public class Model implements PropertyChangeListener
                             return false;
                         }
                         testCount++;
-                    }
-                    if ((adventureCard instanceof Ally)) {
+                    } else if ((adventureCard instanceof Ally)) {
                         return false;
-                    }
-                    if (adventureCard instanceof Foe) {
+                    } else if (adventureCard instanceof Foe) {
                         for(AdventureCard foe : currentQuest.getQuestFoes()){
-
                             if(adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())){
                                 adventureCardBattlePoints += adventureCard.getBonusBattlePoints();
                                 break;
                             }
                         }
                         foeCount++;
+                        currentStageBattlePoints += adventureCardBattlePoints;
                     }
-                    currentStageBattlePoints += adventureCardBattlePoints;
                 }
-                if (currentStageBattlePoints > lastStageBattlePoints) {
+                if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
                     lastStageBattlePoints = currentStageBattlePoints;
                 } else {
                     return false;
                 }
-                if (foeCount > 1) {
-                    return false;
-                }
-                if(foeCount==0 && testCount ==0){
+                if(foeCount==0 && testCount ==0 || foeCount > 1){
                     return false;
                 }
         }
@@ -281,8 +273,14 @@ public class Model implements PropertyChangeListener
         numberOfEachAdventureCard.put(new SirPercival(), 1);
         numberOfEachAdventureCard.put(new SirTristan(), 1);
         numberOfEachAdventureCard.put(new Amour("Amour", "Amour.jpg"), 8);
-        logger.info("storing all weapons and their instances in numberOfEachAdventureCard HashMap");
+        logger.info("storing all allies and their instances in numberOfEachAdventureCard HashMap");
 
+
+        //Tests
+        numberOfEachAdventureCard.put(new TestOfMorganLeFey(), 2);
+        numberOfEachAdventureCard.put(new TestOfTemptation(), 2);
+        numberOfEachAdventureCard.put(new TestOfTheQuestingBeast(), 2);
+        numberOfEachAdventureCard.put(new TestOfValor(), 2);
         //Add each AdventureCard to deckOfAdventureCards
 
         for(AdventureCard adventureCard : numberOfEachAdventureCard.keySet()){
@@ -290,6 +288,7 @@ public class Model implements PropertyChangeListener
                 deckOfAdventureCards.add(adventureCard);
             }
         }
+        deckOfAdventureCards.add(new TestOfTheQuestingBeast());
         logger.info("storing all adventure cards into the deck of adventure cards.");
 
         //Create HashMap to store number of occurrences of each StoryCard
@@ -341,7 +340,7 @@ public class Model implements PropertyChangeListener
             }
         }
 
-        deckOfStoryCards.add(new SearchForTheHolyGrail());
+        deckOfStoryCards.add(new SearchForTheQuestingBeast());
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -411,7 +410,6 @@ public class Model implements PropertyChangeListener
         currentPlayer.addCardToHand(deckOfAdventureCards.pop());
     }
 
-
     void addToDiscardAdventure(AdventureCard card){
         discardOfAdventureCards.add(card);
     }
@@ -459,8 +457,8 @@ public class Model implements PropertyChangeListener
         }
         if (knightsOfTheRoundTable.size() == 1 ){
             winningPlayers = knightsOfTheRoundTable;
+            System.out.println(winningPlayers);
             return true;
-
         }
 //        else if (knightsOfTheRoundTable.size() > 1) {
 //            winningPlayers = finalTournament(knightsOfTheRoundTable);

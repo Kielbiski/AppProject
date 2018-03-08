@@ -270,3 +270,29 @@ class SirTristan extends Ally {
         super("Sir Tristan", "A_Sir_Tristan.jpg", 10, 0, 10, 0, "Queen Iseult");
     }
 }
+
+//Tests
+
+class TestOfMorganLeFey extends Test {
+    TestOfMorganLeFey(){
+        super("Test Of Morgan Le Fey", "T_Test_Of_Morgan_Le_Fey.jpg");
+    }
+}
+
+class TestOfTemptation extends Test {
+    TestOfTemptation(){
+        super("Test Of Temptation", "T_Test_Of_Temptation.jpg");
+    }
+}
+
+class TestOfTheQuestingBeast extends Test {
+    TestOfTheQuestingBeast(){
+        super("Test Of The Questing Beast", "T_Test_Of_The_Questing_Beast.jpg");
+    }
+}
+
+class TestOfValor extends Test {
+    TestOfValor(){
+        super("Test Of Valor", "T_Test_Of_Valor.jpg");
+    }
+}

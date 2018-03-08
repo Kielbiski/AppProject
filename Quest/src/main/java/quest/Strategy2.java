@@ -12,12 +12,7 @@ public class Strategy2 extends AbstractAI {
 
     Strategy2(String paramName)
     {
-        logger.info("Calling strategy2 AI constructor for: "+paramName+".");
-        this.playerName = paramName ;
-        this.shields = 0;
-        this.battlePoints =0;
-        this.currentBid = 0;
-        this.playerRank = Rank.SQUIRE;
+        super(paramName);
         this.strategy ="Strategy 2 was used";
         this.TournamentAnswer = new DoIParticipateInTournamentStrategy2();
         this.nextBid= new NextBidStrategy2();

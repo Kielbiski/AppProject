@@ -17,4 +17,8 @@ public class TestStage extends QuestStage {
         this.sponsorTestCard = sponsorTestCard;
         logger.info("Successfully called : TestStage constructor");
     }
+
+    public AdventureCard getSponsorTestCard() {
+        return sponsorTestCard;
+    }
 }

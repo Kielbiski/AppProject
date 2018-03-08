@@ -29,41 +29,20 @@ enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
 public class Player {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-    protected final int HAND_LIMIT = 12;
+    private final int HAND_LIMIT = 12;
 
-    protected String playerName;
-    protected int battlePoints;
-    protected int shields;
-    protected int currentBid;
-    protected Rank playerRank;
+    private String playerName;
+    private int battlePoints;
+    private int shields;
+    private int currentBid;
+    private Rank playerRank;
     //private AbstractAI aI;
-    protected ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
-    protected ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
-    protected ArrayList<AdventureCard> tournamentCards = new ArrayList<>();
-    protected List<PropertyChangeListener> listener = new ArrayList<>();
+    private ArrayList<AdventureCard> cardsOnTable = new ArrayList<>();
+    private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
+    private ArrayList<AdventureCard> tournamentCards = new ArrayList<>();
+    private List<PropertyChangeListener> listener = new ArrayList<>();
     protected boolean handFull;
 
-    Player(){}
-
-    /*
-    Player(String paramName, int i){
-        playerName = paramName ;
-        shields = 0;
-        battlePoints =0;
-        currentBid = 0;
-        playerRank = Rank.SQUIRE;
-        if(i==1)
-        {
-            aI = new Strategy1();
-        }
-        else
-        {
-            aI = new Strategy1();
-        }
-        //logger.info("Successfully called  "+this.getPlayerName()+" constructor with strategy: "+ this.aI.typeStrategy+".");
-    }
-
-    */
     Player(String paramName){
         playerName = paramName ;
         shields = 0;
@@ -88,7 +67,7 @@ public class Player {
         return handFull;
     }
 
-    public void setHandFull(boolean full) {
+    private void setHandFull(boolean full) {
         boolean previousState = this.handFull;
         this.handFull = full;
         notifyListeners(this,"handFull",previousState,this.handFull);
@@ -118,7 +97,22 @@ public class Player {
         logger.info("Returning " + this.playerName+ " rank.");
         return playerRank;
     }
-    
+
+    public String stringifyRank(){
+        switch(playerRank){
+            case SQUIRE:
+                return "Squire";
+            case KNIGHT:
+                return "Knight";
+            case CHAMPION_KNIGHT:
+                return "Champion Knight";
+            case KNIGHT_OF_THE_ROUND_TABLE:
+                return "Knight of the Round Table";
+            default:
+                return "";
+        }
+    }
+
     public int getNumCardsInHand()
     {
         logger.info("Returning " + this.playerName+ " number of card on hand.");
@@ -165,9 +159,10 @@ public class Player {
     {
         logger.info("Set " + this.playerName+ " shields.");
         shields = paramShields;
+        updateRank(shields);
     }
-    
-    public void setPlayerRank(Rank paramRank){
+
+    private void setPlayerRank(Rank paramRank){
         logger.info("Set " + this.playerName+ " rank.");
         playerRank = paramRank;
     }
@@ -188,10 +183,6 @@ public class Player {
         logger.info("Adding the following card "+ paramCard.getName()+" to " + this.playerName+ " cards on the table.");
         tournamentCards.add(paramCard);
     }
-    
-//    public void addCardToPlaying(AdventureCard paramCard){
-//        cardsPlaying.addCard(paramCard);
-//    }
 
     public void moveFromTournamentToTable(){
         ArrayList<AdventureCard> cardsToMove = new ArrayList<>();
@@ -230,10 +221,6 @@ public class Player {
         }
         return true;
     }
-    
-//    public void removeCardFromPlaying(AdventureCard paramCard){
-//        cardsPlaying.removeCard(paramCard);
-//    }
 
     public boolean tooManyCards(){
         logger.info("Verifying if " + this.playerName +" has more than 12 cards.");
@@ -242,17 +229,19 @@ public class Player {
 
     int calculateCardsBattlePoints(ArrayList<AdventureCard> paramCardList, Quest currentQuest) {
         int totalBattlePoints = 0;
+        int currentBattlePoints;
         for(AdventureCard adventureCard : paramCardList) {
+            currentBattlePoints = adventureCard.getBattlePoints();
             if(adventureCard instanceof Ally){
                 for(AdventureCard checkAdventureCard: paramCardList){
                     if((((Ally) adventureCard).getAffectedEntity().toLowerCase().equals(checkAdventureCard.getName().toLowerCase())) || (((Ally) adventureCard).getAffectedEntity().toLowerCase().equals(currentQuest.getName())) && (adventureCard != checkAdventureCard)){
-                        adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
+                        currentBattlePoints = adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints();
                         break;
                     }
                 }
             }
 
-            totalBattlePoints += adventureCard.getBattlePoints();
+            totalBattlePoints += currentBattlePoints;
         }
 
         return totalBattlePoints;
@@ -283,32 +272,46 @@ public class Player {
         return battlePoints;
     }
 
-    public int getRequiredShieldsForNextRank() {
-        switch(playerRank)
-        {
+    private int getRankShields(Rank playerRank) {
+        int rankShields = 0;
+        switch (playerRank){
             case SQUIRE:
-                logger.info("Returning the number of shields needed for "+this.playerName +" to proceed to the next rank. ");
-                return 5;
+                rankShields = 0;
+                break;
             case KNIGHT:
-                logger.info("Returning the number of shields needed for "+this.playerName +" to proceed to the next rank. ");
-                return 7;
+                rankShields = 5;
+                break;
             case CHAMPION_KNIGHT:
-                logger.info("Returning the number of shields needed for "+this.playerName +" to proceed to the next rank. ");
-                return 10;
+                rankShields = 12;
+                break;
+            case KNIGHT_OF_THE_ROUND_TABLE:
+                rankShields = 22;
+                break;
             default:
-                logger.info("Default case for "+this.playerName +" rank. ");
-                return 99;
+                break;
         }
+        logger.info("Returning " + this.playerName +" calculated battle points :" + battlePoints+ " .");
+        return rankShields;
     }
 
-    public void confirmRank() {
-        int requiredShields = this.getRequiredShieldsForNextRank();
-        if(playerRank != Rank.KNIGHT_OF_THE_ROUND_TABLE && shields >= requiredShields){
-            playerRank = playerRank.next();
-            shields -= requiredShields;
+    private void updateRank(int numShields){
+        Rank rank;
+        if(numShields < 5){
+            rank = Rank.SQUIRE;
+        } else if (numShields < 12){
+            rank = Rank.KNIGHT;
+        } else if (numShields < 22) {
+            rank = Rank.CHAMPION_KNIGHT;
+        } else {
+            rank = Rank.KNIGHT_OF_THE_ROUND_TABLE;
         }
-        logger.info("Confirming " + this.playerName +" rank.");
+        setPlayerRank(rank);
     }
+
+    public int getRequiredShieldsForNextRank(){
+        return getRankShields(playerRank) - shields;
+    }
+
     private void notifyListeners(Object object, String property, boolean oldFull, boolean newFull) {
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(this, property, oldFull, newFull));
