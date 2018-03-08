@@ -6,7 +6,7 @@ public abstract class DoIParticipateInTournamentAI {
 
     public abstract boolean doIParticipateInTournament(ArrayList<Player> paramPlayerList, int paramShields);
 
-    public abstract ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard);
+    public abstract ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard, ArrayList<Player> paramPlayerList, int i);
 
     ArrayList<AdventureCard> AlliesAndWeapons(ArrayList<AdventureCard> paramCard){
 

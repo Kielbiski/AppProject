@@ -22,7 +22,7 @@ public class DoIParticipateInTournamentStrategy1 extends DoIParticipateInTournam
 
         for(Player player : paramPlayerList)
         {
-            if (paramShields >= player.getRequiredShieldsForNextRank())
+            if ((player.getShields()+ paramShields) >= player.getRequiredShieldsForNextRank())
             {
 
                 logger.info("The answer is Yes.");
@@ -37,10 +37,33 @@ public class DoIParticipateInTournamentStrategy1 extends DoIParticipateInTournam
     }
 
 
-    public ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard)
+    public ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard,ArrayList <Player> paramPlayerList,int paramShields )
     {
-
         logger.info("Return strategy 1 cards to play for the tournament.");
+        if(doIParticipateInTournament(paramPlayerList, paramShields)){
+
+            ArrayList<AdventureCard> tempCard = new ArrayList<>() ;
+            for(AdventureCard card : paramCard)
+            {
+                if(card instanceof  Weapon)
+                {
+                    tempCard.add(card);
+                }
+            }
+
+            ArrayList<AdventureCard> duplicates = new ArrayList<>();
+            HashSet<AdventureCard> carSet = new HashSet<>();
+            for(AdventureCard c : tempCard)
+            {
+                if(!carSet.add(c))
+                {
+                    duplicates.add(c);
+                }
+            }
+
+            return  duplicates;
+        }
+
         return AlliesAndWeapons(paramCard);
 
     }

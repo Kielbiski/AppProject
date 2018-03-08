@@ -101,11 +101,11 @@ public abstract class AbstractAI extends Player{
 
     }
 
-    public ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard)
+    public ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard, ArrayList <Player> paramPlayerList, int paramShields)
     {
 
         logger.info(this.getPlayerName() + " is return the following card using: "+this.strategy+" to play  .");
-        return TournamentAnswer.whatIPlay( paramCard);
+        return TournamentAnswer.whatIPlay( paramCard, paramPlayerList, paramShields );
 
     }
 

@@ -5,6 +5,10 @@ import java.util.Comparator;
 
 public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
 
+    DoIParticipateInQuestStrategy2(){
+        lastStagePoints=0;
+    }
+
     public  boolean doIParticipateInQuest(ArrayList<AdventureCard> paramCard, int paramNumStage){
 
         lastStagePoints=0;
@@ -13,24 +17,18 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
 
         foeList = foeList(paramCard, 25);
 
-        if (foeList.size() > 2 ) {
+        if (foeList.size() >= 2 ) {
 
             int totalStagePoint = 0;
-            int numAlly = 0;
             for (AdventureCard card : paramCard) {
                 if ((card instanceof Ally) || (card instanceof Weapon)) {
 
                     totalStagePoint += card.getBattlePoints();
 
                 }
-                if (card instanceof Ally) {
-
-                    numAlly++;
-
-                }
 
             }
-            return (paramNumStage == 3) && (totalStagePoint >= 60) || (paramNumStage == 2) && (totalStagePoint >= 30);
+            return (((paramNumStage == 3) && (totalStagePoint >= 60)) || ((paramNumStage == 2) && (totalStagePoint >= 30)));
 
         }
 
@@ -42,52 +40,55 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
     public  ArrayList<AdventureCard> playStage (ArrayList<AdventureCard> paramCard){
 
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
+        ArrayList<AdventureCard> allyList = new ArrayList<>();
+        ArrayList<AdventureCard> weaponList = new ArrayList<>();
+        ArrayList<AdventureCard> amourList = new ArrayList<>();
         int totalPoint= 0;
         paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
         for(AdventureCard card : paramCard)
         {
-            if ((card instanceof Ally) ||  (card instanceof Weapon))
+            if (card instanceof Ally)
             {
-                totalPoint+= card.battlePoints;
-                cardPlaying.add(card);
-                if(totalPoint>(lastStagePoints+10))
-                {
+                if (card instanceof Amour){
 
-                    return cardPlaying;
-
+                    amourList.add(card);
                 }
+                else {
+                    allyList.add(card);
+                }
+            }
+            if (card instanceof Weapon){
 
-
+                weaponList.add(card);
             }
 
         }
+        if(amourList.size()!=0){
 
-        return cardPlaying;
+            cardPlaying.add(amourList.get(0));
+            totalPoint+= amourList.get(0).getBattlePoints();
+        }
+        int counter = 0;
+        int played =0;
+        while((totalPoint<(lastStagePoints+10)) && (weaponList.size()>counter) && (allyList.size()>=1)){
+            if((cardPlaying.size() < 2) && (played==0) ){
 
-
-    }
-
-
-    public  ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paramCard){
-
-        ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
-        int totalPoint= 0;
-        for(AdventureCard card : paramCard)
-        {
-            if ((card instanceof Ally) ||  (card instanceof Weapon))
-            {
-                totalPoint+= card.battlePoints;
-                cardPlaying.add(card);
-
-
+                cardPlaying.add(allyList.get(counter));
+                totalPoint+= allyList.get(counter).getBattlePoints();
+                played++;
             }
-
+            else{
+                cardPlaying.add(weaponList.get(counter));
+                totalPoint+= weaponList.get(counter).getBattlePoints();
+                counter++;
+            }
         }
 
+        lastStagePoints= totalPoint;
         return cardPlaying;
 
-
     }
+
 
 
 }
