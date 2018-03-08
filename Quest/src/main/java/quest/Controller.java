@@ -30,6 +30,8 @@ import static java.lang.System.exit;
 import static quest.Rank.CHAMPION_KNIGHT;
 import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
+//POTENTIAL ERROR IN DISCARDING BEFORE SPONSORING QUEST
+
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
 
@@ -440,10 +442,17 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 else{
-                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
-                        ImageView imgView = createAdventureCardImageView(card);
-                        imgView.setImage(getCardImage("FacedownAdventure.png"));
-                        flowPaneArray.get(i).getChildren().add(imgView);
+                    boolean hasMerlin =false;
+                    for(Card card : activePlayer.getCardsInHand()){
+                        if (card instanceof Merlin) hasMerlin = true;
+                    }
+                    if(hasMerlin) {
+                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
+                            ImageView imgView = createAdventureCardImageView(card);
+                            imgView.setImage(getCardImage(card.getImageFilename()));
+                            imgView.toFront();
+                            flowPaneArray.get(i+1).getChildren().add(imgView);
+                        }
                     }
                 }
             }
@@ -513,7 +522,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private int nextPlayerIndex(int index){
         int nextIndex = index;
-        if(nextIndex >= (NUM_PLAYERS-1)){
+        if(nextIndex >= NUM_PLAYERS-1){
             nextIndex = 0;
         } else{
             nextIndex++;
@@ -557,6 +566,7 @@ public class Controller implements PropertyChangeListener {
             else{
                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
             }
+            update();
         }
         else if(currentBehaviour == Behaviour.TOURNAMENT){
             game.getCurrentTournament().nextTurn();
@@ -572,8 +582,8 @@ public class Controller implements PropertyChangeListener {
             else{
                 setActivePlayer(game.getCurrentTournament().getCurrentPlayer());
             }
+            update();
         }
-        update();
 
     }
 
@@ -681,16 +691,26 @@ public class Controller implements PropertyChangeListener {
         else{
             okAlert("Quest has no winner.", "Quest failed!");
         }
+        int sponsorCardsToDraw=game.getCurrentQuest().getNumStage();
+        for(int i =0; i<game.getPreQuestStageSetup().size();i++){
+            for(AdventureCard card: game.getPreQuestStageSetup().get(i)){
+                sponsorCardsToDraw++;
+            }
+        }
+        for(int i=0;i<sponsorCardsToDraw;i++) {
+            game.drawAdventureCard(game.getSponsor());
+        }
         stagesGridPane.getChildren().clear();
         flowPaneArray.clear();
         game.getPreQuestStageSetup().clear();
         game.clearQuest();
         setActivePlayer(game.getSponsor());
         game.setSponsor(null);
-        currentBehaviour = Behaviour.DEFAULT;
-        nextTurnButton.setVisible(true);
-        nextTurnButton.setDisable(false);
-        nextTurnButton.setDisable(false);
+        if(!game.getCurrentPlayer().handFull) {
+            currentBehaviour = Behaviour.DEFAULT;
+            nextTurnButton.setVisible(true);
+            nextTurnButton.setDisable(false);
+        }
         continueButton.setVisible(false);
         update();
     }
@@ -698,6 +718,7 @@ public class Controller implements PropertyChangeListener {
     private void performQuest(Player sponsor, Quest quest) {
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
+        setActivePlayer(sponsor);
         currentBehaviour = Behaviour.SPONSOR;
         continueButton.setVisible(true);
 
