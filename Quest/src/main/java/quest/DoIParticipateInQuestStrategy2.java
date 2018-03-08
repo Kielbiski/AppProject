@@ -16,16 +16,10 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
         if (foeList.size() > 2 ) {
 
             int totalStagePoint = 0;
-            int numAlly = 0;
             for (AdventureCard card : paramCard) {
                 if ((card instanceof Ally) || (card instanceof Weapon)) {
 
                     totalStagePoint += card.getBattlePoints();
-
-                }
-                if (card instanceof Ally) {
-
-                    numAlly++;
 
                 }
 
@@ -52,9 +46,7 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
                 cardPlaying.add(card);
                 if(totalPoint>(lastStagePoints+10))
                 {
-
                     return cardPlaying;
-
                 }
 
 
@@ -71,22 +63,16 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
     public  ArrayList<AdventureCard> lastStage (ArrayList<AdventureCard> paramCard){
 
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
-        int totalPoint= 0;
         for(AdventureCard card : paramCard)
         {
             if ((card instanceof Ally) ||  (card instanceof Weapon))
             {
-                totalPoint+= card.battlePoints;
                 cardPlaying.add(card);
-
-
             }
 
         }
 
         return cardPlaying;
-
-
     }
 
 
