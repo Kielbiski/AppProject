@@ -217,19 +217,14 @@ public class Controller implements PropertyChangeListener {
                     }
                     else if(currentBehaviour == Behaviour.BID){
                         activePlayer.removeCardFromHand(selectedAdventureCard);
-                        if(activePlayer.isHandFull()){
-                            handFull(activePlayer);
-                        }
-                        else{
-                            currentBehaviour = previousBehaviour;
-                            previousBehaviour = null;
+                        bidsToDo--;
+                        if(bidsToDo==0){
+                            currentBehaviour = Behaviour.QUEST_MEMBER;
+                            continueButton.setDisable(false);
                             discardPane.setVisible(false);
-                            if(currentBehaviour==Behaviour.DEFAULT) {
-                                nextTurnButton.setVisible(true);
-                                nextTurnButton.setDisable(false);
-                            }
-                            update();
+
                         }
+                        update();
                         success = true;
                     }
                     else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
@@ -300,26 +295,26 @@ public class Controller implements PropertyChangeListener {
             // Get item id here, which was stored when the drag started.
             boolean success = false;
             // If this is a meaningful drop...
+            if(currentBehaviour==Behaviour.SPONSOR){
             if (db.hasString()) {
-                if(db.getString().equals(cardsHbox.getId())) {
+                if (db.getString().equals(cardsHbox.getId())) {
                     if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
                         game.addToPotentialStage(selectedAdventureCard, stageIndex);
                         game.getSponsor().removeCardFromHand(selectedAdventureCard);
                         success = true;
                     }
-                }
-                else
-                    {
-                        for(int i=0;i<game.getCurrentQuest().getNumStage();i++){
-                            if(db.getString().equals(Integer.toString(i))){
-                                if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
-                                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
-                                    game.removeFromPotentialStage(selectedAdventureCard,i);
-                                    success = true;
-                                }
+                } else {
+                    for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
+                        if (db.getString().equals(Integer.toString(i))) {
+                            if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
+                                game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                                game.removeFromPotentialStage(selectedAdventureCard, i);
+                                success = true;
                             }
                         }
                     }
+                }
+            }
 //                else{
 //                   // game.removeFromPotentialStage(selectedAdventureCard,);
 //                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
@@ -431,22 +426,22 @@ public class Controller implements PropertyChangeListener {
                 }
             }
         }
-        else if(currentBehaviour == Behaviour.QUEST_MEMBER){
-            for(int i =0; i < game.getCurrentQuest().getNumStage(); i++){
-                flowPaneArray.get(i).getChildren().clear();
-                if(game.getCurrentQuest().getCurrentStage() == game.getCurrentQuest().getStages().get(i)) {
-                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
-                        ImageView imgView = createAdventureCardImageView(card);
-                        imgView.setImage(getCardImage(card.getImageFilename()));
-                        imgView.toFront();
-                        flowPaneArray.get(i).getChildren().add(imgView);
-                    }
-                }
-                else{
-                    boolean hasMerlin =false;
-                    for(Card card : activePlayer.getCardsInHand()){
-                        if (card instanceof Merlin) hasMerlin = true;
-                    }
+        else if(currentBehaviour == Behaviour.QUEST_MEMBER||currentBehaviour == Behaviour.BID){
+            if(game.getCurrentQuest()!=null) {
+                for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
+                    flowPaneArray.get(i).getChildren().clear();
+                    if (game.getCurrentQuest().getCurrentStage() == game.getCurrentQuest().getStages().get(i)) {
+                        for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                            ImageView imgView = createAdventureCardImageView(card);
+                            imgView.setImage(getCardImage(card.getImageFilename()));
+                            imgView.toFront();
+                            flowPaneArray.get(i).getChildren().add(imgView);
+                        }
+                    } else {
+                        boolean hasMerlin = false;
+                        for (Card card : activePlayer.getCardsInHand()) {
+                            if (card instanceof Merlin) hasMerlin = true;
+                        }
 //                    if(hasMerlin) {
 //                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
 //                            ImageView imgView = createAdventureCardImageView(card);
@@ -455,6 +450,7 @@ public class Controller implements PropertyChangeListener {
 //                            flowPaneArray.get(i+1).getChildren().add(imgView);
 //                        }
 //                    }
+                    }
                 }
             }
         }
@@ -567,7 +563,15 @@ public class Controller implements PropertyChangeListener {
                 }
             }
             else{
-               setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+                if(game.getCurrentQuest().isInTest()) {
+                    setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+                }
+                else{
+                    activePlayer = game.getCurrentQuest().getCurrentPlayer();
+                    if(activePlayer instanceof AbstractAI){
+                        runAITurn((AbstractAI) activePlayer);
+                    }
+                }
             }
             update();
         }
@@ -709,9 +713,10 @@ public class Controller implements PropertyChangeListener {
         game.getPreQuestStageSetup().clear();
         game.clearQuest();
         setActivePlayer(game.getSponsor());
-        currentBehaviour = Behaviour.DEFAULT;
         game.setSponsor(null);
+        previousBehaviour = Behaviour.DEFAULT;
         if(!game.getCurrentPlayer().handFull) {
+            currentBehaviour = Behaviour.DEFAULT;
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
         }
@@ -740,9 +745,9 @@ public class Controller implements PropertyChangeListener {
         ArrayList<Player> testPlayersToRemove = new ArrayList<>();
 
         int currentHighestBid = 0;
-        int minBids = 3;
+        int minBids = 2;
         if(game.getCurrentStory().getName().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
-            minBids = 4;
+            minBids = 3;
         }
         int currentBid=minBids;
         int currentTestPlayerIndex=0;
@@ -750,17 +755,29 @@ public class Controller implements PropertyChangeListener {
         Player currentTestPlayer;
 
         while(game.getCurrentQuest().isInTest()) {
+            if (currentTestPlayerIndex >= currentNumInTest) {
+                currentTestPlayerIndex = 0;
+                for (Player player : testPlayersToRemove) {
+                    testPlayers.remove(player);
+                }
+                currentNumInTest = testPlayers.size();
+                testPlayersToRemove.clear();
+            }
+
             currentTestPlayer=testPlayers.get(currentTestPlayerIndex);
-            setActivePlayer(currentTestPlayer);
+            activePlayer = currentTestPlayer;
+            if(activePlayer instanceof AbstractAI){
+                runAITurn((AbstractAI) activePlayer);
+            }
             update();
 
-            if(testPlayers.size()!=1) {
+            if(testPlayers.size()!=1 && (testPlayersToRemove.size()!=testPlayers.size()-1)) {
                 List<String> choices = new ArrayList<>();
-                for (int i = currentBid; i < activePlayer.getNumCardsInHand(); i++) {
+                for (int i = currentBid+1; i < activePlayer.getNumCardsInHand(); i++) {
                     choices.add(Integer.toString(i + 1));
                 }
                 choices.add("Drop Out");
-                ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid), choices);
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid+1), choices);
                 dialog.setTitle("Bid.");
                 dialog.setHeaderText("Number of cards to bid?");
                 dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
@@ -779,25 +796,25 @@ public class Controller implements PropertyChangeListener {
                     currentHighestBid = currentBid;
                 }
                 currentTestPlayerIndex++;
-                if (currentTestPlayerIndex >= currentNumInTest) {
-                    currentTestPlayerIndex = 0;
-                    for (Player player : testPlayersToRemove) {
-                        testPlayers.remove(player);
-                    }
-                    currentNumInTest = testPlayers.size();
-                    testPlayersToRemove.clear();
-                }
             }
             else{
+                for (Player player : testPlayersToRemove) {
+                    testPlayers.remove(player);
+                }
+                testPlayersToRemove.clear();
                 game.getCurrentQuest().setInTest(false);
                 testPlayers.get(0).setCurrentBid(currentHighestBid);
                 game.getCurrentQuest().setPlayerList(testPlayers);
                 continueButton.setDisable(true);
                 okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
                 currentBehaviour = Behaviour.BID;
-                setActivePlayer(testPlayers.get(0));
-
+                activePlayer=testPlayers.get(0);
+                if(activePlayer instanceof AbstractAI){
+                    runAITurn((AbstractAI) activePlayer);
+                }
+                bidsToDo = currentHighestBid - (testPlayers.get(0).getBidDiscount(game.getCurrentQuest()));
                 discardPane.setVisible(true);
+                discardPane.setDisable(false);
                 logger.info("Current player with highest bid" + testPlayers.get(0) +" for this testStage." );
                 update();
             }
@@ -832,7 +849,10 @@ public class Controller implements PropertyChangeListener {
         addTournamentPlayers(tournament);
         if(!tournament.isTournamentOver()){
             tournament.setCurrentPlayer(tournament.getPlayerList().get(0));
-            activePlayer=tournament.getCurrentPlayer();
+            activePlayer =tournament.getCurrentPlayer();
+            if(activePlayer instanceof AbstractAI){
+                runAITurn((AbstractAI) activePlayer);
+            }
             if(tournament.getPlayerList().size()==1){
                 tournament.setTournamentOver(true);
                 tournament.setWinners(tournament.getPlayerList());
@@ -851,6 +871,9 @@ public class Controller implements PropertyChangeListener {
         ArrayList<Player> tournamentPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
             activePlayer = game.getPlayers().get(i);
+            if(activePlayer instanceof AbstractAI){
+                runAITurn((AbstractAI) activePlayer);
+            }
             update();
             if(!(activePlayer instanceof AbstractAI)) {
                 if (yesNoAlert("Join " + game.getCurrentStory().getName() + " " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
@@ -1205,11 +1228,11 @@ public class Controller implements PropertyChangeListener {
     public void propertyChange(PropertyChangeEvent change) {
 
         switch (change.getPropertyName()) {
-            case "handFull":
-                if ((Boolean) change.getNewValue()) {
-                    handFull((Player) change.getSource());
-                }
-                break;
+//            case "handFull":
+//                if ((Boolean) change.getNewValue()) {
+//                    handFull((Player) change.getSource());
+//                }
+//                break;
             case "callToArms":
                 Player drawPlayer = (Player) change.getSource();
                 callToArms(drawPlayer);

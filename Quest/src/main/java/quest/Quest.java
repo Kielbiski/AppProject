@@ -213,6 +213,7 @@ public class Quest extends StoryCard { //story card
                 playerList = getFoeStageWinners((FoeStage) currentStage);
             }
             currentStageIndex++;
+            wipeWeapons();
             if(currentStageIndex >= stages.size()||playerList.size()==0){
                 questWinners();
             } else {
@@ -224,7 +225,6 @@ public class Quest extends StoryCard { //story card
                     setInTest(true);
                 }
             }
-            wipeWeapons();
 
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
