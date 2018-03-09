@@ -586,7 +586,9 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
         if(player == game.getCurrentPlayer()) {
-            previousBehaviour = currentBehaviour;
+            if(currentBehaviour != Behaviour.DISCARD){
+                previousBehaviour = currentBehaviour;
+            }
             currentBehaviour = Behaviour.DISCARD;
             nextTurnButton.setDisable(true);
             okAlert(player.getPlayerName() + ", you must play or discard a card.", "Hand Full!");
