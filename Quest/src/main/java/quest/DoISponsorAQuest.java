@@ -4,6 +4,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 
 public abstract class DoISponsorAQuest {
 
@@ -46,29 +49,30 @@ public abstract class DoISponsorAQuest {
             }
         }
 
-        return cardList;
+        return new ArrayList<AdventureCard>(new HashSet<AdventureCard>(cardList));
     }
 
-    public  AdventureCard midStage (ArrayList<AdventureCard> paramCard)
+    public  ArrayList<AdventureCard> midStage (ArrayList<AdventureCard> paramCard)
     {
         ArrayList<AdventureCard> cardList = new ArrayList<>();
+        ArrayList<AdventureCard> cardListOfFoes = new ArrayList<>();
         for(AdventureCard card : paramCard)
         {
             if (card instanceof Test)
             {
-                return card;
+                cardList.add(card);
+                return cardList;
 
             }
             if (card instanceof Foe)
             {
-                cardList.add(card);
-
+                cardListOfFoes.add(card);
             }
-
         }
-
-        return cardList.get(cardList.size());
-
+        cardListOfFoes.sort(Comparator.comparing(AdventureCard::getBattlePoints));
+        Collections.reverse(cardList);
+        cardList.add(cardListOfFoes.get(0));
+        return cardList;
     }
 
 

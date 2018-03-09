@@ -36,7 +36,8 @@ public class DoIParticipateInQuestStrategy1 extends DoIParticipateInQuest {
         ArrayList<AdventureCard> cardPlayingWeapon = new ArrayList<>();
         ArrayList<AdventureCard> cardPlayingAllie = new ArrayList<>();
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
-        paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints).reversed());
+        paramCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
+        Collections.reverse(paramCard);
         for(AdventureCard card : paramCard)
         {
             if (card instanceof Ally)

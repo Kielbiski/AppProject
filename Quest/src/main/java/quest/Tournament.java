@@ -68,34 +68,40 @@ public class Tournament extends StoryCard {
                     found.add(card);
                 }
             }
+            logger.info("Wiping " + player.getPlayerName()+" the weapons player.");
             //discard instead
             player.getTournamentCards().removeAll(found);
         }
     }
 
     public int getCurrentTurnIndex() {
+        logger.info("Getting current index for this"+this.getName()+"tournament");
         return currentTurnIndex;
     }
 
     public void setCurrentTurnIndex(int currentTurnIndex) {
+        logger.info("Setting current index for this"+this.getName()+"tournament");
         this.currentTurnIndex = currentTurnIndex;
     }
 
     public Player getCurrentPlayer() {
 
+        logger.info("Returning current player:" +currentPlayer+" for this:"+this.getName()+"tournament");
         return currentPlayer;
     }
 
     public void setCurrentPlayer(Player currentPlayer) {
+        logger.info("Setting current player for this"+this.getName()+".");
         this.currentPlayer = currentPlayer;
     }
 
     public boolean isTournamentOver() {
-
+        logger.info("Verifying if tournament:"+this.getName()+" is over.");
         return tournamentOver;
     }
 
     public void setTournamentOver(boolean tournamentOver) {
+        logger.info("Setting this tournament:"+this.getName()+" status");
         this.tournamentOver = tournamentOver;
     }
 
@@ -116,6 +122,7 @@ public class Tournament extends StoryCard {
                 break;
             }
         }
+        logger.info("Returning a list of winner for this tournament:"+this.getName()+" .");
         return returnList;
     }
 
@@ -123,10 +130,12 @@ public class Tournament extends StoryCard {
 
 
     public ArrayList<Player> getWinners() {
+        logger.info("Calling getter to get tournament:"+this.getName()+" winner.");
         return winners;
     }
 
     public void setWinners(ArrayList<Player> winners) {
+        logger.info("Calling setter to set this tournament:"+this.getName()+" winner.");
         this.winners = winners;
     }
 
@@ -173,7 +182,7 @@ public class Tournament extends StoryCard {
     public void rewardWinner(Player winner) {
         winner.setShields(winner.getShields() + shields);
         setTournamentOver(true);
-        logger.info("Returning the number players of that won the " + this.getName() +".");
+        logger.info("Assinging shields to this " + this.getName() +" winners.");
 
     }
 }

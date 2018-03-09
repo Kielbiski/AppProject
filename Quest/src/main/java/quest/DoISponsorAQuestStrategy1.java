@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 
 public class DoISponsorAQuestStrategy1 extends DoISponsorAQuest {
 
@@ -25,7 +26,7 @@ public class DoISponsorAQuestStrategy1 extends DoISponsorAQuest {
                 }
             }
         }
-        return cardPlaying;
+        return new ArrayList<>(new HashSet<>(cardPlaying));
     }
 
     public  ArrayList<AdventureCard> firstStage (ArrayList<AdventureCard> paramCard){
@@ -43,7 +44,7 @@ public class DoISponsorAQuestStrategy1 extends DoISponsorAQuest {
 
         }
 
-        return cardPlaying ;
+        return new ArrayList<>(new HashSet<>(cardPlaying));
     }
 
 
