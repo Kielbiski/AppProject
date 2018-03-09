@@ -22,11 +22,4 @@ class Strategy1 extends AbstractAI {
 
         logger.info("Calling strategy1 AI constructor for: "+paramName+".");
     }
-
-
-
-
-
-
-
 }

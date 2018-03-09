@@ -1,6 +1,7 @@
 package quest;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 public abstract class DoIParticipateInTournamentAI {
 
@@ -19,7 +20,7 @@ public abstract class DoIParticipateInTournamentAI {
             }
         }
 
-        return  tempCard;
+        return new ArrayList<>(new HashSet<>(tempCard));
     }
 
 }

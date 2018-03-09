@@ -5,6 +5,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashSet;
 
 public class DoIParticipateInTournamentStrategy2 extends DoIParticipateInTournamentAI {
 
@@ -29,22 +30,19 @@ public class DoIParticipateInTournamentStrategy2 extends DoIParticipateInTournam
 
     public ArrayList<AdventureCard> whatIPlay (ArrayList<AdventureCard> paramCard, ArrayList<Player> paramPlayerList, int paramInt)
     {
-
-        ArrayList<AdventureCard> tempCard = AlliesAndWeapons(paramCard);
-        tempCard.sort(Comparator.comparing(AdventureCard::getBattlePoints));
-        int battlePoints = 0;
-        int i =0;
-        ArrayList<AdventureCard> tempCard2 = new ArrayList<>() ;
-        while (battlePoints <= 50)
-        {
-
-            battlePoints= tempCard.get(i).getBattlePoints();
-            tempCard2.add(tempCard.get(i));
-            i++;
-
+        ArrayList<AdventureCard> alliesAndWeapons = AlliesAndWeapons(paramCard);
+        alliesAndWeapons.sort(Comparator.comparing(AdventureCard::getBattlePoints));
+        int battlePoints;
+        ArrayList<AdventureCard> cardsToPlay = new ArrayList<>() ;
+        for(AdventureCard adventureCard : alliesAndWeapons){
+            battlePoints= adventureCard.getBattlePoints();
+            cardsToPlay.add(adventureCard);
+            if(battlePoints >= 50){
+                break;
+            }
         }
         logger.info("Return strategy 2 cards to play for the tournament.");
-        return tempCard2;
+        return new ArrayList<>(new HashSet<>(cardsToPlay));
     }
 
 }

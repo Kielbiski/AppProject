@@ -24,6 +24,13 @@ public class Model implements PropertyChangeListener
     private Player currentPlayer;
     private Quest currentQuest;
     private Tournament currentTournament;
+    private Player sponsor;
+    private int currentTurnIndex = 0;
+    private List<PropertyChangeListener> listener = new ArrayList<>();
+    private ArrayList<Player> winningPlayers = new ArrayList<>();
+    private boolean kingsRecognition = false;
+
+    /////////////////////////////////////////////////
 
     public Player getCurrentPlayer() {
         return currentPlayer;
@@ -40,14 +47,6 @@ public class Model implements PropertyChangeListener
     public void setCurrentTournament(Tournament currentTournament) {
         this.currentTournament = currentTournament;
     }
-
-    private Player sponsor;
-    private int currentTurnIndex = 0;
-    private List<PropertyChangeListener> listener = new ArrayList<>();
-    private ArrayList<Player> winningPlayers = new ArrayList<>();
-    private boolean kingsRecognition = false;
-
-    /////////////////////////////////////////////////
 
     /////////////////////////////////////////////////
 
@@ -288,7 +287,6 @@ public class Model implements PropertyChangeListener
                 deckOfAdventureCards.add(adventureCard);
             }
         }
-        deckOfAdventureCards.add(new TestOfTheQuestingBeast());
         logger.info("storing all adventure cards into the deck of adventure cards.");
 
         //Create HashMap to store number of occurrences of each StoryCard
@@ -339,8 +337,10 @@ public class Model implements PropertyChangeListener
                 deckOfStoryCards.add(storyCard);
             }
         }
-
-        deckOfStoryCards.add(new SearchForTheQuestingBeast());
+        deckOfStoryCards.add(new TournamentAtOrkney());
+        deckOfStoryCards.add(new Pox());
+        deckOfStoryCards.add(new Pox());
+        deckOfStoryCards.add(new Pox());
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -382,7 +382,13 @@ public class Model implements PropertyChangeListener
             newPlayer.addChangeListener(this);
             players.add(newPlayer);
         } else {
-            Strategy1 aI = new Strategy1(name);
+            AbstractAI aI;
+            if(name.endsWith("_S2")) {
+                aI = new Strategy2(name);
+            } else {
+                aI = new Strategy1(name);
+            }
+            System.out.println(aI.strategy);
             aI.addChangeListener(this);
             players.add(aI);
         }

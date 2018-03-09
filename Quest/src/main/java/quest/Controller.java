@@ -1,8 +1,5 @@
 package quest;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -13,10 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import sun.awt.image.BufImgVolatileSurfaceManager;
 
-import javax.swing.*;
-import java.awt.font.ImageGraphicAttribute;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.File;
@@ -27,8 +21,6 @@ import java.util.*;
 
 
 import static java.lang.System.exit;
-import static quest.Rank.CHAMPION_KNIGHT;
-import static quest.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 //POTENTIAL ERROR IN DISCARDING BEFORE SPONSORING QUEST
 
@@ -634,7 +626,7 @@ public class Controller implements PropertyChangeListener {
         } else if (game.getCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
             game.setCurrentTournament((Tournament)game.getCurrentStory());
-            performTournment(currentPlayerOrder, game.getCurrentTournament());
+            performTournament(currentPlayerOrder, game.getCurrentTournament());
             nextTurnButton.setDisable(false);
         }
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
@@ -729,6 +721,10 @@ public class Controller implements PropertyChangeListener {
         setActivePlayer(sponsor);
     }
 
+    private void print(String stringToPrint){
+        System.out.println(stringToPrint);
+    }
+
     private void addQuestPlayers(Quest currentQuest){
         ArrayList<Player> questPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
@@ -751,7 +747,7 @@ public class Controller implements PropertyChangeListener {
     //TOURNAMENT
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void performTournment(ArrayList<Player> currentPlayerOrder,Tournament tournament) {
+    private void performTournament(ArrayList<Player> currentPlayerOrder, Tournament tournament) {
         currentBehaviour = Behaviour.TOURNAMENT;
         addTournamentPlayers(tournament);
         if(!tournament.isTournamentOver()){
@@ -776,8 +772,14 @@ public class Controller implements PropertyChangeListener {
         for(int i = 0; i < NUM_PLAYERS; i++){
             activePlayer = game.getPlayers().get(i);
             update();
-            if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
-                tournamentPlayers.add(game.getPlayers().get(i));
+            if(!(activePlayer instanceof AbstractAI)) {
+                if (yesNoAlert("Join " + game.getCurrentStory().getName() + " " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
+                    tournamentPlayers.add(game.getPlayers().get(i));
+                }
+            } else {
+                if(((AbstractAI) activePlayer).doIParticipateInTournament(tournamentPlayers, currentTournament.getShields())){
+                    tournamentPlayers.add(activePlayer);
+                }
             }
         }
         if(tournamentPlayers.size() == 0){
@@ -880,9 +882,73 @@ public class Controller implements PropertyChangeListener {
     //Player related
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void runAITurn(AbstractAI ai){
+        if(currentBehaviour == Behaviour.DEFAULT){
+            game.drawStoryCard();
+            activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+            update();
+        }
+        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+        int currentTurn = game.getPlayers().indexOf(activePlayer);
+        for(int i = 0; i < NUM_PLAYERS; i++){
+            currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+            currentTurn = nextPlayerIndex(currentTurn);
+        }
+        ArrayList<Player> noAIPlayers = new ArrayList<>();
+        for(Player player : game.getPlayers()){
+            if(!(player instanceof AbstractAI)){
+                noAIPlayers.add(player);
+            }
+        }
+        if (game.getCurrentStory() instanceof Quest) {
+            game.setCurrentQuest((Quest) game.getCurrentStory());
+            //BEHAVIOUR HERE
+            //questDraw(currentPlayerOrder);
+        } else if (game.getCurrentStory() instanceof Event) {
+            Event gameEvent = (Event) game.getCurrentStory();
+            callEventEffect(gameEvent);
+        } else if (game.getCurrentStory() instanceof Tournament) {
+            game.setCurrentTournament((Tournament)game.getCurrentStory());
+            currentBehaviour = Behaviour.TOURNAMENT;
+        }
+        if(currentBehaviour == Behaviour.SPONSOR) {
+        }
+        else if(currentBehaviour == Behaviour.QUEST_MEMBER){
+        }
+        else if(currentBehaviour == Behaviour.TOURNAMENT){
+            print("Before playing");
+            print("Cards in hand");
+            for(AdventureCard adventureCard : ai.getCardsInHand()){
+               print(adventureCard.getName());
+            }
+            print("Cards on table");
+            for(AdventureCard adventureCard : ai.getCardsOnTable()){
+                print(adventureCard.getName());
+            }
+            if(ai.doIParticipateInTournament(game.getPlayers(), game.getCurrentTournament().getShields())){
+                ai.playCardsAI(ai.whatIPlay(ai.getCardsInHand(), game.getPlayers(), game.getCurrentTournament().getShields()));
+            }
+            print("After playing");
+            print("Cards in hand");
+            for(AdventureCard adventureCard : ai.getCardsInHand()){
+                print(adventureCard.getName());
+            }
+            print("Cards on table");
+            for(AdventureCard adventureCard : ai.getCardsOnTable()){
+                print(adventureCard.getName());
+            }
+        }
+        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+        currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
+        setActivePlayer(game.getPlayers().get(currentPlayerIndex));
+        update();
+    }
 
     private void setActivePlayer(Player player){
         activePlayer = player;
+        if(activePlayer instanceof AbstractAI){
+            runAITurn((AbstractAI) activePlayer);
+        }
         game.setCurrentPlayer(player);
         if(player.isHandFull()){
             handFull(player);

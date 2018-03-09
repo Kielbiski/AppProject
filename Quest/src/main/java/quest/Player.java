@@ -17,7 +17,7 @@ enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
     {
         if(ordinal() >= Rank.values().length)
         {
-            return null;
+            return KNIGHT_OF_THE_ROUND_TABLE;
         }
         else
         {
@@ -308,9 +308,14 @@ public class Player {
         setPlayerRank(rank);
     }
 
-    public int getRequiredShieldsForNextRank(){
-        return getRankShields(playerRank) - shields;
+    public void playCardsAI(ArrayList<AdventureCard> cardsToPlay){
+        for(AdventureCard adventureCard : cardsToPlay){
+            addCardToTable(adventureCard);
+            removeCardFromHand(adventureCard);
+        }
     }
+
+    public int getRequiredShieldsForNextRank(){ return getRankShields(playerRank.next())-shields; }
 
     private void notifyListeners(Object object, String property, boolean oldFull, boolean newFull) {
         for (PropertyChangeListener name : listener) {

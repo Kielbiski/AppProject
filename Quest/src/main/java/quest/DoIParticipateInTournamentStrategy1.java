@@ -37,35 +37,20 @@ public class DoIParticipateInTournamentStrategy1 extends DoIParticipateInTournam
     }
 
 
-    public ArrayList<AdventureCard>  whatIPlay (ArrayList<AdventureCard> paramCard,ArrayList <Player> paramPlayerList,int paramShields )
-    {
-        logger.info("Return strategy 1 cards to play for the tournament.");
-        if(doIParticipateInTournament(paramPlayerList, paramShields)){
+    public ArrayList<AdventureCard> whatIPlay (ArrayList<AdventureCard> paramCard,ArrayList <Player> paramPlayerList,int paramShields ) {
 
-            ArrayList<AdventureCard> tempCard = new ArrayList<>() ;
-            for(AdventureCard card : paramCard)
-            {
-                if(card instanceof  Weapon)
-                {
+        if (doIParticipateInTournament(paramPlayerList, paramShields)) {
+            logger.info("Return strategy 1 cards to play for the tournament.");
+            ArrayList<AdventureCard> tempCard = new ArrayList<>();
+            for (AdventureCard card : paramCard) {
+                if (card instanceof Weapon) {
                     tempCard.add(card);
                 }
             }
-
-            ArrayList<AdventureCard> duplicates = new ArrayList<>();
-            HashSet<AdventureCard> carSet = new HashSet<>();
-            for(AdventureCard c : tempCard)
-            {
-                if(!carSet.add(c))
-                {
-                    duplicates.add(c);
-                }
-            }
-
-            return  duplicates;
+            return new ArrayList<>(new HashSet<>(tempCard));
+        } else {
+            return AlliesAndWeapons(paramCard);
         }
-
-        return AlliesAndWeapons(paramCard);
-
     }
 
 }

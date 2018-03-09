@@ -20,7 +20,6 @@ public class DoISponsorAQuestStrategy1 extends DoISponsorAQuest {
                 if (totalPoint <= 50) {
                     totalPoint += card.getBattlePoints();
                     cardPlaying.add(card);
-
                 } else {
                     break;
                 }
