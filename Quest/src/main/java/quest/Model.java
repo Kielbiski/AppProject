@@ -406,6 +406,11 @@ public class Model implements PropertyChangeListener
         deckOfStoryCards.remove(storyCard);
     }
 
+    void removeFromAdventureDeck(AdventureCard adventureCard){
+        logger.info("Removing:"+adventureCard.getName()+" from the story card.");
+        deckOfAdventureCards.remove(adventureCard);
+    }
+
     void dealCards(Stack<AdventureCard> deck){
         //Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {

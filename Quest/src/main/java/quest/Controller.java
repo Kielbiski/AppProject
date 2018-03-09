@@ -1160,6 +1160,13 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 game.addToStoryDeck(new BoarHunt());
+                for(AdventureCard adventureCard : game.getDeckOfAdventureCards()){
+                    if(adventureCard instanceof Boar){ //to preserve deck card ratios
+                        game.removeFromAdventureDeck(adventureCard);
+                        break;
+                    }
+                }
+                game.addToAdventureDeck(new Boar());
                 break;
             case "Test AI No Quest":
                 for(StoryCard storyCard : game.getDeckOfStoryCards()){
