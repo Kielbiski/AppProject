@@ -23,6 +23,16 @@ public class Quest extends StoryCard { //story card
     private int shields;
     private int currentTurnIndex;
     private Player currentPlayer;
+
+    public int getCurrentStageIndex() {
+        return currentStageIndex;
+    }
+
+    public int getCurrentTurnIndex() {
+
+        return currentTurnIndex;
+    }
+
     private boolean inTest = false;
     private boolean isWinner = false;
     private List<PropertyChangeListener> listener = new ArrayList<>();

@@ -99,6 +99,26 @@ public class Controller implements PropertyChangeListener {
             event.consume();
         });
 
+        imgView.setOnMouseClicked((MouseEvent event) -> {
+            if(currentBehaviour==Behaviour.QUEST_MEMBER) {
+                if (card instanceof Merlin) {
+                    if (!((Merlin) card).isWasUsed()){
+                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
+                        if(useMerlin){
+                            flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
+                            for (AdventureCard adCard : game.getPreQuestStageSetup().get(game.getCurrentQuest().getCurrentStageIndex()+1)) {
+                                ImageView imgView2 = createAdventureCardImageView(adCard);
+                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
+                                imgView2.toFront();
+                                flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
+                            }
+                            ((Merlin) card).setWasUsed(true);
+                        }
+                    }
+                }
+            }
+            event.consume();
+        });
         return imgView;
     }
 
