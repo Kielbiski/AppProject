@@ -22,11 +22,7 @@ import java.util.*;
 
 import static java.lang.System.exit;
 
-//POTENTIAL ERROR IN DISCARDING BEFORE SPONSORING QUEST
-
-
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
-
 
 public class Controller implements PropertyChangeListener {
 
@@ -166,8 +162,12 @@ public class Controller implements PropertyChangeListener {
                             else{
                                 currentBehaviour = previousBehaviour;
                                 previousBehaviour = null;
-                                discardPane.setVisible(false);
-                                update();
+                                if(currentBehaviour == Behaviour.DEFAULT) {
+                                    discardPane.setVisible(false);
+                                    nextTurnButton.setVisible(true);
+                                    nextTurnButton.setDisable(false);
+                                    update();
+                                }
                             }
                             success = true;
                         }
@@ -595,7 +595,7 @@ public class Controller implements PropertyChangeListener {
             previousBehaviour = currentBehaviour;
             currentBehaviour = Behaviour.DISCARD;
             nextTurnButton.setDisable(true);
-            okAlert(player.getPlayerName() + "You must Play or Discard a card", "Hand Full");
+            okAlert(player.getPlayerName() + ", you must play or discard a card.", "Hand Full!");
             discardPane.setVisible(true);
         }
     }
@@ -677,7 +677,7 @@ public class Controller implements PropertyChangeListener {
                     player.setShields(player.getShields() + 3);
                     game.setKingsRecognition(false);
                 }
-                okAlert(player.getPlayerName() + " won the the Quest!, +" + game.getCurrentQuest().getShields() + " shields", "Quest won!");
+                okAlert(player.getPlayerName() + " won the the quest!\n +" + game.getCurrentQuest().getShields() + " shields", "Quest won!");
             }
         }
         else{
@@ -702,6 +702,8 @@ public class Controller implements PropertyChangeListener {
             currentBehaviour = Behaviour.DEFAULT;
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
+        } else {
+            handFull(game.getCurrentPlayer());
         }
         continueButton.setVisible(false);
         update();
@@ -984,6 +986,63 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void initialize() {
+        List<String> choices = new ArrayList<>();
+        choices.add("Boar Hunt");
+        choices.add("Modified Boar Hunt");
+        choices.add("Strategy 1");
+        choices.add("Strategy 2");
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("Boar Hunt", choices);
+        dialog.setTitle("Scenario selection.");
+        dialog.setHeaderText("Select Scenario");
+        dialog.setContentText("Please select the scenario you would like:");
+        Optional<String> result = dialog.showAndWait();
+        // The Java 8 way to get the response value (with lambda expression).
+        String scenario = "Boar Hunt";
+        if (result.isPresent()) {
+            scenario = result.get();
+        }
+
+        Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
+        Collections.shuffle(deckOfAdventureCards);
+
+        switch (scenario){
+            case "Boar Hunt":
+                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
+                        game.removeFromStoryDeck(storyCard);
+                        break;
+                    }
+                }
+                game.addToStoryDeck(new BoarHunt());
+                break;
+            case "Modified Boar Hunt":
+                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
+                        game.removeFromStoryDeck(storyCard);
+                        break;
+                    }
+                }
+                game.addToStoryDeck(new BoarHunt());
+                break;
+            case "Strategy 1":
+                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
+                        game.removeFromStoryDeck(storyCard);
+                        break;
+                    }
+                }
+                game.addToStoryDeck(new TournamentAtOrkney());
+                break;
+            case "Strategy 2":
+                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+                    if(storyCard instanceof SlayTheDragon){ //to preserve deck card ratios
+                        game.removeFromStoryDeck(storyCard);
+                        break;
+                    }
+                }
+                game.addToStoryDeck(new SlayTheDragon());
+                break;
+        }
         int numberOfPlayersResult = getNumberOfPlayers();
         if(numberOfPlayersResult == 0){
             okAlert("Error starting game, not enough players!", "Error.");
@@ -997,7 +1056,7 @@ public class Controller implements PropertyChangeListener {
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
         cardsHbox.setAlignment(Pos.BASELINE_CENTER);
-        game.shuffleAndDeal();
+        game.dealCards(deckOfAdventureCards);
         game.addChangeListener(this);
         update();
 
