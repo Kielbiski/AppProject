@@ -399,6 +399,7 @@ public class Model implements PropertyChangeListener
     }
 
     void removeFromStoryDeck(StoryCard storyCard){
+        logger.info("Removing:"+storyCard.getName()+" from the story card.");
         deckOfStoryCards.remove(storyCard);
     }
 
@@ -416,6 +417,7 @@ public class Model implements PropertyChangeListener
     }
 
     public void addToAdventureDeck(AdventureCard adventureCard){
+        logger.info(" Add a card to the adventure card:"+adventureCard.getName()+" ." );
         deckOfAdventureCards.push(adventureCard);
     }
 
@@ -430,13 +432,16 @@ public class Model implements PropertyChangeListener
     }
 
     void addToDiscardAdventure(AdventureCard card){
+        logger.info("Discarding :"+card.getName()+" to the discard card.");
         discardOfAdventureCards.add(card);
     }
 
     void addToPotentialStage(AdventureCard card, int stageNum){
+        logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
     }
     void removeFromPotentialStage(AdventureCard card, int stageNum){
+        logger.info("Remove the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).remove(card);
     }
     void resetPotentialStages(){
@@ -444,6 +449,7 @@ public class Model implements PropertyChangeListener
         for(int i = 0; i<currentQuest.getNumStage();i++){
             preQuestStageSetup.put(i,new ArrayList<>());
         }
+        logger.info("Resetting potential pre-stage");
     }
 
 //    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
@@ -452,6 +458,7 @@ public class Model implements PropertyChangeListener
 //    }
 
     public ArrayList<Player> getWinningPlayers() {
+        logger.info(" returning winning player.");
         return winningPlayers;
     }
 
@@ -468,6 +475,7 @@ public class Model implements PropertyChangeListener
     }
 
     public boolean isWinner() {
+        logger.info(" Verifying if there only one winner");
         ArrayList<Player> knightsOfTheRoundTable = new ArrayList<>();
         for(Player player : players){
             if (player.getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) {
@@ -500,25 +508,30 @@ public class Model implements PropertyChangeListener
 
     private void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI
+        logger.info("Notify of the hand is full.");
         notifyListeners(player,oldFull,true);
 
     }
     private void callToArms(Player player){
         //later do somethign different here if player type is AI
+        logger.info("Call the arm to track for this"+player.getPlayerName()+".");
         notifyListeners(player);
     }
     private void notifyListeners(Object object, boolean oldFull, boolean newFull) {
+        logger.info("Inform listener of the handfull.");
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, "handFull", oldFull, newFull));
         }
     }
     private void notifyListeners(Object object) {
+        logger.info("Notify listener of callToArm");
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, "callToArms","",""));
         }
     }
 
     public void addChangeListener(PropertyChangeListener newListener) {
+        logger.info("Adding a new listener");
         listener.add(newListener);
     }
 
@@ -556,4 +569,5 @@ public class Model implements PropertyChangeListener
         }
     }
 }
+
 
