@@ -324,6 +324,7 @@ public class Player {
         } else {
             rank = Rank.KNIGHT_OF_THE_ROUND_TABLE;
         }
+
         setPlayerRank(rank);
     }
 
@@ -333,6 +334,8 @@ public class Player {
             removeCardFromHand(adventureCard);
         }
     }
+
+
 
     public int getRequiredShieldsForNextRank(){ return getRankShields(playerRank.next())-shields; }
 
