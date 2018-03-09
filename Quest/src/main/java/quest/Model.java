@@ -290,6 +290,7 @@ public class Model implements PropertyChangeListener
                 deckOfAdventureCards.add(adventureCard);
             }
         }
+        deckOfAdventureCards.add(new Merlin());
         logger.info("storing all adventure cards into the deck of adventure cards.");
 
         //Create HashMap to store number of occurrences of each StoryCard

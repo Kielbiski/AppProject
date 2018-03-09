@@ -99,6 +99,26 @@ public class Controller implements PropertyChangeListener {
             event.consume();
         });
 
+        imgView.setOnMouseClicked((MouseEvent event) -> {
+            if(currentBehaviour==Behaviour.QUEST_MEMBER) {
+                if (card instanceof Merlin) {
+                    if (!((Merlin) card).isWasUsed()){
+                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
+                        if(useMerlin){
+                            flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
+                            for (AdventureCard adCard : game.getPreQuestStageSetup().get(game.getCurrentQuest().getCurrentStageIndex()+1)) {
+                                ImageView imgView2 = createAdventureCardImageView(adCard);
+                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
+                                imgView2.toFront();
+                                flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
+                            }
+                            ((Merlin) card).setWasUsed(true);
+                        }
+                    }
+                }
+            }
+            event.consume();
+        });
         return imgView;
     }
 
@@ -222,7 +242,7 @@ public class Controller implements PropertyChangeListener {
                             currentBehaviour = Behaviour.QUEST_MEMBER;
                             continueButton.setDisable(false);
                             discardPane.setVisible(false);
-
+                            game.getCurrentQuest().setInTest(false);
                         }
                         update();
                         success = true;
@@ -334,6 +354,10 @@ public class Controller implements PropertyChangeListener {
         });
         flowPaneArray.add(stagePane);
         stagesGridPane.add(stagePane,stageIndex,0);
+    }
+
+    private void setCurrentBehaviour(Behaviour behave){
+        currentBehaviour = behave;
     }
 
     private void update() {
@@ -534,9 +558,11 @@ public class Controller implements PropertyChangeListener {
                 for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
                     game.getCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
                 }
+                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
+                update();
                 game.getCurrentQuest().startQuest();
                 if(!game.getCurrentQuest().isInTest()){
-                    currentBehaviour = Behaviour.QUEST_MEMBER;
+                    setCurrentBehaviour(Behaviour.QUEST_MEMBER);
                     setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
                     update();
                 }
@@ -609,7 +635,7 @@ public class Controller implements PropertyChangeListener {
             if(currentBehaviour!=Behaviour.DISCARD){
                 previousBehaviour = currentBehaviour;
             }
-            currentBehaviour = Behaviour.DISCARD;
+            setCurrentBehaviour(Behaviour.DISCARD);
             nextTurnButton.setDisable(true);
             okAlert(player.getPlayerName() + ", you must play or discard a card.", "Hand Full!");
             discardPane.setVisible(true);
@@ -720,7 +746,7 @@ public class Controller implements PropertyChangeListener {
         game.setSponsor(null);
         previousBehaviour = Behaviour.DEFAULT;
         if(!game.getCurrentPlayer().handFull) {
-            currentBehaviour = Behaviour.DEFAULT;
+            setCurrentBehaviour(Behaviour.DEFAULT);
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
         }
@@ -733,7 +759,7 @@ public class Controller implements PropertyChangeListener {
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
         setActivePlayer(sponsor);
-        currentBehaviour = Behaviour.SPONSOR;
+        setCurrentBehaviour(Behaviour.SPONSOR);
         continueButton.setVisible(true);
 
         for(int i = 0;i<quest.getNumStage();i++){
@@ -806,12 +832,11 @@ public class Controller implements PropertyChangeListener {
                     testPlayers.remove(player);
                 }
                 testPlayersToRemove.clear();
-                game.getCurrentQuest().setInTest(false);
                 testPlayers.get(0).setCurrentBid(currentHighestBid);
                 game.getCurrentQuest().setPlayerList(testPlayers);
                 continueButton.setDisable(true);
-                okAlert(testPlayers.get(0).getPlayerName() + " won the test with " + currentHighestBid + " bids.", "Test Over");
-                currentBehaviour = Behaviour.BID;
+                okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
+                setCurrentBehaviour(Behaviour.BID);
                 activePlayer=testPlayers.get(0);
                 if(activePlayer instanceof AbstractAI){
                     runAITurn((AbstractAI) activePlayer);
@@ -821,6 +846,7 @@ public class Controller implements PropertyChangeListener {
                 discardPane.setDisable(false);
                 logger.info("Current player with highest bid" + testPlayers.get(0) +" for this testStage." );
                 update();
+                break;
             }
         }
 
@@ -856,7 +882,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void performTournament(ArrayList<Player> currentPlayerOrder, Tournament tournament) {
-        currentBehaviour = Behaviour.TOURNAMENT;
+        setCurrentBehaviour(Behaviour.TOURNAMENT);
         addTournamentPlayers(tournament);
         if(!tournament.isTournamentOver()){
             tournament.setCurrentPlayer(tournament.getPlayerList().get(0));
@@ -915,7 +941,7 @@ public class Controller implements PropertyChangeListener {
         }
         game.getCurrentTournament().setTournamentOver(true);
         game.setCurrentTournament(null);
-        currentBehaviour = Behaviour.DEFAULT;
+        setCurrentBehaviour(Behaviour.DEFAULT);
         nextTurnButton.setVisible(true);
         nextTurnButton.setDisable(false);
         continueButton.setVisible(false);
@@ -973,7 +999,7 @@ public class Controller implements PropertyChangeListener {
 
     private void callToArms(Player player){
         previousBehaviour =currentBehaviour;
-        currentBehaviour = Behaviour.CALL_TO_ARMS;
+        setCurrentBehaviour(Behaviour.CALL_TO_ARMS);
         update();
         int foeCount =0;
         int weaponCount =0;
@@ -984,7 +1010,7 @@ public class Controller implements PropertyChangeListener {
         okAlert(player.getPlayerName() + ", you must discard 1 Weapon. If you have no weapons, you must discard 2 Foes ","Call to Arms");
         if(foeCount==0 && weaponCount==0){
             okAlert("No weapons or foes to discard","Notice:");
-            currentBehaviour = previousBehaviour;
+            setCurrentBehaviour(previousBehaviour);
         }
         else{
             nextTurnButton.setDisable(true);
@@ -1035,7 +1061,7 @@ public class Controller implements PropertyChangeListener {
             callEventEffect(gameEvent);
         } else if (game.getCurrentStory() instanceof Tournament) {
             game.setCurrentTournament((Tournament)game.getCurrentStory());
-            currentBehaviour = Behaviour.TOURNAMENT;
+            setCurrentBehaviour(Behaviour.TOURNAMENT);
         }
         if(currentBehaviour == Behaviour.SPONSOR) {
             for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
@@ -1193,7 +1219,7 @@ public class Controller implements PropertyChangeListener {
         }
         setPlayerNames(numberOfPlayersResult);
         NUM_PLAYERS = numberOfPlayersResult;
-        currentBehaviour = Behaviour.DEFAULT;
+        setCurrentBehaviour(Behaviour.DEFAULT);
         currentTurnPlayer = game.getPlayers().get(0);
         setActivePlayer(game.getPlayers().get(0));
         playerStatsVbox.setSpacing(5);

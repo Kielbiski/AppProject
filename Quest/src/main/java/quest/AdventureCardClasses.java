@@ -224,9 +224,20 @@ class KingPellinore extends Ally {
 }
 
 class Merlin extends Ally {
+    boolean wasUsed = false;
+
+    public boolean isWasUsed() {
+        return wasUsed;
+    }
+
+    public void setWasUsed(boolean wasUsed) {
+        this.wasUsed = wasUsed;
+    }
+
     Merlin(){
         super("Merlin", "A_Merlin.jpg", 0, 0, 0, 0, "");
     }
+
 }
 
 class QueenGuinevere extends Ally {
