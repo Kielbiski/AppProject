@@ -1,4 +1,4 @@
-package quest;
+ackage quest;
 
 
 import org.apache.logging.log4j.LogManager;
@@ -16,6 +16,6 @@ class Strategy1 extends AbstractAI {
         this.nextBid= new NextBidStrategy1();
         this.quest= new DoIParticipateInQuestStrategy1();
 
-        logger.info("Calling strategy1 AI constructor for: "+paramName+".");
+        logger.info("Successfully called : AI Strategy 1 constructor for"+this.getPlayerName()+".");
     }
 }

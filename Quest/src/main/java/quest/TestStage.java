@@ -19,6 +19,7 @@ public class TestStage extends QuestStage {
     }
 
     public AdventureCard getSponsorTestCard() {
+        logger.info("Returning this sponsored card :"+sponsorTestCard.getName()+".");
         return sponsorTestCard;
     }
 }
