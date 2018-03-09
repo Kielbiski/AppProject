@@ -522,9 +522,11 @@ public class Controller implements PropertyChangeListener {
                     game.getCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
                 }
                 game.getCurrentQuest().startQuest();
-                currentBehaviour = Behaviour.QUEST_MEMBER;
-                setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
-                update();
+                if(!game.getCurrentQuest().isInTest()){
+                    currentBehaviour = Behaviour.QUEST_MEMBER;
+                    setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+                    update();
+                }
             } else {
                 okAlert("Please set up a valid quest ","Error in quest stages.");
                 for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
@@ -719,58 +721,63 @@ public class Controller implements PropertyChangeListener {
 
     private void performTest(){
 
-        ArrayList<Player> testPlayers = game.getCurrentQuest().getPlayerList();
+        ArrayList<Player> testPlayers = game.getCurrentQuest().getCurrentStage().getParticipatingPlayers();
         ArrayList<Player> testPlayersToRemove = new ArrayList<>();
 
         int currentHighestBid = 0;
-        int currentBid;
         int minBids = 3;
-        int currentTestPlayerIndex=0;
-        int currentNumInTest = testPlayers.size();
-        Player currentTestPlayer;
         if(game.getCurrentStory().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
             minBids = 4;
         }
+        int currentBid=minBids;
+        int currentTestPlayerIndex=0;
+        int currentNumInTest = testPlayers.size();
+        Player currentTestPlayer;
+
         while(game.getCurrentQuest().isInTest()) {
             currentTestPlayer=testPlayers.get(currentTestPlayerIndex);
-            List<String> choices = new ArrayList<>();
-            for(int i = minBids; i < activePlayer.getNumCardsInHand(); i++){
-                choices.add(Integer.toString(i+1));
-            }
-            choices.add("Drop Out");
-            ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(minBids), choices);
-            dialog.setTitle("Bid.");
-            dialog.setHeaderText("Number of cards to bid?");
-            dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
-            Optional<String> result = dialog.showAndWait();
-            // The Java 8 way to get the response value (with lambda expression).
-            String cardsToBid = "Drop Out";
-            if (result.isPresent()) {
-                cardsToBid = result.get();
-            }
-            if(cardsToBid.equals("Drop Out")){
-                currentBid = 0;
-                testPlayersToRemove.add(currentTestPlayer);
-            } else {
-                currentBid = Integer.parseInt(cardsToBid);
-            }
-            if(currentBid > currentHighestBid){
-                currentHighestBid = currentBid;
-            }
-            currentTestPlayerIndex++;
-            if(currentTestPlayerIndex>currentNumInTest){
-                currentTestPlayerIndex=0;
-                for(Player player: testPlayersToRemove){
-                    testPlayers.remove(player);
+            setActivePlayer(currentTestPlayer);
+            update();
+
+            if(testPlayers.size()!=1) {
+                List<String> choices = new ArrayList<>();
+                for (int i = currentBid; i < activePlayer.getNumCardsInHand(); i++) {
+                    choices.add(Integer.toString(i + 1));
                 }
-                currentNumInTest = testPlayers.size();
-                testPlayersToRemove.clear();
+                choices.add("Drop Out");
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid), choices);
+                dialog.setTitle("Bid.");
+                dialog.setHeaderText("Number of cards to bid?");
+                dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
+                Optional<String> result = dialog.showAndWait();
+                // The Java 8 way to get the response value (with lambda expression).
+                String cardsToBid = "Drop Out";
+                if (result.isPresent()) {
+                    cardsToBid = result.get();
+                }
+                if (cardsToBid.equals("Drop Out")) {
+                    testPlayersToRemove.add(currentTestPlayer);
+                } else {
+                    currentBid = Integer.parseInt(cardsToBid);
+                }
+                if (currentBid > currentHighestBid) {
+                    currentHighestBid = currentBid;
+                }
+                currentTestPlayerIndex++;
+                if (currentTestPlayerIndex >= currentNumInTest) {
+                    currentTestPlayerIndex = 0;
+                    for (Player player : testPlayersToRemove) {
+                        testPlayers.remove(player);
+                    }
+                    currentNumInTest = testPlayers.size();
+                    testPlayersToRemove.clear();
+                }
             }
-            if(testPlayers.size()==1){
+            else{
                 game.getCurrentQuest().setInTest(false);
                 testPlayers.get(0).setCurrentBid(currentHighestBid);
                 game.getCurrentQuest().setPlayerList(testPlayers);
-                okAlert(testPlayers.get(0) + " won the test, discard your bids", "Test Over");
+                okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
                 currentBehaviour = Behaviour.BID;
                 logger.info("Current player with highest bid" + testPlayers.get(0) +" for this testStage." );
             }
