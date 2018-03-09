@@ -178,7 +178,7 @@ public class Player {
         updateRank(shields);
     }
 
-    private void setPlayerRank(Rank paramRank){
+    public void setPlayerRank(Rank paramRank){
         logger.info("Set " + this.playerName+ " rank.");
         playerRank = paramRank;
     }

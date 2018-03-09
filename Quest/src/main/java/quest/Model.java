@@ -124,6 +124,9 @@ public class Model implements PropertyChangeListener
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
                 int currentStageBattlePoints = 0;
                 int foeCount = 0;
+                if(getPreQuestStageSetup().get(i) == null){
+                    return false;
+                }
                 for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
                     int adventureCardBattlePoints = adventureCard.getBattlePoints();
                     if (adventureCard instanceof Test) {
