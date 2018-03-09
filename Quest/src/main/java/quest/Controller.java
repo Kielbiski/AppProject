@@ -586,7 +586,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
         if(player == game.getCurrentPlayer()) {
-            if(currentBehaviour != Behaviour.DISCARD){
+            if(currentBehaviour!=Behaviour.DISCARD){
                 previousBehaviour = currentBehaviour;
             }
             currentBehaviour = Behaviour.DISCARD;
@@ -693,9 +693,9 @@ public class Controller implements PropertyChangeListener {
         game.getPreQuestStageSetup().clear();
         game.clearQuest();
         setActivePlayer(game.getSponsor());
+        currentBehaviour = Behaviour.DEFAULT;
         game.setSponsor(null);
         if(!game.getCurrentPlayer().handFull) {
-            currentBehaviour = Behaviour.DEFAULT;
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
         }
