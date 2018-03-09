@@ -139,8 +139,7 @@ public class Controller implements PropertyChangeListener {
                             activePlayer.removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
-                    }
-                    else if(currentBehaviour == Behaviour.DISCARD){
+                    } else if(currentBehaviour == Behaviour.DISCARD){
                         if (!(selectedAdventureCard instanceof Foe) && !(selectedAdventureCard instanceof Weapon)) {
                             activePlayer.addCardToTable(selectedAdventureCard);
                             activePlayer.removeCardFromHand(selectedAdventureCard);
@@ -360,8 +359,8 @@ public class Controller implements PropertyChangeListener {
             playerLabel.setMinWidth(Region.USE_PREF_SIZE);
             playerLabel.setText(player.getPlayerName() + "\n" +
                     "" + player.stringifyRank() + "\n" +
-                    "" + player.getShields() + " shields \n" +
-                    "" + player.getNumCardsInHand() + " cards");
+                    "" + player.getShields() + " Shields\n" +
+                    "" + player.getNumCardsInHand() + " Cards");
             playerStatsVbox.getChildren().add(playerLabel);
         }
         //Hbox hand display card images
@@ -672,7 +671,7 @@ public class Controller implements PropertyChangeListener {
                     player.setShields(player.getShields() + 3);
                     game.setKingsRecognition(false);
                 }
-                okAlert(player.getPlayerName() + " won the the quest!\n +" + game.getCurrentQuest().getShields() + " shields", "Quest won!");
+                okAlert(player.getPlayerName() + " won the the quest, and received " + game.getCurrentQuest().getShields() + " shields!", "Quest won!");
             }
         }
         else{
@@ -697,8 +696,6 @@ public class Controller implements PropertyChangeListener {
             currentBehaviour = Behaviour.DEFAULT;
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
-        } else {
-            handFull(game.getCurrentPlayer());
         }
         continueButton.setVisible(false);
         update();
@@ -853,7 +850,7 @@ public class Controller implements PropertyChangeListener {
     private void tournamentOver(){
 
         for (Player player : game.getCurrentTournament().getWinners()) {
-            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament!, +" + game.getCurrentTournament().getShields() + " shields", ButtonType.OK);
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament, and received " + game.getCurrentTournament().getShields() + " shields!", ButtonType.OK);
             DialogPane dialog = alert.getDialogPane();
             dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
             dialog.getStyleClass().add("alertDialogs");
@@ -1046,17 +1043,18 @@ public class Controller implements PropertyChangeListener {
 
     public void initialize() {
         List<String> choices = new ArrayList<>();
+        choices.add("Regular");
         choices.add("Boar Hunt");
         choices.add("Modified Boar Hunt");
         choices.add("Strategy 1");
         choices.add("Strategy 2");
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Boar Hunt", choices);
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("Regular", choices);
         dialog.setTitle("Scenario selection.");
         dialog.setHeaderText("Select Scenario");
         dialog.setContentText("Please select the scenario you would like:");
         Optional<String> result = dialog.showAndWait();
         // The Java 8 way to get the response value (with lambda expression).
-        String scenario = "Boar Hunt";
+        String scenario = "Regular";
         if (result.isPresent()) {
             scenario = result.get();
         }
@@ -1065,6 +1063,8 @@ public class Controller implements PropertyChangeListener {
         Collections.shuffle(deckOfAdventureCards);
 
         switch (scenario){
+            case "Regular":
+                break;
             case "Boar Hunt":
                 for(StoryCard storyCard : game.getDeckOfStoryCards()){
                     if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
@@ -1139,7 +1139,13 @@ public class Controller implements PropertyChangeListener {
                 playerType = playerTypeResult.get();
             }
             final String playerTypeFinal = playerType;
-            TextInputDialog dialog = new TextInputDialog("Enter Name");
+            String playerString;
+            if(playerType.equals("Human")){
+                playerString = "Player";
+            } else {
+                playerString = playerType;
+            }
+            TextInputDialog dialog = new TextInputDialog(playerString + (i+1));
             if(playerType.equals("CPU")){
                 dialog.setTitle("Set CPU name");
                 dialog.setHeaderText("Please enter the name for CPU" + (i+1) + ".");
