@@ -190,14 +190,16 @@ public class Quest extends StoryCard { //story card
     }
 
     public void wipeWeapons(){
-        for(Player player: playerList){
-            ArrayList<AdventureCard> found = new ArrayList<>();
-            for(AdventureCard card: player.getCardsOnTable()){
-                if(card instanceof Weapon){
-                    found.add(card);
+        if(playerList!=null) {
+            for (Player player : playerList) {
+                ArrayList<AdventureCard> found = new ArrayList<>();
+                for (AdventureCard card : player.getCardsOnTable()) {
+                    if (card instanceof Weapon) {
+                        found.add(card);
+                    }
                 }
+                player.getCardsOnTable().removeAll(found);
             }
-            player.getCardsOnTable().removeAll(found);
         }
     }
 
