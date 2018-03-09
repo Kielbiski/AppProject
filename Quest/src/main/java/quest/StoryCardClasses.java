@@ -252,7 +252,7 @@ class Plague extends Event {
         if (activePlayer.getShields() < 2) {
             activePlayer.setShields(0);
         } else {
-            activePlayer.setShields(playersToAffect.get(0).getShields() - 2);
+            activePlayer.setShields(activePlayer.getShields() - 2);
         }
     }
 }
@@ -381,5 +381,15 @@ class TournamentAtYork extends Tournament {
     TournamentAtYork(){
         super("Tournament at York", "TM_York.jpg", 0, new ArrayList<>());
         logger.info("Successfully called : Tournament at York constructor.");
+    }
+}
+
+class TournamentFinal extends Tournament {
+
+    private static final Logger logger = LogManager.getLogger(App.class);
+
+    TournamentFinal(){
+        super("Tournament Final", "Facedown.png", 0, new ArrayList<>());
+        logger.info("Successfully called : Tournament at Camelot constructor.");
     }
 }

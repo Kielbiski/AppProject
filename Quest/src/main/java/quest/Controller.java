@@ -499,40 +499,32 @@ public class Controller implements PropertyChangeListener {
         alert.showAndWait();
     }
 
-    private boolean isGameOver(){
-        ArrayList<Player> winningPlayers = getWinningPlayers();
-        if(winningPlayers.size() > 0){
-            for(Player winningPlayer : winningPlayers) {
-                okAlert(winningPlayer.getPlayerName() + " won the game!", "Winner.");
-            }
-            return true;
-        }
-        return false;
-
-    }
 
 //    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants) {
 //        Tournament knightsOfTheRoundTableTournament = new Tournament("Knights of the Round Table Tournament", "", tournamentParticipants);
 //        return knightsOfTheRoundTableTournament.getTournamentWinner();
 //    }
 
-    private ArrayList<Player> getWinningPlayers() {
-        ArrayList<Player> winningPlayers = new ArrayList<>();
-//        ArrayList<Player> knightsOfTheRoundTable;
-//        knightsOfTheRoundTable = new ArrayList<>();
-//        for (Player player : model.getPlayers()) {
-//            if (player.getPlayerRank() == KNIGHT_OF_THE_ROUND_TABLE) {
-//                knightsOfTheRoundTable.add(player);
-//            }
-//        }
-//        if (knightsOfTheRoundTable.isEmpty()){
-//        } else (knightsOfTheRoundTable.size() == 1) {
-//            winningPlayers = knightsOfTheRoundTable;
-//        }
-////        else {
-////            //winningPlayers = finalTournament(knightsOfTheRoundTable);
-////        }
-        return winningPlayers;
+    private void getWinningPlayers() {
+        ArrayList<Player> knightsOfTheRoundTable;
+        knightsOfTheRoundTable = new ArrayList<>();
+        for (Player player : game.getPlayers()) {
+            if (player.stringifyRank().equals("Knight of the Round Table")) {
+                knightsOfTheRoundTable.add(player);
+            }
+        }
+        if (knightsOfTheRoundTable.isEmpty()){ }
+        else if (knightsOfTheRoundTable.size() == 1) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, knightsOfTheRoundTable.get(0).getPlayerName() + " won the the Game!");
+            DialogPane dialog = alert.getDialogPane();
+            dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
+            dialog.getStyleClass().add("alertDialogs");
+            alert.showAndWait();
+            exit(0);
+        }
+        else {
+            performTournament(knightsOfTheRoundTable,new TournamentFinal());
+        }
     }
 
     //TURNS
@@ -577,13 +569,9 @@ public class Controller implements PropertyChangeListener {
         else if(currentBehaviour == Behaviour.QUEST_MEMBER){
             game.getCurrentQuest().nextTurn();
             if(game.getCurrentQuest().isFinished()){
-                if(game.isWinner()){
-                    System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
-                    System.exit(0);
-                }
-                else{
-                    questOver();
-                }
+                getWinningPlayers();
+                questOver();
+
             }
             else{
                 if(game.getCurrentQuest().isInTest()) {
@@ -741,6 +729,7 @@ public class Controller implements PropertyChangeListener {
         if(game.getSponsor() == null){
             setActivePlayer(currentTurnPlayer);
             nextTurnButton.setVisible(true);
+            nextTurnButton.setDisable(false);
             continueButton.setVisible(false);
         }
     }
@@ -867,6 +856,7 @@ public class Controller implements PropertyChangeListener {
                     }
                     if (cardsToBid.equals("Drop Out")) {
                         testPlayersToRemove.add(currentTestPlayer);
+                        logger.info("Player " + currentTestPlayer.getPlayerName() + "left the quest");
                     } else {
                         currentBid = Integer.parseInt(cardsToBid);
                     }
@@ -876,7 +866,14 @@ public class Controller implements PropertyChangeListener {
                     currentTestPlayerIndex++;
                 }
                 else{
-                    //((AbstractAI) currentTestPlayer).nextBid()
+                    currentBid = ((AbstractAI) currentTestPlayer).nextBid(currentTestPlayer.getCardsInHand());
+                    if (currentBid > currentHighestBid) {
+                        currentHighestBid = currentBid;
+                    }
+                    else{
+                        testPlayersToRemove.add(currentTestPlayer);
+                    }
+                    currentTestPlayerIndex++;
                 }
             }
             else{
@@ -887,15 +884,40 @@ public class Controller implements PropertyChangeListener {
                 testPlayers.get(0).setCurrentBid(currentHighestBid);
                 game.getCurrentQuest().setPlayerList(testPlayers);
                 continueButton.setDisable(true);
-                okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
-                setCurrentBehaviour(Behaviour.BID);
-                activePlayer=testPlayers.get(0);
-                if(activePlayer instanceof AbstractAI){
+                if(!(testPlayers.get(0) instanceof AbstractAI)) {
+                    okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
+                    setCurrentBehaviour(Behaviour.BID);
+                    activePlayer=testPlayers.get(0);
+                    bidsToDo = currentHighestBid - (testPlayers.get(0).getBidDiscount(game.getCurrentQuest()));
+                    discardPane.setVisible(true);
+                    discardPane.setDisable(false);
+                }else{
+                    ((AbstractAI) currentTestPlayer).discardAfterWinningTest(currentTestPlayer.getCardsInHand());
+                    currentBehaviour = Behaviour.QUEST_MEMBER;
+                    continueButton.setDisable(false);
+                    discardPane.setVisible(false);
+                    game.getCurrentQuest().setInTest(false);
+                    game.getCurrentQuest().nextTurn();
+                    if(game.getCurrentQuest().isFinished()){
+                        if(game.isWinner()){
+                            System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
+                            System.exit(0);
+                        }
+                        else{
+                            questOver();
+                        }
+                    }
+                    else{
+                        if(game.getCurrentQuest().isInTest()) {
+                            setActivePlayer(game.getCurrentQuest().getCurrentPlayer());
+                        }
+                        else{
+                            activePlayer = game.getCurrentQuest().getCurrentPlayer();
 
+                        }
+                    }
                 }
-                bidsToDo = currentHighestBid - (testPlayers.get(0).getBidDiscount(game.getCurrentQuest()));
-                discardPane.setVisible(true);
-                discardPane.setDisable(false);
+
                 logger.info("Current player with highest bid" + testPlayers.get(0) +" for this testStage." );
                 update();
                 break;
@@ -949,13 +971,7 @@ public class Controller implements PropertyChangeListener {
                     ai.playCardsAI(ai.whatIPlay(ai.getCardsInHand(), game.getPlayers(), game.getCurrentTournament().getShields()));
                     game.getCurrentTournament().nextTurn();
                     if(game.getCurrentTournament().isTournamentOver()){
-                        if(game.isWinner()){
-                            System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
-                            System.exit(0);
-                        }
-                        else{
-                            tournamentOver();
-                        }
+                        tournamentOver();
                     }
                     else{
                         setActivePlayer(game.getCurrentTournament().getCurrentPlayer());
@@ -994,6 +1010,17 @@ public class Controller implements PropertyChangeListener {
 
     private void tournamentOver(){
 
+        if(game.getCurrentTournament() instanceof TournamentFinal){
+            for (Player player : game.getCurrentTournament().getWinners()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Game!");
+                DialogPane dialog = alert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                alert.showAndWait();
+            }
+            exit(0);
+        }
+
         for (Player player : game.getCurrentTournament().getWinners()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament, and received " + game.getCurrentTournament().getShields() + " shields!", ButtonType.OK);
             DialogPane dialog = alert.getDialogPane();
@@ -1008,6 +1035,7 @@ public class Controller implements PropertyChangeListener {
         nextTurnButton.setDisable(false);
         continueButton.setVisible(false);
         setActivePlayer(game.getPlayers().get(game.getCurrentTurnIndex()));
+        getWinningPlayers();
         update();
         if(activePlayer instanceof AbstractAI){
             runAITurn();
@@ -1260,6 +1288,7 @@ public class Controller implements PropertyChangeListener {
         setCurrentBehaviour(Behaviour.DEFAULT);
         currentTurnPlayer = game.getPlayers().get(0);
         setActivePlayer(game.getPlayers().get(0));
+        game.getPlayers().get(0).setShields(19);
         playerStatsVbox.setSpacing(5);
         playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
         cardsHbox.setAlignment(Pos.BASELINE_CENTER);
