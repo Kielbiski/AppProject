@@ -17,13 +17,7 @@ public class Strategy2 extends AbstractAI {
         this.TournamentAnswer = new DoIParticipateInTournamentStrategy2();
         this.nextBid= new NextBidStrategy2();
         this.quest= new DoIParticipateInQuestStrategy2();
-
+        logger.info("Successfully called : AI Strategy 2 constructor for"+this.getPlayerName()+".");
     }
-
-
-
-
-
-
-
+    
 }
