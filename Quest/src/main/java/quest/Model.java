@@ -120,10 +120,10 @@ public class Model implements PropertyChangeListener
 
     public boolean validateQuestStages() {
         int lastStageBattlePoints = 0;
+        int testCount =0;
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
                 int currentStageBattlePoints = 0;
                 int foeCount = 0;
-                int testCount =0;
                 for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
                     int adventureCardBattlePoints = adventureCard.getBattlePoints();
                     if (adventureCard instanceof Test) {
@@ -152,11 +152,11 @@ public class Model implements PropertyChangeListener
                 } else {
                     return false;
                 }
-                if(foeCount==0 && testCount ==0 || foeCount > 1){
+                if(foeCount == 0 && testCount == 0 || foeCount > 1){
                     return false;
                 }
         }
-        return true;
+        return testCount <= 1;
     }
 
     Model() {
@@ -340,10 +340,6 @@ public class Model implements PropertyChangeListener
                 deckOfStoryCards.add(storyCard);
             }
         }
-        deckOfStoryCards.add(new TournamentAtOrkney());
-        deckOfStoryCards.add(new Pox());
-        deckOfStoryCards.add(new Pox());
-        deckOfStoryCards.add(new Pox());
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -386,8 +382,10 @@ public class Model implements PropertyChangeListener
             players.add(newPlayer);
         } else {
             AbstractAI aI;
-            if(name.endsWith("_S2")) {
-                aI = new Strategy2(name);
+            if(name.toLowerCase().endsWith("_s2")) {
+                aI = new Strategy2(name.substring(0,name.length() - 3));
+            } else if (name.toLowerCase().endsWith("_s1")){
+                aI = new Strategy1(name.substring(0,name.length() - 3));
             } else {
                 aI = new Strategy1(name);
             }
