@@ -1,6 +1,7 @@
 package quest;
 
 
+import com.sun.istack.internal.NotNull;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -51,11 +52,11 @@ public abstract class AbstractAI extends Player{
     }
 
 
-    public boolean doISponsor(ArrayList<Player> paramPlayerList, ArrayList<AdventureCard> paramCard, int paramNumstage, int paramShields)
+    public boolean doISponsor(ArrayList<Player> paramPlayerList, ArrayList<AdventureCard> paramCards,@NotNull Quest paramQuest)
     {
 
         logger.info(this.getPlayerName() + " is deciding on participating in the sponsoring a quest, using strategy: "+this.strategy+" .");
-        return sponsorQuest.doISponsor( paramPlayerList, paramCard,paramNumstage,  paramShields);
+        return sponsorQuest.doISponsor(paramPlayerList, paramCards, paramQuest.getNumStage(),  paramQuest.getShields());
 
     }
 
@@ -69,11 +70,11 @@ public abstract class AbstractAI extends Player{
     }
 
 
-    public AdventureCard sponsorQuestMidStage(ArrayList<AdventureCard> paramCard)
+    public ArrayList<AdventureCard> sponsorQuestMidStage(ArrayList<AdventureCard> paramCard)
     {
 
         logger.info(this.getPlayerName() + " is returning the mid stage setup cards, using strategy: "+this.strategy+" .");
-        return sponsorQuest.midStage(  paramCard);
+        return sponsorQuest.midStage(paramCard);
 
     }
 

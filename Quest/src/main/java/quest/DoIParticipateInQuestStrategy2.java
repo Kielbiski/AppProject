@@ -85,7 +85,7 @@ public class DoIParticipateInQuestStrategy2 extends DoIParticipateInQuest{
         }
 
         lastStagePoints= totalPoint;
-        return cardPlaying;
+        return new ArrayList<>(new HashSet<>(cardPlaying));
 
     }
 

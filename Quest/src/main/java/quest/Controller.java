@@ -465,7 +465,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private boolean isGameOver(){
-        ArrayList<Player> winningPlayers = getWinningPlayers(game);
+        ArrayList<Player> winningPlayers = getWinningPlayers();
         if(winningPlayers.size() > 0){
             for(Player winningPlayer : winningPlayers) {
                 okAlert(winningPlayer.getPlayerName() + " won the game!", "Winner.");
@@ -481,7 +481,7 @@ public class Controller implements PropertyChangeListener {
 //        return knightsOfTheRoundTableTournament.getTournamentWinner();
 //    }
 
-    private ArrayList<Player> getWinningPlayers(Model model) {
+    private ArrayList<Player> getWinningPlayers() {
         ArrayList<Player> winningPlayers = new ArrayList<>();
 //        ArrayList<Player> knightsOfTheRoundTable;
 //        knightsOfTheRoundTable = new ArrayList<>();
@@ -604,31 +604,35 @@ public class Controller implements PropertyChangeListener {
         activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
         update();
 
-        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-        int currentTurn = game.getPlayers().indexOf(activePlayer);
+        if(activePlayer instanceof AbstractAI){
+            runAITurn((AbstractAI) activePlayer);
+        } else {
+            ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+            int currentTurn = game.getPlayers().indexOf(activePlayer);
 
-        for(int i = 0; i < NUM_PLAYERS; i++){
-            currentPlayerOrder.add(game.getPlayers().get(currentTurn));
-            currentTurn = nextPlayerIndex(currentTurn);
+            for (int i = 0; i < NUM_PLAYERS; i++) {
+                currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+                currentTurn = nextPlayerIndex(currentTurn);
+            }
+            if (game.getCurrentStory() instanceof Quest) {
+                game.setCurrentQuest((Quest) game.getCurrentStory());
+                questDraw(currentPlayerOrder);
+            } else if (game.getCurrentStory() instanceof Event) {
+                nextTurnButton.setVisible(true);
+                System.out.println(game.getCurrentStory().getName());
+                Event gameEvent = (Event) game.getCurrentStory();
+                callEventEffect(gameEvent);
+            } else if (game.getCurrentStory() instanceof Tournament) {
+                nextTurnButton.setVisible(true);
+                game.setCurrentTournament((Tournament) game.getCurrentStory());
+                performTournament(currentPlayerOrder, game.getCurrentTournament());
+                nextTurnButton.setDisable(false);
+            }
+            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+            //activePlayer = game.getPlayers().get(currentPlayerIndex);
+            storyDeckImg.setDisable(true);
+            update();
         }
-        if (game.getCurrentStory() instanceof Quest) {
-            game.setCurrentQuest((Quest) game.getCurrentStory());
-            questDraw(currentPlayerOrder);
-        } else if (game.getCurrentStory() instanceof Event) {
-            nextTurnButton.setVisible(true);
-            System.out.println(game.getCurrentStory().getName());
-            Event gameEvent = (Event) game.getCurrentStory();
-            callEventEffect(gameEvent);
-        } else if (game.getCurrentStory() instanceof Tournament) {
-            nextTurnButton.setVisible(true);
-            game.setCurrentTournament((Tournament)game.getCurrentStory());
-            performTournament(currentPlayerOrder, game.getCurrentTournament());
-            nextTurnButton.setDisable(false);
-        }
-        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-        //activePlayer = game.getPlayers().get(currentPlayerIndex);
-        storyDeckImg.setDisable(true);
-        update();
     }
 
     //QUESTS
@@ -740,11 +744,11 @@ public class Controller implements PropertyChangeListener {
 
             if(testPlayers.size()!=1) {
                 List<String> choices = new ArrayList<>();
-                for (int i = currentBid; i < activePlayer.getNumCardsInHand(); i++) {
+                for (int i = currentBid+1; i < activePlayer.getNumCardsInHand(); i++) {
                     choices.add(Integer.toString(i + 1));
                 }
                 choices.add("Drop Out");
-                ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid), choices);
+                ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid+1), choices);
                 dialog.setTitle("Bid.");
                 dialog.setHeaderText("Number of cards to bid?");
                 dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
@@ -785,21 +789,27 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void addQuestPlayers(Quest currentQuest){
-        ArrayList<Player> questPlayers = new ArrayList<>();
+        ArrayList<Player> playersInQuest = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
             if(game.getPlayers().get(i) != game.getSponsor()) {
                 activePlayer = game.getPlayers().get(i);
                 update();
-                if (yesNoAlert("Join " + game.getCurrentStory().getName() +" " + activePlayer.getPlayerName() + "?", "Join quest?")) {
-                    questPlayers.add(game.getPlayers().get(i));
+                if(activePlayer instanceof AbstractAI){
+                    if(((AbstractAI)activePlayer).doIParticipateInQuest(activePlayer.getCardsInHand(),currentQuest.getNumStage())){
+                        playersInQuest.add(activePlayer);
+                    }
+                } else {
+                    if (yesNoAlert("Join " + game.getCurrentQuest().getName() + " " + activePlayer.getPlayerName() + "?", "Join quest?")) {
+                        playersInQuest.add(activePlayer);
+                    }
                 }
             }
         }
-        if(questPlayers.size() == 0){
+        if(playersInQuest.size() == 0){
             questOver();
         }
         else {
-            currentQuest.setPlayerList(questPlayers);
+            currentQuest.setPlayerList(playersInQuest);
         }
     }
 
@@ -943,27 +953,38 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void runAITurn(AbstractAI ai){
-        if(currentBehaviour == Behaviour.DEFAULT){
-            game.drawStoryCard();
-            activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
-            update();
-        }
+
         ArrayList<Player> currentPlayerOrder = new ArrayList<>();
         int currentTurn = game.getPlayers().indexOf(activePlayer);
         for(int i = 0; i < NUM_PLAYERS; i++){
             currentPlayerOrder.add(game.getPlayers().get(currentTurn));
             currentTurn = nextPlayerIndex(currentTurn);
         }
-        ArrayList<Player> noAIPlayers = new ArrayList<>();
-        for(Player player : game.getPlayers()){
-            if(!(player instanceof AbstractAI)){
-                noAIPlayers.add(player);
-            }
-        }
+//        ArrayList<Player> noAIPlayers = new ArrayList<>();
+//        for(Player player : game.getPlayers()){
+//            if(!(player instanceof AbstractAI)){
+//                noAIPlayers.add(player);
+//            }
+//        }
         if (game.getCurrentStory() instanceof Quest) {
             game.setCurrentQuest((Quest) game.getCurrentStory());
-            //BEHAVIOUR HERE
-            //questDraw(currentPlayerOrder);
+            ////////////////////////////////////////////////////////////////////
+            if(game.getSponsor() == null){
+                int validCardCount = 0;
+                for(AdventureCard adventureCard : ai.getCardsInHand()) {
+                    if ((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+                        validCardCount++;
+                    }
+                }
+                if (validCardCount >= game.getCurrentQuest().getNumStage()) {
+                    if(ai.doISponsor(game.getPlayers(), ai.getCardsInHand(), game.getCurrentQuest())){
+                        game.setSponsor(ai);
+                        game.getCurrentQuest().setSponsor(ai);
+                        currentBehaviour = Behaviour.SPONSOR;
+                    }
+                }
+            }
+            ////////////////////////////////////////////////////////////////////
         } else if (game.getCurrentStory() instanceof Event) {
             Event gameEvent = (Event) game.getCurrentStory();
             callEventEffect(gameEvent);
@@ -972,6 +993,15 @@ public class Controller implements PropertyChangeListener {
             currentBehaviour = Behaviour.TOURNAMENT;
         }
         if(currentBehaviour == Behaviour.SPONSOR) {
+            for(int i = 0; i<game.getCurrentQuest().getNumStage();i++){
+                if(i == 0){
+                    game.getCurrentQuest().addStage(game.createStage(ai.sponsorQuestFirstStage(ai.getCardsInHand())));
+                } else if (i < game.getCurrentQuest().getNumStage() - 1){
+                    game.getCurrentQuest().addStage(game.createStage(ai.sponsorQuestMidStage(ai.getCardsInHand())));
+                } else {
+                    game.getCurrentQuest().addStage(game.createStage(ai.sponsorQuestLastStage(ai.getCardsInHand())));
+                }
+            }
         }
         else if(currentBehaviour == Behaviour.QUEST_MEMBER){
         }
@@ -1004,9 +1034,16 @@ public class Controller implements PropertyChangeListener {
         update();
     }
 
+
     private void setActivePlayer(Player player){
         activePlayer = player;
+
         if(activePlayer instanceof AbstractAI){
+            if(currentBehaviour == Behaviour.DEFAULT){
+                game.drawStoryCard();
+                activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+                update();
+            }
             runAITurn((AbstractAI) activePlayer);
         }
         game.setCurrentPlayer(player);

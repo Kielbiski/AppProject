@@ -4,10 +4,6 @@ package quest;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.ArrayList;
-import java.util.Set;
-import java.util.TreeSet;
-
 class Strategy1 extends AbstractAI {
 
     private static final Logger logger = LogManager.getLogger(App.class);
