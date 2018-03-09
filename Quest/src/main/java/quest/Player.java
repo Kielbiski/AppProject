@@ -85,13 +85,13 @@ public class Player {
         logger.info("Returning " + this.playerName+ ".");
         return playerName;
     }
-    
+
     public int getShields()
     {
         logger.info("Returning " + this.playerName+ " # shields.");
         return shields;
     }
-    
+
     public Rank getPlayerRank()
     {
         logger.info("Returning " + this.playerName+ " rank.");
@@ -140,7 +140,7 @@ public class Player {
         logger.info("Adding" + paramBonusPoint + " bonus point to " + this.playerName);
         battlePoints += paramBonusPoint;
     }
-    
+
     public void resetBattlePoints ()
     {
         logger.info("Resetting " + this.playerName+ " battle points.");
@@ -190,7 +190,7 @@ public class Player {
             setHandFull(true);
         }
     }
-    
+
     public void addCardToTable(AdventureCard paramCard){
         logger.info("Adding the following card "+ paramCard.getName()+" to " + this.playerName+ " cards on the table.");
         cardsOnTable.add(paramCard);
@@ -221,7 +221,7 @@ public class Player {
             }
         }
     }
-    
+
     public void removeCardFromTable(AdventureCard paramCard){
         logger.info("Removing the following card "+ paramCard.getName()+" from " + this.playerName+ " cards on the table.");
         cardsOnTable.remove(paramCard);
@@ -324,7 +324,6 @@ public class Player {
         } else {
             rank = Rank.KNIGHT_OF_THE_ROUND_TABLE;
         }
-
         setPlayerRank(rank);
     }
 
@@ -335,7 +334,11 @@ public class Player {
         }
     }
 
-
+    public void removeCardsAI(ArrayList<AdventureCard> cardsToPlay){
+        for(AdventureCard adventureCard : cardsToPlay){
+            removeCardFromHand(adventureCard);
+        }
+    }
 
     public int getRequiredShieldsForNextRank(){ return getRankShields(playerRank.next())-shields; }
 

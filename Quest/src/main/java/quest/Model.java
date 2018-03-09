@@ -542,8 +542,6 @@ public class Model implements PropertyChangeListener
         listener.add(newListener);
     }
 
-    
-
     @Override
     public void propertyChange(PropertyChangeEvent change) {
         switch (change.getPropertyName()) {
