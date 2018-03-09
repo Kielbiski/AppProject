@@ -810,7 +810,7 @@ public class Controller implements PropertyChangeListener {
                 testPlayers.get(0).setCurrentBid(currentHighestBid);
                 game.getCurrentQuest().setPlayerList(testPlayers);
                 continueButton.setDisable(true);
-                okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
+                okAlert(testPlayers.get(0).getPlayerName() + " won the test with " + currentHighestBid + " bids.", "Test Over");
                 currentBehaviour = Behaviour.BID;
                 activePlayer=testPlayers.get(0);
                 if(activePlayer instanceof AbstractAI){
@@ -834,6 +834,7 @@ public class Controller implements PropertyChangeListener {
                 update();
                 if(activePlayer instanceof AbstractAI){
                     if(((AbstractAI)activePlayer).doIParticipateInQuest(activePlayer.getCardsInHand(),currentQuest.getNumStage())){
+                        playersInQuest.add(activePlayer);
                         playersInQuest.add(activePlayer);
                     }
                 } else {
