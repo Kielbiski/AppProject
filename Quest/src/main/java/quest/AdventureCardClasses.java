@@ -96,7 +96,7 @@ class Boar extends Foe {
 
     Boar(){
 
-        super("Boar", "F_Boar.jpg", 5, 15);
+        super("Boar", "F_Boar.jpg", 5, 10);
         logger.info("Successfully called : Boar constructor");
 
     }

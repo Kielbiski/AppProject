@@ -131,6 +131,7 @@ public class Model implements PropertyChangeListener
                             return false;
                         }
                         testCount++;
+                        break;
                     } else if ((adventureCard instanceof Ally)) {
                         return false;
                     } else if (adventureCard instanceof Foe) {
@@ -141,8 +142,10 @@ public class Model implements PropertyChangeListener
                             }
                         }
                         foeCount++;
-                        currentStageBattlePoints += adventureCardBattlePoints;
+
                     }
+                    currentStageBattlePoints += adventureCardBattlePoints;
+
                 }
                 if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
                     lastStageBattlePoints = currentStageBattlePoints;
@@ -392,18 +395,29 @@ public class Model implements PropertyChangeListener
         logger.info(name + "is joining the game.");
     }
 
-    void shuffleAndDeal(){
-        Collections.shuffle(deckOfAdventureCards);
+    void removeFromStoryDeck(StoryCard storyCard){
+        deckOfStoryCards.remove(storyCard);
+    }
 
+    void dealCards(Stack<AdventureCard> deck){
+        //Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
             int NUM_CARDS = 12;
             for (int i = 0; i < NUM_CARDS; i++) {
-                if (!(deckOfAdventureCards.empty())) {
-                    player.addCardToHand(deckOfAdventureCards.pop());
+                if (!(deck.empty())) {
+                    player.addCardToHand(deck.pop());
                 }
             }
         }
         logger.info(" Deal 12 cards to each players.");
+    }
+
+    public void addToAdventureDeck(AdventureCard adventureCard){
+        deckOfAdventureCards.push(adventureCard);
+    }
+
+    public void addToStoryDeck(StoryCard storyCard){
+        deckOfStoryCards.push(storyCard);
     }
 
     public void drawAdventureCard(Player currentPlayer){
