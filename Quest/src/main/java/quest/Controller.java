@@ -741,7 +741,7 @@ public class Controller implements PropertyChangeListener {
 
         int currentHighestBid = 0;
         int minBids = 3;
-        if(game.getCurrentStory().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
+        if(game.getCurrentStory().getName().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
             minBids = 4;
         }
         int currentBid=minBids;
@@ -1204,19 +1204,21 @@ public class Controller implements PropertyChangeListener {
     @Override
     public void propertyChange(PropertyChangeEvent change) {
 
-        if (change.getPropertyName().equals("handFull")){
-            if ((boolean) change.getNewValue() ){
-                handFull((Player)change.getSource());
-            }
-        }
-        else if(change.getPropertyName().equals("callToArms")){
-            Player drawPlayer = (Player)change.getSource();
-            callToArms(drawPlayer);
-        }
-        else if(change.getPropertyName().equals("test")){
-            if((Boolean)change.getOldValue() == false && (Boolean)change.getNewValue()==true){
-                performTest();
-            }
+        switch (change.getPropertyName()) {
+            case "handFull":
+                if ((Boolean) change.getNewValue()) {
+                    handFull((Player) change.getSource());
+                }
+                break;
+            case "callToArms":
+                Player drawPlayer = (Player) change.getSource();
+                callToArms(drawPlayer);
+                break;
+            case "test":
+                if (!((Boolean) change.getOldValue()) && (Boolean) change.getNewValue()) {
+                    performTest();
+                }
+                break;
         }
 
 

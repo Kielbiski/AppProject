@@ -98,6 +98,22 @@ public class Player {
         return playerRank;
     }
 
+    public int getBidDiscount(Quest currentQuest){
+        int bids = 0;
+        for(AdventureCard adventureCard : cardsOnTable){
+            if(adventureCard instanceof Ally){
+                bids = adventureCard.getBids();
+                for(AdventureCard checkAdventureCard: cardsOnTable){
+                    if((((Ally) adventureCard).getAffectedEntity().equals(checkAdventureCard.getName())) || (((Ally) adventureCard).getAffectedEntity().toLowerCase().equals(currentQuest.getName())) && (adventureCard != checkAdventureCard)){
+                        bids = adventureCard.getBids() + adventureCard.getBonusBids();
+                        break;
+                    }
+                }
+            }
+        }
+        return bids;
+    }
+
     public String stringifyRank(){
         switch(playerRank){
             case SQUIRE:
