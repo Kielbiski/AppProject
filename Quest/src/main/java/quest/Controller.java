@@ -37,6 +37,7 @@ public class Controller implements PropertyChangeListener {
     private  Behaviour previousBehaviour;
     private Behaviour currentBehaviour;
     private int callToArmsFoes = 0;
+    private int bidsToDo =0;
 
     ///FXML ELEMENTS
     @FXML
@@ -198,21 +199,38 @@ public class Controller implements PropertyChangeListener {
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
                     if (currentBehaviour == Behaviour.DISCARD) {
-                            activePlayer.removeCardFromHand(selectedAdventureCard);
-                            if(activePlayer.isHandFull()){
-                                handFull(activePlayer);
+                        activePlayer.removeCardFromHand(selectedAdventureCard);
+                        if(activePlayer.isHandFull()){
+                            handFull(activePlayer);
+                        }
+                        else{
+                            currentBehaviour = previousBehaviour;
+                            previousBehaviour = null;
+                            discardPane.setVisible(false);
+                            if(currentBehaviour==Behaviour.DEFAULT) {
+                                nextTurnButton.setVisible(true);
+                                nextTurnButton.setDisable(false);
                             }
-                            else{
-                                currentBehaviour = previousBehaviour;
-                                previousBehaviour = null;
-                                discardPane.setVisible(false);
-                                if(currentBehaviour==Behaviour.DEFAULT) {
-                                    nextTurnButton.setVisible(true);
-                                    nextTurnButton.setDisable(false);
-                                }
-                                update();
+                            update();
+                        }
+                        success = true;
+                    }
+                    else if(currentBehaviour == Behaviour.BID){
+                        activePlayer.removeCardFromHand(selectedAdventureCard);
+                        if(activePlayer.isHandFull()){
+                            handFull(activePlayer);
+                        }
+                        else{
+                            currentBehaviour = previousBehaviour;
+                            previousBehaviour = null;
+                            discardPane.setVisible(false);
+                            if(currentBehaviour==Behaviour.DEFAULT) {
+                                nextTurnButton.setVisible(true);
+                                nextTurnButton.setDisable(false);
                             }
-                            success = true;
+                            update();
+                        }
+                        success = true;
                     }
                     else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
                         if (selectedAdventureCard instanceof Weapon){
@@ -569,8 +587,6 @@ public class Controller implements PropertyChangeListener {
             }
             update();
         }
-        else if(currentBehaviour == Behaviour.BID){
-        }
     }
 
     public void nextTurnAction(){
@@ -776,9 +792,14 @@ public class Controller implements PropertyChangeListener {
                 game.getCurrentQuest().setInTest(false);
                 testPlayers.get(0).setCurrentBid(currentHighestBid);
                 game.getCurrentQuest().setPlayerList(testPlayers);
+                continueButton.setDisable(true);
                 okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
                 currentBehaviour = Behaviour.BID;
+                setActivePlayer(testPlayers.get(0));
+
+                discardPane.setVisible(true);
                 logger.info("Current player with highest bid" + testPlayers.get(0) +" for this testStage." );
+                update();
             }
         }
 

@@ -140,7 +140,7 @@ public class Player {
     public int getCurrentBid()
     {
         logger.info("Returning " + this.playerName+ " bids:" +currentBid+" .");
-        return currentBid;
+        return currentBid ;
     }
 
     public void setCardsOnTable(ArrayList<AdventureCard> cardsOnTable)
