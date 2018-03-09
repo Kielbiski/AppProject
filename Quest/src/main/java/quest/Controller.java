@@ -74,8 +74,6 @@ public class Controller implements PropertyChangeListener {
         ImageView imgView = new ImageView();
         imgView.setPreserveRatio(true);
         imgView.setFitHeight(75);
-        // ScaleTransition st = new ScaleTransition(Duration.millis(2000), imgView);
-        //selectedAdventureCard = card;
         imgView.getStyleClass().add("image-view-hand");
         ImageView defaultImage = new ImageView();
         imgView.addEventHandler(MouseEvent.MOUSE_ENTERED, event -> {
@@ -848,36 +846,38 @@ public class Controller implements PropertyChangeListener {
 
             currentTestPlayer=testPlayers.get(currentTestPlayerIndex);
             activePlayer = currentTestPlayer;
-            if(activePlayer instanceof AbstractAI){
-
-            }
             update();
 
             if(testPlayers.size()!=1 && (testPlayersToRemove.size()!=testPlayers.size()-1)) {
-                List<String> choices = new ArrayList<>();
-                for (int i = currentBid+1; i < activePlayer.getNumCardsInHand(); i++) {
-                    choices.add(Integer.toString(i + 1));
+                if(!(currentTestPlayer instanceof AbstractAI)) {
+                    List<String> choices = new ArrayList<>();
+                    for (int i = currentBid + 1; i < activePlayer.getNumCardsInHand(); i++) {
+                        choices.add(Integer.toString(i + 1));
+                    }
+                    choices.add("Drop Out");
+                    ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid + 1), choices);
+                    dialog.setTitle("Bid.");
+                    dialog.setHeaderText("Number of cards to bid?");
+                    dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
+                    Optional<String> result = dialog.showAndWait();
+                    // The Java 8 way to get the response value (with lambda expression).
+                    String cardsToBid = "Drop Out";
+                    if (result.isPresent()) {
+                        cardsToBid = result.get();
+                    }
+                    if (cardsToBid.equals("Drop Out")) {
+                        testPlayersToRemove.add(currentTestPlayer);
+                    } else {
+                        currentBid = Integer.parseInt(cardsToBid);
+                    }
+                    if (currentBid > currentHighestBid) {
+                        currentHighestBid = currentBid;
+                    }
+                    currentTestPlayerIndex++;
                 }
-                choices.add("Drop Out");
-                ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(currentBid+1), choices);
-                dialog.setTitle("Bid.");
-                dialog.setHeaderText("Number of cards to bid?");
-                dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
-                Optional<String> result = dialog.showAndWait();
-                // The Java 8 way to get the response value (with lambda expression).
-                String cardsToBid = "Drop Out";
-                if (result.isPresent()) {
-                    cardsToBid = result.get();
+                else{
+                    //((AbstractAI) currentTestPlayer).nextBid()
                 }
-                if (cardsToBid.equals("Drop Out")) {
-                    testPlayersToRemove.add(currentTestPlayer);
-                } else {
-                    currentBid = Integer.parseInt(cardsToBid);
-                }
-                if (currentBid > currentHighestBid) {
-                    currentHighestBid = currentBid;
-                }
-                currentTestPlayerIndex++;
             }
             else{
                 for (Player player : testPlayersToRemove) {
