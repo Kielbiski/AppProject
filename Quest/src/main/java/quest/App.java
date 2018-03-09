@@ -25,7 +25,6 @@ public class App extends Application {
         Parent root = loader.load();
         Controller controller = loader.getController();
         Scene scene = new Scene(root);
-        //primaryStage.setFullScreen(true);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quests Of The Round Table");
         primaryStage.show();

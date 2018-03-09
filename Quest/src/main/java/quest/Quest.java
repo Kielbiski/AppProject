@@ -23,6 +23,7 @@ public class Quest extends StoryCard { //story card
     private int shields;
     private int currentTurnIndex;
     private Player currentPlayer;
+    private boolean inTest = true;
     private boolean isWinner = false;
     private List<PropertyChangeListener> listener = new ArrayList<>();
 
@@ -135,9 +136,18 @@ public class Quest extends StoryCard { //story card
 
     public int getNumStage()
     {
-
         logger.info("Returning numStage of stage (" + currentStage+ " ) in the "+ this.getName()+" quest.");
         return numStage;
+    }
+
+    public boolean isInTest() {
+        return inTest;
+    }
+
+    public void setInTest(boolean inTest) {
+        boolean previousTestStatus = this.inTest;
+        this.inTest = inTest;
+        notifyListeners(this,"test",previousTestStatus,this.inTest);
     }
 
     public void startQuest(){
@@ -145,6 +155,9 @@ public class Quest extends StoryCard { //story card
         currentStage.setParticipatingPlayers(playerList);
         currentTurnIndex = 0;
         currentPlayer = playerList.get(currentTurnIndex);
+        if(currentStage instanceof TestStage){
+            setInTest(true);
+        }
     }
 
     public boolean isFinished() {
@@ -192,56 +205,12 @@ public class Quest extends StoryCard { //story card
         return winningPlayers;
     }
 
-    private ArrayList<Player> getTestStageWinners(TestStage testStage) {
-        Player winningPlayer= testStage.getParticipatingPlayers().get(0);
-        int currentHighestBid = 0;
-        int currentBid;
-        int minBids = 3;
-        for(Player player : testStage.getParticipatingPlayers()) {
-            if(name.equals("Search For The Questing Beast") && (testStage.getSponsorTestCard().getName().equals("Test Of The Questing Beast"))){
-                minBids = 4;
-            }
-            List<String> choices = new ArrayList<>();
-            for(int i = minBids; i < player.getNumCardsInHand(); i++){
-                choices.add(Integer.toString(i+1));
-            }
-            choices.add("Drop Out");
-            ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(minBids), choices);
-            dialog.setTitle("Bid.");
-            dialog.setHeaderText("Number of cards to bid?");
-            dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
-            Optional<String> result = dialog.showAndWait();
-            // The Java 8 way to get the response value (with lambda expression).
-            String cardsToBid = "Drop Out";
-            if (result.isPresent()) {
-                cardsToBid = result.get();
-            }
-            if(cardsToBid.equals("Drop Out")){
-                currentBid = 0;
-            } else {
-                currentBid = Integer.parseInt(cardsToBid);
-            }
-            if(currentBid > currentHighestBid){
-                currentHighestBid = currentBid;
-                winningPlayer = player;
-                logger.info("Current player with highest bid" + winningPlayer +" for this testStage." );
-            }
-        }
-        winningPlayer.setCurrentBid(currentHighestBid);
-        logger.info("Returning" + winningPlayer +" as the testStage winner." );
-        ArrayList<Player> winningPlayerArray = new ArrayList<>();
-        winningPlayerArray.add(winningPlayer);
-        return winningPlayerArray;
-    }
-
     public void nextTurn(){
         currentTurnIndex++;
         if(currentTurnIndex >= playerList.size()){
             currentTurnIndex = 0;
             if(currentStage instanceof FoeStage) {
                 playerList = getFoeStageWinners((FoeStage) currentStage);
-            } else if(currentStage instanceof TestStage) {
-                playerList = getTestStageWinners((TestStage) currentStage);
             }
             currentStageIndex++;
             if(currentStageIndex >= stages.size()||playerList.size()==0){
@@ -251,6 +220,9 @@ public class Quest extends StoryCard { //story card
                 currentPlayer = getPlayerList().get(currentTurnIndex);
                 currentStage = stages.get(currentStageIndex);
                 currentStage.setParticipatingPlayers(playerList);
+                if(currentStage instanceof TestStage){
+                    setInTest(true);
+                }
             }
             wipeWeapons();
 
@@ -265,6 +237,12 @@ public class Quest extends StoryCard { //story card
     private void notifyListeners(Object object, String property, int oldStage, int newStage) {
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(this, property, oldStage, newStage));
+        }
+    }
+
+    private void notifyListeners(Object object, String property, boolean oldTestStatus, boolean newTestStatus) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(this, property, oldTestStatus, newTestStatus));
         }
     }
 

@@ -70,6 +70,10 @@ public class Controller implements PropertyChangeListener {
 
     private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
 
+    private void print(String stringToPrint){
+        System.out.println(stringToPrint);
+    }
+
     private ImageView createAdventureCardImageView(AdventureCard card){
         ImageView imgView = new ImageView();
         imgView.setPreserveRatio(true);
@@ -98,23 +102,6 @@ public class Controller implements PropertyChangeListener {
             event.consume();
         });
 
-
-
-
-//        imgView.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-//            if(currentBehaviour == CardBehaviour.QUEST_MEMBER){
-//                activePlayer.addCardToTable(card);
-//                activePlayer.removeCardFromHand(card);
-//                update();
-//            }
-//            else if(currentBehaviour ==CardBehaviour.BID){
-//
-//            }
-//            imgView.setStyle(
-//                    "-fx-border-color: #ff0000;\n" +
-//                            " -fx-border-width: 10;" +
-//                            "-fx-border-style: solid;\n");
-//        });
         return imgView;
     }
 
@@ -134,6 +121,7 @@ public class Controller implements PropertyChangeListener {
             currentCardImage.toBack();
         }
     }
+
     public void onMouseExitStory(MouseEvent event){
         currentCardImage.setImage(getCardImage("FacedownAdventure.png"));
         currentCardImage.setPreserveRatio(true);
@@ -219,6 +207,10 @@ public class Controller implements PropertyChangeListener {
                                 currentBehaviour = previousBehaviour;
                                 previousBehaviour = null;
                                 discardPane.setVisible(false);
+                                if(currentBehaviour==Behaviour.DEFAULT) {
+                                    nextTurnButton.setVisible(true);
+                                    nextTurnButton.setDisable(false);
+                                }
                                 update();
                             }
                             success = true;
@@ -576,7 +568,8 @@ public class Controller implements PropertyChangeListener {
             }
             update();
         }
-
+        else if(currentBehaviour == Behaviour.BID){
+        }
     }
 
     public void nextTurnAction(){
@@ -708,6 +701,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void performQuest(Player sponsor, Quest quest) {
+        quest.addChangeListener(this);
         game.setSponsor(sponsor);
         quest.setSponsor(sponsor);
         setActivePlayer(sponsor);
@@ -721,8 +715,65 @@ public class Controller implements PropertyChangeListener {
         setActivePlayer(sponsor);
     }
 
-    private void print(String stringToPrint){
-        System.out.println(stringToPrint);
+    private void performTest(){
+
+        ArrayList<Player> testPlayers = game.getCurrentQuest().getPlayerList();
+        ArrayList<Player> testPlayersToRemove = new ArrayList<>();
+
+        int currentHighestBid = 0;
+        int currentBid;
+        int minBids = 3;
+        int currentTestPlayerIndex=0;
+        int currentNumInTest = testPlayers.size();
+        Player currentTestPlayer;
+        if(game.getCurrentStory().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
+            minBids = 4;
+        }
+        while(game.getCurrentQuest().isInTest()) {
+            currentTestPlayer=testPlayers.get(currentTestPlayerIndex);
+            List<String> choices = new ArrayList<>();
+            for(int i = minBids; i < activePlayer.getNumCardsInHand(); i++){
+                choices.add(Integer.toString(i+1));
+            }
+            choices.add("Drop Out");
+            ChoiceDialog<String> dialog = new ChoiceDialog<>(Integer.toString(minBids), choices);
+            dialog.setTitle("Bid.");
+            dialog.setHeaderText("Number of cards to bid?");
+            dialog.setContentText("Please select the number of cards to bid or 'Drop Out':");
+            Optional<String> result = dialog.showAndWait();
+            // The Java 8 way to get the response value (with lambda expression).
+            String cardsToBid = "Drop Out";
+            if (result.isPresent()) {
+                cardsToBid = result.get();
+            }
+            if(cardsToBid.equals("Drop Out")){
+                currentBid = 0;
+                testPlayersToRemove.add(currentTestPlayer);
+            } else {
+                currentBid = Integer.parseInt(cardsToBid);
+            }
+            if(currentBid > currentHighestBid){
+                currentHighestBid = currentBid;
+            }
+            currentTestPlayerIndex++;
+            if(currentTestPlayerIndex>currentNumInTest){
+                currentTestPlayerIndex=0;
+                for(Player player: testPlayersToRemove){
+                    testPlayers.remove(player);
+                }
+                currentNumInTest = testPlayers.size();
+                testPlayersToRemove.clear();
+            }
+            if(testPlayers.size()==1){
+                game.getCurrentQuest().setInTest(false);
+                testPlayers.get(0).setCurrentBid(currentHighestBid);
+                game.getCurrentQuest().setPlayerList(testPlayers);
+                okAlert(testPlayers.get(0) + " won the test, discard your bids", "Test Over");
+                currentBehaviour = Behaviour.BID;
+                logger.info("Current player with highest bid" + testPlayers.get(0) +" for this testStage." );
+            }
+        }
+
     }
 
     private void addQuestPlayers(Quest currentQuest){
@@ -789,6 +840,7 @@ public class Controller implements PropertyChangeListener {
             currentTournament.setPlayerList(tournamentPlayers);
         }
     }
+
     private void tournamentOver(){
 
         for (Player player : game.getCurrentTournament().getWinners()) {
@@ -1065,6 +1117,11 @@ public class Controller implements PropertyChangeListener {
         else if(change.getPropertyName().equals("callToArms")){
             Player drawPlayer = (Player)change.getSource();
             callToArms(drawPlayer);
+        }
+        else if(change.getPropertyName().equals("test")){
+            if((Boolean)change.getOldValue() == false && (Boolean)change.getNewValue()==true){
+                performTest();
+            }
         }
 
 

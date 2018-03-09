@@ -337,10 +337,6 @@ public class Model implements PropertyChangeListener
                 deckOfStoryCards.add(storyCard);
             }
         }
-        deckOfStoryCards.add(new TournamentAtOrkney());
-        deckOfStoryCards.add(new Pox());
-        deckOfStoryCards.add(new Pox());
-        deckOfStoryCards.add(new Pox());
 
         logger.info("storing all story cards into the deck of story cards.");
     }
