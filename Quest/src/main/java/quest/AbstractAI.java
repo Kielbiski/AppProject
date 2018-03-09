@@ -17,7 +17,7 @@ public abstract class AbstractAI extends Player{
     DoIParticipateInTournamentAI TournamentAnswer;
     NextBid nextBid ;
     DoIParticipateInQuest quest;
-    private DoISponsorAQuest sponsorQuest;
+    DoISponsorAQuest sponsorQuest;
 
     AbstractAI(String paramName){
         super(paramName + " (CPU)");
@@ -52,7 +52,7 @@ public abstract class AbstractAI extends Player{
     }
 
 
-    public boolean doISponsor(ArrayList<Player> paramPlayerList, ArrayList<AdventureCard> paramCards,@NotNull Quest paramQuest)
+    public boolean doISponsor(ArrayList<Player> paramPlayerList, ArrayList<AdventureCard> paramCards, Quest paramQuest)
     {
 
         logger.info(this.getPlayerName() + " is deciding on participating in the sponsoring a quest, using strategy: "+this.strategy+" .");
@@ -65,7 +65,7 @@ public abstract class AbstractAI extends Player{
     {
 
         logger.info(this.getPlayerName() + " is returning the first stage setup cards, using strategy: "+this.strategy+" .");
-        return sponsorQuest.firstStage(  paramCard);
+        return sponsorQuest.firstStage(paramCard);
 
     }
 

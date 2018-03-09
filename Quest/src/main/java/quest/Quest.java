@@ -15,6 +15,7 @@ public class Quest extends StoryCard { //story card
     private static final Logger logger = LogManager.getLogger(App.class);
 
     private ArrayList <Player> playerList;
+    private ArrayList <Player> originalPlayerList;
     private ArrayList<QuestStage> stages = new ArrayList<>();
     private Player sponsor;
     private int numStage;
@@ -108,6 +109,7 @@ public class Quest extends StoryCard { //story card
 
         logger.info("Setting player list in "+ this.getName()+" quest");
         this.playerList = playerList;
+        this.originalPlayerList = playerList;
 
     }
 
@@ -187,7 +189,7 @@ public class Quest extends StoryCard { //story card
         logger.info("Returning player list that won the "+ this.getName()+" quest");
     }
 
-    private void wipeWeapons(){
+    public void wipeWeapons(){
         for(Player player: playerList){
             ArrayList<AdventureCard> found = new ArrayList<>();
             for(AdventureCard card: player.getCardsOnTable()){

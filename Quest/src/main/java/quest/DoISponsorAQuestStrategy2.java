@@ -16,12 +16,14 @@ public class DoISponsorAQuestStrategy2 extends DoISponsorAQuest {
 
         ArrayList<AdventureCard> cardPlaying = new ArrayList<>();
         int totalPoint= 0;
+        int foecount =0;
         for(AdventureCard card : paramCard)
         {
-            if ((card instanceof Foe) ||  (card instanceof Weapon) ){
+            if (((card instanceof Foe)&&foecount<1) ||  (card instanceof Weapon) ){
                 if (totalPoint <= 40) {
                     totalPoint += card.getBattlePoints();
                     cardPlaying.add(card);
+                    foecount++;
                 } else {
                     break;
                 }
