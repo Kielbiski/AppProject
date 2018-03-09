@@ -334,6 +334,12 @@ public class Player {
         }
     }
 
+    public void removeCardsAI(ArrayList<AdventureCard> cardsToPlay){
+        for(AdventureCard adventureCard : cardsToPlay){
+            removeCardFromHand(adventureCard);
+        }
+    }
+
     public int getRequiredShieldsForNextRank(){ return getRankShields(playerRank.next())-shields; }
 
     private void notifyListeners(Object object, String property, boolean oldFull, boolean newFull) {

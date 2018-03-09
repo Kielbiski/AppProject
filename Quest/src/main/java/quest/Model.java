@@ -443,6 +443,10 @@ public class Model implements PropertyChangeListener
         logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
     }
+    void setPotentialStage(ArrayList<AdventureCard> stage, int stageNum){
+        logger.info("Set the following potential stage"+stageNum+"to pre-stage");
+        preQuestStageSetup.put(stageNum,stage);
+    }
     void removeFromPotentialStage(AdventureCard card, int stageNum){
         logger.info("Remove the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).remove(card);
@@ -490,10 +494,10 @@ public class Model implements PropertyChangeListener
             System.out.println(winningPlayers);
             return true;
         }
-//        else if (knightsOfTheRoundTable.size() > 1) {
-//            winningPlayers = finalTournament(knightsOfTheRoundTable);
-//            return true;
-//        }
+        else if (knightsOfTheRoundTable.size() > 1) {
+            winningPlayers =knightsOfTheRoundTable;
+            return true;
+        }
         return false;
 
     }

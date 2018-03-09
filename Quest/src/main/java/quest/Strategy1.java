@@ -15,6 +15,7 @@ class Strategy1 extends AbstractAI {
         this.TournamentAnswer = new DoIParticipateInTournamentStrategy1();
         this.nextBid= new NextBidStrategy1();
         this.quest= new DoIParticipateInQuestStrategy1();
+        this.sponsorQuest = new DoISponsorAQuestStrategy1();
 
         logger.info("Successfully called : AI Strategy 1 constructor for"+this.getPlayerName()+".");
     }
