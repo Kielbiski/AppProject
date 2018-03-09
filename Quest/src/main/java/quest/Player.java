@@ -234,6 +234,9 @@ public class Player {
                     return false;
                 }
             }
+            if (matchCard instanceof Test){
+                return false;
+            }
         }
         return true;
     }
