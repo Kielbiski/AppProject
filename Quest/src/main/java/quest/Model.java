@@ -479,10 +479,10 @@ public class Model implements PropertyChangeListener
             System.out.println(winningPlayers);
             return true;
         }
-//        else if (knightsOfTheRoundTable.size() > 1) {
-//            winningPlayers = finalTournament(knightsOfTheRoundTable);
-//            return true;
-//        }
+        else if (knightsOfTheRoundTable.size() > 1) {
+            winningPlayers =knightsOfTheRoundTable;
+            return true;
+        }
         return false;
 
     }
