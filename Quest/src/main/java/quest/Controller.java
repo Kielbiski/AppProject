@@ -215,74 +215,74 @@ public class Controller implements PropertyChangeListener {
         // If this is a meaningful drop...
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
-                    if (currentBehaviour == Behaviour.DISCARD) {
-                        activePlayer.removeCardFromHand(selectedAdventureCard);
-                        if(activePlayer.isHandFull()){
-                            handFull(activePlayer);
-                        }
-                        else{
-                            currentBehaviour = previousBehaviour;
-                            previousBehaviour = null;
-                            discardPane.setVisible(false);
-                            if(currentBehaviour==Behaviour.DEFAULT) {
-                                nextTurnButton.setVisible(true);
-                                nextTurnButton.setDisable(false);
-                            }
-                            update();
-                        }
-                        success = true;
+                if (currentBehaviour == Behaviour.DISCARD) {
+                    activePlayer.removeCardFromHand(selectedAdventureCard);
+                    if(activePlayer.isHandFull()){
+                        handFull(activePlayer);
                     }
-                    else if(currentBehaviour == Behaviour.BID){
-                        activePlayer.removeCardFromHand(selectedAdventureCard);
-                        bidsToDo--;
-                        if(bidsToDo==0){
-                            currentBehaviour = Behaviour.QUEST_MEMBER;
-                            continueButton.setDisable(false);
-                            discardPane.setVisible(false);
-                            game.getCurrentQuest().setInTest(false);
+                    else{
+                        currentBehaviour = previousBehaviour;
+                        previousBehaviour = null;
+                        discardPane.setVisible(false);
+                        if(currentBehaviour==Behaviour.DEFAULT) {
+                            nextTurnButton.setVisible(true);
+                            nextTurnButton.setDisable(false);
                         }
                         update();
-                        success = true;
                     }
-                    else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
-                        if (selectedAdventureCard instanceof Weapon){
+                    success = true;
+                }
+                else if(currentBehaviour == Behaviour.BID){
+                    activePlayer.removeCardFromHand(selectedAdventureCard);
+                    bidsToDo--;
+                    if(bidsToDo==0){
+                        currentBehaviour = Behaviour.QUEST_MEMBER;
+                        continueButton.setDisable(false);
+                        discardPane.setVisible(false);
+                        game.getCurrentQuest().setInTest(false);
+                    }
+                    update();
+                    success = true;
+                }
+                else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
+                    if (selectedAdventureCard instanceof Weapon){
+                        activePlayer.removeCardFromHand((selectedAdventureCard));
+                        currentBehaviour = previousBehaviour;
+                        previousBehaviour = null;
+                        discardPane.setVisible(false);
+                        nextTurnButton.setDisable(false);
+                        success=true;
+                        update();
+                    }
+                    else {
+                        boolean hasWeapon = false;
+                        int foeCount =0;
+                        for (AdventureCard card : activePlayer.getCardsInHand()) {
+                            if (card instanceof Weapon) {
+                                hasWeapon = true;
+                            }
+                            if (card instanceof Foe) {
+                                foeCount++;
+                            }
+                        }
+                        if (hasWeapon) {
+                            success = false;
+                        }
+                        else if (callToArmsFoes < 2 && selectedAdventureCard instanceof Foe){
                             activePlayer.removeCardFromHand((selectedAdventureCard));
-                            currentBehaviour = previousBehaviour;
-                            previousBehaviour = null;
-                            discardPane.setVisible(false);
-                            nextTurnButton.setDisable(false);
-                            success=true;
-                            update();
-                        }
-                        else {
-                            boolean hasWeapon = false;
-                            int foeCount =0;
-                            for (AdventureCard card : activePlayer.getCardsInHand()) {
-                                if (card instanceof Weapon) {
-                                    hasWeapon = true;
-                                }
-                                if (card instanceof Foe) {
-                                    foeCount++;
-                                }
-                            }
-                            if (hasWeapon) {
-                                success = false;
-                            }
-                            else if (callToArmsFoes < 2 && selectedAdventureCard instanceof Foe){
-                                activePlayer.removeCardFromHand((selectedAdventureCard));
-                                callToArmsFoes++;
-                                if(callToArmsFoes==2||(foeCount<2 && callToArmsFoes==foeCount)){
-                                    currentBehaviour = previousBehaviour;
-                                    previousBehaviour = null;
-                                    discardPane.setVisible(false);
-                                    callToArmsFoes=0;
-                                    nextTurnButton.setDisable(false);
-                                    success=true;
-                                    update();
-                                }
+                            callToArmsFoes++;
+                            if(callToArmsFoes==2||(foeCount<2 && callToArmsFoes==foeCount)){
+                                currentBehaviour = previousBehaviour;
+                                previousBehaviour = null;
+                                discardPane.setVisible(false);
+                                callToArmsFoes=0;
+                                nextTurnButton.setDisable(false);
+                                success=true;
+                                update();
                             }
                         }
                     }
+                }
                 else{
                     success = false;
                 }
@@ -313,25 +313,25 @@ public class Controller implements PropertyChangeListener {
             boolean success = false;
             // If this is a meaningful drop...
             if(currentBehaviour==Behaviour.SPONSOR){
-            if (db.hasString()) {
-                if (db.getString().equals(cardsHbox.getId())) {
-                    if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
-                        game.addToPotentialStage(selectedAdventureCard, stageIndex);
-                        game.getSponsor().removeCardFromHand(selectedAdventureCard);
-                        success = true;
-                    }
-                } else {
-                    for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
-                        if (db.getString().equals(Integer.toString(i))) {
-                            if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
-                                game.addToPotentialStage(selectedAdventureCard, stageIndex);
-                                game.removeFromPotentialStage(selectedAdventureCard, i);
-                                success = true;
+                if (db.hasString()) {
+                    if (db.getString().equals(cardsHbox.getId())) {
+                        if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
+                            game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                            game.getSponsor().removeCardFromHand(selectedAdventureCard);
+                            success = true;
+                        }
+                    } else {
+                        for (int i = 0; i < game.getCurrentQuest().getNumStage(); i++) {
+                            if (db.getString().equals(Integer.toString(i))) {
+                                if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
+                                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                                    game.removeFromPotentialStage(selectedAdventureCard, i);
+                                    success = true;
+                                }
                             }
                         }
                     }
                 }
-            }
 //                else{
 //                   // game.removeFromPotentialStage(selectedAdventureCard,);
 //                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
@@ -367,11 +367,11 @@ public class Controller implements PropertyChangeListener {
         currentTurnLabel.setMinWidth(Region.USE_PREF_SIZE);
         currentTurnLabel.setStyle("-fx-border-color: #dd3b3b;\n" +
                 "-fx-background-color: rgba(0,0,0,0.8);\n"+
-            "-fx-border-insets: 5;\n" +
-            "-fx-border-width: 4;\n" +
-            "-fx-border-style: solid;\n" +
-            "-fx-padding: 10;\n" +
-            "-fx-translate-x: -80;");
+                "-fx-border-insets: 5;\n" +
+                "-fx-border-width: 4;\n" +
+                "-fx-border-style: solid;\n" +
+                "-fx-padding: 10;\n" +
+                "-fx-translate-x: -80;");
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
 
         for (Player player : currentPlayers) {

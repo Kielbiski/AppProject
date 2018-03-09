@@ -187,7 +187,7 @@ public class Quest extends StoryCard { //story card
         logger.info("Returning player list that won the "+ this.getName()+" quest");
     }
 
-    private void wipeWeapons(){
+    public void wipeWeapons(){
         for(Player player: playerList){
             ArrayList<AdventureCard> found = new ArrayList<>();
             for(AdventureCard card: player.getCardsOnTable()){

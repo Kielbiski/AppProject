@@ -122,42 +122,42 @@ public class Model implements PropertyChangeListener
         int lastStageBattlePoints = 0;
         int testCount =0;
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
-                int currentStageBattlePoints = 0;
-                int foeCount = 0;
-                if(getPreQuestStageSetup().get(i) == null){
-                    return false;
-                }
-                for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
-                    int adventureCardBattlePoints = adventureCard.getBattlePoints();
-                    if (adventureCard instanceof Test) {
-                        if(getPreQuestStageSetup().get(i).size() > 1) {
-                            return false;
-                        }
-                        testCount++;
-                        break;
-                    } else if ((adventureCard instanceof Ally)) {
+            int currentStageBattlePoints = 0;
+            int foeCount = 0;
+            if(getPreQuestStageSetup().get(i) == null){
+                return false;
+            }
+            for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
+                int adventureCardBattlePoints = adventureCard.getBattlePoints();
+                if (adventureCard instanceof Test) {
+                    if(getPreQuestStageSetup().get(i).size() > 1) {
                         return false;
-                    } else if (adventureCard instanceof Foe) {
-                        for(AdventureCard foe : currentQuest.getQuestFoes()){
-                            if(adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())){
-                                adventureCardBattlePoints += adventureCard.getBonusBattlePoints();
-                                break;
-                            }
-                        }
-                        foeCount++;
-
                     }
-                    currentStageBattlePoints += adventureCardBattlePoints;
+                    testCount++;
+                    break;
+                } else if ((adventureCard instanceof Ally)) {
+                    return false;
+                } else if (adventureCard instanceof Foe) {
+                    for(AdventureCard foe : currentQuest.getQuestFoes()){
+                        if(adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())){
+                            adventureCardBattlePoints += adventureCard.getBonusBattlePoints();
+                            break;
+                        }
+                    }
+                    foeCount++;
 
                 }
-                if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
-                    lastStageBattlePoints = currentStageBattlePoints;
-                } else {
-                    return false;
-                }
-                if(foeCount == 0 && testCount == 0 || foeCount > 1){
-                    return false;
-                }
+                currentStageBattlePoints += adventureCardBattlePoints;
+
+            }
+            if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
+                lastStageBattlePoints = currentStageBattlePoints;
+            } else {
+                return false;
+            }
+            if(foeCount == 0 && testCount == 0 || foeCount > 1){
+                return false;
+            }
         }
         return testCount <= 1;
     }
@@ -406,11 +406,6 @@ public class Model implements PropertyChangeListener
         deckOfStoryCards.remove(storyCard);
     }
 
-    void removeFromAdventureDeck(AdventureCard adventureCard){
-        logger.info("Removing:"+adventureCard.getName()+" from the story card.");
-        deckOfAdventureCards.remove(adventureCard);
-    }
-
     void dealCards(Stack<AdventureCard> deck){
         //Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
@@ -448,6 +443,10 @@ public class Model implements PropertyChangeListener
         logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
     }
+    void setPotentialStage(ArrayList<AdventureCard> stage, int stageNum){
+        logger.info("Set the following potential stage"+stageNum+"to pre-stage");
+        preQuestStageSetup.put(stageNum,stage);
+    }
     void removeFromPotentialStage(AdventureCard card, int stageNum){
         logger.info("Remove the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).remove(card);
@@ -472,7 +471,7 @@ public class Model implements PropertyChangeListener
 
     public boolean isValidDrop(AdventureCard card, int stageNum){
         if (card instanceof Ally) {//?
-           return false;
+            return false;
         }
         for(AdventureCard matchCard: getPreQuestStageSetup().get(stageNum)){
             if(card.getName().equals(matchCard.getName())){
@@ -495,10 +494,10 @@ public class Model implements PropertyChangeListener
             System.out.println(winningPlayers);
             return true;
         }
-//        else if (knightsOfTheRoundTable.size() > 1) {
-//            winningPlayers = finalTournament(knightsOfTheRoundTable);
-//            return true;
-//        }
+        else if (knightsOfTheRoundTable.size() > 1) {
+            winningPlayers =knightsOfTheRoundTable;
+            return true;
+        }
         return false;
 
     }
@@ -542,6 +541,8 @@ public class Model implements PropertyChangeListener
         logger.info("Adding a new listener");
         listener.add(newListener);
     }
+
+    
 
     @Override
     public void propertyChange(PropertyChangeEvent change) {
