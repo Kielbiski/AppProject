@@ -185,3 +185,5 @@ public class Tournament extends StoryCard {
         logger.info("Assinging shields to this " + this.getName() +" winners.");
 
     }
+}
+
