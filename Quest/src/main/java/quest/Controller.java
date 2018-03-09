@@ -28,7 +28,6 @@ public class Controller implements PropertyChangeListener {
 
     private static final Logger logger = LogManager.getLogger(App.class);
     private Model game = new Model();
-    private String resourceFolderPath = "src/main/resources/Cards/";
     private Player activePlayer;
     private Player currentTurnPlayer;
     private int NUM_PLAYERS = 0;
@@ -487,7 +486,7 @@ public class Controller implements PropertyChangeListener {
         Alert questAlert = new Alert(Alert.AlertType.CONFIRMATION, text, ButtonType.YES, ButtonType.NO);
         questAlert.setHeaderText(headerText);
         DialogPane dialog = questAlert.getDialogPane();
-        dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+        dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
         dialog.getStyleClass().add("alertDialogs");
         questAlert.showAndWait();
         return (questAlert.getResult() == ButtonType.YES);
@@ -497,7 +496,7 @@ public class Controller implements PropertyChangeListener {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, contentText, ButtonType.OK);
         DialogPane dialog = alert.getDialogPane();
         alert.setHeaderText(headerText);
-        dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+        dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
         dialog.getStyleClass().add("alertDialogs");
         alert.showAndWait();
     }
@@ -838,9 +837,9 @@ public class Controller implements PropertyChangeListener {
                 okAlert(testPlayers.get(0).getPlayerName() + " won the test, discard your bids", "Test Over");
                 setCurrentBehaviour(Behaviour.BID);
                 activePlayer=testPlayers.get(0);
-                if(activePlayer instanceof AbstractAI){
-                    runAITurn((AbstractAI) activePlayer);
-                }
+//                if(activePlayer instanceof AbstractAI){
+//                    runAITurn((AbstractAI) activePlayer);
+//                }
                 bidsToDo = currentHighestBid - (testPlayers.get(0).getBidDiscount(game.getCurrentQuest()));
                 discardPane.setVisible(true);
                 discardPane.setDisable(false);
@@ -887,9 +886,6 @@ public class Controller implements PropertyChangeListener {
         if(!tournament.isTournamentOver()){
             tournament.setCurrentPlayer(tournament.getPlayerList().get(0));
             activePlayer =tournament.getCurrentPlayer();
-            if(activePlayer instanceof AbstractAI){
-                runAITurn((AbstractAI) activePlayer);
-            }
             if(tournament.getPlayerList().size()==1){
                 tournament.setTournamentOver(true);
                 tournament.setWinners(tournament.getPlayerList());
@@ -908,9 +904,6 @@ public class Controller implements PropertyChangeListener {
         ArrayList<Player> tournamentPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
             activePlayer = game.getPlayers().get(i);
-            if(activePlayer instanceof AbstractAI){
-                runAITurn((AbstractAI) activePlayer);
-            }
             update();
             if(!(activePlayer instanceof AbstractAI)) {
                 if (yesNoAlert("Join " + game.getCurrentStory().getName() + " " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
@@ -935,7 +928,7 @@ public class Controller implements PropertyChangeListener {
         for (Player player : game.getCurrentTournament().getWinners()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament, and received " + game.getCurrentTournament().getShields() + " shields!", ButtonType.OK);
             DialogPane dialog = alert.getDialogPane();
-            dialog.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+            dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
             dialog.getStyleClass().add("alertDialogs");
             alert.showAndWait();
         }
@@ -1077,28 +1070,12 @@ public class Controller implements PropertyChangeListener {
         else if(currentBehaviour == Behaviour.QUEST_MEMBER){
         }
         else if(currentBehaviour == Behaviour.TOURNAMENT){
-            print("Before playing");
-            print("Cards in hand");
-            for(AdventureCard adventureCard : ai.getCardsInHand()){
-               print(adventureCard.getName());
-            }
-            print("Cards on table");
-            for(AdventureCard adventureCard : ai.getCardsOnTable()){
-                print(adventureCard.getName());
-            }
             if(ai.doIParticipateInTournament(game.getPlayers(), game.getCurrentTournament().getShields())){
+                print("participated");
                 ai.playCardsAI(ai.whatIPlay(ai.getCardsInHand(), game.getPlayers(), game.getCurrentTournament().getShields()));
             }
-            print("After playing");
-            print("Cards in hand");
-            for(AdventureCard adventureCard : ai.getCardsInHand()){
-                print(adventureCard.getName());
-            }
-            print("Cards on table");
-            for(AdventureCard adventureCard : ai.getCardsOnTable()){
-                print(adventureCard.getName());
-            }
         }
+        update();
         currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
         currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
         setActivePlayer(game.getPlayers().get(currentPlayerIndex));
@@ -1155,7 +1132,7 @@ public class Controller implements PropertyChangeListener {
         List<String> choices = new ArrayList<>();
         choices.add("Regular");
         choices.add("Boar Hunt");
-        choices.add("Modified Boar Hunt");
+        choices.add("Test AI No Quest");
         choices.add("Strategy 1");
         choices.add("Strategy 2");
         ChoiceDialog<String> dialog = new ChoiceDialog<>("Regular", choices);
@@ -1184,14 +1161,16 @@ public class Controller implements PropertyChangeListener {
                 }
                 game.addToStoryDeck(new BoarHunt());
                 break;
-            case "Modified Boar Hunt":
+            case "Test AI No Quest":
                 for(StoryCard storyCard : game.getDeckOfStoryCards()){
-                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
+                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
                         game.removeFromStoryDeck(storyCard);
                         break;
                     }
                 }
-                game.addToStoryDeck(new BoarHunt());
+                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
+                game.addToStoryDeck(new TournamentAtOrkney());
+                game.addToStoryDeck(new Pox());
                 break;
             case "Strategy 1":
                 for(StoryCard storyCard : game.getDeckOfStoryCards()){
@@ -1277,10 +1256,10 @@ public class Controller implements PropertyChangeListener {
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
         javafx.scene.image.Image img;
-
+        String resourceFolderPath = "/Cards/";
         try {
-            img = new Image(new FileInputStream(new File(resourceFolderPath + cardFileName)));//can be url
-        } catch (FileNotFoundException e) {
+            img = new Image(getClass().getResourceAsStream(resourceFolderPath + cardFileName));//can be url
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
