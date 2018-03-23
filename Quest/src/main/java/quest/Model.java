@@ -344,6 +344,8 @@ public class Model implements PropertyChangeListener
                 deckOfStoryCards.add(storyCard);
             }
         }
+        deckOfStoryCards.add(fav);
+        deckOfStoryCards.add(prosp);
 
         logger.info("storing all story cards into the deck of story cards.");
     }
@@ -561,10 +563,9 @@ public class Model implements PropertyChangeListener
                 break;
             case "deckDraw": {
                 Player drawPlayer = (Player) change.getSource();
-                boolean wasFull = drawPlayer.isHandFull();
                 drawPlayer.addCardToHand(deckOfAdventureCards.pop());
                 if (drawPlayer.isHandFull()) {
-                    handFull(drawPlayer, wasFull);
+                    handFull(drawPlayer, false);
                 }
                 break;
             }

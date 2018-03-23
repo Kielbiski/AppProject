@@ -4,10 +4,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 //Quests
 
@@ -203,8 +200,12 @@ class KingsCallToArms extends Event {
 
     @Override
     public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
-        playersToAffect.sort(Comparator.comparing(Player::getShields));
-        notifyListeners(playersToAffect.get(0),"callToArms");
+        ArrayList<Player> sortList = new ArrayList<>();
+        for(Player player: playersToAffect){
+            sortList.add(player);
+        }
+        sortList.sort(Comparator.comparing(Player::getShields));
+        notifyListeners(sortList.get(0),"callToArms");
     }
     private void notifyListeners(Object object, String property) {
         for (PropertyChangeListener name : listener) {
@@ -300,15 +301,15 @@ class ProsperityThroughoutTheRealm extends Event {
         }
     }
 
-        private void notifyListeners(Object object, String property) {
-            for (PropertyChangeListener name : listener) {
-                name.propertyChange(new PropertyChangeEvent(object, property,"",""));
-            }
+    private void notifyListeners(Object object, String property) {
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property,"",""));
         }
+    }
 
-        public void addChangeListener(PropertyChangeListener newListener) {
-            listener.add(newListener);
-        }
+    public void addChangeListener(PropertyChangeListener newListener) {
+        listener.add(newListener);
+    }
 }
 
 class QueensFavor extends Event {
@@ -325,9 +326,28 @@ class QueensFavor extends Event {
 
     @Override
     public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
-        playersToAffect.sort(Comparator.comparing(Player::getShields));
-        notifyListeners(playersToAffect.get(0),"deckDraw");
-        notifyListeners(playersToAffect.get(0),"deckDraw");
+        ArrayList<Player> sortList = new ArrayList<>();
+        for(Player player: playersToAffect){
+            sortList.add(player);
+        }
+        ArrayList<Player> lowestPlayers = new ArrayList<>();
+        sortList.sort(Comparator.comparing(Player::getPlayerRank));
+        Player lowestRank = sortList.get(0);
+        //TO DO: SORT BY RANK
+        for (Player player: sortList){
+            if(player.getPlayerRank().ordinal()< lowestRank.getPlayerRank().ordinal()){
+                lowestPlayers.clear();
+                lowestPlayers.add(player);
+                lowestRank = player;
+            }
+            else if((player.getPlayerRank().ordinal()==lowestRank.getPlayerRank().ordinal())){
+                lowestPlayers.add(player);
+            }
+        }
+        for (Player player: lowestPlayers){
+            notifyListeners(player,"deckDraw");
+            notifyListeners(player,"deckDraw");
+        }
     }
 
     private void notifyListeners(Object object, String property) {

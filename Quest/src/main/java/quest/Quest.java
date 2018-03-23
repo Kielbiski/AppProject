@@ -190,7 +190,7 @@ public class Quest extends StoryCard { //story card
     }
 
     public void wipeWeapons(){
-        if(playerList != null) {
+        if(playerList!=null) {
             for (Player player : playerList) {
                 ArrayList<AdventureCard> found = new ArrayList<>();
                 for (AdventureCard card : player.getCardsOnTable()) {
@@ -265,4 +265,3 @@ public class Quest extends StoryCard { //story card
     }
 
 }
-
