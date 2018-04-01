@@ -1,6 +1,7 @@
 package quest;
 
 import org.junit.Test;
+import quest.server.Tournament;
 
 import java.util.ArrayList;
 

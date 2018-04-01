@@ -1,12 +1,10 @@
 package quest;
 
+import quest.client.App;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.Test;
 
 import java.util.ArrayList;
-
-import static org.junit.Assert.*;
 
 public class QuestStageTest {
 

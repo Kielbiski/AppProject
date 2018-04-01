@@ -1,594 +1,539 @@
-[INFO ] 2018-03-14 20:20:05.113 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:05.132 [JavaFX Application Thread] App - Adding the following card Battle-ax to Player3 cards on the table.
-[INFO ] 2018-03-14 20:20:05.133 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:05.133 [JavaFX Application Thread] App - Removing the following card Battle-ax from Player3 hand.
-[INFO ] 2018-03-14 20:20:05.133 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:05.133 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:05.143 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:05.143 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:05.143 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:05.144 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:05.144 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:05.144 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:05.144 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:05.144 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:05.144 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:05.145 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:05.145 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:05.145 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:05.145 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:05.145 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:05.230 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:05.263 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:05.285 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:05.304 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:05.326 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:05.347 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:05.368 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:05.387 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:05.408 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:05.427 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:05.447 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:05.447 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:05.467 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:05.467 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@651e54d8 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:05.467 [JavaFX Application Thread] App - Returning Card: Boar image
-[INFO ] 2018-03-14 20:20:05.486 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:05.486 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@651e54d8 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:05.486 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:05.486 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:05.486 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@651e54d8 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Returning Card: Merlin
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Returning Card: Merlin
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Adding the following card Merlin to Player3 cards on the table.
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Returning Card: Merlin
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Removing the following card Merlin from Player3 hand.
-[INFO ] 2018-03-14 20:20:08.134 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:08.135 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:08.135 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:08.135 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:08.135 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:08.136 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:08.137 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:08.137 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:08.137 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:08.137 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:08.196 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:08.233 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:08.270 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:08.289 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:08.309 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:08.329 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:08.349 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:08.368 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:08.388 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:08.408 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:08.408 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:08.429 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:08.448 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:08.448 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@651e54d8 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:08.448 [JavaFX Application Thread] App - Returning Card: Boar image
-[INFO ] 2018-03-14 20:20:08.468 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:08.468 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@651e54d8 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:08.468 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:08.468 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:08.468 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@651e54d8 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:12.441 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:12.463 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - FoeStage: Going through participant battle points
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning quest stage participants
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Player3 calculated battle points :5 .
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning AdventureCard battle points
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Merlin
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning AdventureCard battle points
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning quest stage participants
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - FoeStage: [quest.Player@43936470] has 20 battle points
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - FoeStage: Returning list of winning player
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning player list in Boar Hunt quest
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Player3 draw an adventure card.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Robber Knight
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Adding the following card Robber Knight to Player3 hand.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning player list in Boar Hunt quest
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Set current index for player turn to 0.
-[INFO ] 2018-03-14 20:20:24.463 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:24.464 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:24.489 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:24.513 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:24.537 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:24.559 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:24.579 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:24.600 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:24.621 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:24.640 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:24.688 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:24.719 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:24.758 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:24.759 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:24.795 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.795 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:24.795 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:24.795 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.795 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:24.795 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:24.818 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:24.852 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:24.852 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Adding the following card Battle-ax to Player3 cards on the table.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Removing the following card Battle-ax from Player3 hand.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:27.120 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:27.122 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:27.148 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:27.176 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:27.206 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:27.247 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:27.278 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:27.309 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:27.331 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:27.351 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:27.387 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:27.413 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:27.413 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:27.442 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:27.465 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:27.465 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:27.465 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:27.465 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:27.465 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:27.465 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:27.486 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:27.520 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:27.520 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Returning Card: Dagger
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Returning Card: Dagger
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Adding the following card Dagger to Player3 cards on the table.
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Returning Card: Dagger
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Removing the following card Dagger from Player3 hand.
-[INFO ] 2018-03-14 20:20:28.866 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:28.867 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:28.867 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:28.867 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:28.867 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:28.867 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:28.868 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:28.869 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:28.869 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:28.925 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:28.960 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:28.980 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:29.016 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:29.036 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:29.056 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:29.076 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:29.097 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:29.125 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:29.125 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:29.147 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:29.168 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:29.188 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:29.188 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:29.188 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:29.189 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:29.189 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:29.189 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:29.210 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:29.230 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:29.230 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:30.194 [JavaFX Application Thread] App - FoeStage: Going through participant battle points
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning quest stage participants
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Player3 calculated battle points :5 .
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning AdventureCard battle points
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Card: Merlin
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Card: Battle-ax
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Card: Dagger
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning AdventureCard battle points
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning AdventureCard battle points
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning quest stage participants
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - FoeStage: [quest.Player@43936470] has 25 battle points
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - FoeStage: Returning list of winning player
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:30.195 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Set Player3 shields.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Set Player3 rank.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning player list that won the Boar Hunt quest
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Set current index for player turn to 0.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App -  Verifying if there only one winner
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning Player1 rank.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning CPU2 (CPU) rank.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning Player3 rank.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning Player4 rank.
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning player list in Boar Hunt quest
-[INFO ] 2018-03-14 20:20:30.196 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:30.197 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:30.197 [JavaFX Application Thread] App - Returning number of shields (2 ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning Card: Boar Hunt
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning numStage of stage (quest.FoeStage@4c065b4b ) in the Boar Hunt quest.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning the sponsor.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Player1 draw an adventure card.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Adding the following card Test Of Morgan Le Fey to Player1 hand.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning the sponsor.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Player1 draw an adventure card.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning Card: Saxons
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Adding the following card Saxons to Player1 hand.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning the sponsor.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:36.178 [JavaFX Application Thread] App - Player1 draw an adventure card.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Card: Sword
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Adding the following card Sword to Player1 hand.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning the sponsor.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Player1 draw an adventure card.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Card: Sir Galahad
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Adding the following card Sir Galahad to Player1 hand.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning the sponsor.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Player1 draw an adventure card.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Card: Sword
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Adding the following card Sword to Player1 hand.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player4 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player4 cards on table.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning the sponsor.
-[INFO ] 2018-03-14 20:20:36.179 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:41.127 [JavaFX Application Thread] App - Set the sponsor.
-[INFO ] 2018-03-14 20:20:41.127 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Player1 cards on hand.
-[INFO ] 2018-03-14 20:20:41.128 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:41.154 [JavaFX Application Thread] App - Returning Card: King Pellinore image
-[INFO ] 2018-03-14 20:20:41.174 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
-[INFO ] 2018-03-14 20:20:41.210 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
-[INFO ] 2018-03-14 20:20:41.244 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:41.279 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:41.301 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:41.321 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:41.348 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:41.369 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:41.389 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:41.408 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:41.428 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:41.447 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:41.467 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Player1 cards on hand.
-[INFO ] 2018-03-14 20:20:41.468 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:41.487 [JavaFX Application Thread] App - Returning Card: King Pellinore image
-[INFO ] 2018-03-14 20:20:41.506 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
-[INFO ] 2018-03-14 20:20:41.527 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
-[INFO ] 2018-03-14 20:20:41.556 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:41.576 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:41.596 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:41.616 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:41.636 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:41.657 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:41.677 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:41.696 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:41.716 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:41.735 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:41.766 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:50.046 [JavaFX Application Thread] App - Returning Card: Sword
-[INFO ] 2018-03-14 20:20:50.046 [JavaFX Application Thread] App - Removing the following card Sword from Player1 hand.
-[INFO ] 2018-03-14 20:20:50.046 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:51.750 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:51.750 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:51.751 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:51.751 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:51.751 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:51.751 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Player1 cards on hand.
-[INFO ] 2018-03-14 20:20:51.752 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:51.782 [JavaFX Application Thread] App - Returning Card: King Pellinore image
-[INFO ] 2018-03-14 20:20:51.803 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
-[INFO ] 2018-03-14 20:20:51.824 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
-[INFO ] 2018-03-14 20:20:51.844 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:51.865 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:51.886 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:51.906 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:51.926 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:51.946 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:51.968 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:51.998 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:52.019 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:52.039 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:54.212 [JavaFX Application Thread] App - Returning Card: Sword
-[INFO ] 2018-03-14 20:20:54.213 [JavaFX Application Thread] App - Removing the following card Sword from Player1 hand.
-[INFO ] 2018-03-14 20:20:54.213 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:54.213 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:54.214 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:54.215 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:54.215 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:54.215 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:54.215 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:54.215 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:54.215 [JavaFX Application Thread] App - Returning Player1 cards on hand.
-[INFO ] 2018-03-14 20:20:54.216 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:54.275 [JavaFX Application Thread] App - Returning Card: King Pellinore image
-[INFO ] 2018-03-14 20:20:54.305 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
-[INFO ] 2018-03-14 20:20:54.382 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
-[INFO ] 2018-03-14 20:20:54.402 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:54.422 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:54.442 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:54.462 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:54.484 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:54.506 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:54.584 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:54.605 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:54.626 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Player1 cards on hand.
-[INFO ] 2018-03-14 20:20:54.627 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:54.648 [JavaFX Application Thread] App - Returning Card: King Pellinore image
-[INFO ] 2018-03-14 20:20:54.669 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
-[INFO ] 2018-03-14 20:20:54.691 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
-[INFO ] 2018-03-14 20:20:54.711 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:54.734 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:54.754 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:54.775 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:54.796 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:54.817 [JavaFX Application Thread] App - Returning Card: Battle-ax image
-[INFO ] 2018-03-14 20:20:54.837 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:54.857 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:54.876 [JavaFX Application Thread] App - Returning Player1 cards on table.
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Draw card from story deck.
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:56.692 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies image
-[INFO ] 2018-03-14 20:20:56.779 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on hand.
-[INFO ] 2018-03-14 20:20:56.780 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:56.820 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:56.853 [JavaFX Application Thread] App - Returning Card: Giant image
-[INFO ] 2018-03-14 20:20:56.884 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:56.907 [JavaFX Application Thread] App - Returning Card: Test Of Temptation image
-[INFO ] 2018-03-14 20:20:56.927 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:56.947 [JavaFX Application Thread] App - Returning Card: Horse image
-[INFO ] 2018-03-14 20:20:56.967 [JavaFX Application Thread] App - Returning Card: Horse image
-[INFO ] 2018-03-14 20:20:56.988 [JavaFX Application Thread] App - Returning Card: Lance image
-[INFO ] 2018-03-14 20:20:57.007 [JavaFX Application Thread] App - Returning Card: Lance image
-[INFO ] 2018-03-14 20:20:57.026 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:57.046 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on table.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.068 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:57.069 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:57.070 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:57.070 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:57.070 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:57.070 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on hand.
-[INFO ] 2018-03-14 20:20:57.070 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:57.095 [JavaFX Application Thread] App - Returning Card: Amour image
-[INFO ] 2018-03-14 20:20:57.121 [JavaFX Application Thread] App - Returning Card: Giant image
-[INFO ] 2018-03-14 20:20:57.147 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
-[INFO ] 2018-03-14 20:20:57.170 [JavaFX Application Thread] App - Returning Card: Test Of Temptation image
-[INFO ] 2018-03-14 20:20:57.191 [JavaFX Application Thread] App - Returning Card: Dagger image
-[INFO ] 2018-03-14 20:20:57.227 [JavaFX Application Thread] App - Returning Card: Horse image
-[INFO ] 2018-03-14 20:20:57.255 [JavaFX Application Thread] App - Returning Card: Horse image
-[INFO ] 2018-03-14 20:20:57.282 [JavaFX Application Thread] App - Returning Card: Lance image
-[INFO ] 2018-03-14 20:20:57.301 [JavaFX Application Thread] App - Returning Card: Lance image
-[INFO ] 2018-03-14 20:20:57.320 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:57.339 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:57.358 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on table.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on hand.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on hand.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on hand.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - CPU2 (CPU) is deciding on participating in the sponsoring a quest, using strategy: Strategy 1 was used .
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning number of shields (3 ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Strategy 2 : Answering  do I sponsor quest?
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU) calculated battle points :0 .
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Player3 calculated battle points :5 .
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - The answer is no.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU) cards on hand.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - CPU2 (CPU) is deciding on participating in the sponsoring a quest, using strategy: Strategy 1 was used .
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning number of shields (3 ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Strategy 2 : Answering  do I sponsor quest?
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU) calculated battle points :0 .
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning Player3 calculated battle points :5 .
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - The answer is no.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning list of player in game.
-[INFO ] 2018-03-14 20:20:57.359 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:57.360 [JavaFX Application Thread] App - Returning Player1.
-[INFO ] 2018-03-14 20:20:57.360 [JavaFX Application Thread] App - Returning Player1 # shields.
-[INFO ] 2018-03-14 20:20:57.360 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
-[INFO ] 2018-03-14 20:20:57.360 [JavaFX Application Thread] App - Returning CPU2 (CPU).
-[INFO ] 2018-03-14 20:20:57.360 [JavaFX Application Thread] App - Returning CPU2 (CPU) # shields.
-[INFO ] 2018-03-14 20:20:57.361 [JavaFX Application Thread] App - Returning CPU2 (CPU) number of card on hand.
-[INFO ] 2018-03-14 20:20:57.361 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:57.361 [JavaFX Application Thread] App - Returning Player3 # shields.
-[INFO ] 2018-03-14 20:20:57.361 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
-[INFO ] 2018-03-14 20:20:57.362 [JavaFX Application Thread] App - Returning Player4.
-[INFO ] 2018-03-14 20:20:57.362 [JavaFX Application Thread] App - Returning Player4 # shields.
-[INFO ] 2018-03-14 20:20:57.362 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
-[INFO ] 2018-03-14 20:20:57.362 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:57.362 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:57.383 [JavaFX Application Thread] App - Returning Card: Evil Knight image
-[INFO ] 2018-03-14 20:20:57.403 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:57.423 [JavaFX Application Thread] App - Returning Card: Robber Knight image
-[INFO ] 2018-03-14 20:20:57.443 [JavaFX Application Thread] App - Returning Card: Saxons image
-[INFO ] 2018-03-14 20:20:57.463 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:57.483 [JavaFX Application Thread] App - Returning Card: Thieves image
-[INFO ] 2018-03-14 20:20:57.503 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:57.522 [JavaFX Application Thread] App - Returning Card: Sword image
-[INFO ] 2018-03-14 20:20:57.541 [JavaFX Application Thread] App - Returning Player3 cards on table.
-[INFO ] 2018-03-14 20:20:57.541 [JavaFX Application Thread] App - Returning Card: Merlin image
-[INFO ] 2018-03-14 20:20:57.561 [JavaFX Application Thread] App - Returning Player3 cards on hand.
-[INFO ] 2018-03-14 20:20:57.561 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.562 [JavaFX Application Thread] App - Returning numStage of stage (null ) in the Vanquish King Arthur's Enemies quest.
-[INFO ] 2018-03-14 20:20:57.562 [JavaFX Application Thread] App - Returning Player3.
-[INFO ] 2018-03-14 20:20:57.562 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.562 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
-[INFO ] 2018-03-14 20:20:57.562 [JavaFX Application Thread] App - Returning current story.
-[INFO ] 2018-03-14 20:20:57.562 [JavaFX Application Thread] App - Returning Card: Vanquish King Arthur's Enemies
+[INFO ] 2018-03-23 15:36:02.062 [JavaFX Application Thread] App - Draw card from story deck.
+[INFO ] 2018-03-23 15:36:02.063 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:02.063 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm
+[INFO ] 2018-03-23 15:36:02.063 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:02.063 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm image
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.084 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Player1 cards on hand.
+[INFO ] 2018-03-23 15:36:02.085 [JavaFX Application Thread] App - Returning Card: Amour image
+[INFO ] 2018-03-23 15:36:02.225 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
+[INFO ] 2018-03-23 15:36:02.243 [JavaFX Application Thread] App - Returning Card: Sir Gawain image
+[INFO ] 2018-03-23 15:36:02.260 [JavaFX Application Thread] App - Returning Card: Sir Percival image
+[INFO ] 2018-03-23 15:36:02.280 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:02.302 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:02.322 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-23 15:36:02.342 [JavaFX Application Thread] App - Returning Card: Test Of Temptation image
+[INFO ] 2018-03-23 15:36:02.363 [JavaFX Application Thread] App - Returning Card: Test Of Valor image
+[INFO ] 2018-03-23 15:36:02.382 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-23 15:36:02.400 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-23 15:36:02.417 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning Player1 cards on table.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning Card: Amour
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Adding the following card Amour to Player1 hand.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning Card: Evil Knight
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Adding the following card Evil Knight to Player2 hand.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning Card: Saxons
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Adding the following card Saxons to Player3 hand.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Returning Card: Evil Knight
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Adding the following card Evil Knight to Player4 hand.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:02.436 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Successfully called : Event constructor
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:02.437 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:02.438 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.438 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:02.438 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:02.438 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:02.438 [JavaFX Application Thread] App - Returning Player1 cards on hand.
+[INFO ] 2018-03-23 15:36:02.438 [JavaFX Application Thread] App - Returning Card: Amour image
+[INFO ] 2018-03-23 15:36:02.454 [JavaFX Application Thread] App - Returning Card: Amour image
+[INFO ] 2018-03-23 15:36:02.473 [JavaFX Application Thread] App - Returning Card: Sir Galahad image
+[INFO ] 2018-03-23 15:36:02.492 [JavaFX Application Thread] App - Returning Card: Sir Gawain image
+[INFO ] 2018-03-23 15:36:02.511 [JavaFX Application Thread] App - Returning Card: Sir Percival image
+[INFO ] 2018-03-23 15:36:02.530 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:02.550 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:02.569 [JavaFX Application Thread] App - Returning Card: Saxon Knight image
+[INFO ] 2018-03-23 15:36:02.590 [JavaFX Application Thread] App - Returning Card: Test Of Temptation image
+[INFO ] 2018-03-23 15:36:02.610 [JavaFX Application Thread] App - Returning Card: Test Of Valor image
+[INFO ] 2018-03-23 15:36:02.629 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-23 15:36:02.648 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-23 15:36:02.666 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:02.685 [JavaFX Application Thread] App - Returning Player1 cards on table.
+[INFO ] 2018-03-23 15:36:04.909 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:04.909 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:04.909 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm image
+[INFO ] 2018-03-23 15:36:06.224 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:06.224 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:06.224 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:08.026 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:08.026 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:08.026 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:08.026 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:08.026 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:08.026 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:08.027 [JavaFX Application Thread] App - Returning Player2 cards on hand.
+[INFO ] 2018-03-23 15:36:08.028 [JavaFX Application Thread] App - Returning Card: Queen Iseult image
+[INFO ] 2018-03-23 15:36:08.050 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:08.069 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-23 15:36:08.087 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-23 15:36:08.105 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:08.122 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:08.141 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-23 15:36:08.157 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:08.176 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:08.194 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:08.213 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:08.232 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:08.283 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:08.302 [JavaFX Application Thread] App - Returning Player2 cards on table.
+[INFO ] 2018-03-23 15:36:09.570 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:09.570 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:09.570 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm image
+[INFO ] 2018-03-23 15:36:11.778 [JavaFX Application Thread] App - Returning Card: Dagger
+[INFO ] 2018-03-23 15:36:11.778 [JavaFX Application Thread] App - Removing the following card Dagger from Player2 hand.
+[INFO ] 2018-03-23 15:36:11.778 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:11.797 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Player2 cards on hand.
+[INFO ] 2018-03-23 15:36:11.798 [JavaFX Application Thread] App - Returning Card: Queen Iseult image
+[INFO ] 2018-03-23 15:36:11.815 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:11.832 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-23 15:36:11.851 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-23 15:36:11.868 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:11.885 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:11.902 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:11.918 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:11.969 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:11.989 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:12.010 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:12.030 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:12.048 [JavaFX Application Thread] App - Returning Player2 cards on table.
+[INFO ] 2018-03-23 15:36:12.048 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:12.048 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:12.048 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:12.048 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:12.049 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:12.050 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:12.050 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:12.050 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:12.050 [JavaFX Application Thread] App - Returning Player2 cards on hand.
+[INFO ] 2018-03-23 15:36:12.050 [JavaFX Application Thread] App - Returning Card: Queen Iseult image
+[INFO ] 2018-03-23 15:36:12.069 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:12.089 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-23 15:36:12.107 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-23 15:36:12.125 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:12.142 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:12.158 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:12.175 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:12.194 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:12.213 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:12.231 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:12.249 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:12.269 [JavaFX Application Thread] App - Returning Player2 cards on table.
+[INFO ] 2018-03-23 15:36:12.777 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:12.777 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:12.778 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm image
+[INFO ] 2018-03-23 15:36:14.818 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:14.818 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:14.819 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:14.819 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:14.819 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:14.819 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:14.819 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:14.819 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Player2 cards on hand.
+[INFO ] 2018-03-23 15:36:14.820 [JavaFX Application Thread] App - Returning Card: Queen Iseult image
+[INFO ] 2018-03-23 15:36:14.859 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:14.876 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-23 15:36:14.894 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-23 15:36:14.911 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:14.929 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:14.945 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:14.964 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:14.982 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:15.001 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:15.019 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:15.041 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:15.062 [JavaFX Application Thread] App - Returning Player2 cards on table.
+[INFO ] 2018-03-23 15:36:15.423 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:15.423 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:15.423 [JavaFX Application Thread] App - Returning Card: Prosperity Throughout The Realm image
+[INFO ] 2018-03-23 15:36:20.332 [JavaFX Application Thread] App - Draw card from story deck.
+[INFO ] 2018-03-23 15:36:20.332 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:20.333 [JavaFX Application Thread] App - Returning Card: Queen's Favor
+[INFO ] 2018-03-23 15:36:20.333 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:20.333 [JavaFX Application Thread] App - Returning Card: Queen's Favor image
+[INFO ] 2018-03-23 15:36:20.353 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.353 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:20.353 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:20.353 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:20.353 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Player2 cards on hand.
+[INFO ] 2018-03-23 15:36:20.354 [JavaFX Application Thread] App - Returning Card: Queen Iseult image
+[INFO ] 2018-03-23 15:36:20.371 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:20.389 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-23 15:36:20.406 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-23 15:36:20.423 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:20.441 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:20.479 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:20.497 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:20.517 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:20.535 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:20.553 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:20.572 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning Player2 cards on table.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning Card: Queen's Favor
+[INFO ] 2018-03-23 15:36:20.592 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.593 [JavaFX Application Thread] App - Returning Player2 rank.
+[INFO ] 2018-03-23 15:36:20.593 [JavaFX Application Thread] App - Returning Player1 rank.
+[INFO ] 2018-03-23 15:36:20.593 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player2 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player2 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player1 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player4 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player1 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player4 rank.
+[INFO ] 2018-03-23 15:36:20.594 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player4 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player4 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player1 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player1 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player2 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player2 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Player3 rank.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Card: Sir Tristan
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Adding the following card Sir Tristan to Player3 hand.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Card: Dagger
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Adding the following card Dagger to Player3 hand.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Card: Black Knight
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Adding the following card Black Knight to Player4 hand.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Returning Card: Mordred
+[INFO ] 2018-03-23 15:36:20.595 [JavaFX Application Thread] App - Adding the following card Mordred to Player4 hand.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Notify of the hand is full.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Inform listener of the handfull.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Card: Queen's Favor
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Successfully called : Event constructor
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.596 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Player2 cards on hand.
+[INFO ] 2018-03-23 15:36:20.597 [JavaFX Application Thread] App - Returning Card: Queen Iseult image
+[INFO ] 2018-03-23 15:36:20.616 [JavaFX Application Thread] App - Returning Card: Black Knight image
+[INFO ] 2018-03-23 15:36:20.636 [JavaFX Application Thread] App - Returning Card: Evil Knight image
+[INFO ] 2018-03-23 15:36:20.655 [JavaFX Application Thread] App - Returning Card: Giant image
+[INFO ] 2018-03-23 15:36:20.672 [JavaFX Application Thread] App - Returning Card: Robber Knight image
+[INFO ] 2018-03-23 15:36:20.689 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:20.707 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:20.724 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:20.743 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:20.761 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:20.781 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:20.799 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:20.818 [JavaFX Application Thread] App - Returning Player2 cards on table.
+[INFO ] 2018-03-23 15:36:24.219 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:24.221 [JavaFX Application Thread] App - Returning current story.
+[INFO ] 2018-03-23 15:36:24.221 [JavaFX Application Thread] App - Returning Card: Queen's Favor image
+[INFO ] 2018-03-23 15:36:28.152 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:28.152 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:28.152 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:29.429 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:29.430 [JavaFX Application Thread] App - Returning Player3 cards on hand.
+[INFO ] 2018-03-23 15:36:29.431 [JavaFX Application Thread] App - Returning Card: Sir Lancelot image
+[INFO ] 2018-03-23 15:36:29.453 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
+[INFO ] 2018-03-23 15:36:29.560 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-23 15:36:29.579 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:29.597 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:29.615 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-23 15:36:29.634 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
+[INFO ] 2018-03-23 15:36:29.656 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-23 15:36:29.678 [JavaFX Application Thread] App - Returning Card: Dagger image
+[INFO ] 2018-03-23 15:36:29.698 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:29.717 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:29.736 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:29.754 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:29.771 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:29.788 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:29.805 [JavaFX Application Thread] App - Returning Player3 cards on table.
+[INFO ] 2018-03-23 15:36:31.646 [JavaFX Application Thread] App - Returning Card: Dagger
+[INFO ] 2018-03-23 15:36:31.647 [JavaFX Application Thread] App - Removing the following card Dagger from Player3 hand.
+[INFO ] 2018-03-23 15:36:31.647 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:32.652 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:32.670 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Player3 cards on hand.
+[INFO ] 2018-03-23 15:36:32.671 [JavaFX Application Thread] App - Returning Card: Sir Lancelot image
+[INFO ] 2018-03-23 15:36:32.690 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
+[INFO ] 2018-03-23 15:36:32.707 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-23 15:36:32.725 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:32.741 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:32.760 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-23 15:36:32.777 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
+[INFO ] 2018-03-23 15:36:32.795 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-23 15:36:32.811 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:32.830 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:32.866 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:32.884 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:32.903 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:32.923 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:32.942 [JavaFX Application Thread] App - Returning Player3 cards on table.
+[INFO ] 2018-03-23 15:36:35.120 [JavaFX Application Thread] App - Returning Card: Horse
+[INFO ] 2018-03-23 15:36:35.120 [JavaFX Application Thread] App - Removing the following card Horse from Player3 hand.
+[INFO ] 2018-03-23 15:36:35.120 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:36.791 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:36.810 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:36.811 [JavaFX Application Thread] App - Returning Player3 cards on hand.
+[INFO ] 2018-03-23 15:36:36.811 [JavaFX Application Thread] App - Returning Card: Sir Lancelot image
+[INFO ] 2018-03-23 15:36:36.828 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
+[INFO ] 2018-03-23 15:36:36.845 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-23 15:36:36.865 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:36.882 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:36.898 [JavaFX Application Thread] App - Returning Card: Thieves image
+[INFO ] 2018-03-23 15:36:36.914 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
+[INFO ] 2018-03-23 15:36:36.932 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-23 15:36:36.948 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:36.968 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:36.985 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:37.001 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:37.030 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:37.059 [JavaFX Application Thread] App - Returning Player3 cards on table.
+[INFO ] 2018-03-23 15:36:44.860 [JavaFX Application Thread] App - Returning Card: Thieves
+[INFO ] 2018-03-23 15:36:44.861 [JavaFX Application Thread] App - Removing the following card Thieves from Player3 hand.
+[INFO ] 2018-03-23 15:36:44.861 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:44.880 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:44.880 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:44.880 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:44.880 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Player3 cards on hand.
+[INFO ] 2018-03-23 15:36:44.881 [JavaFX Application Thread] App - Returning Card: Sir Lancelot image
+[INFO ] 2018-03-23 15:36:44.898 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
+[INFO ] 2018-03-23 15:36:44.914 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-23 15:36:44.931 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:44.948 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:44.964 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
+[INFO ] 2018-03-23 15:36:44.981 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-23 15:36:44.997 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:45.033 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:45.049 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:45.066 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:45.084 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:45.107 [JavaFX Application Thread] App - Returning Player3 cards on table.
+[INFO ] 2018-03-23 15:36:45.108 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:45.108 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:45.109 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:45.109 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:45.109 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:45.109 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:45.109 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:45.109 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:45.110 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:45.110 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:45.110 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:45.110 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:45.110 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:45.110 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:45.111 [JavaFX Application Thread] App - Returning Player3 cards on hand.
+[INFO ] 2018-03-23 15:36:45.111 [JavaFX Application Thread] App - Returning Card: Sir Lancelot image
+[INFO ] 2018-03-23 15:36:45.130 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
+[INFO ] 2018-03-23 15:36:45.152 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-23 15:36:45.171 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:45.188 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:45.205 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
+[INFO ] 2018-03-23 15:36:45.224 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-23 15:36:45.241 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:45.258 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:45.274 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:45.290 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:45.308 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:45.327 [JavaFX Application Thread] App - Returning Player3 cards on table.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning list of player in game.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player1.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player1 # shields.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player1 number of card on hand.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player2.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player2 # shields.
+[INFO ] 2018-03-23 15:36:46.551 [JavaFX Application Thread] App - Returning Player2 number of card on hand.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player3.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player3 # shields.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player3 number of card on hand.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player4.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player4 # shields.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player4 number of card on hand.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Player3 cards on hand.
+[INFO ] 2018-03-23 15:36:46.552 [JavaFX Application Thread] App - Returning Card: Sir Lancelot image
+[INFO ] 2018-03-23 15:36:46.571 [JavaFX Application Thread] App - Returning Card: Sir Tristan image
+[INFO ] 2018-03-23 15:36:46.590 [JavaFX Application Thread] App - Returning Card: Mordred image
+[INFO ] 2018-03-23 15:36:46.608 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:46.627 [JavaFX Application Thread] App - Returning Card: Saxons image
+[INFO ] 2018-03-23 15:36:46.645 [JavaFX Application Thread] App - Returning Card: Test Of Morgan Le Fey image
+[INFO ] 2018-03-23 15:36:46.664 [JavaFX Application Thread] App - Returning Card: Battle-ax image
+[INFO ] 2018-03-23 15:36:46.680 [JavaFX Application Thread] App - Returning Card: Horse image
+[INFO ] 2018-03-23 15:36:46.697 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:46.713 [JavaFX Application Thread] App - Returning Card: Lance image
+[INFO ] 2018-03-23 15:36:46.729 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:46.745 [JavaFX Application Thread] App - Returning Card: Sword image
+[INFO ] 2018-03-23 15:36:46.764 [JavaFX Application Thread] App - Returning Player3 cards on table.
