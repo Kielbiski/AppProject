@@ -17,5 +17,8 @@ public class Foe extends AdventureCard {
         logger.info("Successfully called : Foe constructor");
 
     }
+    @Override
+    public void setWasUsed(boolean state) {}
+
 }
 

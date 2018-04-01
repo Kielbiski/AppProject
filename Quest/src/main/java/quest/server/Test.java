@@ -20,4 +20,6 @@ public class Test extends AdventureCard
         this(name, imageFilename, 3);
         logger.info("Successfully called : Test constructor for " + this.getName() + " card.");
     }
+    @Override
+    public void setWasUsed(boolean state){};
 }

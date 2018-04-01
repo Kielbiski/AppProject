@@ -9,11 +9,12 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class login {
+public class JoinGame {
     @FXML public TextField server_ip;
     @FXML public TextField port;
     @FXML public TextField name;
@@ -33,16 +34,15 @@ public class login {
         Stage stage;
         stage = (Stage) server_ip.getScene().getWindow();
         //Parent parent = FXMLLoader.load(getClass().getResource("room.fxml"));
-        Parent root = FXMLLoader.load(login.class.getResource("/fxml/room.fxml"));
-        stage.setScene(new Scene(root, 600, 400));
-        stage.setTitle(data.name);
-        stage.setOnCloseRequest(e-> {
-            //e.consume();
-            room.th.stop();
-            System.exit(0);
-        });
-        stage.setResizable(false);
-
+        Pane canvas = new Pane();
+        String fxmlPath = "/fxml/PlayerView.fxml";
+        canvas.setStyle("-fx-background-color: #6F737E");
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+        Controller controller = loader.getController();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle("Quests Of The Round Table");
         stage.show();
     }
 

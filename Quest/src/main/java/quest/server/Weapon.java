@@ -14,4 +14,7 @@ public class Weapon extends AdventureCard
         battlePoints = paramBattlePoints;
         logger.info("Successfully weapon :" + this.getName() + " constructor");
     }
+
+    @Override
+    public void setWasUsed(boolean state) {}
 }

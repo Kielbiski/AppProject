@@ -18,7 +18,7 @@ public abstract class QuestStage {
         this.participatingPlayers = participatingPlayers;
     }
 
-    ArrayList<Player> getParticipatingPlayers() {
+    public ArrayList<Player> getParticipatingPlayers() {
         logger.info("Returning quest stage participants");
         return participatingPlayers;
     }

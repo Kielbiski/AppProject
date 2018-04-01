@@ -282,7 +282,6 @@ class Pox extends Event {
         }
     }
 }
-
 class ProsperityThroughoutTheRealm extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
@@ -404,7 +403,6 @@ class TournamentAtYork extends Tournament {
         logger.info("Successfully called : Tournament at York constructor.");
     }
 }
-
 class TournamentFinal extends Tournament {
 
     private static final Logger logger = LogManager.getLogger(App.class);

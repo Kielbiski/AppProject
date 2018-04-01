@@ -403,12 +403,12 @@ public class Model implements PropertyChangeListener
         logger.info(name + "is joining the game.");
     }
 
-    void removeFromStoryDeck(StoryCard storyCard){
+    public void removeFromStoryDeck(StoryCard storyCard){
         logger.info("Removing:"+storyCard.getName()+" from the story card.");
         deckOfStoryCards.remove(storyCard);
     }
 
-    void dealCards(Stack<AdventureCard> deck){
+    public void dealCards(Stack<AdventureCard> deck){
         //Collections.shuffle(deckOfAdventureCards);
         for(Player player : players) {
             int NUM_CARDS = 12;
@@ -441,19 +441,19 @@ public class Model implements PropertyChangeListener
         discardOfAdventureCards.add(card);
     }
 
-    void addToPotentialStage(AdventureCard card, int stageNum){
+    public void addToPotentialStage(AdventureCard card, int stageNum){
         logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
     }
-    void setPotentialStage(ArrayList<AdventureCard> stage, int stageNum){
+    public void setPotentialStage(ArrayList<AdventureCard> stage, int stageNum){
         logger.info("Set the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.put(stageNum,stage);
     }
-    void removeFromPotentialStage(AdventureCard card, int stageNum){
+    public void removeFromPotentialStage(AdventureCard card, int stageNum){
         logger.info("Remove the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).remove(card);
     }
-    void resetPotentialStages(){
+    public void resetPotentialStages(){
         preQuestStageSetup.clear();
         for(int i = 0; i<currentQuest.getNumStage();i++){
             preQuestStageSetup.put(i,new ArrayList<>());
@@ -505,7 +505,7 @@ public class Model implements PropertyChangeListener
     }
 
 
-    void drawStoryCard(){
+    public void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
             currentStory = deckOfStoryCards.pop();
             if(currentStory instanceof KingsRecognition){
