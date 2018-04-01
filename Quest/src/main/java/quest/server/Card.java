@@ -7,7 +7,7 @@ import quest.client.App;
 public class Card {
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    protected String name;
+    public String name;
     protected String imageFilename;
 
     Card(String paramName, String paramImageFilename)

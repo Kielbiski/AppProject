@@ -11,8 +11,6 @@ import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quest.server.*;
-import quest.server.server.*;
-
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
@@ -96,20 +94,21 @@ public class Controller implements PropertyChangeListener {
 
         imgView.setOnMouseClicked((MouseEvent event) -> {
             if(currentBehaviour==Behaviour.QUEST_MEMBER) {
-                if (card instanceof Merlin) {
-                    if (!((Merlin) card).isWasUsed()){
-                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
-                        if(useMerlin){
-                            flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
-                            for (AdventureCard adCard : game.getPreQuestStageSetup().get(game.getCurrentQuest().getCurrentStageIndex()+1)) {
-                                ImageView imgView2 = createAdventureCardImageView(adCard);
-                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
-                                imgView2.toFront();
-                                flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
-                            }
-                            ((Merlin) card).setWasUsed(true);
-                        }
-                    }
+                if (card.getName().equals("Merlin")) {
+                    //FIX LATER
+//                    if (!((Merlin) card).isWasUsed()){
+//                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
+//                        if(useMerlin){
+//                            flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
+//                            for (AdventureCard adCard : game.getPreQuestStageSetup().get(game.getCurrentQuest().getCurrentStageIndex()+1)) {
+//                                ImageView imgView2 = createAdventureCardImageView(adCard);
+//                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
+//                                imgView2.toFront();
+//                                flowPaneArray.get(game.getCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
+//                            }
+//                            card.setWasUsed(true);
+//                        }
+//                    }
                 }
             }
             event.consume();
@@ -461,7 +460,7 @@ public class Controller implements PropertyChangeListener {
                     } else {
                         boolean hasMerlin = false;
                         for (Card card : activePlayer.getCardsInHand()) {
-                            if (card instanceof Merlin) hasMerlin = true;
+                            if (card.getName().equals("Merlin")) hasMerlin = true;
                         }
 //                    if(hasMerlin) {
 //                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
@@ -523,7 +522,8 @@ public class Controller implements PropertyChangeListener {
             exit(0);
         }
         else {
-            performTournament(knightsOfTheRoundTable,new TournamentFinal());
+            //fix this later
+            //performTournament(knightsOfTheRoundTable,new TournamentFinal());
         }
     }
 
@@ -711,7 +711,7 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 else{
-                    print(game.getCurrentStory().name);
+                    print(game.getCurrentStory().getName());
                     player.getCardsInHand();
                     ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) game.getCurrentStory());
                     boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) game.getCurrentStory());
@@ -1009,17 +1009,17 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void tournamentOver(){
-
-        if(game.getCurrentTournament() instanceof TournamentFinal){
-            for (Player player : game.getCurrentTournament().getWinners()) {
-                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Game!");
-                DialogPane dialog = alert.getDialogPane();
-                dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
-                dialog.getStyleClass().add("alertDialogs");
-                alert.showAndWait();
-            }
-            exit(0);
-        }
+//FIX LATER
+//        if(game.getCurrentTournament() instanceof TournamentFinal){
+//            for (Player player : game.getCurrentTournament().getWinners()) {
+//                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Game!");
+//                DialogPane dialog = alert.getDialogPane();
+//                dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
+//                dialog.getStyleClass().add("alertDialogs");
+//                alert.showAndWait();
+//            }
+//            exit(0);
+//        }
 
         for (Player player : game.getCurrentTournament().getWinners()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament, and received " + game.getCurrentTournament().getShields() + " shields!", ButtonType.OK);
@@ -1237,48 +1237,48 @@ public class Controller implements PropertyChangeListener {
         Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
         Collections.shuffle(deckOfAdventureCards);
 
-        switch (scenario){
-            case "Regular":
-                break;
-            case "Boar Hunt":
-                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
-                        game.removeFromStoryDeck(storyCard);
-                        break;
-                    }
-                }
-                game.addToStoryDeck(new BoarHunt());
-                break;
-            case "Test AI No Quest":
-                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
-                        game.removeFromStoryDeck(storyCard);
-                        break;
-                    }
-                }
-                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
-                game.addToStoryDeck(new TournamentAtOrkney());
-                game.addToStoryDeck(new Pox());
-                break;
-            case "Strategy 1":
-                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
-                        game.removeFromStoryDeck(storyCard);
-                        break;
-                    }
-                }
-                game.addToStoryDeck(new TournamentAtOrkney());
-                break;
-            case "Strategy 2":
-                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-                    if(storyCard instanceof SlayTheDragon){ //to preserve deck card ratios
-                        game.removeFromStoryDeck(storyCard);
-                        break;
-                    }
-                }
-                game.addToStoryDeck(new SlayTheDragon());
-                break;
-        }
+//        switch (scenario){
+//            case "Regular":
+//                break;
+//            case "Boar Hunt":
+//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+//                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
+//                        game.removeFromStoryDeck(storyCard);
+//                        break;
+//                    }
+//                }
+//                game.addToStoryDeck(new BoarHunt());
+//                break;
+//            case "Test AI No Quest":
+//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+//                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
+//                        game.removeFromStoryDeck(storyCard);
+//                        break;
+//                    }
+//                }
+//                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
+//                game.addToStoryDeck(new TournamentAtOrkney());
+//                game.addToStoryDeck(new Pox());
+//                break;
+//            case "Strategy 1":
+//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+//                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
+//                        game.removeFromStoryDeck(storyCard);
+//                        break;
+//                    }
+//                }
+//                game.addToStoryDeck(new TournamentAtOrkney());
+//                break;
+//            case "Strategy 2":
+//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+//                    if(storyCard instanceof SlayTheDragon){ //to preserve deck card ratios
+//                        game.removeFromStoryDeck(storyCard);
+//                        break;
+//                    }
+//                }
+//                game.addToStoryDeck(new SlayTheDragon());
+//                break;
+//        }
         int numberOfPlayersResult = getNumberOfPlayers();
         if(numberOfPlayersResult == 0){
             okAlert("Error starting game, not enough players!", "Error.");

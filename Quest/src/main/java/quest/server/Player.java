@@ -39,7 +39,7 @@ public class Player {
     private ArrayList<AdventureCard> cardsInHand = new ArrayList<>();
     private ArrayList<AdventureCard> tournamentCards = new ArrayList<>();
     private List<PropertyChangeListener> listener = new ArrayList<>();
-    protected boolean handFull;
+    public boolean handFull;
 
     Player(String paramName){
         playerName = paramName ;

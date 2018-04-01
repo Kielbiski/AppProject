@@ -11,7 +11,7 @@ import java.util.*;
 
 class BoarHunt extends Quest {
     private static final Logger logger = LogManager.getLogger(App.class);
-    BoarHunt()
+    public BoarHunt()
     {
         super("Boar Hunt", "Q_Boar_Hunt.jpg", 2, new Boar());
         logger.info("Successfully called : Boar Hunt constructor.");
@@ -112,7 +112,7 @@ class SlayTheDragon extends Quest {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    SlayTheDragon()
+    public SlayTheDragon()
     {
         super("Slay The Dragon", "Q_Slay_The_Dragon.jpg", 3, new Dragon());
         logger.info("Successfully called : Slay The Dragon constructor.");
@@ -263,7 +263,7 @@ class Pox extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    Pox(){
+    public Pox(){
         super("Pox", "E_Pox.jpg");
         logger.info("Successfully called : Pox constructor.");
 
@@ -282,14 +282,13 @@ class Pox extends Event {
         }
     }
 }
-
 class ProsperityThroughoutTheRealm extends Event {
 
     private static final Logger logger = LogManager.getLogger(App.class);
     private List<PropertyChangeListener> listener = new ArrayList<>();
 
 
-    ProsperityThroughoutTheRealm(){
+    public ProsperityThroughoutTheRealm(){
         super("Prosperity Throughout The Realm", "E_Prosperity_Throughout_The_Realm.jpg");
         logger.info("Successfully called : Prosperity Throughout The Realm constructor.");
 
@@ -379,7 +378,7 @@ class TournamentAtOrkney extends Tournament {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    TournamentAtOrkney(){
+    public TournamentAtOrkney(){
         super("Tournament at Orkney", "TM_Orkney.jpg", 2, new ArrayList<>());
         logger.info("Successfully called : Tournament at Orkney constructor.");
     }
@@ -404,12 +403,11 @@ class TournamentAtYork extends Tournament {
         logger.info("Successfully called : Tournament at York constructor.");
     }
 }
-
 class TournamentFinal extends Tournament {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    TournamentFinal(){
+    public TournamentFinal(){
         super("Tournament Final", "Facedown.png", 0, new ArrayList<>());
         logger.info("Successfully called : Tournament at Camelot constructor.");
     }

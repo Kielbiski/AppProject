@@ -23,4 +23,7 @@ public class Ally extends AdventureCard {
     public String getAffectedEntity() {
         return affectedEntity;
     }
+    @Override
+    public void setWasUsed(boolean state) {}
+
 }
