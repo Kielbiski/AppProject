@@ -1,6 +1,7 @@
-package quest;
+package server;
 
 import org.junit.Test;
+import quest.server.DoIParticipateInQuest;
 
 import java.util.ArrayList;
 
