@@ -1227,9 +1227,10 @@ public class Controller implements PropertyChangeListener {
                         break;
                     }
                 }
-                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
-                game.addToStoryDeck(new Pox());
-                game.addToStoryDeck(new Plague());
+                game.addToAdventureDeck(new TestOfTemptation()
+
+                );
+                game.addToStoryDeck(new BoarHunt());
                 break;
             case "Strategy 1":
                 for(StoryCard storyCard : game.getDeckOfStoryCards()){
