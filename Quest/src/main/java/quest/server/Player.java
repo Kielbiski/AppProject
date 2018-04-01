@@ -41,7 +41,7 @@ public class Player {
     private List<PropertyChangeListener> listener = new ArrayList<>();
     protected boolean handFull;
 
-    Player(String paramName){
+    public Player(String paramName){
         playerName = paramName ;
         shields = 0;
         battlePoints =0;

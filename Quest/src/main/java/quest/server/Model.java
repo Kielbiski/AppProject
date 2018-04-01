@@ -162,7 +162,7 @@ public class Model implements PropertyChangeListener
         return testCount <= 1;
     }
 
-    Model() {
+    public Model() {
 
 
 

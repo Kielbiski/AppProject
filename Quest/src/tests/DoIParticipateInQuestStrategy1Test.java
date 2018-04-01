@@ -1,4 +1,4 @@
-package server;
+package quest.server;
 
 import org.junit.Test;
 import quest.server.DoIParticipateInQuest;

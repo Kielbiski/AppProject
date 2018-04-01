@@ -23,7 +23,7 @@ public class App extends Application {
         canvas.setStyle("-fx-background-color: #6F737E");
         FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
         Parent root = loader.load();
-        Controller controller = loader.getController();
+//        Controller controller = loader.getController();
         Scene scene = new Scene(root);
         primaryStage.setScene(scene);
         primaryStage.setTitle("Quests Of The Round Table");

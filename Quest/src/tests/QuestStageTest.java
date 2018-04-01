@@ -3,6 +3,7 @@ package quest;
 import quest.client.App;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import quest.server.Player;
 
 import java.util.ArrayList;
 

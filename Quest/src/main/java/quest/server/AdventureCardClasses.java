@@ -235,7 +235,7 @@ class Merlin extends Ally {
         this.wasUsed = wasUsed;
     }
 
-    Merlin(){
+    public Merlin(){
         super("Merlin", "A_Merlin.jpg", 0, 0, 0, 0, "");
     }
 

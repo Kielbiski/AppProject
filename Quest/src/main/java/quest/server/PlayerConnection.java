@@ -18,8 +18,6 @@ public class PlayerConnection {
         return dos;
     }
 
-
-
     PlayerConnection(String name, DataOutputStream dos, DataInputStream dis) {
         this.name = name;
         this.dos = dos;
