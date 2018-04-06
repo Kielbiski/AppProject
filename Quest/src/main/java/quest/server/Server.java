@@ -117,34 +117,5 @@ public class Server {
 //        game.addChangeListener(this);
 //        updateClients();
     }
-    public static void applyClientAction(String className, String methodName, Object invokeObject, Class[] paramTypes, Object[] params){
-        try {
-            Class<?> cl = Class.forName(className);
-            Method method = cl.getDeclaredMethod(methodName, paramTypes);
-            method.invoke(invokeObject, params);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
-            E.printStackTrace();
-        }
-    }
 
-    public void applyClientAction(String methodName, Class[] paramTypes, Object[] params){
-        try {
-            Class<?> cl = Class.forName("Server");
-            Method method = cl.getDeclaredMethod(methodName, paramTypes);
-            method.invoke(game, params);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
-            E.printStackTrace();
-        }
-    }
-
-    public Object getObjectForClient(String methodName){
-        try {
-            Class<?> cl = Class.forName("Server");
-            Method method = cl.getDeclaredMethod(methodName);
-            return method.invoke(game);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
-            E.printStackTrace();
-            return null;
-        }
-    }
 }
