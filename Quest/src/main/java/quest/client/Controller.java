@@ -29,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static java.lang.System.exit;
 
-enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT}
+enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
 
 public class Controller implements PropertyChangeListener {
 
@@ -78,8 +78,8 @@ public class Controller implements PropertyChangeListener {
     private DataInputStream dis;
     
     public Controller(){
+        currentBehaviour = Behaviour.DISABLED;
         try {
-
             socket = new Socket(data.ip, data.port);
             dos = new DataOutputStream(socket.getOutputStream());
             dis = new DataInputStream(socket.getInputStream());
@@ -707,37 +707,39 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void storyDeckDraw(){
+        if(currentBehaviour!=Behaviour.DISABLED) {
 
-        game.drawStoryCard();
-        System.out.println("storyDeckDraw(): " + serverGetCurrentStory().getName());
-        //activeStoryImg = createStoryCardImageView();
-        activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
-        update();
+            game.drawStoryCard();
+            System.out.println("storyDeckDraw(): " + serverGetCurrentStory().getName());
+            //activeStoryImg = createStoryCardImageView();
+            activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
+            update();
 
-        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-        int currentTurn = game.getPlayers().indexOf(activePlayer);
+            ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+            int currentTurn = game.getPlayers().indexOf(activePlayer);
 
-        for (int i = 0; i < NUM_PLAYERS; i++) {
-            currentPlayerOrder.add(game.getPlayers().get(currentTurn));
-            currentTurn = nextPlayerIndex(currentTurn);
+            for (int i = 0; i < NUM_PLAYERS; i++) {
+                currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+                currentTurn = nextPlayerIndex(currentTurn);
+            }
+            if (serverGetCurrentStory() instanceof Quest) {
+                game.setCurrentQuest((Quest) serverGetCurrentStory());
+                questDraw(currentPlayerOrder);
+            } else if (serverGetCurrentStory() instanceof Event) {
+                nextTurnButton.setVisible(true);
+                Event gameEvent = (Event) serverGetCurrentStory();
+                callEventEffect(gameEvent);
+            } else if (serverGetCurrentStory() instanceof Tournament) {
+                nextTurnButton.setVisible(true);
+                game.setCurrentTournament((Tournament) serverGetCurrentStory());
+                performTournament(currentPlayerOrder, game.getCurrentTournament());
+                nextTurnButton.setDisable(false);
+            }
+            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+            //activePlayer = game.getPlayers().get(currentPlayerIndex);
+            storyDeckImg.setDisable(true);
+            update();
         }
-        if (serverGetCurrentStory() instanceof Quest) {
-            game.setCurrentQuest((Quest) serverGetCurrentStory());
-            questDraw(currentPlayerOrder);
-        } else if (serverGetCurrentStory() instanceof Event) {
-            nextTurnButton.setVisible(true);
-            Event gameEvent = (Event) serverGetCurrentStory();
-            callEventEffect(gameEvent);
-        } else if (serverGetCurrentStory() instanceof Tournament) {
-            nextTurnButton.setVisible(true);
-            game.setCurrentTournament((Tournament) serverGetCurrentStory());
-            performTournament(currentPlayerOrder, game.getCurrentTournament());
-            nextTurnButton.setDisable(false);
-        }
-        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-        //activePlayer = game.getPlayers().get(currentPlayerIndex);
-        storyDeckImg.setDisable(true);
-        update();
     }
 
     //QUESTS

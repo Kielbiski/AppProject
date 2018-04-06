@@ -46,7 +46,7 @@ public class PlayerConnection {
                         if (clientRequest.getString("type").equals("set")) {
                             JSONArray arguments = new JSONArray(clientRequest.getJSONArray("arguments"));
                         }
-                        playerAction = "hi";
+                        //playerAction = "hi";
                     } catch(Exception E){
                             E.printStackTrace();
                         }
