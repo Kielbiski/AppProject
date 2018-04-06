@@ -10,11 +10,22 @@ import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import quest.server.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.net.Socket;
 import java.util.*;
 
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import static java.lang.System.exit;
 
@@ -59,9 +70,56 @@ public class Controller implements PropertyChangeListener {
     private HBox tableHbox;
     @FXML
     private Pane discardPane;
-
+    public static Thread thread;
     private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
+    private Socket socket;
+    private DataOutputStream dos;
+    private DataInputStream dis;
+    
+    public Controller(){
+        try {
 
+            socket = new Socket(data.ip, data.port);
+            dos = new DataOutputStream(socket.getOutputStream());
+            dis = new DataInputStream(socket.getInputStream());
+
+            dos.writeUTF(data.name);
+            /*
+             * This Thread let the client recieve the message from the server for any time;
+             */
+            //RECEIVES JSON DATA AND PARSES IT
+//            thread = new Thread(() -> {
+//                try {
+//
+//                    JSONParser parser = new JSONParser();
+//
+//                    while(true) {
+//                        String serverResponse = dis.readUTF();
+////
+////                        System.out.println("SERVER RESPONDED WITH : " + serverResponse);
+////                        Message newMsg = new Message();
+////
+////                        Object obj = parser.parse(newMsgJson);
+////                        JSONObject msg = (JSONObject) obj;
+////
+////                        newMsg.setName((String) msg.get("name"));
+////                        newMsg.setMessage((String) msg.get("message"));
+////
+////                        chatLog.appendText(newMsg.getName() + " : " + newMsg.getMessage() + "\n");
+//                    }
+//                } catch(Exception E) {
+//                    E.printStackTrace();
+//                }
+//
+//            });
+//
+//            thread.start();
+
+        } catch(IOException E) {
+            E.printStackTrace();
+        }
+    }
+    
     private void print(String stringToPrint){
         System.out.println(stringToPrint);
     }
@@ -125,8 +183,8 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void onMouseEnterStory(MouseEvent event){
-        if(game.getCurrentStory() !=null) {
-            currentCardImage.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+        if(serverGetCurrentStory() !=null) {
+            currentCardImage.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
             currentCardImage.setPreserveRatio(true);
             currentCardImage.setFitHeight(190);
             currentCardImage.toBack();
@@ -649,9 +707,9 @@ public class Controller implements PropertyChangeListener {
     public void storyDeckDraw(){
 
         game.drawStoryCard();
-        System.out.println("storyDeckDraw(): " + game.getCurrentStory().getName());
+        System.out.println("storyDeckDraw(): " + serverGetCurrentStory().getName());
         //activeStoryImg = createStoryCardImageView();
-        activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+        activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
         update();
 
         ArrayList<Player> currentPlayerOrder = new ArrayList<>();
@@ -661,16 +719,16 @@ public class Controller implements PropertyChangeListener {
             currentPlayerOrder.add(game.getPlayers().get(currentTurn));
             currentTurn = nextPlayerIndex(currentTurn);
         }
-        if (game.getCurrentStory() instanceof Quest) {
-            game.setCurrentQuest((Quest) game.getCurrentStory());
+        if (serverGetCurrentStory() instanceof Quest) {
+            game.setCurrentQuest((Quest) serverGetCurrentStory());
             questDraw(currentPlayerOrder);
-        } else if (game.getCurrentStory() instanceof Event) {
+        } else if (serverGetCurrentStory() instanceof Event) {
             nextTurnButton.setVisible(true);
-            Event gameEvent = (Event) game.getCurrentStory();
+            Event gameEvent = (Event) serverGetCurrentStory();
             callEventEffect(gameEvent);
-        } else if (game.getCurrentStory() instanceof Tournament) {
+        } else if (serverGetCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
-            game.setCurrentTournament((Tournament) game.getCurrentStory());
+            game.setCurrentTournament((Tournament) serverGetCurrentStory());
             performTournament(currentPlayerOrder, game.getCurrentTournament());
             nextTurnButton.setDisable(false);
         }
@@ -696,29 +754,29 @@ public class Controller implements PropertyChangeListener {
             }
             if(validCardCount < game.getCurrentQuest().getNumStage()){
                 if(!(player instanceof AbstractAI)) {
-                    okAlert(player.getPlayerName() + ", you cannot sponsor " + game.getCurrentStory().getName() + "!", "Sponsorship failed.");
+                    okAlert(player.getPlayerName() + ", you cannot sponsor " + serverGetCurrentStory().getName() + "!", "Sponsorship failed.");
                 }
             } else {
                 if (!(player instanceof AbstractAI)){
-                    boolean alertResult = yesNoAlert(player.getPlayerName() + ", would you like to sponsor " + game.getCurrentStory().getName() + "?", "Sponsor " + game.getCurrentStory().getName() + "?");
+                    boolean alertResult = yesNoAlert(player.getPlayerName() + ", would you like to sponsor " + serverGetCurrentStory().getName() + "?", "Sponsor " + serverGetCurrentStory().getName() + "?");
                     if (alertResult) {
                         sponsor = activePlayer;
                         game.setSponsor(sponsor);
-                        performQuest(sponsor, (Quest) game.getCurrentStory());
+                        performQuest(sponsor, (Quest) serverGetCurrentStory());
                         nextTurnButton.setVisible(false);
                         continueButton.setVisible(true);
                         break;
                     }
                 }
                 else{
-                    print(game.getCurrentStory().getName());
+                    print(serverGetCurrentStory().getName());
                     player.getCardsInHand();
-                    ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) game.getCurrentStory());
-                    boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) game.getCurrentStory());
+                    ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverGetCurrentStory());
+                    boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverGetCurrentStory());
                     if (aiResult) {
                         sponsor = activePlayer;
                         game.setSponsor(sponsor);
-                        performQuest(sponsor, (Quest) game.getCurrentStory());
+                        performQuest(sponsor, (Quest) serverGetCurrentStory());
                         nextTurnButton.setVisible(false);
                         continueButton.setVisible(true);
                         break;
@@ -815,7 +873,7 @@ public class Controller implements PropertyChangeListener {
 
         int currentHighestBid = 0;
         int minBids = 2;
-        if(game.getCurrentStory().getName().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
+        if(serverGetCurrentStory().getName().equals("Search For The Questing Beast") && ((TestStage)game.getCurrentQuest().getCurrentStage()).getSponsorTestCard().getName().equals("Test Of The Questing Beast")){
             minBids = 3;
         }
         int currentBid=minBids;
@@ -991,7 +1049,7 @@ public class Controller implements PropertyChangeListener {
             activePlayer = game.getPlayers().get(i);
             update();
             if(!(activePlayer instanceof AbstractAI)) {
-                if (yesNoAlert("Join " + game.getCurrentStory().getName() + " " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
+                if (yesNoAlert("Join " + serverGetCurrentStory().getName() + " " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
                     tournamentPlayers.add(game.getPlayers().get(i));
                 }
             } else {
@@ -1144,9 +1202,9 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void runAITurn(){
         game.drawStoryCard();
-        System.out.println("storyDeckDraw(): " + game.getCurrentStory().getName());
+        System.out.println("storyDeckDraw(): " + serverGetCurrentStory().getName());
         //activeStoryImg = createStoryCardImageView();
-        activeStoryImg.setImage(getCardImage(game.getCurrentStory().getImageFilename()));
+        activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
         update();
 
         ArrayList<Player> currentPlayerOrder = new ArrayList<>();
@@ -1161,16 +1219,16 @@ public class Controller implements PropertyChangeListener {
 //                noAIPlayers.add(player);
 //            }
 //        }
-        if (game.getCurrentStory() instanceof Quest) {
-            game.setCurrentQuest((Quest) game.getCurrentStory());
+        if (serverGetCurrentStory() instanceof Quest) {
+            game.setCurrentQuest((Quest) serverGetCurrentStory());
             questDraw(currentPlayerOrder);
-        } else if (game.getCurrentStory() instanceof Event) {
+        } else if (serverGetCurrentStory() instanceof Event) {
             nextTurnButton.setVisible(true);
-            Event gameEvent = (Event) game.getCurrentStory();
+            Event gameEvent = (Event) serverGetCurrentStory();
             callEventEffect(gameEvent);
-        } else if (game.getCurrentStory() instanceof Tournament) {
+        } else if (serverGetCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
-            game.setCurrentTournament((Tournament) game.getCurrentStory());
+            game.setCurrentTournament((Tournament) serverGetCurrentStory());
             performTournament(currentPlayerOrder, game.getCurrentTournament());
             nextTurnButton.setDisable(false);
         }
@@ -1187,119 +1245,116 @@ public class Controller implements PropertyChangeListener {
             handFull(player);
         }
     }
-
-    private int getNumberOfPlayers(){
-        List<String> choices = new ArrayList<>();
-        choices.add("2 Players");
-        choices.add("3 Players");
-        choices.add("4 Players");
-
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("4 Players", choices);
-        dialog.setTitle("Number of Players?");
-        dialog.setHeaderText("How many players would you like?");
-        dialog.setContentText("Please select number of players:");
-        Optional<String> result = dialog.showAndWait();
-        // The Java 8 way to get the response value (with lambda expression).
-        if (result.isPresent()) {
-            String number = result.get();
-            switch (number) {
-                case "2 Players":
-                    return 2;
-                case "3 Players":
-                    return 3;
-                case "4 Players":
-                    return 4;
-                default:
-                    return 0;
-            }
-        }
-        return 0;
-    }
-
-    public void initialize() {
-        List<String> choices = new ArrayList<>();
-        choices.add("Regular");
-        choices.add("Boar Hunt");
-        choices.add("Test AI No Quest");
-        choices.add("Strategy 1");
-        choices.add("Strategy 2");
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("Regular", choices);
-        dialog.setTitle("Scenario selection.");
-        dialog.setHeaderText("Select Scenario");
-        dialog.setContentText("Please select the scenario you would like:");
-        Optional<String> result = dialog.showAndWait();
-        // The Java 8 way to get the response value (with lambda expression).
-        String scenario = "Regular";
-        if (result.isPresent()) {
-            scenario = result.get();
-        }
-
-        Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
-        Collections.shuffle(deckOfAdventureCards);
-
-//        switch (scenario){
-//            case "Regular":
-//                break;
-//            case "Boar Hunt":
-//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-//                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
-//                        game.removeFromStoryDeck(storyCard);
-//                        break;
-//                    }
-//                }
-//                game.addToStoryDeck(new BoarHunt());
-//                break;
-//            case "Test AI No Quest":
-//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-//                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
-//                        game.removeFromStoryDeck(storyCard);
-//                        break;
-//                    }
-//                }
-//                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
-//                game.addToStoryDeck(new TournamentAtOrkney());
-//                game.addToStoryDeck(new Pox());
-//                break;
-//            case "Strategy 1":
-//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-//                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
-//                        game.removeFromStoryDeck(storyCard);
-//                        break;
-//                    }
-//                }
-//                game.addToStoryDeck(new TournamentAtOrkney());
-//                break;
-//            case "Strategy 2":
-//                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-//                    if(storyCard instanceof SlayTheDragon){ //to preserve deck card ratios
-//                        game.removeFromStoryDeck(storyCard);
-//                        break;
-//                    }
-//                }
-//                game.addToStoryDeck(new SlayTheDragon());
-//                break;
+//
+//    private int getNumberOfPlayers(){
+//        List<String> choices = new ArrayList<>();
+//        choices.add("2 Players");
+//        choices.add("3 Players");
+//        choices.add("4 Players");
+//
+//        ChoiceDialog<String> dialog = new ChoiceDialog<>("4 Players", choices);
+//        dialog.setTitle("Number of Players?");
+//        dialog.setHeaderText("How many players would you like?");
+//        dialog.setContentText("Please select number of players:");
+//        Optional<String> result = dialog.showAndWait();
+//        // The Java 8 way to get the response value (with lambda expression).
+//        if (result.isPresent()) {
+//            String number = result.get();
+//            switch (number) {
+//                case "2 Players":
+//                    return 2;
+//                case "3 Players":
+//                    return 3;
+//                case "4 Players":
+//                    return 4;
+//                default:
+//                    return 0;
+//            }
 //        }
-        int numberOfPlayersResult = getNumberOfPlayers();
-        if(numberOfPlayersResult == 0){
-            okAlert("Error starting game, not enough players!", "Error.");
-            exit(0);
-        }
-        setPlayerNames(numberOfPlayersResult);
-        NUM_PLAYERS = numberOfPlayersResult;
-        setCurrentBehaviour(Behaviour.DEFAULT);
-        currentTurnPlayer = game.getPlayers().get(0);
-        setActivePlayer(game.getPlayers().get(0));
-        game.getPlayers().get(0).setShields(19);
-        game.getPlayers().get(1).setShields(19);
-        playerStatsVbox.setSpacing(5);
-        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
-        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
-        game.dealCards(deckOfAdventureCards);
-        game.addChangeListener(this);
-        update();
+//        return 0;
+//    }
 
-    }
-
+//    public void initialize() {
+//        List<String> choices = new ArrayList<>();
+//        choices.add("Regular");
+//        choices.add("Boar Hunt");
+//        choices.add("Test AI No Quest");
+//        choices.add("Strategy 1");
+//        choices.add("Strategy 2");
+//        ChoiceDialog<String> dialog = new ChoiceDialog<>("Regular", choices);
+//        dialog.setTitle("Scenario selection.");
+//        dialog.setHeaderText("Select Scenario");
+//        dialog.setContentText("Please select the scenario you would like:");
+//        Optional<String> result = dialog.showAndWait();
+//        // The Java 8 way to get the response value (with lambda expression).
+//        String scenario = "Regular";
+//        if (result.isPresent()) {
+//            scenario = result.get();
+//        }
+//
+//        Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
+//        Collections.shuffle(deckOfAdventureCards);
+//
+////        switch (scenario){
+////            case "Regular":
+////                break;
+////            case "Boar Hunt":
+////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+////                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
+////                        game.removeFromStoryDeck(storyCard);
+////                        break;
+////                    }
+////                }
+////                game.addToStoryDeck(new BoarHunt());
+////                break;
+////            case "Test AI No Quest":
+////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+////                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
+////                        game.removeFromStoryDeck(storyCard);
+////                        break;
+////                    }
+////                }
+////                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
+////                game.addToStoryDeck(new TournamentAtOrkney());
+////                game.addToStoryDeck(new Pox());
+////                break;
+////            case "Strategy 1":
+////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+////                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
+////                        game.removeFromStoryDeck(storyCard);
+////                        break;
+////                    }
+////                }
+////                game.addToStoryDeck(new TournamentAtOrkney());
+////                break;
+////            case "Strategy 2":
+////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
+////                    if(storyCard instanceof SlayTheDragon){ //to preserve deck card ratios
+////                        game.removeFromStoryDeck(storyCard);
+////                        break;
+////                    }
+////                }
+////                game.addToStoryDeck(new SlayTheDragon());
+////                break;
+////        }
+//        int numberOfPlayersResult = getNumberOfPlayers();
+//        if(numberOfPlayersResult == 0){
+//            okAlert("Error starting game, not enough players!", "Error.");
+//            exit(0);
+//        }
+//        setPlayerNames(numberOfPlayersResult);
+//        NUM_PLAYERS = numberOfPlayersResult;
+//        setCurrentBehaviour(Behaviour.DEFAULT);
+//        currentTurnPlayer = game.getPlayers().get(0);
+//        setActivePlayer(game.getPlayers().get(0));
+//        playerStatsVbox.setSpacing(5);
+//        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
+//        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
+//        game.dealCards(deckOfAdventureCards);
+//        game.addChangeListener(this);
+//        update();
+//
+//    }
 
     private void setPlayerNames(int numberOfPlayers){
         //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
@@ -1340,7 +1395,7 @@ public class Controller implements PropertyChangeListener {
             Optional<String> result = dialog.showAndWait();
 
             // The Java 8 way to get the response value (with lambda expression).
-            result.ifPresent(name -> game.addPlayer(playerTypeFinal, name));
+            result.ifPresent(name -> serverAddPlayer(playerTypeFinal, name));
         }
     }
 
@@ -1378,6 +1433,84 @@ public class Controller implements PropertyChangeListener {
         }
 
 
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    //Server Actions
+    ///////////////////////////////////////////////////////////////////////////
+    private ArrayList<String> listArguments(String ...args){
+        return new ArrayList<>(Arrays.asList(args));
+    }
+    private Object getServerObject(String jsonFromServer, Class<?> objectClass){
+        ObjectMapper objectMapper = new ObjectMapper();
+        Object classObject = null;
+        try {
+            classObject = objectMapper.readValue(jsonFromServer, objectClass);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return classObject;
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    //Getters
+    ///////////////////////////////////////////////////////////////////////////
+    @SuppressWarnings("unchecked")
+    private StoryCard serverGetCurrentStory(){
+        String serverJSON = "";
+        JSONObject json = new JSONObject();
+        json.put("type", "get");
+        json.put("methodName", "getCurrentStory");
+        try {
+            dos.writeUTF(json.toJSONString());
+        } catch (IOException E){
+            E.printStackTrace();
+        }
+        //sLLLLLLLLLLLLEEEEEEEEP --- ping server
+        try {
+            serverJSON = dis.readUTF();
+        } catch(IOException E) {
+            E.printStackTrace();
+        }
+        return (StoryCard) getServerObject(serverJSON, StoryCard.class);
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    //Setters
+    ///////////////////////////////////////////////////////////////////////////
+
+    @SuppressWarnings("unchecked")
+    private void serverAddPlayer(String playerType, String name){
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "addPlayer");
+//        json.put("argumentTypes", listArguments(String, String]);
+        json.put("arguments", listArguments(playerType, name));
+        try {
+            dos.writeUTF(json.toJSONString());
+        } catch (IOException E){
+            E.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////////////
+    //Special Client Actions
+    ///////////////////////////////////////////////////////////////////////////
+    public void applyServerAction(String className, String methodName, Object invokeObject, Class[] paramTypes, Object[] params){
+        try {
+            Class<?> cl = Class.forName(className);
+            Method method = cl.getDeclaredMethod(methodName, paramTypes);
+            method.invoke(invokeObject, params);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            E.printStackTrace();
+        }
+    }
+
+    public void applyServerAction(String methodName, Class[] paramTypes, Object[] params){
+        try {
+            Class<?> cl = Class.forName("Model");
+            Method method = cl.getDeclaredMethod(methodName, paramTypes);
+            method.invoke(game, params);
+        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            E.printStackTrace();
+        }
     }
 
 }

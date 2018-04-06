@@ -1,14 +1,6 @@
 package quest.server;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.DialogPane;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
+import javafx.scene.control.*;
 import java.util.*;
 
 import static java.lang.System.exit;
@@ -16,16 +8,18 @@ import static java.lang.System.exit;
 public class Controller {
 
     private int numberOfPlayers;
-
     private String scenario;
-    public Controller() {
+    private int portNumber;
 
-        System.out.println("Server");
+    public Controller() {
         serverSettingsSplash();
-        new Server(getNumberOfPlayers(), getScenario());
+        new Server(getNumberOfPlayers(), getScenario(), getPortNumber());
         exit(0);
 }
 
+    public int getPortNumber() {
+        return portNumber;
+    }
 
     public void setNumberOfPlayers(int numberOfPlayers) {
         this.numberOfPlayers = numberOfPlayers;
@@ -51,7 +45,7 @@ public class Controller {
         dialog.setHeaderText("Select Scenario");
         dialog.setContentText("Please select the scenario you would like:");
         Optional<String> result = dialog.showAndWait();
-        // The Java 8 way to get the response value (with lambda expression).
+        // The Java 8 way to get the response value (with lambda expression).10001
         String scenario = "Regular";
         result.ifPresent(this::setScenario);
         int numberOfPlayersResult = askNumberOfPlayers();
@@ -60,6 +54,9 @@ public class Controller {
             exit(0);
         }
         setNumberOfPlayers(numberOfPlayersResult);
+        askPortNumber();
+        setPortNumber(getPortNumber());
+
     }
     private void okAlert(String contentText, String headerText){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, contentText, ButtonType.OK);
@@ -99,7 +96,22 @@ public class Controller {
                     return 0;
             }
         }
+        okAlert("Error starting game, not enough players!", "Error.");
+        exit(0);
         return 0;
+    }
+
+    public void askPortNumber() {
+        TextInputDialog dialog = new TextInputDialog("10001");
+        dialog.setTitle("Port number.");
+        dialog.setHeaderText("Please type the desired port number for the sever.");
+        Optional<String> result = dialog.showAndWait();
+        // The Java 8 way to get the response value (with lambda expression).
+        result.ifPresent(number -> setPortNumber(Integer.parseInt(number)));
+    }
+
+    public void setPortNumber(int portNumber){
+        this.portNumber = portNumber;
     }
 
 }

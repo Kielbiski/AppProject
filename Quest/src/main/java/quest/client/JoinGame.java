@@ -24,7 +24,6 @@ public class JoinGame {
 
 
     public void onClick() throws IOException{
-        System.out.println("Clicked");
         data.ip = server_ip.getText();
         this.sPort = port.getText();
         data.name = name.getText();
