@@ -1,4 +1,5 @@
 package quest.server;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jdk.nashorn.internal.parser.JSONParser;
 import org.json.JSONObject;
 import org.json.*;
@@ -36,7 +37,7 @@ public class PlayerConnection {
         this.name = name;
         this.dos = dos;
         game.setCurrentPlayer(new Player(this.name));
-
+        ObjectMapper mapper = new ObjectMapper();
        new Thread(() -> {
             try {
                while(true) {
@@ -45,8 +46,11 @@ public class PlayerConnection {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
                             JSONArray arguments = new JSONArray(clientRequest.getJSONArray("arguments"));
+                            playerAction = "i ain't got no type";
                         }
-                        //playerAction = "hi";
+                        if (clientRequest.getString("type").equals("get")){
+                            playerAction = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
+                        }
                     } catch(Exception E){
                             E.printStackTrace();
                         }
@@ -84,5 +88,31 @@ public class PlayerConnection {
             }
         }).start();
     }
+    public static void applyClientAction(Model game, String className, String methodName, Object invokeObject, Class[] paramTypes, Object[] params){
+        try {
+            Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
+            method.invoke(invokeObject, params);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            E.printStackTrace();
+        }
+    }
 
+    public void applyClientAction(Model game, String methodName, Class[] paramTypes, Object[] params){
+        try {
+            Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
+            method.invoke(game, params);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            E.printStackTrace();
+        }
+    }
+
+    private Object getObjectForClient(Model game, String methodName){
+        try {
+            Method method = game.getClass().getDeclaredMethod(methodName);
+            return method.invoke(game);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            E.printStackTrace();
+            return null;
+        }
+    }
 }

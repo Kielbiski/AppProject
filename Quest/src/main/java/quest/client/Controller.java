@@ -1471,6 +1471,7 @@ public class Controller implements PropertyChangeListener {
         //sLLLLLLLLLLLLEEEEEEEEP --- ping server
         try {
             serverJSON = dis.readUTF();
+            System.out.println(serverJSON);
         } catch(IOException E) {
             E.printStackTrace();
         }
