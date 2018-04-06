@@ -13,6 +13,7 @@ public class Controller {
 
     public Controller() {
         serverSettingsSplash();
+
         new Server(getNumberOfPlayers(), getScenario(), getPortNumber());
         exit(0);
 }

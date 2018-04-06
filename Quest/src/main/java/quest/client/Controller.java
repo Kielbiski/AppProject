@@ -34,6 +34,7 @@ enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, D
 public class Controller implements PropertyChangeListener {
 
     private static final Logger logger = LogManager.getLogger(App.class);
+    //to be deleted
     private Model game = new Model();
     private Player activePlayer;
     private Player currentTurnPlayer;
@@ -88,32 +89,33 @@ public class Controller implements PropertyChangeListener {
              * This Thread let the client recieve the message from the server for any time;
              */
             //RECEIVES JSON DATA AND PARSES IT
-//            thread = new Thread(() -> {
-//                try {
+            thread = new Thread(() -> {
+                try {
+
+                    JSONParser parser = new JSONParser();
+
+                    while(true) {
+                        String serverResponse = dis.readUTF();
+                        print(serverResponse);
 //
-//                    JSONParser parser = new JSONParser();
+//                        System.out.println("SERVER RESPONDED WITH : " + serverResponse);
+//                        Message newMsg = new Message();
 //
-//                    while(true) {
-//                        String serverResponse = dis.readUTF();
-////
-////                        System.out.println("SERVER RESPONDED WITH : " + serverResponse);
-////                        Message newMsg = new Message();
-////
-////                        Object obj = parser.parse(newMsgJson);
-////                        JSONObject msg = (JSONObject) obj;
-////
-////                        newMsg.setName((String) msg.get("name"));
-////                        newMsg.setMessage((String) msg.get("message"));
-////
-////                        chatLog.appendText(newMsg.getName() + " : " + newMsg.getMessage() + "\n");
-//                    }
-//                } catch(Exception E) {
-//                    E.printStackTrace();
-//                }
+//                        Object obj = parser.parse(newMsgJson);
+//                        JSONObject msg = (JSONObject) obj;
 //
-//            });
+//                        newMsg.setName((String) msg.get("name"));
+//                        newMsg.setMessage((String) msg.get("message"));
 //
-//            thread.start();
+//                        chatLog.appendText(newMsg.getName() + " : " + newMsg.getMessage() + "\n");
+                    }
+                } catch(Exception E) {
+                    E.printStackTrace();
+                }
+
+            });
+
+            thread.start();
 
         } catch(IOException E) {
             E.printStackTrace();
