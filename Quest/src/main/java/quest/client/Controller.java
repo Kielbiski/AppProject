@@ -1,5 +1,12 @@
 package quest.client;
 
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
 import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -22,6 +29,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
@@ -76,9 +85,15 @@ public class Controller implements PropertyChangeListener {
     private Socket socket;
     private DataOutputStream dos;
     private DataInputStream dis;
+
+
     
     public Controller(){
         currentBehaviour = Behaviour.DISABLED;
+//        final AtomicBoolean updateStatus = new AtomicBoolean(false);
+        final BackgroundWork back = new BackgroundWork();
+
+
         try {
             socket = new Socket(data.ip, data.port);
             dos = new DataOutputStream(socket.getOutputStream());
@@ -88,34 +103,65 @@ public class Controller implements PropertyChangeListener {
             /*
              * This Thread let the client recieve the message from the server for any time;
              */
-            //RECEIVES JSON DATA AND PARSES IT
-            thread = new Thread(() -> {
-                try {
 
-                    JSONParser parser = new JSONParser();
+            System.out.println("please");
 
-                    while(true) {
-                        String serverResponse = dis.readUTF();
-                        print(serverResponse);
-//
-//                        System.out.println("SERVER RESPONDED WITH : " + serverResponse);
-//                        Message newMsg = new Message();
-//
-//                        Object obj = parser.parse(newMsgJson);
-//                        JSONObject msg = (JSONObject) obj;
-//
-//                        newMsg.setName((String) msg.get("name"));
-//                        newMsg.setMessage((String) msg.get("message"));
-//
-//                        chatLog.appendText(newMsg.getName() + " : " + newMsg.getMessage() + "\n");
-                    }
-                } catch(Exception E) {
-                    E.printStackTrace();
+            back.updateState.addListener((observable, oldValue, newValue) -> {
+                System.out.println("fucking");
+                if (newValue.booleanValue() == true) {
+                    Platform.runLater(() -> {
+                        System.out.println("work");
+                        update();
+                    });
                 }
 
             });
+            back.start();
 
-            thread.start();
+
+//            thread = new Thread(() -> {
+//                try {
+//
+//                    JSONParser parser = new JSONParser();
+//
+//                    while(true) {
+//                    }
+//                } catch(Exception E) {
+//                    E.printStackTrace();
+//                }
+//
+//            });
+//
+//            thread.start();
+
+         //   RECEIVES JSON DATA AND PARSES IT
+//            Service<Void> backgroundThread;
+//
+//            backgroundThread = new Service<Void>(){
+//                @Override
+//                protected Task<Void> createTask(){
+//                    return new Task<Void>() {
+//                        @Override
+//                        protected Void call() throws Exception {
+//                            try {
+//
+////                                JSONParser parser = new JSONParser();
+////
+////                                while(true) {
+////                                    String serverResponse = dis.readUTF();
+////                                    print(serverResponse);
+////                                }
+//                            } catch(Exception E) {
+//                                E.printStackTrace();
+//                            }
+//                            return null;
+//                        }
+//                    };
+//                }
+//            };
+//
+//            backgroundThread.start();
+
 
         } catch(IOException E) {
             E.printStackTrace();
@@ -417,6 +463,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void update() {
+        print("kys");
         //Vbox display player data
         ArrayList<Player> currentPlayers = game.getPlayers();
         playerStatsVbox.getChildren().clear();
@@ -522,14 +569,14 @@ public class Controller implements PropertyChangeListener {
                         for (Card card : activePlayer.getCardsInHand()) {
                             if (card.getName().equals("Merlin")) hasMerlin = true;
                         }
-//                    if(hasMerlin) {
-//                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
-//                            ImageView imgView = createAdventureCardImageView(card);
-//                            imgView.setImage(getCardImage(card.getImageFilename()));
-//                            imgView.toFront();
-//                            flowPaneArray.get(i+1).getChildren().add(imgView);
-//                        }
-//                    }
+////                    if(hasMerlin) {
+////                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
+////                            ImageView imgView = createAdventureCardImageView(card);
+////                            imgView.setImage(getCardImage(card.getImageFilename()));
+////                            imgView.toFront();
+////                            flowPaneArray.get(i+1).getChildren().add(imgView);
+////                        }
+////                    }
                     }
                 }
             }
@@ -1518,4 +1565,44 @@ public class Controller implements PropertyChangeListener {
         }
     }
 
+    class BackgroundWork extends Thread {
+        private BooleanProperty updateState;
+
+        public BackgroundWork() {
+            updateState = new SimpleBooleanProperty(this, "bool", false);
+            setDaemon(true);
+        }
+
+        public boolean getUpdateState() {
+            return updateState.get();
+        }
+
+        public BooleanProperty updateState() {
+            return updateState;
+        }
+
+        @Override
+        public void run() {
+            while (true) {
+                try {
+                    JSONParser parser = new JSONParser();
+
+                    while(true) {
+                        updateState.setValue(true);
+                        thread.sleep(5000);
+                        updateState.setValue(false);
+
+//                        String serverResponse = dis.readUTF();
+//                        print(serverResponse);
+                    }
+                } catch(Exception E) {
+                    E.printStackTrace();
+                }
+
+            }
+        }
+    }
+
 }
+
+
