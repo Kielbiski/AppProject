@@ -704,7 +704,7 @@ public class Controller implements PropertyChangeListener {
         else if(currentBehaviour == Behaviour.TOURNAMENT){
             serverGetCurrentTournament().nextTurn();
             if(serverGetCurrentTournament().isTournamentOver()){
-                if(game.isWinner()){
+                if(serverIsWinner()){
                     System.out.println("Game over," + serverGetWinningPlayers().get(0) + " wins");
                     System.exit(0);
                 }
@@ -917,6 +917,7 @@ public class Controller implements PropertyChangeListener {
             game.setPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
             sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
             for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
+                //must be changed to be server side
                 serverGetCurrentQuest().addStage(game.createStage(serverGetPreQuestStageSetup().get(i)));
             }
             setCurrentBehaviour(Behaviour.QUEST_MEMBER);
@@ -1316,7 +1317,7 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     //Server Actions
     ///////////////////////////////////////////////////////////////////////////
-    private ArrayList<String> listArguments(String ...args){
+    private ArrayList<Object> listArguments(Object ...args){
         return new ArrayList<>(Arrays.asList(args));
     }
     private static <T> T getServerObject(final String jsonFromServer, TypeReference<T> objectClass){
@@ -1458,6 +1459,23 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
+
+    @SuppressWarnings("unchecked")
+    private void serverAddToPotentialStage(AdventureCard card, Integer stageNum) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "addToPotentialStage");
+        json.put("argumentTypes", new ArrayList<Class<?>>().addAll(Arrays.asList(card.getClass(), stageNum.getClass())));
+        json.put("arguments", new ArrayList<Object>().addAll(Arrays.asList(card, stageNum)));
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+
+
     @SuppressWarnings("unchecked")
     private void serverSetCurrentTournament(Tournament tournament) {
         JSONObject json = new JSONObject();
