@@ -21,7 +21,7 @@ public class Model implements PropertyChangeListener
     private Stack<StoryCard> discardOfStoryCards = new Stack<>();
     private HashMap<Integer,ArrayList<AdventureCard>> preQuestStageSetup = new HashMap<>();
     private StoryCard currentStory;
-    private Player currentPlayer;
+    private Player activePlayer;
     private Quest currentQuest;
     private Tournament currentTournament;
     private Player sponsor;
@@ -33,11 +33,11 @@ public class Model implements PropertyChangeListener
     /////////////////////////////////////////////////
 
     public Player getCurrentPlayer() {
-        return currentPlayer;
+        return activePlayer;
     }
 
-    public void setCurrentPlayer(Player currentPlayer) {
-        this.currentPlayer = currentPlayer;
+    public void setCurrentPlayer(Player p) {
+        this.activePlayer = p;
     }
 
     public Tournament getCurrentTournament() {
