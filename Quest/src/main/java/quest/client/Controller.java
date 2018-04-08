@@ -99,7 +99,6 @@ public class Controller implements PropertyChangeListener {
     public Controller(){
 //        currentBehaviour = Behaviour.DISABLED;
         final BackgroundWork back = new BackgroundWork();
-        currentTurnPlayer = serverGetPlayers().get(0);
         try {
             socket = new Socket(PlayerData.ipAddress, PlayerData.port);
             dos = new DataOutputStream(socket.getOutputStream());
@@ -482,6 +481,9 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
+
+        currentTurnPlayer = serverGetPlayers().get(0);
+        /////////
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
 
         for (Player player : currentPlayers) {
