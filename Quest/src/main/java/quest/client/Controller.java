@@ -208,7 +208,7 @@ public class Controller implements PropertyChangeListener {
 //                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
 //                        if(useMerlin){
 //                            flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
-//                            for (AdventureCard adCard : game.getPreQuestStageSetup().get(serverGetCurrentQuest().getCurrentStageIndex()+1)) {
+//                            for (AdventureCard adCard : PreQuestStageSetup().get(serverGetCurrentQuest().getCurrentStageIndex()+1)) {
 //                                ImageView imgView2 = createAdventureCardImageView(adCard);
 //                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
 //                                imgView2.toFront();
@@ -425,7 +425,7 @@ public class Controller implements PropertyChangeListener {
                     if (db.getString().equals(cardsHbox.getId())) {
                         if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
                             game.addToPotentialStage(selectedAdventureCard, stageIndex);
-                            game.getSponsor().removeCardFromHand(selectedAdventureCard);
+                            serverGetSponsor().removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
                     } else {
@@ -552,7 +552,7 @@ public class Controller implements PropertyChangeListener {
         if(currentBehaviour == Behaviour.SPONSOR) {
             for(int i =0; i < serverGetCurrentQuest().getNumStage(); i++){
                 flowPaneArray.get(i).getChildren().clear();
-                for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                for (AdventureCard card : serverGetPreQuestStageSetup().get(i)) {
                     ImageView imgView = createAdventureCardImageView(card);
                     imgView.setImage(getCardImage(card.getImageFilename()));
                     imgView.toFront();
@@ -565,7 +565,7 @@ public class Controller implements PropertyChangeListener {
                 for (int i = 0; i < serverGetCurrentQuest().getNumStage(); i++) {
                     flowPaneArray.get(i).getChildren().clear();
                     if (serverGetCurrentQuest().getCurrentStage() == serverGetCurrentQuest().getStages().get(i)) {
-                        for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                        for (AdventureCard card : serverGetPreQuestStageSetup().get(i)) {
                             ImageView imgView = createAdventureCardImageView(card);
                             imgView.setImage(getCardImage(card.getImageFilename()));
                             imgView.toFront();
@@ -577,7 +577,7 @@ public class Controller implements PropertyChangeListener {
                             if (card.getName().equals("Merlin")) hasMerlin = true;
                         }
 ////                    if(hasMerlin) {
-////                        for (AdventureCard card : game.getPreQuestStageSetup().get(i+1)) {
+////                        for (AdventureCard card :serverGetPreQuestStageSetup().get(i+1)) {
 ////                            ImageView imgView = createAdventureCardImageView(card);
 ////                            imgView.setImage(getCardImage(card.getImageFilename()));
 ////                            imgView.toFront();
@@ -659,7 +659,7 @@ public class Controller implements PropertyChangeListener {
             if (game.validateQuestStages()) {
 
                 for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-                    serverGetCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
+                    serverGetCurrentQuest().addStage(game.createStage(serverGetPreQuestStageSetup().get(i)));
                 }
                 setCurrentBehaviour(Behaviour.QUEST_MEMBER);
                 update();
@@ -672,7 +672,8 @@ public class Controller implements PropertyChangeListener {
             } else {
                 okAlert("Please set up a valid quest ","Error in quest stages.");
                 for (int i = 0; i < serverGetCurrentQuest().getNumStage(); i++) {
-                    for (AdventureCard card : game.getPreQuestStageSetup().get(i)) {
+                    for (AdventureCard card : serverGetPreQuestStageSetup().get(i)) {
+                        //ADD METHOD ADD CARD TO SPONSOR HAND
                         game.getSponsor().addCardToHand(card);
                     }
                 }
@@ -704,7 +705,7 @@ public class Controller implements PropertyChangeListener {
             serverGetCurrentTournament().nextTurn();
             if(serverGetCurrentTournament().isTournamentOver()){
                 if(game.isWinner()){
-                    System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
+                    System.out.println("Game over," + serverGetWinningPlayers().get(0) + " wins");
                     System.exit(0);
                 }
                 else{
@@ -736,7 +737,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
-        if(player == game.getCurrentPlayer()) {
+        if(player == serverGetCurrentPlayer()) {
             if(!(player instanceof AbstractAI)){
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
@@ -844,7 +845,7 @@ public class Controller implements PropertyChangeListener {
                 }
             }
         }
-        if(game.getSponsor() == null){
+        if(serverGetSponsor() == null){
             setActivePlayer(currentTurnPlayer);
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
@@ -855,7 +856,7 @@ public class Controller implements PropertyChangeListener {
     private void questOver(){
         if(serverGetCurrentQuest().isWinner()) {
             for (Player player : serverGetCurrentQuest().getPlayerList()) {
-                if(game.isKingsRecognition()){
+                if(serverIsKingsRecognition()){
                     player.setShields(player.getShields() + 3);
                     game.setKingsRecognition(false);
                 }
@@ -866,23 +867,25 @@ public class Controller implements PropertyChangeListener {
             okAlert("Quest has no winner.", "Quest failed!");
         }
         int sponsorCardsToDraw=serverGetCurrentQuest().getNumStage();
-        for(int i =0; i<game.getPreQuestStageSetup().size();i++){
-            for(AdventureCard card: game.getPreQuestStageSetup().get(i)){
+        for(int i =0; i<serverGetPreQuestStageSetup().size();i++){
+            for(AdventureCard card: serverGetPreQuestStageSetup().get(i)){
                 sponsorCardsToDraw++;
             }
         }
         for(int i=0;i<sponsorCardsToDraw;i++) {
-            game.drawAdventureCard(game.getSponsor());
+            //DRAW ADVENTURE CARD METHOD WITH PLAYER PARAM
+            game.drawAdventureCard(serverGetSponsor());
         }
         stagesGridPane.getChildren().clear();
         flowPaneArray.clear();
+        //NEEDS CLEAR METHOD
         game.getPreQuestStageSetup().clear();
         serverGetCurrentQuest().wipeWeapons();
         game.clearQuest();
-        setActivePlayer(game.getSponsor());
+        setActivePlayer(serverGetSponsor());
         game.setSponsor(null);
         previousBehaviour = Behaviour.DEFAULT;
-        if(!game.getCurrentPlayer().handFull) {
+        if(!serverGetCurrentPlayer().handFull) {
             setCurrentBehaviour(Behaviour.DEFAULT);
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
@@ -914,7 +917,7 @@ public class Controller implements PropertyChangeListener {
             game.setPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
             sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
             for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-                serverGetCurrentQuest().addStage(game.createStage(game.getPreQuestStageSetup().get(i)));
+                serverGetCurrentQuest().addStage(game.createStage(serverGetPreQuestStageSetup().get(i)));
             }
             setCurrentBehaviour(Behaviour.QUEST_MEMBER);
             serverGetCurrentQuest().startQuest();
@@ -1017,8 +1020,8 @@ public class Controller implements PropertyChangeListener {
                     serverGetCurrentQuest().setInTest(false);
                     serverGetCurrentQuest().nextTurn();
                     if(serverGetCurrentQuest().isFinished()){
-                        if(game.isWinner()){
-                            System.out.println("Game over," + game.getWinningPlayers().get(0) + " wins");
+                        if(serverIsWinner()){
+                            System.out.println("Game over," + serverGetWinningPlayers().get(0) + " wins");
                             System.exit(0);
                         }
                         else{
@@ -1048,7 +1051,7 @@ public class Controller implements PropertyChangeListener {
         ArrayList<Player> playersInQuest = new ArrayList<>();
         ArrayList<Player> serverPlayers = serverGetPlayers();
         for(int i = 0; i < NUM_PLAYERS; i++){
-            if(serverPlayers.get(i) != game.getSponsor()) {
+            if(serverPlayers.get(i) != serverGetSponsor()) {
                 activePlayer = serverPlayers.get(i);
                 update();
                 if(activePlayer instanceof AbstractAI){
@@ -1229,7 +1232,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void runAITurn(){
         StoryCard currentStory = serverGetCurrentStory();
-        game.drawStoryCard();
+        serverDrawStoryCard();
         ArrayList<Player> serverplayers = serverGetPlayers();
         System.out.println("storyDeckDraw(): " + currentStory.getName());
         //activeStoryImg = createStoryCardImageView();
@@ -1274,159 +1277,7 @@ public class Controller implements PropertyChangeListener {
             handFull(player);
         }
     }
-//
-//    private int getNumberOfPlayers(){
-//        List<String> choices = new ArrayList<>();
-//        choices.add("2 Players");
-//        choices.add("3 Players");
-//        choices.add("4 Players");
-//
-//        ChoiceDialog<String> dialog = new ChoiceDialog<>("4 Players", choices);
-//        dialog.setTitle("Number of Players?");
-//        dialog.setHeaderText("How many players would you like?");
-//        dialog.setContentText("Please select number of players:");
-//        Optional<String> result = dialog.showAndWait();
-//        // The Java 8 way to get the response value (with lambda expression).
-//        if (result.isPresent()) {
-//            String number = result.get();
-//            switch (number) {
-//                case "2 Players":
-//                    return 2;
-//                case "3 Players":
-//                    return 3;
-//                case "4 Players":
-//                    return 4;
-//                default:
-//                    return 0;
-//            }
-//        }
-//        return 0;
-//    }
 
-//    public void initialize() {
-//        List<String> choices = new ArrayList<>();
-//        choices.add("Regular");
-//        choices.add("Boar Hunt");
-//        choices.add("Test AI No Quest");
-//        choices.add("Strategy 1");
-//        choices.add("Strategy 2");
-//        ChoiceDialog<String> dialog = new ChoiceDialog<>("Regular", choices);
-//        dialog.setTitle("Scenario selection.");
-//        dialog.setHeaderText("Select Scenario");
-//        dialog.setContentText("Please select the scenario you would like:");
-//        Optional<String> result = dialog.showAndWait();
-//        // The Java 8 way to get the response value (with lambda expression).
-//        String scenario = "Regular";
-//        if (result.isPresent()) {
-//            scenario = result.get();
-//        }
-//
-//        Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
-//        Collections.shuffle(deckOfAdventureCards);
-//
-////        switch (scenario){
-////            case "Regular":
-////                break;
-////            case "Boar Hunt":
-////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-////                    if(storyCard instanceof BoarHunt){ //to preserve deck card ratios
-////                        game.removeFromStoryDeck(storyCard);
-////                        break;
-////                    }
-////                }
-////                game.addToStoryDeck(new BoarHunt());
-////                break;
-////            case "Test AI No Quest":
-////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-////                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
-////                        game.removeFromStoryDeck(storyCard);
-////                        break;
-////                    }
-////                }
-////                game.addToStoryDeck(new ProsperityThroughoutTheRealm());
-////                game.addToStoryDeck(new TournamentAtOrkney());
-////                game.addToStoryDeck(new Pox());
-////                break;
-////            case "Strategy 1":
-////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-////                    if(storyCard instanceof TournamentAtOrkney){ //to preserve deck card ratios
-////                        game.removeFromStoryDeck(storyCard);
-////                        break;
-////                    }
-////                }
-////                game.addToStoryDeck(new TournamentAtOrkney());
-////                break;
-////            case "Strategy 2":
-////                for(StoryCard storyCard : game.getDeckOfStoryCards()){
-////                    if(storyCard instanceof SlayTheDragon){ //to preserve deck card ratios
-////                        game.removeFromStoryDeck(storyCard);
-////                        break;
-////                    }
-////                }
-////                game.addToStoryDeck(new SlayTheDragon());
-////                break;
-////        }
-//        int numberOfPlayersResult = getNumberOfPlayers();
-//        if(numberOfPlayersResult == 0){
-//            okAlert("Error starting game, not enough players!", "Error.");
-//            exit(0);
-//        }
-//        setPlayerNames(numberOfPlayersResult);
-//        NUM_PLAYERS = numberOfPlayersResult;
-//        setCurrentBehaviour(Behaviour.DEFAULT);
-//        currentTurnPlayer = serverGetPlayers().get(0);
-//        setActivePlayer(serverGetPlayers().get(0));
-//        playerStatsVbox.setSpacing(5);
-//        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
-//        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
-//        game.dealCards(deckOfAdventureCards);
-//        game.addChangeListener(this);
-//        update();
-//
-//    }
-
-//    private void setPlayerNames(int numberOfPlayers){
-//        //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
-//        for(int i =0; i < numberOfPlayers; i++){
-//            List<String> choices = new ArrayList<>();
-//            choices.add("Human");
-//            choices.add("CPU");
-//            ChoiceDialog<String> playerTypeDialog = new ChoiceDialog<>("Human", choices);
-//            playerTypeDialog.setTitle("Human or CPU?");
-//            playerTypeDialog.setHeaderText("Player/AI");
-//            playerTypeDialog.setContentText("Please select if you would like Player " + (i+1) + " to be a human or CPU.");
-//            Optional<String> playerTypeResult = playerTypeDialog.showAndWait();
-//            // The Java 8 way to get the response value (with lambda expression).
-//            String playerType = "Human";
-//            if (playerTypeResult.isPresent()) {
-//                playerType = playerTypeResult.get();
-//            }
-//            final String playerTypeFinal = playerType;
-//            String playerString;
-//            if(playerType.equals("Human")){
-//                playerString = "Player";
-//            } else {
-//                playerString = playerType;
-//            }
-//            TextInputDialog dialog = new TextInputDialog(playerString + (i+1));
-//            if(playerType.equals("CPU")){
-//                dialog.setTitle("Set CPU name");
-//                dialog.setHeaderText("Please enter the name for CPU" + (i+1) + ".");
-//            } else {
-//                dialog.setTitle("Set Player name");
-//                dialog.setHeaderText("Player " + (i + 1) + ", please enter your name.");
-//            }
-////            DialogPane dialogPane = dialog.getDialogPane();
-////            dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-////            dialogPane.getStyleClass().add("alertDialogs");
-//            // dialog.setContentText("Please enter your name:");
-//
-//            Optional<String> result = dialog.showAndWait();
-//
-//            // The Java 8 way to get the response value (with lambda expression).
-//            result.ifPresent(name -> serverAddPlayer(playerTypeFinal, name));
-//        }
-//    }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
         javafx.scene.image.Image img;
@@ -1538,6 +1389,31 @@ public class Controller implements PropertyChangeListener {
     private Integer serverGetCurrentTurnIndex(){
         return getServerObject(
                 genericGet("getCurrentTurnIndex"), new TypeReference<Integer>(){});
+    }
+    private Player serverGetSponsor(){
+        return getServerObject(
+                genericGet("getSponsor"), new TypeReference<Player>(){});
+    }
+    private Player serverGetCurrentPlayer(){
+        return getServerObject(
+                genericGet("getCurrentPlayer"), new TypeReference<Player>(){});
+    }
+    private HashMap<Integer,ArrayList<AdventureCard>> serverGetPreQuestStageSetup(){
+        return getServerObject(
+                genericGet("getPreQuestStageSetup"), new TypeReference<HashMap<Integer,ArrayList<AdventureCard>>>(){});
+    }
+
+    private ArrayList<Player> serverGetWinningPlayers(){
+        return getServerObject(
+                genericGet("getWinningPlayers"), new TypeReference<ArrayList<Player>>(){});
+    }
+    private Boolean serverIsWinner(){
+        return getServerObject(
+                genericGet("isWinner"), new TypeReference<Boolean>(){});
+    }
+    private Boolean serverIsKingsRecognition(){
+        return getServerObject(
+                genericGet("isKingsRecognition()"), new TypeReference<Boolean>(){});
     }
     ///////////////////////////////////////////////////////////////////////////
     //Setters
