@@ -23,7 +23,6 @@ enum Rank {SQUIRE, KNIGHT, CHAMPION_KNIGHT, KNIGHT_OF_THE_ROUND_TABLE;
         }
     }
 }
-
 public class Player {
 
     private static final Logger logger = LogManager.getLogger(App.class);
@@ -40,6 +39,28 @@ public class Player {
     private ArrayList<AdventureCard> tournamentCards = new ArrayList<>();
     private List<PropertyChangeListener> listener = new ArrayList<>();
     public boolean handFull;
+
+    Player(){}
+
+    public void setPlayerName(String playerName) {
+        this.playerName = playerName;
+    }
+
+    public void setBattlePoints(int battlePoints) {
+        this.battlePoints = battlePoints;
+    }
+
+    public void setCardsInHand(ArrayList<AdventureCard> cardsInHand) {
+        this.cardsInHand = cardsInHand;
+    }
+
+    public void setTournamentCards(ArrayList<AdventureCard> tournamentCards) {
+        this.tournamentCards = tournamentCards;
+    }
+
+    public void setListener(List<PropertyChangeListener> listener) {
+        this.listener = listener;
+    }
 
     public Player(String paramName){
         playerName = paramName ;

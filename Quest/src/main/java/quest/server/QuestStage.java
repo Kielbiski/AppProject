@@ -11,7 +11,7 @@ public abstract class QuestStage {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     private ArrayList<Player> participatingPlayers;
-
+    QuestStage(){}
     QuestStage(ArrayList<Player> participatingPlayers){
         logger.info("Successfully called : questStage constructor.");
         logger.info("Setting quest stage participants");

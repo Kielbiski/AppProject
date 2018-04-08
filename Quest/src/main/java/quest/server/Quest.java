@@ -24,6 +24,50 @@ public class Quest extends StoryCard { //story card
     private int currentTurnIndex;
     private Player currentPlayer;
 
+    public void setOriginalPlayerList(ArrayList<Player> originalPlayerList) {
+        this.originalPlayerList = originalPlayerList;
+    }
+
+    public void setStages(ArrayList<QuestStage> stages) {
+        this.stages = stages;
+    }
+
+    public void setNumStage(int numStage) {
+        this.numStage = numStage;
+    }
+
+    public void setCurrentStage(QuestStage currentStage) {
+        this.currentStage = currentStage;
+    }
+
+    public void setCurrentStageIndex(int currentStageIndex) {
+        this.currentStageIndex = currentStageIndex;
+    }
+
+    public void setShields(int shields) {
+        this.shields = shields;
+    }
+
+    public void setCurrentTurnIndex(int currentTurnIndex) {
+        this.currentTurnIndex = currentTurnIndex;
+    }
+
+    public void setWinner(boolean winner) {
+        isWinner = winner;
+    }
+
+    public void setListener(List<PropertyChangeListener> listener) {
+        this.listener = listener;
+    }
+
+    public void setFinished(boolean finished) {
+        isFinished = finished;
+    }
+
+    public void setQuestFoes(ArrayList<Foe> questFoes) {
+        this.questFoes = questFoes;
+    }
+
     public int getCurrentStageIndex() {
         return currentStageIndex;
     }
@@ -37,24 +81,19 @@ public class Quest extends StoryCard { //story card
     private boolean isWinner = false;
     private List<PropertyChangeListener> listener = new ArrayList<>();
 
-
     public boolean isWinner() {
         return isWinner;
     }
 
-
-
     private boolean isFinished = false;
     ArrayList <Foe> questFoes = new ArrayList<>();
-
+    Quest(){}
     Quest(String paramName, String paramImageFilename, int paramNumStage)
     {
-
         super(paramName, paramImageFilename);
         numStage = paramNumStage;
         shields = numStage;
         logger.info("Successfully called : Quest constructor.");
-
     }
 
     Quest(String paramName, String paramImageFilename, int paramNumStage, Foe questFoe)

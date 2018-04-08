@@ -7,7 +7,6 @@ import quest.client.App;
 
 public class StoryCard extends Card
 {
-
     private static final Logger logger = LogManager.getLogger(App.class);
     StoryCard(){}
     StoryCard(String name, String imageFilename)
@@ -15,15 +14,5 @@ public class StoryCard extends Card
         super(name, imageFilename);
         logger.info("Successfully called : StoryCard constructor for " + this.getName() + " card.");
 
-    }
-
-    @Override
-    public void setName(String name) {
-        super.setName(name);
-    }
-
-    @Override
-    public void setImageFilename(String imageFilename) {
-        super.setImageFilename(imageFilename);
     }
 }

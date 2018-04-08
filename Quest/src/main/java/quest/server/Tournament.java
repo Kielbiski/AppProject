@@ -21,12 +21,21 @@ public class Tournament extends StoryCard {
     private ArrayList<Player> winners = new ArrayList<>();
     private Player currentPlayer;
 
+    Tournament(){}
     Tournament(String paramName, String paramImageFilename, int paramShields, ArrayList<Player> paramPlayerList){
         super(paramName, paramImageFilename);
         playerList.addAll(paramPlayerList);
         roundsPlayed = 1;
         shields = paramShields + playerList.size();
         logger.info("Successfully called :" + this.getName() + " constructor");
+    }
+
+    public void setShields(int shields) {
+        this.shields = shields;
+    }
+
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
     }
 
     public ArrayList<Player> getPlayerList() {

@@ -11,6 +11,11 @@ public class TestStage extends QuestStage {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     private AdventureCard sponsorTestCard;
+    TestStage(){}
+
+    public void setSponsorTestCard(AdventureCard sponsorTestCard) {
+        this.sponsorTestCard = sponsorTestCard;
+    }
 
     TestStage(AdventureCard sponsorTestCard, ArrayList<Player> participatingPlayers)
     {
