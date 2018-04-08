@@ -1170,46 +1170,8 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
 
     private void callEventEffect(Event event){
-        ArrayList<Player>  serverPlayers = serverGetPlayers();
-        switch (event.getName()) {
-            case "Chivalrous Deed":
-                event.applyEvent(serverPlayers, null);
-                nextTurnButton.setDisable(false);
-                break;
-            case "Court Called To Camelot":
-                event.applyEvent(serverPlayers, null);
-                nextTurnButton.setDisable(false);
-                break;
-            case "King's Call To Arms":
-                event.applyEvent(serverPlayers,activePlayer);
-                break;
-            case "King's Recognition":
-                event.applyEvent(null, null);
-                nextTurnButton.setDisable(false);
-                break;
-            case "Plague":
-                event.applyEvent(null, activePlayer);
-                nextTurnButton.setDisable(false);
-                break;
-            case "Pox":
-                event.applyEvent(serverPlayers, activePlayer);
-                nextTurnButton.setDisable(false);
-                break;
-
-            case "Prosperity Throughout The Realm":
-                event.applyEvent(serverPlayers, null);
-                nextTurnButton.setDisable(false);
-                break;
-            case "Queen's Favor": {
-                event.applyEvent(serverPlayers, null);
-                nextTurnButton.setDisable(false);
-                break;
-            }
-        }
-        System.out.println(event.getName() + " was activated.");
-        for(Player player : serverPlayers){
-            System.out.println(player.getShields());
-        }
+        serverApplyEventEffect(event);
+        nextTurnButton.setDisable(false);
         logger.info("Successfully called : Event constructor");
     }
 
@@ -1423,48 +1385,48 @@ public class Controller implements PropertyChangeListener {
 //
 //    }
 
-    private void setPlayerNames(int numberOfPlayers){
-        //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
-        for(int i =0; i < numberOfPlayers; i++){
-            List<String> choices = new ArrayList<>();
-            choices.add("Human");
-            choices.add("CPU");
-            ChoiceDialog<String> playerTypeDialog = new ChoiceDialog<>("Human", choices);
-            playerTypeDialog.setTitle("Human or CPU?");
-            playerTypeDialog.setHeaderText("Player/AI");
-            playerTypeDialog.setContentText("Please select if you would like Player " + (i+1) + " to be a human or CPU.");
-            Optional<String> playerTypeResult = playerTypeDialog.showAndWait();
-            // The Java 8 way to get the response value (with lambda expression).
-            String playerType = "Human";
-            if (playerTypeResult.isPresent()) {
-                playerType = playerTypeResult.get();
-            }
-            final String playerTypeFinal = playerType;
-            String playerString;
-            if(playerType.equals("Human")){
-                playerString = "Player";
-            } else {
-                playerString = playerType;
-            }
-            TextInputDialog dialog = new TextInputDialog(playerString + (i+1));
-            if(playerType.equals("CPU")){
-                dialog.setTitle("Set CPU name");
-                dialog.setHeaderText("Please enter the name for CPU" + (i+1) + ".");
-            } else {
-                dialog.setTitle("Set Player name");
-                dialog.setHeaderText("Player " + (i + 1) + ", please enter your name.");
-            }
-//            DialogPane dialogPane = dialog.getDialogPane();
-//            dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
-//            dialogPane.getStyleClass().add("alertDialogs");
-            // dialog.setContentText("Please enter your name:");
-
-            Optional<String> result = dialog.showAndWait();
-
-            // The Java 8 way to get the response value (with lambda expression).
-            result.ifPresent(name -> serverAddPlayer(playerTypeFinal, name));
-        }
-    }
+//    private void setPlayerNames(int numberOfPlayers){
+//        //cardsHbox.prefWidthProperty().bind(Stage.widthProperty().multiply(0.80));
+//        for(int i =0; i < numberOfPlayers; i++){
+//            List<String> choices = new ArrayList<>();
+//            choices.add("Human");
+//            choices.add("CPU");
+//            ChoiceDialog<String> playerTypeDialog = new ChoiceDialog<>("Human", choices);
+//            playerTypeDialog.setTitle("Human or CPU?");
+//            playerTypeDialog.setHeaderText("Player/AI");
+//            playerTypeDialog.setContentText("Please select if you would like Player " + (i+1) + " to be a human or CPU.");
+//            Optional<String> playerTypeResult = playerTypeDialog.showAndWait();
+//            // The Java 8 way to get the response value (with lambda expression).
+//            String playerType = "Human";
+//            if (playerTypeResult.isPresent()) {
+//                playerType = playerTypeResult.get();
+//            }
+//            final String playerTypeFinal = playerType;
+//            String playerString;
+//            if(playerType.equals("Human")){
+//                playerString = "Player";
+//            } else {
+//                playerString = playerType;
+//            }
+//            TextInputDialog dialog = new TextInputDialog(playerString + (i+1));
+//            if(playerType.equals("CPU")){
+//                dialog.setTitle("Set CPU name");
+//                dialog.setHeaderText("Please enter the name for CPU" + (i+1) + ".");
+//            } else {
+//                dialog.setTitle("Set Player name");
+//                dialog.setHeaderText("Player " + (i + 1) + ", please enter your name.");
+//            }
+////            DialogPane dialogPane = dialog.getDialogPane();
+////            dialogPane.getStylesheets().add(getClass().getResource("../CSS/Alerts.css").toExternalForm());
+////            dialogPane.getStyleClass().add("alertDialogs");
+//            // dialog.setContentText("Please enter your name:");
+//
+//            Optional<String> result = dialog.showAndWait();
+//
+//            // The Java 8 way to get the response value (with lambda expression).
+//            result.ifPresent(name -> serverAddPlayer(playerTypeFinal, name));
+//        }
+//    }
 
     private javafx.scene.image.Image getCardImage(String cardFileName){
         javafx.scene.image.Image img;
@@ -1580,23 +1542,6 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     //Setters
     ///////////////////////////////////////////////////////////////////////////
-
-    @SuppressWarnings("unchecked")
-    private void serverAddPlayer(String playerType, String name){
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "addPlayer");
-//        json.put("argumentTypes", listArguments(String, String]);
-        json.put("arguments", listArguments(playerType, name));
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E){
-            E.printStackTrace();
-        }
-    }
-
-
     @SuppressWarnings("unchecked")
     private void serverDrawStoryCard() {
         JSONObject json = new JSONObject();
@@ -1651,7 +1596,20 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
-
+    @SuppressWarnings("unchecked")
+    private void serverApplyEventEffect(Event event) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "applyEventEffect");
+        json.put("argumentTypes", new ArrayList<Class<?>>().add(event.getClass()));
+        json.put("arguments", new ArrayList<Event>().add(event));
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
 
     class BackgroundWork extends Thread {
         private BooleanProperty updateState;

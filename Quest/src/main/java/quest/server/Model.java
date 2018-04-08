@@ -50,6 +50,36 @@ public class Model implements PropertyChangeListener
 
     /////////////////////////////////////////////////
 
+    public void applyEventEffect(Event event){
+        switch (event.getName()) {
+            case "Chivalrous Deed":
+                event.applyEvent(players, null);
+                break;
+            case "Court Called To Camelot":
+                event.applyEvent(players, null);
+                break;
+            case "King's Call To Arms":
+                event.applyEvent(players, activePlayer);
+                break;
+            case "King's Recognition":
+                event.applyEvent(null, null);
+                break;
+            case "Plague":
+                event.applyEvent(null, activePlayer);
+                break;
+            case "Pox":
+                event.applyEvent(players, activePlayer);
+                break;
+            case "Prosperity Throughout The Realm":
+                event.applyEvent(players, null);
+                break;
+            case "Queen's Favor": {
+                event.applyEvent(players, null);
+                break;
+            }
+        }
+    }
+
     public StoryCard getCurrentStory() {
         logger.info("Returning current story.");
         return currentStory;

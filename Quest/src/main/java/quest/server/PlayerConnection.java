@@ -4,8 +4,12 @@ import org.json.*;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.stream.Collectors;
 
 
@@ -31,6 +35,7 @@ public class PlayerConnection {
 
     PlayerConnection(DataOutputStream dos, DataInputStream dis, String name, Model game) {
         player = new Player(name);
+        player.setShields(10);
         game.addPlayerToGame(player);
         game.setCurrentPlayer(player); //remove
         this.name = name;
@@ -45,11 +50,11 @@ public class PlayerConnection {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
                             if (clientRequest.has("arguments")){
-                                JSONArray argumentTypes = new JSONArray(clientRequest.getJSONArray("argumentTypes"));
-                                JSONArray arguments = new JSONArray(clientRequest.getJSONArray("arguments"));
+                                Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
+                                Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                                applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
                             } else {
-                                String req = clientRequest.getString("methodName");
-                                applyClientAction(game, req);
+                                applyClientAction(game, clientRequest.getString("methodName"));
                             }
                         }
                         if (clientRequest.getString("type").equals("get")){
@@ -99,6 +104,31 @@ public class PlayerConnection {
             }
         }).start();
     }
+    private Class<?>[] convertJSONToClassList(JSONArray json){
+        Class<?>[] returnList = new Class<?>[json.length()];
+        if (json.length() != 0) {
+            int len = json.length();
+            for (int i=0;i<len;i++){
+                returnList[i] = (Class)json.get(i);
+            }
+            return returnList;
+        } else {
+            return null;
+        }
+    }
+    private Object[] convertJSONToObjectList(JSONArray json){
+        Object[] returnList = new Object[json.length()];
+        if (json.length() != 0) {
+            int len = json.length();
+            for (int i=0;i<len;i++){
+                returnList[i] = json.get(i);
+            }
+            return returnList;
+        } else {
+            return null;
+        }
+    }
+
     private void applyClientAction(Model game, String methodName){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName);
