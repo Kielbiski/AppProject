@@ -7,7 +7,7 @@ import quest.client.App;
 public class Test extends AdventureCard
 {
     private static final Logger logger = LogManager.getLogger(App.class);
-
+    Test(){}
     private Test(String name, String imageFilename, int pBids)
     {
         super(name, imageFilename);

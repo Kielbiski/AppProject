@@ -32,6 +32,7 @@ public class PlayerConnection {
     PlayerConnection(DataOutputStream dos, DataInputStream dis, String name, Model game) {
         player = new Player(name);
         game.addPlayerToGame(player);
+        game.setCurrentPlayer(player); //remove
         this.name = name;
         this.dos = dos;
         this.dis = dis;

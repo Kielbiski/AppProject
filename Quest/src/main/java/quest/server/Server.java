@@ -41,11 +41,11 @@ public class Server {
                     player = servSock.accept();
                     dis = new DataInputStream(player.getInputStream());
                     dos = new DataOutputStream(player.getOutputStream());
-
                     name = dis.readUTF();
                     PlayerConnection user = new PlayerConnection(dos, dis, name, game);
                     System.out.println("Connected : " + user.getName());
                     players.add(user);
+
                 }
                 else {
                     initialize();
@@ -103,6 +103,7 @@ public class Server {
                 break;
         }
         game.dealCards(deckOfAdventureCards);
+        game.setCurrentPlayer(game.getPlayers().get(0));
 //        setPlayerNames(numberOfPlayersResult);
 //        game.addChangeListener(this);
 //        updateClients();

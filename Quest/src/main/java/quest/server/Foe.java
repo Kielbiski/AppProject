@@ -7,7 +7,7 @@ import quest.client.App;
 public class Foe extends AdventureCard {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-
+    Foe(){}
     public Foe(String paramName, String paramImageFilename, int paramBattlePoints, int paramBonusPointsFromQuest)
     {
 
@@ -17,6 +17,7 @@ public class Foe extends AdventureCard {
         logger.info("Successfully called : Foe constructor");
 
     }
+
     @Override
     public void setWasUsed(boolean state) {}
 

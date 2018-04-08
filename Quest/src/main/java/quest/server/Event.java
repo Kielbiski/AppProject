@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public abstract class Event extends StoryCard {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-
+    Event(){}
     Event(String paramName, String paramImageFilename)
     {
 

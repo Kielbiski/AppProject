@@ -11,7 +11,7 @@ public class FoeStage extends QuestStage {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     private int totalBattlePoints = 0;
-
+    FoeStage(){}
     FoeStage(ArrayList<AdventureCard> sponsorCards, ArrayList<Player> participatingPlayers){
         super(participatingPlayers);
         logger.info("FoeStage: Calculating sponsor battle points");
@@ -21,6 +21,10 @@ public class FoeStage extends QuestStage {
         logger.info("FoeStage: Sponsor has " + totalBattlePoints + " battle points");
         logger.info("Successfully called : FoeStage constructor");
 
+    }
+
+    public void setTotalBattlePoints(int totalBattlePoints) {
+        this.totalBattlePoints = totalBattlePoints;
     }
 
     public int getTotalBattlePoints() {
