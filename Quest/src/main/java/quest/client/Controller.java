@@ -85,7 +85,7 @@ public class Controller implements PropertyChangeListener {
     private HBox tableHbox;
     @FXML
     private Pane discardPane;
-    public static Thread thread;
+    private static Thread thread;
     private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
     private Socket socket;
     private DataOutputStream dos;
@@ -105,7 +105,6 @@ public class Controller implements PropertyChangeListener {
             dis = new DataInputStream(socket.getInputStream());
             dos.writeUTF(PlayerData.name);
             dos.flush();
-
             /*
              * This Thread let the client recieve the message from the server for any time;
              */
@@ -203,6 +202,7 @@ public class Controller implements PropertyChangeListener {
         imgView.setOnMouseClicked((MouseEvent event) -> {
             if(currentBehaviour==Behaviour.QUEST_MEMBER) {
                 if (card.getName().equals("Merlin")) {
+                    System.out.println("MERLIN");
                     //FIX LATER
 //                    if (!((Merlin) card).isWasUsed()){
 //                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
@@ -775,7 +775,7 @@ public class Controller implements PropertyChangeListener {
                 currentTurn = nextPlayerIndex(currentTurn);
             }
             if (serverGetCurrentStory() instanceof Quest) {
-                game.setCurrentQuest((Quest) serverGetCurrentStory());
+                serverSetCurrentQuest((Quest) serverGetCurrentStory());
                 questDraw(currentPlayerOrder);
             } else if (serverGetCurrentStory() instanceof Event) {
                 nextTurnButton.setVisible(true);
@@ -783,7 +783,7 @@ public class Controller implements PropertyChangeListener {
                 callEventEffect(gameEvent);
             } else if (serverGetCurrentStory() instanceof Tournament) {
                 nextTurnButton.setVisible(true);
-                game.setCurrentTournament((Tournament) serverGetCurrentStory());
+                serverSetCurrentTournament((Tournament) serverGetCurrentStory());
                 performTournament(currentPlayerOrder, serverGetCurrentTournament());
                 nextTurnButton.setDisable(false);
             }
@@ -1142,7 +1142,7 @@ public class Controller implements PropertyChangeListener {
             alert.showAndWait();
         }
         serverGetCurrentTournament().setTournamentOver(true);
-        game.setCurrentTournament(null);
+        serverSetCurrentTournament(null);
         setCurrentBehaviour(Behaviour.DEFAULT);
         nextTurnButton.setVisible(true);
         nextTurnButton.setDisable(false);
@@ -1275,7 +1275,7 @@ public class Controller implements PropertyChangeListener {
 //            }
 //        }
         if (serverGetCurrentStory() instanceof Quest) {
-            game.setCurrentQuest((Quest) serverGetCurrentStory());
+            serverSetCurrentQuest((Quest) serverGetCurrentStory());
             questDraw(currentPlayerOrder);
         } else if (serverGetCurrentStory() instanceof Event) {
             nextTurnButton.setVisible(true);
@@ -1283,7 +1283,7 @@ public class Controller implements PropertyChangeListener {
             callEventEffect(gameEvent);
         } else if (serverGetCurrentStory() instanceof Tournament) {
             nextTurnButton.setVisible(true);
-            game.setCurrentTournament((Tournament) serverGetCurrentStory());
+            serverSetCurrentTournament((Tournament) serverGetCurrentStory());
             performTournament(currentPlayerOrder, serverGetCurrentTournament());
             nextTurnButton.setDisable(false);
         }
@@ -1295,7 +1295,7 @@ public class Controller implements PropertyChangeListener {
 
     private void setActivePlayer(Player player){
         activePlayer = player;
-        game.setCurrentPlayer(player);
+        serverSetActivePlayer(player);
         if(player.isHandFull()){
             handFull(player);
         }
@@ -1596,6 +1596,49 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
+    @SuppressWarnings("unchecked")
+    private void serverSetActivePlayer(Player player) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setCurrentQuest");
+        json.put("argumentTypes", new ArrayList<Class<?>>().add(player.getClass()));
+        json.put("arguments", new ArrayList<Player>().add(player));
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetCurrentQuest(Quest quest) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setCurrentQuest");
+        json.put("argumentTypes", new ArrayList<Class<?>>().add(quest.getClass()));
+        json.put("arguments", new ArrayList<Quest>().add(quest));
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetCurrentTournament(Tournament tournament) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setCurrentQuest");
+        json.put("argumentTypes", new ArrayList<Class<?>>().add(tournament.getClass()));
+        json.put("arguments", new ArrayList<Tournament>().add(tournament));
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+
 
     class BackgroundWork extends Thread {
         private BooleanProperty updateState;
