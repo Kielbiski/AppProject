@@ -18,6 +18,7 @@ import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 import quest.server.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -105,15 +106,10 @@ public class Controller implements PropertyChangeListener {
              * This Thread let the client recieve the message from the server for any time;
              */
 
-            System.out.println("please");
 
             back.updateState.addListener((observable, oldValue, newValue) -> {
-                System.out.println("fucking");
-                if (newValue.booleanValue() == true) {
-                    Platform.runLater(() -> {
-                        System.out.println("work");
-                        update();
-                    });
+                if (newValue) {
+                    Platform.runLater(this::update);
                 }
 
             });
