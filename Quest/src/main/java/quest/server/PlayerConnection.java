@@ -66,6 +66,17 @@ public class PlayerConnection {
                                 dos.flush();
                             }
                         }
+                        if (clientRequest.getString("type").equals("getWithParams")){
+                            System.out.println(clientRequest);
+                            Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
+                            Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                            playerDataRequest = mapper.writeValueAsString(getObjectWithParamsForClient(game, clientRequest.getString("methodName"), argumentTypes, arguments));
+                            if(playerDataRequest != null){
+                                System.out.println("Player request: " + playerDataRequest);
+                                dos.writeUTF(playerDataRequest);
+                                dos.flush();
+                            }
+                        }
                     } catch(Exception ignored){
                     }
         //                    List<PlayerConnection> entry = Server.players;
@@ -156,4 +167,15 @@ public class PlayerConnection {
             return null;
         }
     }
+
+    public Object getObjectWithParamsForClient(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
+        try {
+            Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
+            return method.invoke(game, params);
+        } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            E.printStackTrace();
+            return null;
+        }
+    }
+
 }

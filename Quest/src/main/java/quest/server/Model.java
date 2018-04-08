@@ -133,6 +133,12 @@ public class Model implements PropertyChangeListener
         logger.info("Set the sponsor.");
         this.sponsor = sponsor;
     }
+    public void clearPreQuestStageSetup(){
+        preQuestStageSetup.clear();
+    }
+    public void addStageToCurrentQuest(int stageNum){
+        currentQuest.addStage(createStage(preQuestStageSetup.get(stageNum)));
+    }
 
     public QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
         for(AdventureCard adventureCard : cardsForStage) {
@@ -440,6 +446,11 @@ public class Model implements PropertyChangeListener
     public void removeFromStoryDeck(StoryCard storyCard){
         logger.info("Removing:"+storyCard.getName()+" from the story card.");
         deckOfStoryCards.remove(storyCard);
+    }
+
+    public void addCardToSponsorHand(AdventureCard card){
+        logger.info("Adding:"+card.getName()+" to sponsor hand.");
+        sponsor.addCardToHand(card);
     }
 
     public void dealCards(Stack<AdventureCard> deck){

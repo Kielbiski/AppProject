@@ -423,17 +423,17 @@ public class Controller implements PropertyChangeListener {
             if(currentBehaviour==Behaviour.SPONSOR){
                 if (db.hasString()) {
                     if (db.getString().equals(cardsHbox.getId())) {
-                        if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
-                            game.addToPotentialStage(selectedAdventureCard, stageIndex);
+                        if (serverIsValidDrop(selectedAdventureCard, stageIndex)) {
+                            serverAddToPotentialStage(selectedAdventureCard, stageIndex);
                             serverGetSponsor().removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
                     } else {
                         for (int i = 0; i < serverGetCurrentQuest().getNumStage(); i++) {
                             if (db.getString().equals(Integer.toString(i))) {
-                                if (game.isValidDrop(selectedAdventureCard, stageIndex)) {
-                                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
-                                    game.removeFromPotentialStage(selectedAdventureCard, i);
+                                if (serverIsValidDrop(selectedAdventureCard, stageIndex)) {
+                                    serverAddToPotentialStage(selectedAdventureCard, stageIndex);
+                                    serverRemoveFromPotentialStage(selectedAdventureCard, i);
                                     success = true;
                                 }
                             }
@@ -441,8 +441,8 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
 //                else{
-//                   // game.removeFromPotentialStage(selectedAdventureCard,);
-//                    game.addToPotentialStage(selectedAdventureCard, stageIndex);
+//                   // serverRemoveFromPotentialStage(selectedAdventureCard,);
+//                    serverAddToPotentialStage(selectedAdventureCard, stageIndex);
 //                    success = true;
 //                }
             }
@@ -656,10 +656,10 @@ public class Controller implements PropertyChangeListener {
 
     public void continueAction(){
         if(currentBehaviour == Behaviour.SPONSOR) {
-            if (game.validateQuestStages()) {
+            if (serverValidateQuestStages()) {
 
                 for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-                    serverGetCurrentQuest().addStage(game.createStage(serverGetPreQuestStageSetup().get(i)));
+                    serverAddStageToCurrentQuest(i);
                 }
                 setCurrentBehaviour(Behaviour.QUEST_MEMBER);
                 update();
@@ -674,10 +674,10 @@ public class Controller implements PropertyChangeListener {
                 for (int i = 0; i < serverGetCurrentQuest().getNumStage(); i++) {
                     for (AdventureCard card : serverGetPreQuestStageSetup().get(i)) {
                         //ADD METHOD ADD CARD TO SPONSOR HAND
-                        game.getSponsor().addCardToHand(card);
+                        serverAddCardToSponsorHand(card);
                     }
                 }
-                game.resetPotentialStages();
+                serverResetPotentialStages();
                 update();
             }
         }
@@ -823,7 +823,7 @@ public class Controller implements PropertyChangeListener {
                     boolean alertResult = yesNoAlert(player.getPlayerName() + ", would you like to sponsor " + serverResponse.getName() + "?", "Sponsor " + serverResponse.getName() + "?");
                     if (alertResult) {
                         sponsor = activePlayer;
-                        game.setSponsor(sponsor);
+                        serverSetSponsor(sponsor);
                         performQuest(sponsor, (Quest) serverResponse);
                         nextTurnButton.setVisible(false);
                         continueButton.setVisible(true);
@@ -836,7 +836,7 @@ public class Controller implements PropertyChangeListener {
                     boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest)serverResponse);
                     if (aiResult) {
                         sponsor = activePlayer;
-                        game.setSponsor(sponsor);
+                        serverSetSponsor(sponsor);
                         performQuest(sponsor, (Quest) serverResponse);
                         nextTurnButton.setVisible(false);
                         continueButton.setVisible(true);
@@ -858,7 +858,7 @@ public class Controller implements PropertyChangeListener {
             for (Player player : serverGetCurrentQuest().getPlayerList()) {
                 if(serverIsKingsRecognition()){
                     player.setShields(player.getShields() + 3);
-                    game.setKingsRecognition(false);
+                    serverSetKingsRecognition(false);
                 }
                 okAlert(player.getPlayerName() + " won the the quest, and received " + serverGetCurrentQuest().getShields() + " shields!", "Quest won!");
             }
@@ -874,16 +874,16 @@ public class Controller implements PropertyChangeListener {
         }
         for(int i=0;i<sponsorCardsToDraw;i++) {
             //DRAW ADVENTURE CARD METHOD WITH PLAYER PARAM
-            game.drawAdventureCard(serverGetSponsor());
+            serverDrawAdventureCard(serverGetSponsor());
         }
         stagesGridPane.getChildren().clear();
         flowPaneArray.clear();
         //NEEDS CLEAR METHOD
-        game.getPreQuestStageSetup().clear();
+        serverClearPreQuestStageSetup();
         serverGetCurrentQuest().wipeWeapons();
-        game.clearQuest();
+        serverClearQuest();
         setActivePlayer(serverGetSponsor());
-        game.setSponsor(null);
+        serverSetSponsor(null);
         previousBehaviour = Behaviour.DEFAULT;
         if(!serverGetCurrentPlayer().handFull) {
             setCurrentBehaviour(Behaviour.DEFAULT);
@@ -896,7 +896,7 @@ public class Controller implements PropertyChangeListener {
 
     private void performQuest(Player sponsor, Quest quest) {
         quest.addChangeListener(this);
-        game.setSponsor(sponsor);
+        serverSetSponsor(sponsor);
         quest.setSponsor(sponsor);
         setActivePlayer(sponsor);
         setCurrentBehaviour(Behaviour.SPONSOR);
@@ -908,18 +908,19 @@ public class Controller implements PropertyChangeListener {
         addQuestPlayers(quest);
         setActivePlayer(sponsor);
         if(sponsor instanceof AbstractAI){
-            game.setPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
+            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
             sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()));
             for(int i=1; i<quest.getNumStage()-1;i++){
-                game.setPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
+                serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
                 sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()));
             }
-            game.setPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
+            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
             sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
-            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-                //must be changed to be server side
-                serverGetCurrentQuest().addStage(game.createStage(serverGetPreQuestStageSetup().get(i)));
-            }
+            //TO BE FIXED
+//            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
+//                //must be changed to be server side
+//                serverGetCurrentQuest().addStage(serverCreateStage(serverGetPreQuestStageSetup().get(i)));
+//            }
             setCurrentBehaviour(Behaviour.QUEST_MEMBER);
             serverGetCurrentQuest().startQuest();
             if(!serverGetCurrentQuest().isInTest()){
@@ -1370,6 +1371,45 @@ public class Controller implements PropertyChangeListener {
         }
         return serverJSON;
     }
+    @SuppressWarnings("unchecked")
+    private String genericGetWithParams(String methodName, ArrayList<Class<?>> argumentTypes, ArrayList<Object> arguments){
+        String serverJSON = "";
+        JSONObject json = new JSONObject();
+        json.put("type", "getWithParams");
+        json.put("methodName", methodName);
+        json.put("argumentTypes", argumentTypes);
+        json.put("arguments", arguments);
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E){
+            E.printStackTrace();
+        }
+        for(int i = 0; i<10; i++){
+            try {
+                if(dis.available() == 0) {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        serverJSON = dis.readUTF();
+                        System.out.println("Server responded with: " + serverJSON);
+                        break;
+                    } catch (IOException E) {
+                        E.printStackTrace();
+                        System.out.println("Server failed to respond.");
+                        return null;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return serverJSON;
+    }
     ///////////////////////////////////////////////////////////////////////////
     private StoryCard serverGetCurrentStory() {
         return getServerObject(
@@ -1403,10 +1443,13 @@ public class Controller implements PropertyChangeListener {
         return getServerObject(
                 genericGet("getPreQuestStageSetup"), new TypeReference<HashMap<Integer,ArrayList<AdventureCard>>>(){});
     }
-
     private ArrayList<Player> serverGetWinningPlayers(){
         return getServerObject(
                 genericGet("getWinningPlayers"), new TypeReference<ArrayList<Player>>(){});
+    }
+    private Boolean serverValidateQuestStages(){
+        return getServerObject(
+                genericGet("validateQuestStages"), new TypeReference<Boolean>(){});
     }
     private Boolean serverIsWinner(){
         return getServerObject(
@@ -1415,6 +1458,20 @@ public class Controller implements PropertyChangeListener {
     private Boolean serverIsKingsRecognition(){
         return getServerObject(
                 genericGet("isKingsRecognition()"), new TypeReference<Boolean>(){});
+    }
+    @SuppressWarnings("unchecked")
+    private Boolean serverIsValidDrop(AdventureCard card, Integer stageNum) {
+        return getServerObject(
+                genericGetWithParams("isValidDrop",
+                        new ArrayList<Class<?>>(){{
+                            add(card.getClass());
+                            add(stageNum.getClass());
+                }},
+                        new ArrayList<Object>(){{
+                            add(card);
+                            add(stageNum);
+                }})
+                ,new TypeReference<Boolean>(){});
     }
     ///////////////////////////////////////////////////////////////////////////
     //Setters
@@ -1435,9 +1492,9 @@ public class Controller implements PropertyChangeListener {
     private void serverSetActivePlayer(Player player) {
         JSONObject json = new JSONObject();
         json.put("type", "set");
-        json.put("methodName", "setCurrentQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>().add(player.getClass()));
-        json.put("arguments", new ArrayList<Player>().add(player));
+        json.put("methodName", "setActivePlayer");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(player.getClass());}});
+        json.put("arguments", new ArrayList<Player>(){{add(player);}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1450,8 +1507,78 @@ public class Controller implements PropertyChangeListener {
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", "setCurrentQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>().add(quest.getClass()));
-        json.put("arguments", new ArrayList<Quest>().add(quest));
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(quest.getClass());}});
+        json.put("arguments", new ArrayList<Quest>(){{add(quest);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetSponsor(Player player) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setSponsor");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(player.getClass());}});
+        json.put("arguments", new ArrayList<Player>(){{add(player);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverClearQuest() {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "clearQuest");
+        json.put("argumentTypes", new ArrayList<Class<?>>());
+        json.put("arguments", new ArrayList<Boolean>());
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverDrawAdventureCard(Player sponsor) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "drawAdventureCard");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(sponsor.getClass());}});
+        json.put("arguments", new ArrayList<Player>(){{add(sponsor);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetKingsRecognition(Boolean value) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setKingsRecognition");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(value.getClass());}});
+        json.put("arguments", new ArrayList<Boolean>(){{add(value);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverResetPotentialStages(){
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "resetPotentialStages");
+        json.put("argumentTypes", new ArrayList<Class<?>>());
+        json.put("arguments", new ArrayList<Quest>());
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1465,8 +1592,8 @@ public class Controller implements PropertyChangeListener {
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", "addToPotentialStage");
-        json.put("argumentTypes", new ArrayList<Class<?>>().addAll(Arrays.asList(card.getClass(), stageNum.getClass())));
-        json.put("arguments", new ArrayList<Object>().addAll(Arrays.asList(card, stageNum)));
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass()); add(stageNum.getClass());}});
+        json.put("arguments", new ArrayList<Object>(){{add(card); add(stageNum);}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1474,15 +1601,69 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
-
-
+    @SuppressWarnings("unchecked")
+    private void serverSetPotentialStage(ArrayList<AdventureCard> stage, Integer stageNum) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setPotentialStage");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(stage.getClass());add(stageNum.getClass());}});
+        json.put("arguments", new ArrayList<Object>(){{add(stage);add(stageNum);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverAddCardToSponsorHand(AdventureCard card) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "addCardToSponsorHand");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass());}});
+        json.put("arguments", new ArrayList<AdventureCard>(){{add(card);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverRemoveFromPotentialStage(AdventureCard card, Integer stageNum) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "removeFromPotentialStage");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass()); add(stageNum.getClass());}});
+        json.put("arguments", new ArrayList<Object>(){{add(card); add(stageNum);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
     @SuppressWarnings("unchecked")
     private void serverSetCurrentTournament(Tournament tournament) {
         JSONObject json = new JSONObject();
         json.put("type", "set");
-        json.put("methodName", "setCurrentQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>().add(tournament.getClass()));
-        json.put("arguments", new ArrayList<Tournament>().add(tournament));
+        json.put("methodName", "setCurrentTournament");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(tournament.getClass());}});
+        json.put("arguments", new ArrayList<Tournament>(){{add(tournament);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverClearPreQuestStageSetup() {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "clearPreQuestStageSetup");
+        json.put("argumentTypes", new ArrayList<Class<?>>());
+        json.put("arguments", new ArrayList<Tournament>());
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1495,8 +1676,8 @@ public class Controller implements PropertyChangeListener {
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", "applyEventEffect");
-        json.put("argumentTypes", new ArrayList<Class<?>>().add(event.getClass()));
-        json.put("arguments", new ArrayList<Event>().add(event));
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(event.getClass());}});
+        json.put("arguments", new ArrayList<Event>(){{add(event);}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1504,7 +1685,23 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
-
+    @SuppressWarnings("unchecked")
+    private void serverAddStageToCurrentQuest(Integer stageNum) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "addStageToCurrentQuest");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(stageNum.getClass());}});
+        json.put("arguments", new ArrayList<Integer>(){{add(stageNum);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    //Daemon
+    ///////////////////////////////////////////////////////////////////////////
     class BackgroundWork extends Thread {
         private BooleanProperty updateState;
 
