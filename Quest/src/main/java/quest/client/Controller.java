@@ -18,23 +18,24 @@ import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import quest.server.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
 import com.fasterxml.jackson.core.JsonGenerationException;
 import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
 
 import static java.lang.System.exit;
 
@@ -87,7 +88,7 @@ public class Controller implements PropertyChangeListener {
     private DataInputStream dis;
 
 
-    
+
     public Controller(){
         currentBehaviour = Behaviour.DISABLED;
 //        final AtomicBoolean updateStatus = new AtomicBoolean(false);
@@ -95,11 +96,11 @@ public class Controller implements PropertyChangeListener {
 
 
         try {
-            socket = new Socket(data.ip, data.port);
+            socket = new Socket(PlayerData.ipAddress, PlayerData.port);
             dos = new DataOutputStream(socket.getOutputStream());
             dis = new DataInputStream(socket.getInputStream());
-
-            dos.writeUTF(data.name);
+            dos.writeUTF(PlayerData.name);
+            dos.flush();
             /*
              * This Thread let the client recieve the message from the server for any time;
              */
@@ -354,7 +355,7 @@ public class Controller implements PropertyChangeListener {
                         previousBehaviour = null;
                         discardPane.setVisible(false);
                         nextTurnButton.setDisable(false);
-                        setActivePlayer(game.getPlayers().get(game.getCurrentTurnIndex()));
+                        setActivePlayer(serverGetPlayers().get(game.getCurrentTurnIndex()));
                         success=true;
                         update();
                     }
@@ -381,7 +382,7 @@ public class Controller implements PropertyChangeListener {
                                 discardPane.setVisible(false);
                                 callToArmsFoes=0;
                                 nextTurnButton.setDisable(false);
-                                setActivePlayer(game.getPlayers().get(game.getCurrentTurnIndex()));
+                                setActivePlayer(serverGetPlayers().get(game.getCurrentTurnIndex()));
                                 success=true;
                                 update();
                             }
@@ -463,9 +464,9 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void update() {
-        print("kys");
         //Vbox display player data
-        ArrayList<Player> currentPlayers = game.getPlayers();
+
+        ArrayList<Player> currentPlayers = serverGetPlayers();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
@@ -614,7 +615,7 @@ public class Controller implements PropertyChangeListener {
     private void getWinningPlayers() {
         ArrayList<Player> knightsOfTheRoundTable;
         knightsOfTheRoundTable = new ArrayList<>();
-        for (Player player : game.getPlayers()) {
+        for (Player player : serverGetPlayers()) {
             if (player.stringifyRank().equals("Knight of the Round Table")) {
                 knightsOfTheRoundTable.add(player);
             }
@@ -712,8 +713,8 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void nextTurnAction(){
-        currentTurnPlayer = game.getPlayers().get(currentPlayerIndex);
-        setActivePlayer(game.getPlayers().get(currentPlayerIndex));
+        currentTurnPlayer = serverGetPlayers().get(currentPlayerIndex);
+        setActivePlayer(serverGetPlayers().get(currentPlayerIndex));
         if(activePlayer instanceof AbstractAI){
             runAITurn();
         }
@@ -755,18 +756,17 @@ public class Controller implements PropertyChangeListener {
 
     public void storyDeckDraw(){
         if(currentBehaviour!=Behaviour.DISABLED) {
-
-            game.drawStoryCard();
-            System.out.println("storyDeckDraw(): " + serverGetCurrentStory().getName());
+            serverDrawStoryCard();
+            StoryCard serverResponse = serverGetCurrentStory();
             //activeStoryImg = createStoryCardImageView();
-            activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
+            activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
             update();
 
             ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-            int currentTurn = game.getPlayers().indexOf(activePlayer);
+            int currentTurn = serverGetPlayers().indexOf(activePlayer);
 
             for (int i = 0; i < NUM_PLAYERS; i++) {
-                currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+                currentPlayerOrder.add(serverGetPlayers().get(currentTurn));
                 currentTurn = nextPlayerIndex(currentTurn);
             }
             if (serverGetCurrentStory() instanceof Quest) {
@@ -783,7 +783,7 @@ public class Controller implements PropertyChangeListener {
                 nextTurnButton.setDisable(false);
             }
             currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-            //activePlayer = game.getPlayers().get(currentPlayerIndex);
+            //activePlayer = serverGetPlayers().get(currentPlayerIndex);
             storyDeckImg.setDisable(true);
             update();
         }
@@ -820,7 +820,6 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 else{
-                    print(serverGetCurrentStory().getName());
                     player.getCardsInHand();
                     ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverGetCurrentStory());
                     boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverGetCurrentStory());
@@ -1038,8 +1037,8 @@ public class Controller implements PropertyChangeListener {
     private void addQuestPlayers(Quest currentQuest){
         ArrayList<Player> playersInQuest = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
-            if(game.getPlayers().get(i) != game.getSponsor()) {
-                activePlayer = game.getPlayers().get(i);
+            if(serverGetPlayers().get(i) != game.getSponsor()) {
+                activePlayer = serverGetPlayers().get(i);
                 update();
                 if(activePlayer instanceof AbstractAI){
                     if(((AbstractAI)activePlayer).doIParticipateInQuest(activePlayer.getCardsInHand(),currentQuest.getNumStage())){
@@ -1077,7 +1076,7 @@ public class Controller implements PropertyChangeListener {
             }else {
                 if(activePlayer instanceof AbstractAI){
                     AbstractAI ai = (AbstractAI)activePlayer;
-                    ai.playCardsAI(ai.whatIPlay(ai.getCardsInHand(), game.getPlayers(), game.getCurrentTournament().getShields()));
+                    ai.playCardsAI(ai.whatIPlay(ai.getCardsInHand(), serverGetPlayers(), game.getCurrentTournament().getShields()));
                     game.getCurrentTournament().nextTurn();
                     if(game.getCurrentTournament().isTournamentOver()){
                         tournamentOver();
@@ -1097,11 +1096,11 @@ public class Controller implements PropertyChangeListener {
     private void addTournamentPlayers(Tournament currentTournament){
         ArrayList<Player> tournamentPlayers = new ArrayList<>();
         for(int i = 0; i < NUM_PLAYERS; i++){
-            activePlayer = game.getPlayers().get(i);
+            activePlayer = serverGetPlayers().get(i);
             update();
             if(!(activePlayer instanceof AbstractAI)) {
                 if (yesNoAlert("Join " + serverGetCurrentStory().getName() + " " + activePlayer.getPlayerName() + "?", "Join Tournament?")) {
-                    tournamentPlayers.add(game.getPlayers().get(i));
+                    tournamentPlayers.add(serverGetPlayers().get(i));
                 }
             } else {
                 if(((AbstractAI) activePlayer).doIParticipateInTournament(tournamentPlayers, currentTournament.getShields())){
@@ -1143,7 +1142,7 @@ public class Controller implements PropertyChangeListener {
         nextTurnButton.setVisible(true);
         nextTurnButton.setDisable(false);
         continueButton.setVisible(false);
-        setActivePlayer(game.getPlayers().get(game.getCurrentTurnIndex()));
+        setActivePlayer(serverGetPlayers().get(game.getCurrentTurnIndex()));
         getWinningPlayers();
         update();
         if(activePlayer instanceof AbstractAI){
@@ -1159,15 +1158,15 @@ public class Controller implements PropertyChangeListener {
     private void callEventEffect(Event event){
         switch (event.getName()) {
             case "Chivalrous Deed":
-                event.applyEvent(game.getPlayers(), null);
+                event.applyEvent(serverGetPlayers(), null);
                 nextTurnButton.setDisable(false);
                 break;
             case "Court Called To Camelot":
-                event.applyEvent(game.getPlayers(), null);
+                event.applyEvent(serverGetPlayers(), null);
                 nextTurnButton.setDisable(false);
                 break;
             case "King's Call To Arms":
-                event.applyEvent(game.getPlayers(),activePlayer);
+                event.applyEvent(serverGetPlayers(),activePlayer);
                 break;
             case "King's Recognition":
                 event.applyEvent(null, null);
@@ -1178,22 +1177,22 @@ public class Controller implements PropertyChangeListener {
                 nextTurnButton.setDisable(false);
                 break;
             case "Pox":
-                event.applyEvent(game.getPlayers(), activePlayer);
+                event.applyEvent(serverGetPlayers(), activePlayer);
                 nextTurnButton.setDisable(false);
                 break;
 
             case "Prosperity Throughout The Realm":
-                event.applyEvent(game.getPlayers(), null);
+                event.applyEvent(serverGetPlayers(), null);
                 nextTurnButton.setDisable(false);
                 break;
             case "Queen's Favor": {
-                event.applyEvent(game.getPlayers(), null);
+                event.applyEvent(serverGetPlayers(), null);
                 nextTurnButton.setDisable(false);
                 break;
             }
         }
         System.out.println(event.getName() + " was activated.");
-        for(Player player : game.getPlayers()){
+        for(Player player : serverGetPlayers()){
             System.out.println(player.getShields());
         }
         logger.info("Successfully called : Event constructor");
@@ -1259,13 +1258,13 @@ public class Controller implements PropertyChangeListener {
         update();
 
         ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-        int currentTurn = game.getPlayers().indexOf(activePlayer);
+        int currentTurn = serverGetPlayers().indexOf(activePlayer);
         for(int i = 0; i < NUM_PLAYERS; i++){
-            currentPlayerOrder.add(game.getPlayers().get(currentTurn));
+            currentPlayerOrder.add(serverGetPlayers().get(currentTurn));
             currentTurn = nextPlayerIndex(currentTurn);
         }
 //        ArrayList<Player> noAIPlayers = new ArrayList<>();
-//        for(Player player : game.getPlayers()){
+//        for(Player player : serverGetPlayers()){
 //            if(!(player instanceof AbstractAI)){
 //                noAIPlayers.add(player);
 //            }
@@ -1396,8 +1395,8 @@ public class Controller implements PropertyChangeListener {
 //        setPlayerNames(numberOfPlayersResult);
 //        NUM_PLAYERS = numberOfPlayersResult;
 //        setCurrentBehaviour(Behaviour.DEFAULT);
-//        currentTurnPlayer = game.getPlayers().get(0);
-//        setActivePlayer(game.getPlayers().get(0));
+//        currentTurnPlayer = serverGetPlayers().get(0);
+//        setActivePlayer(serverGetPlayers().get(0));
 //        playerStatsVbox.setSpacing(5);
 //        playerStatsVbox.setAlignment(Pos.TOP_RIGHT);
 //        cardsHbox.setAlignment(Pos.BASELINE_CENTER);
@@ -1465,7 +1464,6 @@ public class Controller implements PropertyChangeListener {
 
     @Override
     public void propertyChange(PropertyChangeEvent change) {
-
         switch (change.getPropertyName()) {
 //            case "handFull":
 //                if ((Boolean) change.getNewValue()) {
@@ -1491,38 +1489,67 @@ public class Controller implements PropertyChangeListener {
     private ArrayList<String> listArguments(String ...args){
         return new ArrayList<>(Arrays.asList(args));
     }
-    private Object getServerObject(String jsonFromServer, Class<?> objectClass){
-        ObjectMapper objectMapper = new ObjectMapper();
-        Object classObject = null;
+    private static <T> T getServerObject(String jsonFromServer, Class<T> objectClass){
         try {
-            classObject = objectMapper.readValue(jsonFromServer, objectClass);
+            ObjectMapper objectMapper = new ObjectMapper();
+//            objectMapper.registerModule(new ParameterNamesModule());
+//            objectMapper.setVisibility(FIELD, ANY);
+            return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
             e.printStackTrace();
+            return null;
         }
-        return classObject;
     }
     ///////////////////////////////////////////////////////////////////////////
     //Getters
     ///////////////////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
-    private StoryCard serverGetCurrentStory(){
+    private String genericGet(String methodName){
         String serverJSON = "";
         JSONObject json = new JSONObject();
         json.put("type", "get");
-        json.put("methodName", "getCurrentStory");
+        json.put("methodName", methodName);
         try {
             dos.writeUTF(json.toJSONString());
+            dos.flush();
         } catch (IOException E){
             E.printStackTrace();
         }
-        //sLLLLLLLLLLLLEEEEEEEEP --- ping server
-        try {
-            serverJSON = dis.readUTF();
-            System.out.println(serverJSON);
-        } catch(IOException E) {
-            E.printStackTrace();
+        for(int i = 0; i<10; i++){
+            try {
+                if(dis.available() == 0) {
+                    try {
+                        TimeUnit.MILLISECONDS.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        serverJSON = dis.readUTF();
+                        System.out.println("Server responded with: " + serverJSON);
+                        break;
+                    } catch (IOException E) {
+                        E.printStackTrace();
+                        System.out.println("Server failed to respond.");
+                        return null;
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        return (StoryCard) getServerObject(serverJSON, StoryCard.class);
+        return serverJSON;
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    @SuppressWarnings("unchecked")
+    private StoryCard serverGetCurrentStory() {
+        return getServerObject(
+                genericGet("getCurrentStory"), StoryCard.class);
+    }
+    @SuppressWarnings("unchecked")
+    private ArrayList<Player> serverGetPlayers(){
+        return getServerObject(
+                genericGet("getPlayers"), ArrayList.class);
     }
     ///////////////////////////////////////////////////////////////////////////
     //Setters
@@ -1537,30 +1564,21 @@ public class Controller implements PropertyChangeListener {
         json.put("arguments", listArguments(playerType, name));
         try {
             dos.writeUTF(json.toJSONString());
+            dos.flush();
         } catch (IOException E){
             E.printStackTrace();
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////////
-    //Special Client Actions
-    ///////////////////////////////////////////////////////////////////////////
-    public void applyServerAction(String className, String methodName, Object invokeObject, Class[] paramTypes, Object[] params){
+    @SuppressWarnings("unchecked")
+    private void serverDrawStoryCard() {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "drawStoryCard");
         try {
-            Class<?> cl = Class.forName(className);
-            Method method = cl.getDeclaredMethod(methodName, paramTypes);
-            method.invoke(invokeObject, params);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
-            E.printStackTrace();
-        }
-    }
-
-    public void applyServerAction(String methodName, Class[] paramTypes, Object[] params){
-        try {
-            Class<?> cl = Class.forName("Model");
-            Method method = cl.getDeclaredMethod(methodName, paramTypes);
-            method.invoke(game, params);
-        } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
             E.printStackTrace();
         }
     }

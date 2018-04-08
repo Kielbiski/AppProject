@@ -7,7 +7,7 @@ import quest.client.App;
 public class Weapon extends AdventureCard
 {
     private static final Logger logger = LogManager.getLogger(App.class);
-
+    Weapon(){};
     Weapon(String paramName, String paramImageFilename, int paramBattlePoints)
     {
         super(paramName, paramImageFilename);

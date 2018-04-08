@@ -1,5 +1,6 @@
 package quest.server;
 
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quest.client.App;
@@ -9,7 +10,7 @@ public class Card {
 
     public String name;
     protected String imageFilename;
-
+    Card(){}
     Card(String paramName, String paramImageFilename)
     {
 
@@ -30,5 +31,13 @@ public class Card {
         logger.info("Returning Card: "+name+ " image");
         return imageFilename;
 
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setImageFilename(String imageFilename) {
+        this.imageFilename = imageFilename;
     }
 }

@@ -13,6 +13,20 @@ public abstract class AdventureCard extends Card
     int bids;
     int bonusBattlePoints;
     int bonusBids;
+    AdventureCard(){}
+
+    public void setBonusBattlePoints(int bonusBattlePoints) {
+        this.bonusBattlePoints = bonusBattlePoints;
+    }
+
+    public void setBonusBids(int bonusBids) {
+        this.bonusBids = bonusBids;
+    }
+
+    public void setBids(int bids) {
+
+        this.bids = bids;
+    }
 
     AdventureCard(String name, String imageFilename){
 

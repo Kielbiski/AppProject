@@ -1,11 +1,4 @@
 package quest.server;
-
-import javafx.geometry.Pos;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.DialogPane;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -15,14 +8,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.*;
 
-import static java.lang.System.exit;
 
 public class Server {
     public static List<PlayerConnection> players;
-    public static DataOutputStream dos;
+    DataOutputStream dos;
     DataInputStream dis;
     private int numberOfPlayers;
-    public Model game;
+    private Model game;
 
     private String scenario;
 
@@ -36,7 +28,7 @@ public class Server {
         System.out.println("\tScenario: " + scenario);
         System.out.println("\tPort number: " + portNumber);
         System.out.println("________________________________________");
-        players = new ArrayList<PlayerConnection>();
+        players = new ArrayList<>();
 
         try {
             ServerSocket servSock = new ServerSocket(portNumber);
@@ -50,10 +42,9 @@ public class Server {
                     dis = new DataInputStream(player.getInputStream());
                     dos = new DataOutputStream(player.getOutputStream());
 
-                    name = dis.readUTF() ;
-                    PlayerConnection user = new PlayerConnection(dos, dis, name, this.game);
+                    name = dis.readUTF();
+                    PlayerConnection user = new PlayerConnection(dos, dis, name, game);
                     System.out.println("Connected : " + user.getName());
-                    System.out.println(game.getCurrentPlayer().getPlayerName());
                     players.add(user);
                 }
                 else {
@@ -67,7 +58,6 @@ public class Server {
     }
 
     private void initialize() {
-        game = new Model();
         Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
         Collections.shuffle(deckOfAdventureCards);
         switch (scenario){
