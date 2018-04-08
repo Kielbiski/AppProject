@@ -17,7 +17,7 @@ public class PlayerConnection {
     private DataInputStream dis;
     private DataOutputStream dos;
 
-    public DataOutputStream getDos() {
+    private DataOutputStream getDos() {
         return dos;
     }
 
@@ -45,6 +45,7 @@ public class PlayerConnection {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
                             if (clientRequest.has("arguments")){
+                                JSONArray argumentTypes = new JSONArray(clientRequest.getJSONArray("argumentTypes"));
                                 JSONArray arguments = new JSONArray(clientRequest.getJSONArray("arguments"));
                             } else {
                                 String req = clientRequest.getString("methodName");

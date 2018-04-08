@@ -88,6 +88,7 @@ public class Quest extends StoryCard { //story card
     private boolean isFinished = false;
     ArrayList <Foe> questFoes = new ArrayList<>();
     Quest(){}
+
     Quest(String paramName, String paramImageFilename, int paramNumStage)
     {
         super(paramName, paramImageFilename);
