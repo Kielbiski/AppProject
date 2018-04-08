@@ -381,6 +381,10 @@ public class Model implements PropertyChangeListener
         }
     }
 
+    public void addPlayerToGame(Player player){
+        players.add(player);
+    }
+
     public void addPlayer(String playerType, String name){
         if(playerType.equals("Human")){
             Player newPlayer = new Player(name);
