@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import java.lang.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.*?>
@@ -74,6 +75,15 @@
                      </children></Pane>
                </children>
             </GridPane>
+            <Pane fx:id="disabledPane" layoutX="27.0" layoutY="27.0" opacity="0.59" prefHeight="394.0" prefWidth="823.0" style="-fx-background-color: #333333;" visible="false">
+               <children>
+                  <Label fx:id="disabledLabel" layoutX="138.0" layoutY="57.0" prefHeight="201.0" prefWidth="551.0" styleClass="label-2" text="Please wait while other players complete thier moves" textAlignment="CENTER" wrapText="true">
+                     <font>
+                        <Font name="AdobeFangsongStd-Regular" size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
          </children>
       </AnchorPane>
    </center>

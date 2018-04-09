@@ -78,7 +78,7 @@ public class Controller {
         choices.add("3 Players");
         choices.add("4 Players");
 
-        ChoiceDialog<String> dialog = new ChoiceDialog<>("4 Players", choices);
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("2 Players", choices);
         dialog.setTitle("Number of Players?");
         dialog.setHeaderText("How many players would you like?");
         dialog.setContentText("Please select number of players:");

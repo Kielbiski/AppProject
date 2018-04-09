@@ -20,6 +20,9 @@ public class PlayerConnection {
     Player player;
     private DataInputStream dis;
     private DataOutputStream dos;
+    private DataInputStream pdis;
+    private DataOutputStream pdos;
+
 
     private DataOutputStream getDos() {
         return dos;
@@ -33,14 +36,24 @@ public class PlayerConnection {
         return this.name;
     }
 
-    PlayerConnection(DataOutputStream dos, DataInputStream dis, String name, Model game) {
+    public void writeToDataOutputStream(String json){
+        try {
+            pdos.writeUTF(json);
+            pdos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    @SuppressWarnings("InfiniteLoopStatement")
+    PlayerConnection(DataOutputStream dos, DataInputStream dis, DataOutputStream pdos, DataInputStream pdis, String name, Model game) {
         player = new Player(name);
-        player.setShields(10);
+        player.setShields(10); //to be removed
         game.addPlayerToGame(player);
-        game.setCurrentPlayer(player); //remove
         this.name = name;
         this.dos = dos;
         this.dis = dis;
+        this.pdos = pdos;
+        this.pdis = pdis;
         ObjectMapper mapper = new ObjectMapper();
         new Thread(() -> {
             try {
@@ -58,10 +71,10 @@ public class PlayerConnection {
                             }
                         }
                         if (clientRequest.getString("type").equals("get")){
-                            System.out.println(clientRequest);
                             playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
                             if(playerDataRequest != null){
-                                System.out.println("Player request: " + playerDataRequest);
+                                System.out.println(name + " requested: " + clientRequest);
+                                System.out.println("Server responded with: " + playerDataRequest + System.getProperty("line.separator"));
                                 dos.writeUTF(playerDataRequest);
                                 dos.flush();
                             }
@@ -79,12 +92,13 @@ public class PlayerConnection {
                         }
                     } catch(Exception ignored){
                     }
-        //                    List<PlayerConnection> entry = Server.players;
-        ////                    this is where the players have their views updated
-        //                    for (PlayerConnection cli : entry) {
-        //                        DataOutputStream edos = cli.getDos();
-        //                        edos.writeUTF(playerDataRequest + System.getProperty("line.separator"));
-        //                    }
+                    List<PlayerConnection> entry = Server.players;
+                    //this is where the players have their views updated
+//                    for (PlayerConnection cli : entry) {
+//                        DataOutputStream edos = cli.getDos();
+//                        edos.writeUTF(daemonTrue);
+//                        edos.flush();
+//                    }
                 }
             } catch (Exception E) { //IOException
                 E.printStackTrace();

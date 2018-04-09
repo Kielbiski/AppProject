@@ -7,7 +7,7 @@ import quest.client.App;
 public class Weapon extends AdventureCard
 {
     private static final Logger logger = LogManager.getLogger(App.class);
-    Weapon(){};
+    Weapon(){}
     Weapon(String paramName, String paramImageFilename, int paramBattlePoints)
     {
         super(paramName, paramImageFilename);
@@ -15,6 +15,4 @@ public class Weapon extends AdventureCard
         logger.info("Successfully weapon :" + this.getName() + " constructor");
     }
 
-    @Override
-    public void setWasUsed(boolean state) {}
 }

@@ -4,6 +4,12 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+import javafx.concurrent.Service;
+import javafx.concurrent.Task;
+import javafx.geometry.Pos;
+
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,8 +30,17 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
+import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
+
 import static java.lang.System.exit;
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
@@ -75,6 +90,10 @@ public class Controller implements PropertyChangeListener {
     private Socket socket;
     private DataOutputStream dos;
     private DataInputStream dis;
+    private Socket backgroundWorkerSocket;
+    private DataOutputStream pdos;
+    private DataInputStream pdis;
+
 
 
     public void setCurrentTurnPlayer(Player currentTurnPlayer) {
@@ -82,73 +101,24 @@ public class Controller implements PropertyChangeListener {
     }
 
     public Controller(){
-//        currentBehaviour = Behaviour.DISABLED;
-        final BackgroundWork back = new BackgroundWork();
+        currentBehaviour = Behaviour.DISABLED;
+        final BackgroundWorker backgroundWorker = new BackgroundWorker();
         try {
             socket = new Socket(PlayerData.ipAddress, PlayerData.port);
             dos = new DataOutputStream(socket.getOutputStream());
             dis = new DataInputStream(socket.getInputStream());
+            backgroundWorkerSocket = new Socket(PlayerData.ipAddress, PlayerData.port+1);
+            pdos = new DataOutputStream(backgroundWorkerSocket.getOutputStream());
+            pdis = new DataInputStream(backgroundWorkerSocket.getInputStream());
             dos.writeUTF(PlayerData.name);
             dos.flush();
-            /*
-             * This Thread let the client recieve the message from the server for any time;
-             */
 
-            back.updateState.addListener((observable, oldValue, newValue) -> {
+            backgroundWorker.updateState.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
-                    Platform.runLater(() -> {
-//                        update();
-                    });
+                    Platform.runLater(this::update);
                 }
-
             });
-            back.start();
-
-
-//            thread = new Thread(() -> {
-//                try {
-//
-//                    JSONParser parser = new JSONParser();
-//
-//                    while(true) {
-//                    }
-//                } catch(Exception E) {
-//                    E.printStackTrace();
-//                }
-//
-//            });
-//
-//            thread.start();
-
-         //   RECEIVES JSON DATA AND PARSES IT
-//            Service<Void> backgroundThread;
-//
-//            backgroundThread = new Service<Void>(){
-//                @Override
-//                protected Task<Void> createTask(){
-//                    return new Task<Void>() {
-//                        @Override
-//                        protected Void call() throws Exception {
-//                            try {
-//
-////                                JSONParser parser = new JSONParser();
-////
-////                                while(true) {
-////                                    String serverResponse = dis.readUTF();
-////                                    print(serverResponse);
-////                                }
-//                            } catch(Exception E) {
-//                                E.printStackTrace();
-//                            }
-//                            return null;
-//                        }
-//                    };
-//                }
-//            };
-//
-//            backgroundThread.start();
-
-
+            backgroundWorker.start();
         } catch(IOException E) {
             E.printStackTrace();
         }
@@ -187,21 +157,19 @@ public class Controller implements PropertyChangeListener {
         imgView.setOnMouseClicked((MouseEvent event) -> {
             if(currentBehaviour==Behaviour.QUEST_MEMBER) {
                 if (card.getName().equals("Merlin")) {
-                    System.out.println("MERLIN");
-                    //FIX LATER
-//                    if (!((Merlin) card).isWasUsed()){
-//                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
-//                        if(useMerlin){
-//                            flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
-//                            for (AdventureCard adCard : PreQuestStageSetup().get(serverGetCurrentQuest().getCurrentStageIndex()+1)) {
-//                                ImageView imgView2 = createAdventureCardImageView(adCard);
-//                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
-//                                imgView2.toFront();
-//                                flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
-//                            }
-//                            card.setWasUsed(true);
-//                        }
-//                    }
+                    if (!(serverGetMerlinIsUsed(card))){
+                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
+                        if(useMerlin){
+                            flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
+                            for (AdventureCard adCard : serverGetPreQuestStageSetup().get(serverGetCurrentQuest().getCurrentStageIndex()+1)) {
+                                ImageView imgView2 = createAdventureCardImageView(adCard);
+                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
+                                imgView2.toFront();
+                                flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
+                            }
+                            serverSetMerlinIsUsed(card, true);
+                        }
+                    }
                 }
             }
             event.consume();
@@ -446,15 +414,15 @@ public class Controller implements PropertyChangeListener {
         stagesGridPane.add(stagePane,stageIndex,0);
     }
 
-    private void setCurrentBehaviour(Behaviour behave){
+    public void setCurrentBehaviour(Behaviour behave){
         currentBehaviour = behave;
     }
 
-    private void update() {
+    public void update() {
         //Vbox display player data
-
+        activePlayer = serverGetActivePlayer();
         ArrayList<Player> currentPlayers = serverGetPlayers();
-
+        Player activePlayer = serverGetActivePlayer();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
@@ -467,7 +435,6 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
-
         currentTurnPlayer = currentPlayers.get(0);
         /////////
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
@@ -722,7 +689,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
-        if(player == serverGetCurrentPlayer()) {
+        if(player == serverGetActivePlayer()) {
             if(!(player instanceof AbstractAI)){
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
@@ -870,7 +837,7 @@ public class Controller implements PropertyChangeListener {
         setActivePlayer(serverGetSponsor());
         serverSetSponsor(null);
         previousBehaviour = Behaviour.DEFAULT;
-        if(!serverGetCurrentPlayer().handFull) {
+        if(!serverGetActivePlayer().handFull) {
             setCurrentBehaviour(Behaviour.DEFAULT);
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
@@ -902,7 +869,7 @@ public class Controller implements PropertyChangeListener {
             serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
             sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
             for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-               serverAddStageToCurrentQuest(i);
+                serverAddStageToCurrentQuest(i);
             }
             setCurrentBehaviour(Behaviour.QUEST_MEMBER);
             serverGetCurrentQuest().startQuest();
@@ -1294,8 +1261,6 @@ public class Controller implements PropertyChangeListener {
                 }
                 break;
         }
-
-
     }
     ///////////////////////////////////////////////////////////////////////////
     //Server Actions
@@ -1417,9 +1382,9 @@ public class Controller implements PropertyChangeListener {
         return getServerObject(
                 genericGet("getSponsor"), new TypeReference<Player>(){});
     }
-    private Player serverGetCurrentPlayer(){
+    private Player serverGetActivePlayer(){
         return getServerObject(
-                genericGet("getCurrentPlayer"), new TypeReference<Player>(){});
+                genericGet("getActivePlayer"), new TypeReference<Player>(){});
     }
     private HashMap<Integer,ArrayList<AdventureCard>> serverGetPreQuestStageSetup(){
         return getServerObject(
@@ -1454,6 +1419,18 @@ public class Controller implements PropertyChangeListener {
                             add(stageNum);
                 }})
                 ,new TypeReference<Boolean>(){});
+    }
+    private Boolean serverGetMerlinIsUsed(AdventureCard card){
+        return getServerObject(
+                genericGetWithParams("getMerlinIsUsed",
+                new ArrayList<Class<?>>(){
+                    {
+                        add(card.getClass());
+                    }},
+                new ArrayList<Object>(){{
+                        add(card);
+                    }}),
+                new TypeReference<Boolean>(){});
     }
     ///////////////////////////////////////////////////////////////////////////
     //Setters
@@ -1547,6 +1524,20 @@ public class Controller implements PropertyChangeListener {
         json.put("methodName", "setKingsRecognition");
         json.put("argumentTypes", new ArrayList<Class<?>>(){{add(value.getClass());}});
         json.put("arguments", new ArrayList<Boolean>(){{add(value);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetMerlinIsUsed(AdventureCard card, Boolean value) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setMerlinIsUsed");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass());add(value.getClass());}});
+        json.put("arguments", new ArrayList<Object>(){{add(card);add(value);}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1684,10 +1675,9 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     //Daemon
     ///////////////////////////////////////////////////////////////////////////
-    class BackgroundWork extends Thread {
+    class BackgroundWorker extends Thread {
         private BooleanProperty updateState;
-
-        public BackgroundWork() {
+        BackgroundWorker() {
             updateState = new SimpleBooleanProperty(this, "bool", false);
             setDaemon(true);
         }
@@ -1701,21 +1691,33 @@ public class Controller implements PropertyChangeListener {
         }
 
         @Override
+        @SuppressWarnings("InfiniteLoopStatement")
         public void run() {
             while (true) {
                 try {
-                    JSONParser parser = new JSONParser();
-
-                    while(true) {
-                        updateState.setValue(true);
-                        thread.sleep(5000);
-                        updateState.setValue(false);
-
-//                        String serverResponse = dis.readUTF();
-//                        print(serverResponse);
+                    String inputStreamContents = pdis.readUTF();
+                    System.out.println("Background worker received command: " + inputStreamContents);
+                    org.json.JSONObject serverCommand  = new org.json.JSONObject(inputStreamContents);
+                    switch(serverCommand.getString("behaviour")){
+                        case "DEFAULT":
+                            setCurrentBehaviour(Behaviour.DEFAULT);
+                        case "DISABLED":
+                            setCurrentBehaviour(Behaviour.DISABLED);
+                        case "TOURNAMENT":
+                            setCurrentBehaviour(Behaviour.TOURNAMENT);
+                        case "CALL_TO_ARMS":
+                            setCurrentBehaviour(Behaviour.CALL_TO_ARMS);
+                        case "DISCARD":
+                            setCurrentBehaviour(Behaviour.DISCARD);
+                        case "BID":
+                            setCurrentBehaviour(Behaviour.BID);
+                        case "QUEST_MEMBER":
+                            setCurrentBehaviour(Behaviour.QUEST_MEMBER);
+                        case "SPONSOR":
+                            setCurrentBehaviour(Behaviour.SPONSOR);
                     }
-                } catch(Exception E) {
-                    E.printStackTrace();
+                } catch(Exception Ignored) {
+                    //E.printStackTrace();
                 }
 
             }

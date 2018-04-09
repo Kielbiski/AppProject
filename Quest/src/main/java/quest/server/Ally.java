@@ -7,7 +7,7 @@ import quest.client.App;
 public class Ally extends AdventureCard {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-    String affectedEntity;
+    private String affectedEntity;
     Ally(){}
 
     public void setAffectedEntity(String affectedEntity) {
@@ -29,7 +29,4 @@ public class Ally extends AdventureCard {
     public String getAffectedEntity() {
         return affectedEntity;
     }
-    @Override
-    public void setWasUsed(boolean state) {}
-
 }

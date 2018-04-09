@@ -151,10 +151,12 @@ class GreenKnight extends Foe {
     }
 }
 
-class Mordred extends Foe {
+class Mordred extends Foe implements IsUsed {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-
+    private boolean isUsed = false;
+    public boolean isUsed(){return isUsed;}
+    public void setIsUsed(boolean isUsed){isUsed = isUsed;}
     Mordred(){
 
         super("Mordred", "F_Mordred.jpg", 30, 0);
@@ -212,6 +214,15 @@ class Thieves extends Foe {
 }
 
 //Allies
+class Merlin extends Ally implements IsUsed {
+    private boolean isUsed = false;
+    public boolean isUsed(){return isUsed;}
+    public void setIsUsed(boolean isUsed){isUsed = isUsed;}
+    public Merlin() {
+        super("Merlin", "A_Merlin.jpg", 0, 0, 0, 0, "");
+    }
+}
+
 class KingArthur extends Ally {
     KingArthur(){
         super("King Arthur", "A_King_Arthur.jpg", 10, 2, 0, 0, "");
@@ -222,23 +233,6 @@ class KingPellinore extends Ally {
     KingPellinore(){
         super("King Pellinore", "A_King_Pellinore.jpg", 10, 0, 0, 4, "Search For The Questing Beast");
     }
-}
-
-class Merlin extends Ally {
-    boolean wasUsed = false;
-
-    public boolean isWasUsed() {
-        return wasUsed;
-    }
-
-    public void setWasUsed(boolean wasUsed) {
-        this.wasUsed = wasUsed;
-    }
-
-    public Merlin(){
-        super("Merlin", "A_Merlin.jpg", 0, 0, 0, 0, "");
-    }
-
 }
 
 class QueenGuinevere extends Ally {

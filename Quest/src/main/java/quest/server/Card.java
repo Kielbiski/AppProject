@@ -9,7 +9,7 @@ public class Card {
     private static final Logger logger = LogManager.getLogger(App.class);
 
     public String name;
-    protected String imageFilename;
+    public String imageFilename;
     Card(){}
     Card(String paramName, String paramImageFilename)
     {
