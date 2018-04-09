@@ -4,12 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.geometry.Pos;
-
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -20,7 +14,6 @@ import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import quest.server.*;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -30,17 +23,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
-
 import static java.lang.System.exit;
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
@@ -48,8 +32,6 @@ enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, D
 public class Controller implements PropertyChangeListener {
 
     private static final Logger logger = LogManager.getLogger(App.class);
-    //to be deleted
-    private Model game = new Model();
     private Player activePlayer;
     private Player currentTurnPlayer;
     private int NUM_PLAYERS = 0;
@@ -85,6 +67,10 @@ public class Controller implements PropertyChangeListener {
     private HBox tableHbox;
     @FXML
     private Pane discardPane;
+    @FXML
+    private Pane disabledPane;
+    @FXML
+    private Label disabledLabel;
     private static Thread thread;
     private ArrayList<FlowPane> flowPaneArray = new ArrayList<>();
     private Socket socket;
@@ -1696,13 +1682,16 @@ public class Controller implements PropertyChangeListener {
             while (true) {
                 try {
                     String inputStreamContents = pdis.readUTF();
+
                     System.out.println("Background worker received command: " + inputStreamContents);
                     org.json.JSONObject serverCommand  = new org.json.JSONObject(inputStreamContents);
+                    disabledPane.setVisible(false);
                     switch(serverCommand.getString("behaviour")){
                         case "DEFAULT":
                             setCurrentBehaviour(Behaviour.DEFAULT);
                         case "DISABLED":
                             setCurrentBehaviour(Behaviour.DISABLED);
+                            disabledPane.setVisible(true);
                         case "TOURNAMENT":
                             setCurrentBehaviour(Behaviour.TOURNAMENT);
                         case "CALL_TO_ARMS":
