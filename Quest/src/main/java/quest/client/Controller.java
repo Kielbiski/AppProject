@@ -34,6 +34,7 @@ public class Controller implements PropertyChangeListener {
     private static final Logger logger = LogManager.getLogger(App.class);
     private Player activePlayer;
     private Player currentTurnPlayer;
+    private Player thisPlayer;
     private int NUM_PLAYERS = 0;
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
@@ -41,6 +42,7 @@ public class Controller implements PropertyChangeListener {
     private Behaviour currentBehaviour;
     private int callToArmsFoes = 0;
     private int bidsToDo =0;
+
 
     ///FXML ELEMENTS
     @FXML

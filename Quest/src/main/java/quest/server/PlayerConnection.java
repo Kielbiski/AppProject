@@ -54,6 +54,7 @@ public class PlayerConnection {
         this.dis = dis;
         this.pdos = pdos;
         this.pdis = pdis;
+        
         ObjectMapper mapper = new ObjectMapper();
         new Thread(() -> {
             try {
