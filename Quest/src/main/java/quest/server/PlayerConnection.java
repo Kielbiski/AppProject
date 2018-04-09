@@ -44,7 +44,7 @@ public class PlayerConnection {
             e.printStackTrace();
         }
     }
-    @SuppressWarnings("InfiniteLoopStatement")
+    @SuppressWarnings({"InfiniteLoopStatement", "unchecked"})
     PlayerConnection(DataOutputStream dos, DataInputStream dis, DataOutputStream pdos, DataInputStream pdis, String name, Model game) {
         player = new Player(name);
         player.setShields(10); //to be removed
@@ -92,13 +92,6 @@ public class PlayerConnection {
                         }
                     } catch(Exception ignored){
                     }
-                    List<PlayerConnection> entry = Server.players;
-                    //this is where the players have their views updated
-//                    for (PlayerConnection cli : entry) {
-//                        DataOutputStream edos = cli.getDos();
-//                        edos.writeUTF(daemonTrue);
-//                        edos.flush();
-//                    }
                 }
             } catch (Exception E) { //IOException
                 E.printStackTrace();
@@ -157,15 +150,17 @@ public class PlayerConnection {
     private void applyClientAction(Model game, String methodName){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName);
+            game.changed();
             method.invoke(game);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }
     }
 
-    public void applyClientAction(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
+    private void applyClientAction(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
+            game.changed();
             method.invoke(game, params);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();

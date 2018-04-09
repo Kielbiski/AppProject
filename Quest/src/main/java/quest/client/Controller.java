@@ -1714,8 +1714,11 @@ public class Controller implements PropertyChangeListener {
                                 break;
                         }
                     }
-                } catch(Exception Ignored) {
-                    //E.printStackTrace();
+                    if(serverCommand.has("update")) {
+                        updateState.setValue(serverCommand.getString("update").equals("true"));
+                        System.out.println("Update called? " + getUpdateState());
+                    }
+                } catch(Exception ignored) {
                 }
 
             }

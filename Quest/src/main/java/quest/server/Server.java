@@ -65,6 +65,18 @@ public class Server {
                         flag = false;
                     }
                 }
+//                for(int i = 0; i < players.size(); i++) {
+//                    if(i == game.getCurrentTurnIndex()){
+//                        sendJSON(players.get(i), "behaviour", "DEFAULT");
+//                    } else {
+//                        sendJSON(players.get(i), "behaviour", "DISABLED");
+//                    }
+
+                //insert property change listener on change here
+                //for loop should go inside that listener
+                for (PlayerConnection player : players) {
+                    sendJSON(player, "update", "true");
+                }
             }
         } catch (IOException E) {
             E.printStackTrace();
@@ -117,12 +129,12 @@ public class Server {
         }
         game.dealCards(deckOfAdventureCards);
         game.setActivePlayer(game.getPlayers().get(0));
-        sendBehaviour(players.get(0), "DEFAULT");
+        sendJSON(players.get(0), "behaviour","DEFAULT");
     }
     @SuppressWarnings("unchecked")
-    private void sendBehaviour(PlayerConnection player, String behaviour){
+    private void sendJSON(PlayerConnection player, String type, String behaviour){
         JSONObject json = new JSONObject();
-        json.put("behaviour", behaviour);
+        json.put(type, behaviour);
         player.writeToDataOutputStream(json.toJSONString());
     }
 }

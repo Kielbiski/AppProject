@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quest.client.App;
 
-public abstract class AdventureCard extends Card
+public class AdventureCard extends Card
 {
 
     private static final Logger logger = LogManager.getLogger(App.class);
