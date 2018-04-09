@@ -1699,31 +1699,43 @@ public class Controller implements PropertyChangeListener {
             while (true) {
                 try {
                     String inputStreamContents = pdis.readUTF();
-
                     System.out.println("Background worker received command: " + inputStreamContents);
                     org.json.JSONObject serverCommand  = new org.json.JSONObject(inputStreamContents);
-                    disabledPane.setVisible(false);
-                    switch(serverCommand.getString("behaviour")){
-                        case "DEFAULT":
-                            setCurrentBehaviour(Behaviour.DEFAULT);
-                        case "DISABLED":
-                            setCurrentBehaviour(Behaviour.DISABLED);
-                            disabledPane.setVisible(true);
-                        case "TOURNAMENT":
-                            setCurrentBehaviour(Behaviour.TOURNAMENT);
-                        case "CALL_TO_ARMS":
-                            setCurrentBehaviour(Behaviour.CALL_TO_ARMS);
-                        case "DISCARD":
-                            setCurrentBehaviour(Behaviour.DISCARD);
-                        case "BID":
-                            setCurrentBehaviour(Behaviour.BID);
-                        case "QUEST_MEMBER":
-                            setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-                        case "SPONSOR":
-                            setCurrentBehaviour(Behaviour.SPONSOR);
+                    if(serverCommand.has("behaviour")) {
+                        disabledPane.setVisible(false);
+                        switch (serverCommand.getString("behaviour")) {
+                            case "DEFAULT":
+                                setCurrentBehaviour(Behaviour.DEFAULT);
+                                break;
+                            case "DISABLED":
+                                setCurrentBehaviour(Behaviour.DISABLED);
+                                disabledPane.setVisible(true);
+                                break;
+                            case "TOURNAMENT":
+                                setCurrentBehaviour(Behaviour.TOURNAMENT);
+                                break;
+                            case "CALL_TO_ARMS":
+                                setCurrentBehaviour(Behaviour.CALL_TO_ARMS);
+                                break;
+                            case "DISCARD":
+                                setCurrentBehaviour(Behaviour.DISCARD);
+                                break;
+                            case "BID":
+                                setCurrentBehaviour(Behaviour.BID);
+                                break;
+                            case "QUEST_MEMBER":
+                                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
+                                break;
+                            case "SPONSOR":
+                                setCurrentBehaviour(Behaviour.SPONSOR);
+                                break;
+                        }
                     }
-                } catch(Exception Ignored) {
-                    //E.printStackTrace();
+                    if(serverCommand.has("update")) {
+                        updateState.setValue(serverCommand.getString("update").equals("true"));
+                        System.out.println("Update called? " + getUpdateState());
+                    }
+                } catch(Exception ignored) {
                 }
 
             }

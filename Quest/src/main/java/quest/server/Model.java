@@ -30,6 +30,7 @@ public class Model implements PropertyChangeListener
     private List<PropertyChangeListener> listener = new ArrayList<>();
     private ArrayList<Player> winningPlayers = new ArrayList<>();
     private boolean kingsRecognition = false;
+    private boolean change = false;
 
     /////////////////////////////////////////////////
     public boolean getMerlinIsUsed(AdventureCard card){
@@ -418,9 +419,13 @@ public class Model implements PropertyChangeListener
         return currentTurnIndex;
     }
 
+    public void changed(){
+        this.change = !this.change;
+    }
+
     public void nextTurn(){
-        if(currentTurnIndex == 3){
-            currentTurnIndex = 0 ;
+        if(currentTurnIndex == players.size()){
+            currentTurnIndex = 0;
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
         else{
@@ -614,9 +619,7 @@ public class Model implements PropertyChangeListener
                 break;
             case "handFull":
                 if ((Boolean) change.getNewValue()) {
-                    System.out.println("");
-                    //reneable with AI when jay fixes his shit
-                    // handFull((Player)change.getSource(),(Boolean)change.getOldValue());
+                     handFull((Player)change.getSource(),(Boolean)change.getOldValue());
                 }
                 break;
             case "deckDraw": {
