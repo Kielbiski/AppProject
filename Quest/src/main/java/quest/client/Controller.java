@@ -284,7 +284,7 @@ public class Controller implements PropertyChangeListener {
                         currentBehaviour = Behaviour.QUEST_MEMBER;
                         continueButton.setDisable(false);
                         discardPane.setVisible(false);
-                        serverGetCurrentQuest().setInTest(false);
+                        serverSetInTestCurrentQuest(false);
                     }
                     update();
                     success = true;
@@ -408,7 +408,6 @@ public class Controller implements PropertyChangeListener {
         //Vbox display player data
         activePlayer = serverGetActivePlayer();
         ArrayList<Player> currentPlayers = serverGetPlayers();
-        Player activePlayer = serverGetActivePlayer();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
@@ -488,9 +487,11 @@ public class Controller implements PropertyChangeListener {
 
 
         if(currentBehaviour == Behaviour.SPONSOR) {
-            for(int i =0; i < serverGetCurrentQuest().getNumStage(); i++){
+            Quest current = serverGetCurrentQuest();
+            HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
+            for(int i =0; i < current.getNumStage(); i++){
                 flowPaneArray.get(i).getChildren().clear();
-                for (AdventureCard card : serverGetPreQuestStageSetup().get(i)) {
+                for (AdventureCard card : pre.get(i)) {
                     ImageView imgView = createAdventureCardImageView(card);
                     imgView.setImage(getCardImage(card.getImageFilename()));
                     imgView.toFront();
@@ -499,11 +500,13 @@ public class Controller implements PropertyChangeListener {
             }
         }
         else if(currentBehaviour == Behaviour.QUEST_MEMBER||currentBehaviour == Behaviour.BID){
-            if(serverGetCurrentQuest()!=null) {
-                for (int i = 0; i < serverGetCurrentQuest().getNumStage(); i++) {
+            Quest current = serverGetCurrentQuest();
+            if(current!=null) {
+                for (int i = 0; i < current.getNumStage(); i++) {
                     flowPaneArray.get(i).getChildren().clear();
-                    if (serverGetCurrentQuest().getCurrentStage() == serverGetCurrentQuest().getStages().get(i)) {
-                        for (AdventureCard card : serverGetPreQuestStageSetup().get(i)) {
+                    if (current.getCurrentStage() == current.getStages().get(i)) {
+                        HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
+                        for (AdventureCard card : pre.get(i)) {
                             ImageView imgView = createAdventureCardImageView(card);
                             imgView.setImage(getCardImage(card.getImageFilename()));
                             imgView.toFront();
@@ -1468,6 +1471,20 @@ public class Controller implements PropertyChangeListener {
         json.put("methodName", "setSponsor");
         json.put("argumentTypes", new ArrayList<Class<?>>(){{add(player.getClass());}});
         json.put("arguments", new ArrayList<Player>(){{add(player);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetInTestCurrentQuest(Boolean value) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setInTestCurrentQuest");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(value.getClass());}});
+        json.put("arguments", new ArrayList<Boolean>(){{add(value);}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();

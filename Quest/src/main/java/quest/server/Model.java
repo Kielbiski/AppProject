@@ -1,5 +1,6 @@
 package quest.server;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quest.client.App;
@@ -53,6 +54,10 @@ public class Model implements PropertyChangeListener
 
     public void setCurrentTournament(Tournament currentTournament) {
         this.currentTournament = currentTournament;
+    }
+
+    public void setInTestCurrentQuest(Boolean value){
+        currentQuest.setInTest(value);
     }
 
     /////////////////////////////////////////////////
@@ -566,6 +571,7 @@ public class Model implements PropertyChangeListener
             logger.info("Draw card from story deck.");
         }
     }
+
 
     private void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI
