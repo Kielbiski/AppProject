@@ -14,20 +14,6 @@ public abstract class AdventureCard extends Card
     int bonusBattlePoints;
     int bonusBids;
     AdventureCard(){}
-
-    public void setBonusBattlePoints(int bonusBattlePoints) {
-        this.bonusBattlePoints = bonusBattlePoints;
-    }
-
-    public void setBonusBids(int bonusBids) {
-        this.bonusBids = bonusBids;
-    }
-
-    public void setBids(int bids) {
-
-        this.bids = bids;
-    }
-
     AdventureCard(String name, String imageFilename){
 
         super(name, imageFilename);
@@ -58,12 +44,21 @@ public abstract class AdventureCard extends Card
         return bonusBids;
     }
 
-    protected void setBattlePoints(int paramBattlePoints) {
+    public void setBattlePoints(int paramBattlePoints) {
         logger.info("Setting AdventureCard battle points");
         battlePoints = paramBattlePoints;
     }
+    public void setBonusBattlePoints(int bonusBattlePoints) {
+        this.bonusBattlePoints = bonusBattlePoints;
+    }
 
-    abstract public void setWasUsed(boolean state);
+    public void setBonusBids(int bonusBids) {
+        this.bonusBids = bonusBids;
+    }
 
+    public void setBids(int bids) {
+
+        this.bids = bids;
+    }
 }
 

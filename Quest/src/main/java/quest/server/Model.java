@@ -31,12 +31,19 @@ public class Model implements PropertyChangeListener
     private boolean kingsRecognition = false;
 
     /////////////////////////////////////////////////
-
-    public Player getCurrentPlayer() {
+    public boolean getMerlinIsUsed(AdventureCard card){
+        Merlin merlin = (Merlin) card;
+        return merlin.isUsed();
+    }
+    public void setMerlinIsUsed(AdventureCard card, boolean value){
+        Merlin merlin = (Merlin) card;
+        merlin.setIsUsed(value);
+    }
+    public Player getActivePlayer() {
         return activePlayer;
     }
 
-    public void setCurrentPlayer(Player p) {
+    public void setActivePlayer(Player p) {
         this.activePlayer = p;
     }
 
@@ -475,10 +482,10 @@ public class Model implements PropertyChangeListener
         deckOfStoryCards.push(storyCard);
     }
 
-    public void drawAdventureCard(Player currentPlayer){
-        logger.info(currentPlayer.getPlayerName() + " draw an adventure card.");
+    public void drawAdventureCard(Player ActivePlayer){
+        logger.info(ActivePlayer.getPlayerName() + " draw an adventure card.");
         //check if hand is full, if so set some state in the player is full. then in controller create an alert that says hand is full.
-        currentPlayer.addCardToHand(deckOfAdventureCards.pop());
+        ActivePlayer.addCardToHand(deckOfAdventureCards.pop());
     }
 
     void addToDiscardAdventure(AdventureCard card){

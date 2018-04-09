@@ -142,21 +142,19 @@ public class Controller implements PropertyChangeListener {
         imgView.setOnMouseClicked((MouseEvent event) -> {
             if(currentBehaviour==Behaviour.QUEST_MEMBER) {
                 if (card.getName().equals("Merlin")) {
-                    System.out.println("MERLIN");
-                    //FIX LATER
-//                    if (!((Merlin) card).isWasUsed()){
-//                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
-//                        if(useMerlin){
-//                            flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
-//                            for (AdventureCard adCard : PreQuestStageSetup().get(serverGetCurrentQuest().getCurrentStageIndex()+1)) {
-//                                ImageView imgView2 = createAdventureCardImageView(adCard);
-//                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
-//                                imgView2.toFront();
-//                                flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
-//                            }
-//                            card.setWasUsed(true);
-//                        }
-//                    }
+                    if (!(serverGetMerlinIsUsed(card))){
+                        boolean useMerlin = yesNoAlert("Use Merlin effect to see the next stage?", "Merlin");
+                        if(useMerlin){
+                            flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().clear();
+                            for (AdventureCard adCard : serverGetPreQuestStageSetup().get(serverGetCurrentQuest().getCurrentStageIndex()+1)) {
+                                ImageView imgView2 = createAdventureCardImageView(adCard);
+                                imgView2.setImage(getCardImage(adCard.getImageFilename()));
+                                imgView2.toFront();
+                                flowPaneArray.get(serverGetCurrentQuest().getCurrentStageIndex()+1).getChildren().add(imgView2);
+                            }
+                            serverSetMerlinIsUsed(card, true);
+                        }
+                    }
                 }
             }
             event.consume();
@@ -407,7 +405,7 @@ public class Controller implements PropertyChangeListener {
 
     public void update() {
         //Vbox display player data
-
+        activePlayer = serverGetActivePlayer();
         ArrayList<Player> currentPlayers = serverGetPlayers();
         Player activePlayer = serverGetActivePlayer();
         playerStatsVbox.getChildren().clear();
@@ -422,7 +420,6 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
-
         currentTurnPlayer = currentPlayers.get(0);
         /////////
         currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
@@ -677,7 +674,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
-        if(player == serverGetCurrentPlayer()) {
+        if(player == serverGetActivePlayer()) {
             if(!(player instanceof AbstractAI)){
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
@@ -825,7 +822,7 @@ public class Controller implements PropertyChangeListener {
         setActivePlayer(serverGetSponsor());
         serverSetSponsor(null);
         previousBehaviour = Behaviour.DEFAULT;
-        if(!serverGetCurrentPlayer().handFull) {
+        if(!serverGetActivePlayer().handFull) {
             setCurrentBehaviour(Behaviour.DEFAULT);
             nextTurnButton.setVisible(true);
             nextTurnButton.setDisable(false);
@@ -1250,8 +1247,6 @@ public class Controller implements PropertyChangeListener {
                 }
                 break;
         }
-
-
     }
     ///////////////////////////////////////////////////////////////////////////
     //Server Actions
@@ -1373,10 +1368,6 @@ public class Controller implements PropertyChangeListener {
         return getServerObject(
                 genericGet("getSponsor"), new TypeReference<Player>(){});
     }
-    private Player serverGetCurrentPlayer(){
-        return getServerObject(
-                genericGet("getCurrentPlayer"), new TypeReference<Player>(){});
-    }
     private Player serverGetActivePlayer(){
         return getServerObject(
                 genericGet("getActivePlayer"), new TypeReference<Player>(){});
@@ -1414,6 +1405,18 @@ public class Controller implements PropertyChangeListener {
                             add(stageNum);
                 }})
                 ,new TypeReference<Boolean>(){});
+    }
+    private Boolean serverGetMerlinIsUsed(AdventureCard card){
+        return getServerObject(
+                genericGetWithParams("getMerlinIsUsed",
+                new ArrayList<Class<?>>(){
+                    {
+                        add(card.getClass());
+                    }},
+                new ArrayList<Object>(){{
+                        add(card);
+                    }}),
+                new TypeReference<Boolean>(){});
     }
     ///////////////////////////////////////////////////////////////////////////
     //Setters
@@ -1507,6 +1510,20 @@ public class Controller implements PropertyChangeListener {
         json.put("methodName", "setKingsRecognition");
         json.put("argumentTypes", new ArrayList<Class<?>>(){{add(value.getClass());}});
         json.put("arguments", new ArrayList<Boolean>(){{add(value);}});
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
+    @SuppressWarnings("unchecked")
+    private void serverSetMerlinIsUsed(AdventureCard card, Boolean value) {
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", "setMerlinIsUsed");
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass());add(value.getClass());}});
+        json.put("arguments", new ArrayList<Object>(){{add(card);add(value);}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1660,6 +1677,7 @@ public class Controller implements PropertyChangeListener {
         }
 
         @Override
+        @SuppressWarnings("InfiniteLoopStatement")
         public void run() {
             while (true) {
                 try {

@@ -44,6 +44,7 @@ public class PlayerConnection {
             e.printStackTrace();
         }
     }
+    @SuppressWarnings("InfiniteLoopStatement")
     PlayerConnection(DataOutputStream dos, DataInputStream dis, DataOutputStream pdos, DataInputStream pdis, String name, Model game) {
         player = new Player(name);
         player.setShields(10); //to be removed
@@ -70,10 +71,10 @@ public class PlayerConnection {
                             }
                         }
                         if (clientRequest.getString("type").equals("get")){
-                            System.out.println(clientRequest);
                             playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
                             if(playerDataRequest != null){
-                                System.out.println("Player request: " + playerDataRequest);
+                                System.out.println(name + " requested: " + clientRequest);
+                                System.out.println("Server responded with: " + playerDataRequest + System.getProperty("line.separator"));
                                 dos.writeUTF(playerDataRequest);
                                 dos.flush();
                             }
