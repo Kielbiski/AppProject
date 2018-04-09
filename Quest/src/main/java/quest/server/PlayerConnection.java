@@ -23,7 +23,6 @@ public class PlayerConnection {
     private DataInputStream pdis;
     private DataOutputStream pdos;
 
-
     private DataOutputStream getDos() {
         return dos;
     }
@@ -55,6 +54,14 @@ public class PlayerConnection {
         this.pdos = pdos;
         this.pdis = pdis;
         ObjectMapper mapper = new ObjectMapper();
+        try {
+            org.json.simple.JSONObject json = new org.json.simple.JSONObject();
+            json.put("player", mapper.writeValueAsString(player));
+            this.pdos.writeUTF(json.toJSONString());
+            this.pdos.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         new Thread(() -> {
             try {
                while(true) {
@@ -177,7 +184,7 @@ public class PlayerConnection {
         }
     }
 
-    public Object getObjectWithParamsForClient(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
+    private Object getObjectWithParamsForClient(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
             return method.invoke(game, params);

@@ -34,6 +34,7 @@ public class Controller implements PropertyChangeListener {
     private static final Logger logger = LogManager.getLogger(App.class);
     private Player activePlayer;
     private Player currentTurnPlayer;
+    private Player thisPlayer;
     private int NUM_PLAYERS = 0;
     private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
@@ -1675,6 +1676,7 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
+//    private void genericSet(String methodName, )
     ///////////////////////////////////////////////////////////////////////////
     //Daemon
     ///////////////////////////////////////////////////////////////////////////
@@ -1734,6 +1736,10 @@ public class Controller implements PropertyChangeListener {
                     if(serverCommand.has("update")) {
                         updateState.setValue(serverCommand.getString("update").equals("true"));
                         System.out.println("Update called? " + getUpdateState());
+                    }
+                    if(serverCommand.has("player")) {
+                        thisPlayer = getServerObject(serverCommand.getString("player"), new TypeReference<Player>() {
+                        });
                     }
                 } catch(Exception ignored) {
                 }
