@@ -61,6 +61,12 @@ public class Model implements PropertyChangeListener
         currentQuest.setInTest(value);
     }
 
+    public void changed(){
+        this.change = !this.change;
+        notifyListeners("changed", Boolean.TRUE,!this.change,this.change);
+    }
+
+
     /////////////////////////////////////////////////
 
     public void applyEventEffect(Event event){
@@ -419,9 +425,6 @@ public class Model implements PropertyChangeListener
         return currentTurnIndex;
     }
 
-    public void changed(){
-        this.change = !this.change;
-    }
 
     public void nextTurn(){
         if(currentTurnIndex == players.size()){
@@ -581,7 +584,7 @@ public class Model implements PropertyChangeListener
     private void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI
         logger.info("Notify of the hand is full.");
-        notifyListeners(player,oldFull,true);
+        notifyListeners("handfull", player,oldFull,true);
 
     }
     private void callToArms(Player player){
@@ -589,16 +592,18 @@ public class Model implements PropertyChangeListener
         logger.info("Call the arm to track for this"+player.getPlayerName()+".");
         notifyListeners(player);
     }
-    private void notifyListeners(Object object, boolean oldFull, boolean newFull) {
-        logger.info("Inform listener of the handfull.");
-        for (PropertyChangeListener name : listener) {
-            name.propertyChange(new PropertyChangeEvent(object, "handFull", oldFull, newFull));
-        }
-    }
     private void notifyListeners(Object object) {
         logger.info("Notify listener of callToArm");
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, "callToArms","",""));
+        }
+    }
+
+    private void notifyListeners(String property, Object object, boolean oldFull, boolean newFull) {
+
+        logger.info("Inform listener of the "+ property);
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property, oldFull, newFull));
         }
     }
 

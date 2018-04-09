@@ -1,6 +1,8 @@
 package quest.server;
 import org.json.simple.JSONObject;
 
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
@@ -11,7 +13,7 @@ import java.net.Socket;
 import java.util.*;
 
 
-public class Server {
+public class Server implements PropertyChangeListener {
     public static List<PlayerConnection> players;
     //public static List<Socket> playerBackgroundWorkers;
     private DataOutputStream dos;
@@ -30,6 +32,7 @@ public class Server {
         this.numberOfPlayers = numberOfPlayers;
         this.scenario = scenario;
         game = new Model();
+        game.addChangeListener(this);
         System.out.println("________________________________________\n");
         System.out.println("Server running.");
         System.out.println("\tNumber of players: " + this.numberOfPlayers);
@@ -74,9 +77,7 @@ public class Server {
 
                 //insert property change listener on change here
                 //for loop should go inside that listener
-                for (PlayerConnection player : players) {
-                    sendJSON(player, "update", "true");
-                }
+
             }
         } catch (IOException E) {
             E.printStackTrace();
@@ -130,11 +131,25 @@ public class Server {
         game.dealCards(deckOfAdventureCards);
         game.setActivePlayer(game.getPlayers().get(0));
         sendJSON(players.get(0), "behaviour","DEFAULT");
+        for (PlayerConnection player : players) {
+            sendJSON(player, "update", "true");
+        }
     }
     @SuppressWarnings("unchecked")
     private void sendJSON(PlayerConnection player, String type, String behaviour){
         JSONObject json = new JSONObject();
         json.put(type, behaviour);
         player.writeToDataOutputStream(json.toJSONString());
+    }
+    @Override
+    public void propertyChange(PropertyChangeEvent change) {
+        switch (change.getPropertyName()) {
+            case "changed": {
+                for (PlayerConnection player : players) {
+                    sendJSON(player, "update", "true");
+                }
+                break;
+            }
+        }
     }
 }
