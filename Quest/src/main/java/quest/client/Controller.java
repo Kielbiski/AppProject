@@ -1677,6 +1677,7 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
+//    private void genericSet(String methodName, )
     ///////////////////////////////////////////////////////////////////////////
     //Daemon
     ///////////////////////////////////////////////////////////////////////////
@@ -1736,6 +1737,10 @@ public class Controller implements PropertyChangeListener {
                     if(serverCommand.has("update")) {
                         updateState.setValue(serverCommand.getString("update").equals("true"));
                         System.out.println("Update called? " + getUpdateState());
+                    }
+                    if(serverCommand.has("player")) {
+                        thisPlayer = getServerObject(serverCommand.getString("player"), new TypeReference<Player>() {
+                        });
                     }
                 } catch(Exception ignored) {
                 }
