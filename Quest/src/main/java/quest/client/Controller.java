@@ -4,12 +4,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.concurrent.Service;
-import javafx.concurrent.Task;
-import javafx.geometry.Pos;
-
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -30,17 +24,8 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import com.fasterxml.jackson.module.paramnames.ParameterNamesModule;
-import com.fasterxml.jackson.core.JsonGenerationException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
-import static com.fasterxml.jackson.annotation.JsonAutoDetect.Visibility.ANY;
-import static com.fasterxml.jackson.annotation.PropertyAccessor.FIELD;
-
 import static java.lang.System.exit;
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
@@ -637,7 +622,7 @@ public class Controller implements PropertyChangeListener {
         }
         else {
             //fix this later
-            //performTournament(knightsOfTheRoundTable,new TournamentFinal());
+           // performTournament(knightsOfTheRoundTable,new TournamentFinal());
         }
     }
 
@@ -916,11 +901,9 @@ public class Controller implements PropertyChangeListener {
             }
             serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
             sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
-            //TO BE FIXED
-//            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-//                //must be changed to be server side
-//                serverGetCurrentQuest().addStage(serverCreateStage(serverGetPreQuestStageSetup().get(i)));
-//            }
+            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
+               serverAddStageToCurrentQuest(i);
+            }
             setCurrentBehaviour(Behaviour.QUEST_MEMBER);
             serverGetCurrentQuest().startQuest();
             if(!serverGetCurrentQuest().isInTest()){
@@ -1136,17 +1119,16 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void tournamentOver(){
-//FIX LATER
-//        if(serverGetCurrentTournament() instanceof TournamentFinal){
-//            for (Player player : serverGetCurrentTournament().getWinners()) {
-//                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Game!");
-//                DialogPane dialog = alert.getDialogPane();
-//                dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
-//                dialog.getStyleClass().add("alertDialogs");
-//                alert.showAndWait();
-//            }
-//            exit(0);
-//        }
+        if(serverGetCurrentTournament().getName().equals("Tournament Final")){
+            for (Player player : serverGetCurrentTournament().getWinners()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Game!");
+                DialogPane dialog = alert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                alert.showAndWait();
+            }
+            exit(0);
+        }
 
         for (Player player : serverGetCurrentTournament().getWinners()) {
             Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament, and received " + serverGetCurrentTournament().getShields() + " shields!", ButtonType.OK);
