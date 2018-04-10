@@ -714,7 +714,7 @@ public class Controller implements PropertyChangeListener {
             //activeStoryImg = createStoryCardImageView();
             activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
             update();
-
+            System.out.println(serverResponse);
             ArrayList<Player> serverPlayers = serverGetPlayers();
 
             ArrayList<Player> currentPlayerOrder = new ArrayList<>();
