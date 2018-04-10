@@ -150,6 +150,25 @@ public class Server implements PropertyChangeListener {
                 }
                 break;
             }
+            case "unable to sponsor":{
+                for (PlayerConnection p : players) {
+                    if(p.player == change.getSource()) {
+                        sendJSON(p, "quest can't sponsor", "true");
+                    }
+                }
+            }
+            case "would you like to sponsor":{
+                for (PlayerConnection p : players) {
+                    if(p.player == change.getSource()) {
+                        sendJSON(p, "would you like to sponsor", "true");
+                    }
+                }
+            }
+            case "no sponsor":{
+                for (PlayerConnection p : players) {
+                    sendJSON(p, "no sponsor", "true");
+                }
+            }
         }
     }
 }

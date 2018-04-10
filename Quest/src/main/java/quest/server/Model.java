@@ -4,6 +4,7 @@ import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quest.client.App;
+//import quest.client.Behaviour;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -16,6 +17,8 @@ public class Model implements PropertyChangeListener
     private static final Logger logger = LogManager.getLogger(App.class);
 
     private ArrayList<Player> players = new ArrayList<>();
+    private ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+    private int currentPlayerOrderIndex;
     private Stack<AdventureCard> deckOfAdventureCards = new Stack<>();
     private Stack<StoryCard> deckOfStoryCards = new Stack<>();
     private Stack<AdventureCard> discardOfAdventureCards = new Stack<>();
@@ -51,6 +54,15 @@ public class Model implements PropertyChangeListener
 
     public Tournament getCurrentTournament() {
         return currentTournament;
+    }
+
+    public Player getSpecificPlayer(Player p){
+        for(Player player : players){
+            if(player == p){
+                return player;
+            }
+        }
+        return null;
     }
 
     public void setCurrentTournament(Tournament currentTournament) {
@@ -569,16 +581,143 @@ public class Model implements PropertyChangeListener
 
     }
 
+    private int nextPlayerIndex(int index){
+        int nextIndex = index;
+        if(nextIndex >= players.size()-1){
+            nextIndex = 0;
+        } else{
+            nextIndex++;
+        }
+        return nextIndex;
+    }
+
 
     public void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
             currentStory = deckOfStoryCards.pop();
+            currentPlayerOrder.clear();
+            int currentTurn = players.indexOf(activePlayer);
+
+            for (int i = 0; i < players.size(); i++) {
+                currentPlayerOrder.add(players.get(currentTurn));
+                currentTurn = nextPlayerIndex(currentTurn);
+            }
+            if (currentStory instanceof Quest) {
+                setCurrentQuest((Quest) currentStory);
+                currentPlayerOrderIndex = 0;
+                questDraw(currentPlayerOrder.get(currentPlayerOrderIndex));
+            } else if (currentStory instanceof Event) {
+                Event gameEvent = (Event) currentStory;
+                applyEventEffect(gameEvent);
+            } else if (currentStory instanceof Tournament) {
+                setCurrentTournament((Tournament) currentStory);
+                //performTournament(currentPlayerOrder, serverGetCurrentTournament());
+            }
+            currentTurnIndex = nextPlayerIndex(currentTurnIndex);
             if(currentStory instanceof KingsRecognition){
                 kingsRecognition = true;
             }
             logger.info("Draw card from story deck.");
         }
     }
+
+    private void questDraw(Player player) {
+        //Player sponsor;
+        setActivePlayer(player);
+        changed();
+        int validCardCount = 0;
+        for(AdventureCard adventureCard : player.getCardsInHand()){
+            if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+                validCardCount++;
+            }
+        }
+        if(validCardCount < currentQuest.getNumStage()){
+            if(!(player instanceof AbstractAI)) {
+                notifyListeners("unable to sponsor", player);
+            }
+        } else {
+            if (!(player instanceof AbstractAI)){
+                notifyListeners("would you like to sponsor",player);
+//                    if (alertResult) {
+//                        sponsor = activePlayer;
+//                        serverSetSponsor(sponsor);
+//                        performQuest(sponsor, (Quest) serverResponse);
+//                        nextTurnButton.setVisible(false);
+//                        continueButton.setVisible(true);
+//                        break;
+//                    }
+            }
+            else{
+                //AI CODE
+//                    player.getCardsInHand();
+//                    ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverResponse);
+//                    boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest)serverResponse);
+//                    if (aiResult) {
+//                        sponsor = activePlayer;
+//                        serverSetSponsor(sponsor);
+//                        performQuest(sponsor, (Quest) serverResponse);
+//                        nextTurnButton.setVisible(false);
+//                        continueButton.setVisible(true);
+//                        break;
+                }
+            }
+        }
+        //MOVE TO OWN METHOD
+//        if(serverGetSponsor() == null){
+//            setActivePlayer(currentTurnPlayer);
+//            nextTurnButton.setVisible(true);
+//            nextTurnButton.setDisable(false);
+//            continueButton.setVisible(false);
+//        }
+
+    public void declineSponsor(){
+        currentPlayerOrderIndex++;
+        if (currentPlayerOrderIndex > players.size()){
+            currentPlayerOrderIndex = 0;
+            setActivePlayer(players.get(currentTurnIndex));
+            changed();
+            notifyListeners("no sponsor", activePlayer);
+        }
+        else {
+            questDraw(players.get(currentPlayerOrderIndex));
+        }
+    }
+
+    private void performQuest(Player sponsor, Quest quest) {
+//        quest.addChangeListener(this);
+//        serverSetSponsor(sponsor);
+//        quest.setSponsor(sponsor);
+//        setActivePlayer(sponsor);
+//        setCurrentBehaviour(Behaviour.SPONSOR);
+//        continueButton.setVisible(true);
+//
+//        for(int i = 0;i<quest.getNumStage();i++){
+//            createStagePane(i);
+//        }
+//        addQuestPlayers(quest);
+//        setActivePlayer(sponsor);
+//        if(sponsor instanceof AbstractAI){
+//            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
+//            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()));
+//            for(int i=1; i<quest.getNumStage()-1;i++){
+//                serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
+//                sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()));
+//            }
+//            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
+//            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
+//            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
+//                serverAddStageToCurrentQuest(i);
+//            }
+//            setCurrentBehaviour(Behaviour.QUEST_MEMBER);
+//            serverGetCurrentQuest().startQuest();
+//            if(!serverGetCurrentQuest().isInTest()){
+//                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
+//                setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
+//            }
+//            update();
+//        }
+    }
+
 
 
     private void handFull(Player player,boolean oldFull){
@@ -596,6 +735,13 @@ public class Model implements PropertyChangeListener
         logger.info("Notify listener of callToArm");
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, "callToArms","",""));
+        }
+    }
+
+    private void notifyListeners(String property, Object object) {
+        logger.info("Notify listener of" +property);
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property,"",""));
         }
     }
 
