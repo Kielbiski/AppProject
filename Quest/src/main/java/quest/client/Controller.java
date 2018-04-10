@@ -729,7 +729,7 @@ public class Controller implements PropertyChangeListener {
                 serverSetCurrentQuest((Quest) serverResponse);
                 questDraw(currentPlayerOrder);
             } else if (serverResponse instanceof Event) {
-                nextTurnButton.setVisible(true);
+                nextTurnButton.setVisible(true);//
                 Event gameEvent = (Event) serverResponse;
                 callEventEffect(gameEvent);
             } else if (serverResponse instanceof Tournament) {
