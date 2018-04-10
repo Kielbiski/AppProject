@@ -26,6 +26,7 @@ import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import static java.lang.System.exit;
+import static java.util.Arrays.asList;
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
 
@@ -1256,7 +1257,7 @@ public class Controller implements PropertyChangeListener {
     //Server Actions
     ///////////////////////////////////////////////////////////////////////////
     private ArrayList<Object> listArguments(Object ...args){
-        return new ArrayList<>(Arrays.asList(args));
+        return new ArrayList<>(asList(args));
     }
     private static <T> T getServerObject(final String jsonFromServer, TypeReference<T> objectClass){
         try {
@@ -1426,257 +1427,92 @@ public class Controller implements PropertyChangeListener {
     //Setters
     ///////////////////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
-    private void serverDrawStoryCard() {
+    private void genericSet(String methodName, Object... args){
         JSONObject json = new JSONObject();
         json.put("type", "set");
-        json.put("methodName", "drawStoryCard");
+        json.put("methodName", methodName);
+        json.put("argumentTypes", new ArrayList<Class<?>>(){{for(Object arg : Arrays.asList(args))add(arg.getClass());}});
+        json.put("arguments", new ArrayList<Object>(){{this.addAll(Arrays.asList(args));}});
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
         } catch (IOException E) {
             E.printStackTrace();
         }
+    }
+    ///////////////////////////////////////////////////////////////////////////
+    @SuppressWarnings("unchecked")
+    private void serverDrawStoryCard() {
+        genericSet("drawStoryCard");
     }
     @SuppressWarnings("unchecked")
     private void serverSetActivePlayer(Player player) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setActivePlayer");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(player.getClass());}});
-        json.put("arguments", new ArrayList<Player>(){{add(player);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setActivePlayer", player);
     }
     @SuppressWarnings("unchecked")
     private void serverSetCurrentQuest(Quest quest) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setCurrentQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(quest.getClass());}});
-        json.put("arguments", new ArrayList<Quest>(){{add(quest);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setCurrentQuest", quest);
     }
     @SuppressWarnings("unchecked")
     private void serverSetSponsor(Player player) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setSponsor");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(player.getClass());}});
-        json.put("arguments", new ArrayList<Player>(){{add(player);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setSponsor", player);
     }
     @SuppressWarnings("unchecked")
     private void serverSetInTestCurrentQuest(Boolean value) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setInTestCurrentQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(value.getClass());}});
-        json.put("arguments", new ArrayList<Boolean>(){{add(value);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setInTestCurrentQuest", value);
     }
     @SuppressWarnings("unchecked")
     private void serverClearQuest() {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "clearQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>());
-        json.put("arguments", new ArrayList<Boolean>());
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("clearQuest");
     }
     @SuppressWarnings("unchecked")
     private void serverDrawAdventureCard(Player sponsor) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "drawAdventureCard");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(sponsor.getClass());}});
-        json.put("arguments", new ArrayList<Player>(){{add(sponsor);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("drawAdventureCard", sponsor);
     }
     @SuppressWarnings("unchecked")
     private void serverSetKingsRecognition(Boolean value) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setKingsRecognition");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(value.getClass());}});
-        json.put("arguments", new ArrayList<Boolean>(){{add(value);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setKingsRecognition", value);
     }
     @SuppressWarnings("unchecked")
     private void serverSetMerlinIsUsed(AdventureCard card, Boolean value) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setMerlinIsUsed");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass());add(value.getClass());}});
-        json.put("arguments", new ArrayList<Object>(){{add(card);add(value);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setMerlinIsUsed", card, value);
     }
     @SuppressWarnings("unchecked")
     private void serverResetPotentialStages(){
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "resetPotentialStages");
-        json.put("argumentTypes", new ArrayList<Class<?>>());
-        json.put("arguments", new ArrayList<Quest>());
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("resetPotentialStages");
     }
 
     @SuppressWarnings("unchecked")
     private void serverAddToPotentialStage(AdventureCard card, Integer stageNum) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "addToPotentialStage");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass()); add(stageNum.getClass());}});
-        json.put("arguments", new ArrayList<Object>(){{add(card); add(stageNum);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("addToPotentialStage", card, stageNum);
     }
     @SuppressWarnings("unchecked")
     private void serverSetPotentialStage(ArrayList<AdventureCard> stage, Integer stageNum) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setPotentialStage");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(stage.getClass());add(stageNum.getClass());}});
-        json.put("arguments", new ArrayList<Object>(){{add(stage);add(stageNum);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setPotentialStage", stage, stageNum);
     }
     @SuppressWarnings("unchecked")
     private void serverAddCardToSponsorHand(AdventureCard card) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "addCardToSponsorHand");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass());}});
-        json.put("arguments", new ArrayList<AdventureCard>(){{add(card);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("addCardToSponsorHand", card);
     }
     @SuppressWarnings("unchecked")
     private void serverRemoveFromPotentialStage(AdventureCard card, Integer stageNum) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "removeFromPotentialStage");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(card.getClass()); add(stageNum.getClass());}});
-        json.put("arguments", new ArrayList<Object>(){{add(card); add(stageNum);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("removeFromPotentialStage", card, stageNum);
     }
     @SuppressWarnings("unchecked")
     private void serverSetCurrentTournament(Tournament tournament) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "setCurrentTournament");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(tournament.getClass());}});
-        json.put("arguments", new ArrayList<Tournament>(){{add(tournament);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("setCurrentTournament", tournament);
     }
     @SuppressWarnings("unchecked")
     private void serverClearPreQuestStageSetup() {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "clearPreQuestStageSetup");
-        json.put("argumentTypes", new ArrayList<Class<?>>());
-        json.put("arguments", new ArrayList<Tournament>());
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("clearPreQuestStageSetup");
     }
     @SuppressWarnings("unchecked")
     private void serverApplyEventEffect(Event event) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "applyEventEffect");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(event.getClass());}});
-        json.put("arguments", new ArrayList<Event>(){{add(event);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("applyEventEffect", event);
     }
-    @SuppressWarnings("unchecked")
     private void serverAddStageToCurrentQuest(Integer stageNum) {
-        JSONObject json = new JSONObject();
-        json.put("type", "set");
-        json.put("methodName", "addStageToCurrentQuest");
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{add(stageNum.getClass());}});
-        json.put("arguments", new ArrayList<Integer>(){{add(stageNum);}});
-        try {
-            dos.writeUTF(json.toJSONString());
-            dos.flush();
-        } catch (IOException E) {
-            E.printStackTrace();
-        }
+        genericSet("addStageToCurrentQuest", stageNum);
     }
-//    private void genericSet(String methodName, )
     ///////////////////////////////////////////////////////////////////////////
     //Daemon
     ///////////////////////////////////////////////////////////////////////////
