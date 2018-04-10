@@ -53,6 +53,7 @@ public class PlayerConnection {
         this.dis = dis;
         this.pdos = pdos;
         this.pdis = pdis;
+        
         ObjectMapper mapper = new ObjectMapper();
         try {
             org.json.simple.JSONObject json = new org.json.simple.JSONObject();

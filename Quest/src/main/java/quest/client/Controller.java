@@ -44,6 +44,7 @@ public class Controller implements PropertyChangeListener {
     private int callToArmsFoes = 0;
     private int bidsToDo =0;
 
+
     ///FXML ELEMENTS
     @FXML
     private Button continueButton;
@@ -107,6 +108,7 @@ public class Controller implements PropertyChangeListener {
                 }
             });
             backgroundWorker.start();
+//            nextTurnButton.setVisible(true);
         } catch(IOException E) {
             E.printStackTrace();
         }
@@ -197,19 +199,20 @@ public class Controller implements PropertyChangeListener {
         // If this is a meaningful drop...
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
-                if (activePlayer.isValidDrop(selectedAdventureCard)){
+                if (thisPlayer.isValidDrop(selectedAdventureCard)){
                     if (currentBehaviour == Behaviour.QUEST_MEMBER) {
                         if (!(selectedAdventureCard instanceof Foe)) {
-                            activePlayer.addCardToTable(selectedAdventureCard);
-                            activePlayer.removeCardFromHand(selectedAdventureCard);
+                            //ADDCARDTOTABLEMUSTBESERVERSIDE
+                            thisPlayer.addCardToTable(selectedAdventureCard);
+                            thisPlayer.removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
                     } else if(currentBehaviour == Behaviour.DISCARD){
                         if (!(selectedAdventureCard instanceof Foe) && !(selectedAdventureCard instanceof Weapon)) {
-                            activePlayer.addCardToTable(selectedAdventureCard);
-                            activePlayer.removeCardFromHand(selectedAdventureCard);
-                            if(activePlayer.isHandFull()){
-                                handFull(activePlayer);
+                            thisPlayer.addCardToTable(selectedAdventureCard);
+                            thisPlayer.removeCardFromHand(selectedAdventureCard);
+                            if(thisPlayer.isHandFull()){
+                                handFull(thisPlayer);
                             }
                             else{
                                 currentBehaviour = previousBehaviour;
@@ -229,8 +232,8 @@ public class Controller implements PropertyChangeListener {
                     }
                     else if(currentBehaviour == Behaviour.TOURNAMENT){
                         if (!(selectedAdventureCard instanceof Foe)) {
-                            activePlayer.addCardToTournamnet(selectedAdventureCard);
-                            activePlayer.removeCardFromHand(selectedAdventureCard);
+                            thisPlayer.addCardToTournamnet(selectedAdventureCard);
+                            thisPlayer.removeCardFromHand(selectedAdventureCard);
                             success = true;
                         }
                     }
@@ -263,9 +266,9 @@ public class Controller implements PropertyChangeListener {
         if (db.hasString()) {
             if(db.getString().equals(cardsHbox.getId())) {
                 if (currentBehaviour == Behaviour.DISCARD) {
-                    activePlayer.removeCardFromHand(selectedAdventureCard);
-                    if(activePlayer.isHandFull()){
-                        handFull(activePlayer);
+                    thisPlayer.removeCardFromHand(selectedAdventureCard);
+                    if(thisPlayer.isHandFull()){
+                        handFull(thisPlayer);
                     }
                     else{
                         currentBehaviour = previousBehaviour;
@@ -280,7 +283,7 @@ public class Controller implements PropertyChangeListener {
                     success = true;
                 }
                 else if(currentBehaviour == Behaviour.BID){
-                    activePlayer.removeCardFromHand(selectedAdventureCard);
+                    thisPlayer.removeCardFromHand(selectedAdventureCard);
                     bidsToDo--;
                     if(bidsToDo==0){
                         currentBehaviour = Behaviour.QUEST_MEMBER;
@@ -293,7 +296,7 @@ public class Controller implements PropertyChangeListener {
                 }
                 else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
                     if (selectedAdventureCard instanceof Weapon){
-                        activePlayer.removeCardFromHand((selectedAdventureCard));
+                        thisPlayer.removeCardFromHand((selectedAdventureCard));
                         currentBehaviour = previousBehaviour;
                         previousBehaviour = null;
                         discardPane.setVisible(false);
@@ -305,7 +308,7 @@ public class Controller implements PropertyChangeListener {
                     else {
                         boolean hasWeapon = false;
                         int foeCount =0;
-                        for (AdventureCard card : activePlayer.getCardsInHand()) {
+                        for (AdventureCard card : thisPlayer.getCardsInHand()) {
                             if (card instanceof Weapon) {
                                 hasWeapon = true;
                             }
@@ -317,7 +320,7 @@ public class Controller implements PropertyChangeListener {
                             success = false;
                         }
                         else if (callToArmsFoes < 2 && selectedAdventureCard instanceof Foe){
-                            activePlayer.removeCardFromHand((selectedAdventureCard));
+                            thisPlayer.removeCardFromHand((selectedAdventureCard));
                             callToArmsFoes++;
                             if(callToArmsFoes==2||(foeCount<2 && callToArmsFoes==foeCount)){
                                 currentBehaviour = previousBehaviour;
@@ -429,7 +432,7 @@ public class Controller implements PropertyChangeListener {
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
-            if (player == activePlayer) {
+            if (player == serverGetActivePlayer()) {
                 labelCSS = "-fx-border-color: #f44242;\n";
             } else {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
@@ -451,7 +454,7 @@ public class Controller implements PropertyChangeListener {
         }
         //Hbox hand display card images
         ArrayList<ImageView> handImgViews = new ArrayList<>();
-        ArrayList<AdventureCard> playerHand = activePlayer.getCardsInHand();
+        ArrayList<AdventureCard> playerHand = thisPlayer.getCardsInHand();
         playerHand.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
         playerHand.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
         for (AdventureCard card : playerHand) {
@@ -462,7 +465,7 @@ public class Controller implements PropertyChangeListener {
         cardsHbox.getChildren().addAll(handImgViews);
 
         ArrayList<ImageView> tableImgViews = new ArrayList<>();
-        ArrayList<AdventureCard> playerTableCards = activePlayer.getCardsOnTable();
+        ArrayList<AdventureCard> playerTableCards = thisPlayer.getCardsOnTable();
         if(playerTableCards != null) {
             playerTableCards.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
             playerTableCards.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
@@ -473,7 +476,7 @@ public class Controller implements PropertyChangeListener {
             }
         }
 
-        ArrayList<AdventureCard> playerTournamentCards = activePlayer.getTournamentCards();
+        ArrayList<AdventureCard> playerTournamentCards = thisPlayer.getTournamentCards();
         if(playerTournamentCards != null) {
             playerTournamentCards.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
             playerTournamentCards.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
@@ -516,7 +519,7 @@ public class Controller implements PropertyChangeListener {
                         }
                     } else {
                         boolean hasMerlin = false;
-                        for (Card card : activePlayer.getCardsInHand()) {
+                        for (Card card : thisPlayer.getCardsInHand()) {
                             if (card.getName().equals("Merlin")) hasMerlin = true;
                         }
 ////                    if(hasMerlin) {
@@ -636,7 +639,7 @@ public class Controller implements PropertyChangeListener {
                     setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
                 }
                 else{
-                    activePlayer = serverGetCurrentQuest().getCurrentPlayer();
+                    setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
                     if(activePlayer instanceof AbstractAI){
 
                     }
@@ -898,7 +901,7 @@ public class Controller implements PropertyChangeListener {
             }
 
             currentTestPlayer=testPlayers.get(currentTestPlayerIndex);
-            activePlayer = currentTestPlayer;
+            serverSetActivePlayer(currentTestPlayer);
             update();
 
             if(testPlayers.size()!=1 && (testPlayersToRemove.size()!=testPlayers.size()-1)) {
@@ -1571,6 +1574,7 @@ public class Controller implements PropertyChangeListener {
                     }
                     if(serverCommand.has("update")) {
                         updateState.setValue(serverCommand.getString("update").equals("true"));
+                        thisPlayer = getServerObject(serverCommand.getString("player"), new TypeReference<Player>() {});
                         System.out.println("Update called? " + getUpdateState());
                     }
                     if(serverCommand.has("player")) {
