@@ -446,6 +446,7 @@ public class Model implements PropertyChangeListener
             currentTurnIndex++;
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
+        notifyListeners("nextTurn", Boolean.TRUE, -1, currentTurnIndex);
     }
 
     public void addPlayerToGame(Player player){
@@ -590,7 +591,6 @@ public class Model implements PropertyChangeListener
         return nextIndex;
     }
 
-
     public void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
             System.out.println("DRAW STORY CARD CALLED");
@@ -609,7 +609,7 @@ public class Model implements PropertyChangeListener
             } else if (currentStory instanceof Event) {
                 Event gameEvent = (Event) currentStory;
                 applyEventEffect(gameEvent);
-                notifyListeners("event complete",this);
+                notifyListeners("event complete",Boolean.TRUE);
             } else if (currentStory instanceof Tournament) {
                 setCurrentTournament((Tournament) currentStory);
                 //performTournament(currentPlayerOrder, serverGetCurrentTournament());
@@ -747,6 +747,13 @@ public class Model implements PropertyChangeListener
 
     private void notifyListeners(String property, Object object, boolean oldFull, boolean newFull) {
 
+        logger.info("Inform listener of the "+ property);
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property, oldFull, newFull));
+        }
+    }
+
+    private void notifyListeners(String property, Object object, int oldFull, int newFull) {
         logger.info("Inform listener of the "+ property);
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, property, oldFull, newFull));

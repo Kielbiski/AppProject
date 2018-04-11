@@ -699,16 +699,16 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void nextTurnAction(){
-
-        currentTurnPlayer = serverGetPlayers().get(currentPlayerIndex);
-        setActivePlayer(currentTurnPlayer);
-        if(activePlayer instanceof AbstractAI){
-            runAITurn();
-        }
-        else{
-            storyDeckImg.setDisable(false);
-            nextTurnButton.setDisable(true);
-        }
+//
+//        currentTurnPlayer = serverGetPlayers().get(currentPlayerIndex);
+//        setActivePlayer(currentTurnPlayer);
+//        if(activePlayer instanceof AbstractAI){
+//            runAITurn();
+//        }
+//        else{
+//            storyDeckImg.setDisable(false);
+        serverNextTurn();
+        nextTurnButton.setDisable(true);
     }
 
     //HAND AND DECK
@@ -840,7 +840,7 @@ public class Controller implements PropertyChangeListener {
             nextTurnButton.setDisable(false);
         }
         continueButton.setVisible(false);
-        update();
+//        update();
     }
 
     private void performQuest(Player sponsor, Quest quest) {
@@ -1458,12 +1458,15 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
-    ///////////////////////////////////////////////////////////////////////////
-    private void serverSyncPlayer() {
-        genericSet("syncPlayer", thisPlayer);
+    //////////////////////////////////////////////////////////////////////////
+    private void serverNextTurn() {
+        genericSet("nextTurn");
     }
     private void serverDrawStoryCard() {
         genericSet("drawStoryCard");
+    }
+    private void serverSyncPlayer() {
+        genericSet("syncPlayer", thisPlayer);
     }
     private void serverSetActivePlayer(Player player) {
         genericSet("setActivePlayer", player);
@@ -1627,7 +1630,6 @@ public class Controller implements PropertyChangeListener {
                             continueButton.setValue(false);
                         }
                     }
-
                 } catch(Exception ignored) {
                 }
 
