@@ -500,8 +500,8 @@ public class Controller implements PropertyChangeListener {
         //Hbox hand display card images
         ArrayList<ImageView> handImgViews = new ArrayList<>();
         ArrayList<AdventureCard> playerHand = thisPlayer.getCardsInHand();
-        playerHand.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
-        playerHand.sort(Comparator.comparing(object -> object.getClass().getSuperclass().getName()));
+//        playerHand.sort(Comparator.comparing(object2 -> object2.getClass().getName()));
+        playerHand.sort(Comparator.comparing(Card::getName));
         for (AdventureCard card : playerHand) {
             ImageView imgView = createAdventureCardImageView(card);
             imgView.setImage(getCardImage(card.getImageFilename()));
@@ -1294,7 +1294,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        for(int i = 0; i<10; i++){
+        while(true){
             try {
                 if(dis.available() == 0) {
                     try {
@@ -1333,7 +1333,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        for(int i = 0; i<10; i++){
+        while(true){
             try {
                 if(dis.available() == 0) {
                     try {
