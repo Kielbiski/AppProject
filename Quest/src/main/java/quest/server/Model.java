@@ -597,12 +597,13 @@ public class Model implements PropertyChangeListener
 
             currentStory = deckOfStoryCards.pop();
             currentPlayerOrder.clear();
-            int currentTurn = players.indexOf(activePlayer);
+            int currentTurn = currentTurnIndex;
 
             for (int i = 0; i < players.size(); i++) {
                 currentPlayerOrder.add(players.get(currentTurn));
                 currentTurn = nextPlayerIndex(currentTurn);
             }
+
             if (currentStory instanceof Quest) {
                 setCurrentQuest((Quest) currentStory);
                 currentPlayerOrderIndex = 0;
