@@ -615,7 +615,6 @@ public class Model implements PropertyChangeListener
                 setCurrentTournament((Tournament) currentStory);
                 //performTournament(currentPlayerOrder, serverGetCurrentTournament());
             }
-            currentTurnIndex = nextPlayerIndex(currentTurnIndex);
             if(currentStory instanceof KingsRecognition){
                 kingsRecognition = true;
             }
