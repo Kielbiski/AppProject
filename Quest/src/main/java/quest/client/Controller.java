@@ -1612,9 +1612,10 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     if(serverCommand.has("update")) {
-                        updateState.setValue(true);
                         thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+                        updateState.setValue(true);
                         System.out.println("THIS PLAYER SET" + thisPlayer);
+                        System.out.println(thisPlayer.getPlayerName());
                         System.out.println("Update called? " + getUpdateState());
                         updateState.setValue(false);
                     }
