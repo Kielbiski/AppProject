@@ -463,14 +463,14 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
-        currentTurnPlayer = currentPlayers.get(0);
-        /////////
-        if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
-            currentTurnLabel.setText("It is your turn.");
-        }
-        else {
-            currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
-        }
+//        currentTurnPlayer = currentPlayers.get(0);
+//        /////////
+//        if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
+//            currentTurnLabel.setText("It is your turn.");
+//        }
+//        else {
+//            currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
+//        }
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
@@ -481,7 +481,7 @@ public class Controller implements PropertyChangeListener {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
             if(player.getPlayerName().equals(thisPlayer.getPlayerName())){
-                labelCSS += "-fx-text-fill: #ADDEEE;\n";
+                labelCSS += "-fx-text-fill: #FFFF33;\n";
             }
             labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
                     "-fx-border-insets: 5;\n" +
@@ -1295,7 +1295,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        while(true){
+        for(int i = 0; i < 300; i++){
             try {
                 if(dis.available() == 0) {
                     try {
@@ -1334,7 +1334,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        while(true){
+        for(int i = 0; i < 300; i++){
             try {
                 if(dis.available() == 0) {
                     try {
