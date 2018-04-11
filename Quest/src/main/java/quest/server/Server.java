@@ -67,6 +67,7 @@ public class Server implements PropertyChangeListener {
                         initialize();
                         flag = false;
                     }
+
                 }
             }
         } catch (IOException E) {
@@ -144,6 +145,16 @@ public class Server implements PropertyChangeListener {
             case "changed": {
                 for (PlayerConnection player : players) {
                     sendJSON(player, "update", "true");
+                }
+                break;
+            }
+            case "nextTurn": {
+                for(int i = 0; i < game.getPlayers().size(); i++) {
+                    if (i == game.getCurrentTurnIndex()) {
+                        sendJSON(players.get(i), "behaviour", "DEFAULT");
+                    } else {
+                        sendJSON(players.get(i), "behaviour", "DISABLED");
+                    }
                 }
                 break;
             }
