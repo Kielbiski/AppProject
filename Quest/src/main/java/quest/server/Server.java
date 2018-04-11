@@ -24,7 +24,7 @@ public class Server implements PropertyChangeListener {
     private Socket playerBackgroundWorker;
 
     private int numberOfPlayers;
-    private Model game;
+    private static Model game;
 
     private String scenario;
     @SuppressWarnings("InfiniteLoopStatement")

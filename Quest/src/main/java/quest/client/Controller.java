@@ -90,6 +90,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     public Controller(){
+
         currentBehaviour = Behaviour.DISABLED;
         final BackgroundWorker backgroundWorker = new BackgroundWorker();
         try {
@@ -1575,6 +1576,7 @@ public class Controller implements PropertyChangeListener {
                     if(serverCommand.has("update")) {
                         updateState.setValue(serverCommand.getString("update").equals("true"));
                         thisPlayer = getServerObject(serverCommand.getString("player"), new TypeReference<Player>() {});
+                        updateState.setValue(serverCommand.getString("update").equals("false"));
                         System.out.println("Update called? " + getUpdateState());
                     }
                     if(serverCommand.has("player")) {
