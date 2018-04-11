@@ -140,7 +140,6 @@ public class Server implements PropertyChangeListener {
     }
     @Override
     public void propertyChange(PropertyChangeEvent change) {
-        System.out.println("HANDFULL SOURCE: " + change.getSource());
         switch (change.getPropertyName()) {
             case "changed": {
                 for (PlayerConnection player : players) {
@@ -184,7 +183,10 @@ public class Server implements PropertyChangeListener {
             }
             case "handfull":{
                 for (PlayerConnection p : players) {
-                    sendJSON(p, "event complete", "true");
+                    if(p.player == change.getSource()) {
+
+                        sendJSON(p, "handfull", "true");
+                    }
                 }
                 break;
             }

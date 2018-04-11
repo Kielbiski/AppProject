@@ -15,6 +15,8 @@ import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.simple.JSONObject;
 import quest.server.*;
 import java.beans.PropertyChangeEvent;
@@ -28,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import static java.lang.System.exit;
+import static java.lang.System.setOut;
 import static java.util.Arrays.asList;
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
@@ -47,6 +50,7 @@ public class Controller implements PropertyChangeListener {
     private int bidsToDo =0;
     private String alertText;
     private String alertTextHeader;
+    private boolean sponsorStatus;
 
 
     ///FXML ELEMENTS
@@ -117,13 +121,18 @@ public class Controller implements PropertyChangeListener {
                     nextTurnButton.setDisable(!backgroundWorker.getNextTurnButton());
                 }
             });
+            backgroundWorker.handFull.addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    Platform.runLater(this::handFull);
+                }
+            });
             backgroundWorker.alert.addListener((observable, oldValue, newValue) -> {
                 if (backgroundWorker.getAlert().equals("ok")) {
-                    okAlert(alertText,alertTextHeader);
+                    Platform.runLater(() -> okAlert(alertText,alertTextHeader));
                 }
                 else if(backgroundWorker.getAlert().equals("yesNoQuestSponsor")){
-                    boolean response = yesNoAlert(alertText,alertTextHeader);
-                    if(response){
+                   Platform.runLater(() -> sponsorQuest());
+                    if(sponsorStatus){
                         serverPerformQuest(thisPlayer);
                     }
                     else{
@@ -140,6 +149,10 @@ public class Controller implements PropertyChangeListener {
 
     private void print(String stringToPrint){
         System.out.println(stringToPrint);
+    }
+
+    private void sponsorQuest(){
+        sponsorStatus = yesNoAlert(alertText,alertTextHeader);
     }
 
     private ImageView createAdventureCardImageView(AdventureCard card){
@@ -229,14 +242,16 @@ public class Controller implements PropertyChangeListener {
                             //ADDCARDTOTABLEMUSTBESERVERSIDE
                             thisPlayer.addCardToTable(selectedAdventureCard);
                             thisPlayer.removeCardFromHand(selectedAdventureCard);
+                            serverSyncPlayer();
                             success = true;
                         }
                     } else if(currentBehaviour == Behaviour.DISCARD){
                         if (!(selectedAdventureCard instanceof Foe) && !(selectedAdventureCard instanceof Weapon)) {
                             thisPlayer.addCardToTable(selectedAdventureCard);
                             thisPlayer.removeCardFromHand(selectedAdventureCard);
+                            serverSyncPlayer();
                             if(thisPlayer.isHandFull()){
-                                handFull(thisPlayer);
+                                handFull();
                             }
                             else{
                                 currentBehaviour = previousBehaviour;
@@ -257,6 +272,7 @@ public class Controller implements PropertyChangeListener {
                         if (!(selectedAdventureCard instanceof Foe)) {
                             thisPlayer.addCardToTournamnet(selectedAdventureCard);
                             thisPlayer.removeCardFromHand(selectedAdventureCard);
+                            serverSyncPlayer();
                             success = true;
                         }
                     }
@@ -268,7 +284,6 @@ public class Controller implements PropertyChangeListener {
             }
         }
         event.setDropCompleted(success);
-        serverSyncPlayer();
 //        update();
         event.consume();
 
@@ -292,23 +307,24 @@ public class Controller implements PropertyChangeListener {
                 if (currentBehaviour == Behaviour.DISCARD) {
                     thisPlayer.removeCardFromHand(selectedAdventureCard);
                     serverSyncPlayer();
-                    if(thisPlayer.isHandFull()){
-                        handFull(thisPlayer);
-                    }
-                    else{
-                        currentBehaviour = previousBehaviour;
-                        previousBehaviour = null;
-                        discardPane.setVisible(false);
-                        if(currentBehaviour==Behaviour.DEFAULT) {
-                            nextTurnButton.setVisible(true);
-                            nextTurnButton.setDisable(false);
-                        }
-//                        update();
-                    }
+//                    if(thisPlayer.isHandFull()){
+//                        handFull(thisPlayer);
+//                    }
+                  //  else{
+                    currentBehaviour = previousBehaviour;
+                    previousBehaviour = null;
+                    discardPane.setVisible(false);
+//                    if(currentBehaviour==Behaviour.DEFAULT) {
+//                            nextTurnButton.setVisible(true);
+//                            nextTurnButton.setDisable(false);
+//                      //  }
+////                        update();
+//                    }
                     success = true;
                 }
                 else if(currentBehaviour == Behaviour.BID){
                     thisPlayer.removeCardFromHand(selectedAdventureCard);
+                    serverSyncPlayer();
                     bidsToDo--;
                     if(bidsToDo==0){
                         currentBehaviour = Behaviour.QUEST_MEMBER;
@@ -322,6 +338,7 @@ public class Controller implements PropertyChangeListener {
                 else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
                     if (selectedAdventureCard instanceof Weapon){
                         thisPlayer.removeCardFromHand((selectedAdventureCard));
+                        serverSyncPlayer();
                         currentBehaviour = previousBehaviour;
                         previousBehaviour = null;
                         discardPane.setVisible(false);
@@ -346,6 +363,7 @@ public class Controller implements PropertyChangeListener {
                         }
                         else if (callToArmsFoes < 2 && selectedAdventureCard instanceof Foe){
                             thisPlayer.removeCardFromHand((selectedAdventureCard));
+                            serverSyncPlayer();
                             callToArmsFoes++;
                             if(callToArmsFoes==2||(foeCount<2 && callToArmsFoes==foeCount)){
                                 currentBehaviour = previousBehaviour;
@@ -366,7 +384,7 @@ public class Controller implements PropertyChangeListener {
             }
         }
         event.setDropCompleted(success);
-        update();
+        //update();
         event.consume();
 
     }
@@ -590,7 +608,7 @@ public class Controller implements PropertyChangeListener {
         return (questAlert.getResult() == ButtonType.YES);
     }
 
-    private void okAlert(String contentText, String headerText){
+    public void okAlert(String contentText, String headerText){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, contentText, ButtonType.OK);
         DialogPane dialog = alert.getDialogPane();
         alert.setHeaderText(headerText);
@@ -714,33 +732,35 @@ public class Controller implements PropertyChangeListener {
     //HAND AND DECK
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void handFull(Player player){
+    private void handFull(){
 //        if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())) {
-            if(!(player instanceof AbstractAI)){
+            if(!(thisPlayer instanceof AbstractAI)){
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
                 }
                 setCurrentBehaviour(Behaviour.DISCARD);
                 nextTurnButton.setDisable(true);
-                okAlert(player.getPlayerName() + ", you must play or discard a card.", "Hand Full!");
+                okAlert(thisPlayer.getPlayerName() + ", you must play or discard a card.", "Hand Full!");
                 discardPane.setVisible(true);
             }
             else{
                 ArrayList<AdventureCard> toRemove = new ArrayList<>();
-                for(AdventureCard card: player.getCardsInHand()){
-                    if(toRemove.size()<(player.getCardsInHand().size()-12)) {
+                for(AdventureCard card: thisPlayer.getCardsInHand()){
+                    if(toRemove.size()<(thisPlayer.getCardsInHand().size()-12)) {
                         toRemove.add(card);
                     }
                     else {
-                        player.removeCardsAI(toRemove);
+                        thisPlayer.removeCardsAI(toRemove);
                         break;
                     }
                 }
             }
+            serverSyncPlayer();
 //        }
     }
 
     public void storyDeckDraw(){
+        serverSyncPlayer();
         if(currentBehaviour!=Behaviour.DISABLED) {
             serverDrawStoryCard();
             storyDeckImg.setDisable(true);
@@ -1222,9 +1242,6 @@ public class Controller implements PropertyChangeListener {
     private void setActivePlayer(Player player){
         activePlayer = player;
         serverSetActivePlayer(player);
-        if(player.isHandFull()){
-            handFull(player);
-        }
     }
 
 
@@ -1437,8 +1454,29 @@ public class Controller implements PropertyChangeListener {
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", methodName);
-        json.put("argumentTypes", new ArrayList<Class<?>>(){{for(Object arg : Arrays.asList(args))add(arg.getClass());}});
-        json.put("arguments", new ArrayList<Object>(){{this.addAll(Arrays.asList(args));}});
+        JSONArray argumentTypes = new JSONArray();
+        List<Object> argsu = Arrays.asList(args);
+        for(int i = 0; i < argsu.size(); i++) {
+            JSONObject j = new JSONObject();
+            try {
+                j.put(String.valueOf(argsu.get(i)), argsu.get(i).getClass());
+            } catch (JSONException E) {
+                E.printStackTrace();
+            }
+            argumentTypes.put(j);
+        }
+        json.put("argumentTypes", argumentTypes);
+        JSONArray arguments = new JSONArray();
+        for(int k = 0; k < argsu.size(); k++) {
+            JSONObject j = new JSONObject();
+            try {
+                j.put(String.valueOf(argsu.get(k)), argsu.get(k));
+            } catch (JSONException E) {
+                E.printStackTrace();
+            }
+            arguments.put(j);
+        }
+        json.put("arguments", arguments);
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1448,9 +1486,11 @@ public class Controller implements PropertyChangeListener {
     }
     @SuppressWarnings("unchecked")
     private void genericSet(String methodName){
+        System.out.println("no args");
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", methodName);
+        System.out.println(json.toJSONString());
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1532,12 +1572,14 @@ public class Controller implements PropertyChangeListener {
         private BooleanProperty updateState;
         private BooleanProperty continueButton;
         private BooleanProperty nextTurnButton;
+        private BooleanProperty handFull;
+
         private StringProperty alert;
         BackgroundWorker() {
             updateState = new SimpleBooleanProperty(this, "bool", false);
             continueButton = new SimpleBooleanProperty(this, "bool", false);
             nextTurnButton = new SimpleBooleanProperty(this, "bool", false);
-
+            handFull = new SimpleBooleanProperty(this, "bool", false);
             alert = new SimpleStringProperty();
             setDaemon(true);
         }
@@ -1557,6 +1599,10 @@ public class Controller implements PropertyChangeListener {
         public boolean getNextTurnButton() { return nextTurnButton.get(); }
 
         public BooleanProperty nextTurnButton() { return nextTurnButton; }
+
+        public boolean getHandFull() { return handFull.get(); }
+
+        public BooleanProperty handFull() { return handFull; }
 
 
         @Override
@@ -1620,6 +1666,10 @@ public class Controller implements PropertyChangeListener {
                             nextTurnButton.setValue(true);
                             continueButton.setValue(false);
                         }
+                    }
+                    if(serverCommand.has("handfull")) {
+                        handFull.setValue(true);
+                        handFull.setValue(false);
                     }
                     if(serverCommand.has("no sponsor")) {
                         alertTextHeader = "No Sponsor";

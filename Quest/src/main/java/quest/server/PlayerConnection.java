@@ -1,4 +1,6 @@
 package quest.server;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.*;
 import java.io.DataInputStream;
@@ -71,17 +73,18 @@ public class PlayerConnection {
                     try {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
+                            System.out.println("METHODNAMEIS"+ clientRequest.getString("methodName"));
+                            System.out.println(clientRequest);
                             if (clientRequest.has("arguments")){
                                 if(clientRequest.getString("methodName").equals("syncPlayer")) {
-                                    Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                                    Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     System.out.println("syncing");
-                                    System.out.println(clientRequest);
-                                    player = (Player) Objects.requireNonNull(arguments)[0];
+                                    player = (Player) getObject(arguments[0]);
                                     System.out.println(player);
                                 } else {
                                     System.out.println(name + " requested: " + clientRequest);
-                                    Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
-                                    Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                                    Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
+                                    Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
                                 }
                             } else {
@@ -108,8 +111,8 @@ public class PlayerConnection {
                         }
                         if (clientRequest.getString("type").equals("getWithParams")){
                             System.out.println(clientRequest);
-                            Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
-                            Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                            Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
+                            Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                             playerDataRequest = mapper.writeValueAsString(getObjectWithParamsForClient(game, clientRequest.getString("methodName"), argumentTypes, arguments));
                             if(playerDataRequest != null){
                                 System.out.println("Server returned: " + playerDataRequest);
@@ -117,7 +120,8 @@ public class PlayerConnection {
                                 dos.flush();
                             }
                         }
-                    } catch(Exception ignored){
+                    } catch(Exception E){
+                        E.printStackTrace();
                     }
                 }
             } catch (Exception E) { //IOException
@@ -166,10 +170,20 @@ public class PlayerConnection {
         if (json.length() != 0) {
             int len = json.length();
             for (int i=0;i<len;i++){
-                returnList[i] = json.get(i);
+                returnList[i] = getObject(json.get(i), new TypeReference<T>(){});
             }
             return returnList;
         } else {
+            return null;
+        }
+    }
+
+    private static <T> T getObject(final String jsonFromServer, TypeReference<T> objectClass){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            return objectMapper.readValue(jsonFromServer, objectClass);
+        } catch (IOException e) {
             return null;
         }
     }
