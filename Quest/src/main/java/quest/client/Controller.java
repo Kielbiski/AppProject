@@ -245,7 +245,6 @@ public class Controller implements PropertyChangeListener {
                                     discardPane.setVisible(false);
                                     nextTurnButton.setVisible(true);
                                     nextTurnButton.setDisable(false);
-                                    update();
                                 }
                             }
                             success = true;
@@ -269,7 +268,8 @@ public class Controller implements PropertyChangeListener {
             }
         }
         event.setDropCompleted(success);
-        update();
+        serverSyncPlayer();
+//        update();
         event.consume();
 
     }
@@ -291,6 +291,7 @@ public class Controller implements PropertyChangeListener {
             if(db.getString().equals(cardsHbox.getId())) {
                 if (currentBehaviour == Behaviour.DISCARD) {
                     thisPlayer.removeCardFromHand(selectedAdventureCard);
+                    serverSyncPlayer();
                     if(thisPlayer.isHandFull()){
                         handFull(thisPlayer);
                     }
@@ -302,7 +303,7 @@ public class Controller implements PropertyChangeListener {
                             nextTurnButton.setVisible(true);
                             nextTurnButton.setDisable(false);
                         }
-                        update();
+//                        update();
                     }
                     success = true;
                 }
@@ -315,7 +316,7 @@ public class Controller implements PropertyChangeListener {
                         discardPane.setVisible(false);
                         serverSetInTestCurrentQuest(false);
                     }
-                    update();
+//                    update();
                     success = true;
                 }
                 else if(currentBehaviour == Behaviour.CALL_TO_ARMS){
@@ -327,7 +328,7 @@ public class Controller implements PropertyChangeListener {
                         nextTurnButton.setDisable(false);
                         setActivePlayer(serverGetPlayers().get(serverGetCurrentTurnIndex()));
                         success=true;
-                        update();
+//                        update();
                     }
                     else {
                         boolean hasWeapon = false;
@@ -415,7 +416,7 @@ public class Controller implements PropertyChangeListener {
 //                }
             }
             event.setDropCompleted(success);
-            update();
+//            update();
             event.consume();
         });
         stagePane.setOnDragOver(event ->{
@@ -640,12 +641,13 @@ public class Controller implements PropertyChangeListener {
                     serverAddStageToCurrentQuest(i);
                 }
                 setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-                update();
+//                update();
                 serverGetCurrentQuest().startQuest();
                 if(!serverGetCurrentQuest().isInTest()){
                     setCurrentBehaviour(Behaviour.QUEST_MEMBER);
                     setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
-                    update();
+//                    update();
+
                 }
             } else {
                 okAlert("Please set up a valid quest ","Error in quest stages.");
@@ -656,7 +658,6 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
                 serverResetPotentialStages();
-                update();
             }
         }
         else if(currentBehaviour == Behaviour.QUEST_MEMBER){
@@ -677,7 +678,7 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
             }
-            update();
+//            update();
         }
         else if(currentBehaviour == Behaviour.TOURNAMENT){
             serverGetCurrentTournament().nextTurn();
@@ -693,7 +694,7 @@ public class Controller implements PropertyChangeListener {
             else{
                 setActivePlayer(serverGetCurrentTournament().getCurrentPlayer());
             }
-            update();
+//            update();
         }
     }
 
@@ -707,7 +708,6 @@ public class Controller implements PropertyChangeListener {
         else{
             storyDeckImg.setDisable(false);
             nextTurnButton.setDisable(true);
-            update();
         }
     }
 
@@ -715,7 +715,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
-        if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())) {
+//        if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())) {
             if(!(player instanceof AbstractAI)){
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
@@ -737,7 +737,7 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
             }
-        }
+//        }
     }
 
     public void storyDeckDraw(){
@@ -833,6 +833,7 @@ public class Controller implements PropertyChangeListener {
         setActivePlayer(serverGetSponsor());
         serverSetSponsor(null);
         previousBehaviour = Behaviour.DEFAULT;
+        serverSyncPlayer();
         if(!serverGetActivePlayer().handFull) {
             setCurrentBehaviour(Behaviour.DEFAULT);
             nextTurnButton.setVisible(true);
@@ -1445,7 +1446,6 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
-
     @SuppressWarnings("unchecked")
     private void genericSet(String methodName){
         JSONObject json = new JSONObject();
@@ -1459,80 +1459,63 @@ public class Controller implements PropertyChangeListener {
         }
     }
     ///////////////////////////////////////////////////////////////////////////
-    @SuppressWarnings("unchecked")
+    private void serverSyncPlayer() {
+        genericSet("syncPlayer", thisPlayer);
+    }
     private void serverDrawStoryCard() {
         genericSet("drawStoryCard");
     }
-    @SuppressWarnings("unchecked")
     private void serverSetActivePlayer(Player player) {
         genericSet("setActivePlayer", player);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetCurrentQuest(Quest quest) {
         genericSet("setCurrentQuest", quest);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetSponsor(Player player) {
         genericSet("setSponsor", player);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetInTestCurrentQuest(Boolean value) {
         genericSet("setInTestCurrentQuest", value);
     }
-    @SuppressWarnings("unchecked")
     private void serverClearQuest() {
         genericSet("clearQuest");
     }
-    @SuppressWarnings("unchecked")
     private void serverDrawAdventureCard(Player sponsor) {
         genericSet("drawAdventureCard", sponsor);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetKingsRecognition(Boolean value) {
         genericSet("setKingsRecognition", value);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetMerlinIsUsed(AdventureCard card, Boolean value) {
         genericSet("setMerlinIsUsed", card, value);
     }
-    @SuppressWarnings("unchecked")
     private void serverResetPotentialStages(){
         genericSet("resetPotentialStages");
     }
-
-    @SuppressWarnings("unchecked")
     private void serverAddToPotentialStage(AdventureCard card, Integer stageNum) {
         genericSet("addToPotentialStage", card, stageNum);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetPotentialStage(ArrayList<AdventureCard> stage, Integer stageNum) {
         genericSet("setPotentialStage", stage, stageNum);
     }
-    @SuppressWarnings("unchecked")
     private void serverAddCardToSponsorHand(AdventureCard card) {
         genericSet("addCardToSponsorHand", card);
     }
-    @SuppressWarnings("unchecked")
     private void serverRemoveFromPotentialStage(AdventureCard card, Integer stageNum) {
         genericSet("removeFromPotentialStage", card, stageNum);
     }
-    @SuppressWarnings("unchecked")
     private void serverSetCurrentTournament(Tournament tournament) {
         genericSet("setCurrentTournament", tournament);
     }
-    @SuppressWarnings("unchecked")
     private void serverPerformQuest(Player player) {
         genericSet("performQuest", player);
     }
-    @SuppressWarnings("unchecked")
     private void serverDeclineSponsor() {
         genericSet("declineSponsor");
     }
-    @SuppressWarnings("unchecked")
     private void serverClearPreQuestStageSetup() {
         genericSet("clearPreQuestStageSetup");
     }
-    @SuppressWarnings("unchecked")
     private void serverApplyEventEffect(Event event) {
         genericSet("applyEventEffect", event);
     }

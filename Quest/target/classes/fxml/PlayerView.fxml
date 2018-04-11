@@ -131,7 +131,7 @@
          </children></Pane>
    </top>
    <right>
-      <Pane prefHeight="446.0" prefWidth="214.0" styleClass="playerIndicators" BorderPane.alignment="CENTER">
+      <Pane prefHeight="446.0" prefWidth="214.0" BorderPane.alignment="CENTER">
          <children>
               <VBox fx:id="playerStatsVbox" prefHeight="446.0" prefWidth="214.0" spacing="5.0" />
          </children>
