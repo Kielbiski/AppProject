@@ -480,7 +480,7 @@ public class Controller implements PropertyChangeListener {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
             if(player.getPlayerName().equals(thisPlayer.getPlayerName())){
-                labelCSS += "-fx-text-fill: #ADDEEE;\n";
+                labelCSS += "-fx-text-fill: #FFFF33;\n";
             }
             labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
                     "-fx-border-insets: 5;\n" +
@@ -1294,7 +1294,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        while(true){
+        for(int i = 0; i < 300; i++){
             try {
                 if(dis.available() == 0) {
                     try {
@@ -1333,7 +1333,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        while(true){
+        for(int i = 0; i < 300; i++){
             try {
                 if(dis.available() == 0) {
                     try {
