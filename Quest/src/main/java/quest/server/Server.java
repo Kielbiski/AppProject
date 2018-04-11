@@ -63,21 +63,11 @@ public class Server implements PropertyChangeListener {
                         System.out.println("Connected : " + user.getName());
                         players.add(user);
                     } else {
-                        initialize();
                         System.out.println("Initializing game.");
+                        initialize();
                         flag = false;
                     }
                 }
-//                for(int i = 0; i < players.size(); i++) {
-//                    if(i == game.getCurrentTurnIndex()){
-//                        sendJSON(players.get(i), "behaviour", "DEFAULT");
-//                    } else {
-//                        sendJSON(players.get(i), "behaviour", "DISABLED");
-//                    }
-
-                //insert property change listener on change here
-                //for loop should go inside that listener
-
             }
         } catch (IOException E) {
             E.printStackTrace();
@@ -130,7 +120,7 @@ public class Server implements PropertyChangeListener {
         }
         game.dealCards(deckOfAdventureCards);
         game.setActivePlayer(game.getPlayers().get(0));
-        for(int i = 0; i < players.size(); i++) {
+        for(int i = 0; i < game.getPlayers().size(); i++) {
             if (i == game.getCurrentTurnIndex()) {
                 sendJSON(players.get(i), "behaviour", "DEFAULT");
             } else {
@@ -142,9 +132,9 @@ public class Server implements PropertyChangeListener {
         }
     }
     @SuppressWarnings("unchecked")
-    private void sendJSON(PlayerConnection player, String type, String behaviour){
+    private void sendJSON(PlayerConnection player, String type, String contents){
         JSONObject json = new JSONObject();
-        json.put(type, behaviour);
+        json.put(type, contents);
         player.writeToDataOutputStream(json.toJSONString());
     }
     @Override

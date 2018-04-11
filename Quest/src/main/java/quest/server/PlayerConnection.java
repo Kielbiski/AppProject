@@ -82,7 +82,11 @@ public class PlayerConnection {
                         }
                         else if (clientRequest.getString("type").equals("get")){
                             if(clientRequest.getString("methodName").equals("getSelf")){
-                                playerDataRequest = mapper.writeValueAsString(game.getSpecificPlayer(player));
+                                Player test = game.getSpecificPlayer(player);
+                                System.out.println("TEST -> " + test);
+                                System.out.println(name + " requested: " + clientRequest);
+                                playerDataRequest = mapper.writeValueAsString(test);
+                                System.out.println("RETURNED-> " + playerDataRequest);
                             } else {
                                 playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
                             }
@@ -99,7 +103,7 @@ public class PlayerConnection {
                             Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
                             playerDataRequest = mapper.writeValueAsString(getObjectWithParamsForClient(game, clientRequest.getString("methodName"), argumentTypes, arguments));
                             if(playerDataRequest != null){
-                                System.out.println("Player request: " + playerDataRequest);
+                                System.out.println("Server returned: " + playerDataRequest);
                                 dos.writeUTF(playerDataRequest);
                                 dos.flush();
                             }
