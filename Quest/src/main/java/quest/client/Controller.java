@@ -463,7 +463,7 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
-//        currentTurnPlayer = currentPlayers.get(0);
+        currentTurnPlayer = currentPlayers.get(currentPlayerIndex);
 //        /////////
 //        if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
 //            currentTurnLabel.setText("It is your turn.");
