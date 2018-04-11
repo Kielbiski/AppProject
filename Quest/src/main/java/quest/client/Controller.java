@@ -481,7 +481,7 @@ public class Controller implements PropertyChangeListener {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
             if(player.getPlayerName().equals(thisPlayer.getPlayerName())){
-                labelCSS += "-fx-text-fill: #FFFFE0;\n";
+                labelCSS += "-fx-text-fill: #ADDEEE;\n";
             }
             labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
                     "-fx-border-insets: 5;\n" +
