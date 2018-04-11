@@ -58,7 +58,7 @@ public class Model implements PropertyChangeListener
 
     public Player getSpecificPlayer(Player p){
         for(Player player : players){
-            if(player == p){
+            if(player.getPlayerName().equals(p.getPlayerName())){
                 return player;
             }
         }

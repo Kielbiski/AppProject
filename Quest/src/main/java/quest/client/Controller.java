@@ -87,12 +87,6 @@ public class Controller implements PropertyChangeListener {
     private DataOutputStream pdos;
     private DataInputStream pdis;
 
-
-
-    public void setCurrentTurnPlayer(Player currentTurnPlayer) {
-        this.currentTurnPlayer = currentTurnPlayer;
-    }
-
     public Controller(){
         currentBehaviour = Behaviour.DISABLED;
         final BackgroundWorker backgroundWorker = new BackgroundWorker();
@@ -462,6 +456,7 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
+        System.out.println(currentPlayers);
         currentTurnPlayer = currentPlayers.get(currentTurnIndex);
         /////////
         if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
@@ -480,7 +475,7 @@ public class Controller implements PropertyChangeListener {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
             if(player.getPlayerName().equals(thisPlayer.getPlayerName())){
-                labelCSS += "-fx-text-fill: #FFFF33;\n";
+                labelCSS += "-fx-text-fill: #fff6a8;\n";
             }
             labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
                     "-fx-border-insets: 5;\n" +
@@ -1294,7 +1289,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        for(int i = 0; i < 300; i++){
+        for(int i = 0; i < 30; i++){
             try {
                 if(dis.available() == 0) {
                     try {
@@ -1306,7 +1301,7 @@ public class Controller implements PropertyChangeListener {
                     try {
                         serverJSON = dis.readUTF();
                         System.out.println("Server responded with: " + serverJSON);
-                        break;
+                        return serverJSON;
                     } catch (IOException E) {
                         E.printStackTrace();
                         System.out.println("Server failed to respond.");
@@ -1333,9 +1328,9 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        for(int i = 0; i < 300; i++){
+        for(int i = 0; i < 30; i++){
             try {
-                if(dis.available() == 0) {
+                if(dis.available() == 0) {//reads????
                     try {
                         TimeUnit.MILLISECONDS.sleep(100);
                     } catch (InterruptedException e) {
@@ -1345,7 +1340,7 @@ public class Controller implements PropertyChangeListener {
                     try {
                         serverJSON = dis.readUTF();
                         System.out.println("Server responded with: " + serverJSON);
-                        break;
+                        return serverJSON;
                     } catch (IOException E) {
                         E.printStackTrace();
                         System.out.println("Server failed to respond.");
@@ -1622,10 +1617,6 @@ public class Controller implements PropertyChangeListener {
                         System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println("Update called? " + getUpdateState());
                         updateState.setValue(false);
-                    }
-                    if(serverCommand.has("player")) {
-                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
-
                     }
                     if(serverCommand.has("unable to sponsor")) {
                         alertText = thisPlayer.getPlayerName() + ", you cannot sponsor the quest! Sponsorship failed.";
