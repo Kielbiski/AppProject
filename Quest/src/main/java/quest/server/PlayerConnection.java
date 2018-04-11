@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 
@@ -71,10 +72,18 @@ public class PlayerConnection {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
                             if (clientRequest.has("arguments")){
-                                System.out.println(name + " requested: " + clientRequest);
-                                Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
-                                Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
-                                applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
+                                if(clientRequest.getString("methodName").equals("syncPlayer")) {
+                                    Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                                    System.out.println("syncing");
+                                    System.out.println(clientRequest);
+                                    player = (Player) Objects.requireNonNull(arguments)[0];
+                                    System.out.println(player);
+                                } else {
+                                    System.out.println(name + " requested: " + clientRequest);
+                                    Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
+                                    Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
+                                    applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
+                                }
                             } else {
                                 System.out.println(name + " requested: " + clientRequest);
                                 applyClientAction(game, clientRequest.getString("methodName"));

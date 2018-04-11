@@ -437,7 +437,6 @@ public class Model implements PropertyChangeListener
         return currentTurnIndex;
     }
 
-
     public void nextTurn(){
         if(currentTurnIndex == players.size()){
             currentTurnIndex = 0;
@@ -594,7 +593,7 @@ public class Model implements PropertyChangeListener
 
     public void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
-
+            System.out.println("DRAW STORY CARD CALLED");
             currentStory = deckOfStoryCards.pop();
             currentPlayerOrder.clear();
             int currentTurn = players.indexOf(activePlayer);
