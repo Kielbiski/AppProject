@@ -441,11 +441,10 @@ public class Controller implements PropertyChangeListener {
 
     public void update() {
         //Vbox display player data
-        activePlayer = serverGetActivePlayer();
         ArrayList<Player> currentPlayers = serverGetPlayers();
         StoryCard serverResponse = serverGetCurrentStory();
         //FIND OUT WHY NULL POINTER
-       // int currentTurnIndex = serverGetCurrentTurnIndex();
+        int currentTurnIndex = serverGetCurrentTurnIndex();
         if(serverResponse!=null) {
             activeStoryImg.setVisible(true);
             activeStoryImg.setDisable(false);
@@ -463,7 +462,7 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
-        currentTurnPlayer = currentPlayers.get(0);
+        currentTurnPlayer = currentPlayers.get(currentTurnIndex);
         /////////
         if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
             currentTurnLabel.setText("It is your turn.");
