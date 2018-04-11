@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -43,6 +45,8 @@ public class Controller implements PropertyChangeListener {
     private Behaviour currentBehaviour;
     private int callToArmsFoes = 0;
     private int bidsToDo =0;
+    private String alertText;
+    private String alertTextHeader;
 
 
     ///FXML ELEMENTS
@@ -90,7 +94,6 @@ public class Controller implements PropertyChangeListener {
     }
 
     public Controller(){
-
         currentBehaviour = Behaviour.DISABLED;
         final BackgroundWorker backgroundWorker = new BackgroundWorker();
         try {
@@ -106,6 +109,32 @@ public class Controller implements PropertyChangeListener {
             backgroundWorker.updateState.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
                     Platform.runLater(this::update);
+                }
+            });
+            backgroundWorker.continueButton.addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    continueButton.setVisible(backgroundWorker.getContinueButton());
+                    continueButton.setDisable(!backgroundWorker.getContinueButton());
+                }
+            });
+            backgroundWorker.nextTurnButton.addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    nextTurnButton.setVisible(backgroundWorker.getNextTurnButton());
+                    nextTurnButton.setDisable(!backgroundWorker.getNextTurnButton());
+                }
+            });
+            backgroundWorker.alert.addListener((observable, oldValue, newValue) -> {
+                if (backgroundWorker.getAlert().equals("ok")) {
+                    okAlert(alertText,alertTextHeader);
+                }
+                else if(backgroundWorker.getAlert().equals("yesNoQuestSponsor")){
+                    boolean response = yesNoAlert(alertText,alertTextHeader);
+                    if(response){
+                        serverPerformQuest(thisPlayer);
+                    }
+                    else{
+                        serverDeclineSponsor();
+                    }
                 }
             });
             backgroundWorker.start();
@@ -414,6 +443,14 @@ public class Controller implements PropertyChangeListener {
         //Vbox display player data
         activePlayer = serverGetActivePlayer();
         ArrayList<Player> currentPlayers = serverGetPlayers();
+        StoryCard serverResponse = serverGetCurrentStory();
+        //FIND OUT WHY NULL POINTER
+       // int currentTurnIndex = serverGetCurrentTurnIndex();
+        if(serverResponse!=null) {
+            activeStoryImg.setVisible(true);
+            activeStoryImg.setDisable(false);
+            activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
+        }
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
@@ -428,21 +465,29 @@ public class Controller implements PropertyChangeListener {
                 "-fx-translate-x: -80;");
         currentTurnPlayer = currentPlayers.get(0);
         /////////
-        currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
+        if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
+            currentTurnLabel.setText("It is your turn.");
+        }
+        else {
+            currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
+        }
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
             String labelCSS;
-            if (player == serverGetActivePlayer()) {
+            if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
                 labelCSS = "-fx-border-color: #f44242;\n";
             } else {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
+            }
+            if(player.getPlayerName().equals(thisPlayer.getPlayerName())){
+                labelCSS += "-fx-text-fill: #ADDEEE;\n";
             }
             labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
                     "-fx-border-insets: 5;\n" +
                     "-fx-border-width: 4;\n" +
                     "-fx-border-style: solid;\n" +
-                    "-fx-padding: 10";
+                    "-fx-padding: 10;";
 
             playerLabel.setStyle(labelCSS);
             playerLabel.setTextAlignment(TextAlignment.RIGHT);
@@ -591,15 +636,7 @@ public class Controller implements PropertyChangeListener {
     //TURNS
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    private int nextPlayerIndex(int index){
-        int nextIndex = index;
-        if(nextIndex >= NUM_PLAYERS-1){
-            nextIndex = 0;
-        } else{
-            nextIndex++;
-        }
-        return nextIndex;
-    }
+
 
     public void continueAction(){
         if(currentBehaviour == Behaviour.SPONSOR) {
@@ -684,7 +721,7 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void handFull(Player player){
-        if(player == serverGetActivePlayer()) {
+        if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())) {
             if(!(player instanceof AbstractAI)){
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
@@ -712,37 +749,7 @@ public class Controller implements PropertyChangeListener {
     public void storyDeckDraw(){
         if(currentBehaviour!=Behaviour.DISABLED) {
             serverDrawStoryCard();
-            StoryCard serverResponse = serverGetCurrentStory();
-            //activeStoryImg = createStoryCardImageView();
-            activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
-            update();
-
-            ArrayList<Player> serverPlayers = serverGetPlayers();
-
-            ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-            int currentTurn = serverPlayers.indexOf(activePlayer);
-
-            for (int i = 0; i < NUM_PLAYERS; i++) {
-                currentPlayerOrder.add(serverPlayers.get(currentTurn));
-                currentTurn = nextPlayerIndex(currentTurn);
-            }
-            if (serverResponse instanceof Quest) {
-                serverSetCurrentQuest((Quest) serverResponse);
-                questDraw(currentPlayerOrder);
-            } else if (serverResponse instanceof Event) {
-                nextTurnButton.setVisible(true);//
-                Event gameEvent = (Event) serverResponse;
-                callEventEffect(gameEvent);
-            } else if (serverResponse instanceof Tournament) {
-                nextTurnButton.setVisible(true);
-                serverSetCurrentTournament((Tournament) serverResponse);
-                performTournament(currentPlayerOrder, serverGetCurrentTournament());
-                nextTurnButton.setDisable(false);
-            }
-            currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-            //activePlayer = serverPlayers.get(currentPlayerIndex);
             storyDeckImg.setDisable(true);
-            update();
         }
     }
 
@@ -1176,43 +1183,44 @@ public class Controller implements PropertyChangeListener {
     //Player related
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void runAITurn(){
-        StoryCard currentStory = serverGetCurrentStory();
-        serverDrawStoryCard();
-        ArrayList<Player> serverplayers = serverGetPlayers();
-        System.out.println("storyDeckDraw(): " + currentStory.getName());
-        //activeStoryImg = createStoryCardImageView();
-        activeStoryImg.setImage(getCardImage(currentStory.getImageFilename()));
-        update();
-
-        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-        int currentTurn = serverplayers.indexOf(activePlayer);
-        for(int i = 0; i < NUM_PLAYERS; i++){
-            currentPlayerOrder.add(serverplayers.get(currentTurn));
-            currentTurn = nextPlayerIndex(currentTurn);
-        }
-//        ArrayList<Player> noAIPlayers = new ArrayList<>();
-//        for(Player player : serverGetPlayers()){
-//            if(!(player instanceof AbstractAI)){
-//                noAIPlayers.add(player);
-//            }
+    //MOVE AI TURN TO AI
+   private void runAITurn(){
+//        StoryCard currentStory = serverGetCurrentStory();
+//        serverDrawStoryCard();
+//        ArrayList<Player> serverplayers = serverGetPlayers();
+//        System.out.println("storyDeckDraw(): " + currentStory.getName());
+//        //activeStoryImg = createStoryCardImageView();
+//        activeStoryImg.setImage(getCardImage(currentStory.getImageFilename()));
+//        update();
+//
+//        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+//        int currentTurn = serverplayers.indexOf(activePlayer);
+//        for(int i = 0; i < NUM_PLAYERS; i++){
+//            currentPlayerOrder.add(serverplayers.get(currentTurn));
+//            currentTurn = nextPlayerIndex(currentTurn);
 //        }
-        if (currentStory instanceof Quest) {
-            serverSetCurrentQuest((Quest) currentStory);
-            questDraw(currentPlayerOrder);
-        } else if (currentStory instanceof Event) {
-            nextTurnButton.setVisible(true);
-            Event gameEvent = (Event) currentStory;
-            callEventEffect(gameEvent);
-        } else if (currentStory instanceof Tournament) {
-            nextTurnButton.setVisible(true);
-            serverSetCurrentTournament((Tournament) currentStory);
-            performTournament(currentPlayerOrder, serverGetCurrentTournament());
-            nextTurnButton.setDisable(false);
-        }
-        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-        storyDeckImg.setDisable(true);
-        update();
+////        ArrayList<Player> noAIPlayers = new ArrayList<>();
+////        for(Player player : serverGetPlayers()){
+////            if(!(player instanceof AbstractAI)){
+////                noAIPlayers.add(player);
+////            }
+////        }
+//        if (currentStory instanceof Quest) {
+//            serverSetCurrentQuest((Quest) currentStory);
+//            questDraw(currentPlayerOrder);
+//        } else if (currentStory instanceof Event) {
+//            nextTurnButton.setVisible(true);
+//            Event gameEvent = (Event) currentStory;
+//            callEventEffect(gameEvent);
+//        } else if (currentStory instanceof Tournament) {
+//            nextTurnButton.setVisible(true);
+//            serverSetCurrentTournament((Tournament) currentStory);
+//            performTournament(currentPlayerOrder, serverGetCurrentTournament());
+//            nextTurnButton.setDisable(false);
+//        }
+//        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
+//        storyDeckImg.setDisable(true);
+//        update();
     }
 
 
@@ -1269,7 +1277,6 @@ public class Controller implements PropertyChangeListener {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
-            e.printStackTrace();
             return null;
         }
     }
@@ -1444,6 +1451,19 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
+
+    @SuppressWarnings("unchecked")
+    private void genericSet(String methodName){
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", methodName);
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     private void serverDrawStoryCard() {
@@ -1507,6 +1527,14 @@ public class Controller implements PropertyChangeListener {
         genericSet("setCurrentTournament", tournament);
     }
     @SuppressWarnings("unchecked")
+    private void serverPerformQuest(Player player) {
+        genericSet("performQuest", player);
+    }
+    @SuppressWarnings("unchecked")
+    private void serverDeclineSponsor() {
+        genericSet("declineSponsor");
+    }
+    @SuppressWarnings("unchecked")
     private void serverClearPreQuestStageSetup() {
         genericSet("clearPreQuestStageSetup");
     }
@@ -1522,18 +1550,34 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     class BackgroundWorker extends Thread {
         private BooleanProperty updateState;
+        private BooleanProperty continueButton;
+        private BooleanProperty nextTurnButton;
+        private StringProperty alert;
         BackgroundWorker() {
             updateState = new SimpleBooleanProperty(this, "bool", false);
+            continueButton = new SimpleBooleanProperty(this, "bool", false);
+            nextTurnButton = new SimpleBooleanProperty(this, "bool", false);
+
+            alert = new SimpleStringProperty();
             setDaemon(true);
         }
 
-        public boolean getUpdateState() {
-            return updateState.get();
-        }
+        public boolean getUpdateState() { return updateState.get(); }
 
-        public BooleanProperty updateState() {
-            return updateState;
-        }
+        public BooleanProperty updateState() { return updateState; }
+
+        public String getAlert() { return alert.get(); }
+
+        public StringProperty alert() { return alert; }
+
+        public boolean getContinueButton() { return continueButton.get(); }
+
+        public BooleanProperty continueButton() { return continueButton; }
+
+        public boolean getNextTurnButton() { return nextTurnButton.get(); }
+
+        public BooleanProperty nextTurnButton() { return nextTurnButton; }
+
 
         @Override
         @SuppressWarnings("InfiniteLoopStatement")
@@ -1574,15 +1618,42 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     if(serverCommand.has("update")) {
-                        updateState.setValue(serverCommand.getString("update").equals("true"));
-                        thisPlayer = getServerObject(serverCommand.getString("player"), new TypeReference<Player>() {});
-                        updateState.setValue(serverCommand.getString("update").equals("false"));
+                        updateState.setValue(true);
+                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+                        System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println("Update called? " + getUpdateState());
+                        updateState.setValue(false);
                     }
                     if(serverCommand.has("player")) {
-                        thisPlayer = getServerObject(serverCommand.getString("player"), new TypeReference<Player>() {
-                        });
+                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+
                     }
+                    if(serverCommand.has("unable to sponsor")) {
+                        alertText = thisPlayer.getPlayerName() + ", you cannot sponsor the quest! Sponsorship failed.";
+                        alertTextHeader = "Cannot Sponsor";
+                        alert.setValue("ok");
+                    }
+                    if(serverCommand.has("would you like to sponsor")) {
+                        alertTextHeader = thisPlayer.getPlayerName() + ", would you like to sponsor " + serverGetCurrentQuest().getName() + "?";
+                        alertText = "Sponsor " + serverGetCurrentQuest().getName() + "?";
+                        alert.setValue("yesNoSponsor");
+                    }
+                    if(serverCommand.has("event complete")) {
+                        if(thisPlayer.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
+                            nextTurnButton.setValue(true);
+                            continueButton.setValue(false);
+                        }
+                    }
+                    if(serverCommand.has("no sponsor")) {
+                        alertTextHeader = "No Sponsor";
+                        alertText = "Nobody chose to be sponsor, quest cancelled";
+                        alert.setValue("ok");
+                        if(thisPlayer.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
+                            nextTurnButton.setValue(true);
+                            continueButton.setValue(false);
+                        }
+                    }
+
                 } catch(Exception ignored) {
                 }
 

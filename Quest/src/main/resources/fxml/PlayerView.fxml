@@ -132,7 +132,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <Label fx:id="currentTurnLabel" layoutX="673.0" layoutY="11.0" text="Label" />
+            <Label fx:id="currentTurnLabel" layoutX="673.0" layoutY="11.0" text="Please wait for all players to connect" />
             <Button fx:id="nextTurnButton" alignment="TOP_LEFT" contentDisplay="CENTER" layoutX="17.0" layoutY="15.0" mnemonicParsing="false" onAction="#nextTurnAction" prefHeight="48.0" prefWidth="192.0" styleClass="nextTurnButton" textAlignment="CENTER" visible="false">
                <cursor>
                   <Cursor fx:constant="HAND" />

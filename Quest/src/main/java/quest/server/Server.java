@@ -130,7 +130,13 @@ public class Server implements PropertyChangeListener {
         }
         game.dealCards(deckOfAdventureCards);
         game.setActivePlayer(game.getPlayers().get(0));
-        sendJSON(players.get(0), "behaviour","DEFAULT");
+        for(int i = 0; i < players.size(); i++) {
+            if (i == game.getCurrentTurnIndex()) {
+                sendJSON(players.get(i), "behaviour", "DEFAULT");
+            } else {
+                sendJSON(players.get(i), "behaviour", "DISABLED");
+            }
+        }
         for (PlayerConnection player : players) {
             sendJSON(player, "update", "true");
         }
@@ -147,6 +153,34 @@ public class Server implements PropertyChangeListener {
             case "changed": {
                 for (PlayerConnection player : players) {
                     sendJSON(player, "update", "true");
+                }
+                break;
+            }
+            case "unable to sponsor":{
+                for (PlayerConnection p : players) {
+                    if(p.player == change.getSource()) {
+                        sendJSON(p, "quest can't sponsor", "true");
+                    }
+                }
+                break;
+            }
+            case "would you like to sponsor":{
+                for (PlayerConnection p : players) {
+                    if(p.player == change.getSource()) {
+                        sendJSON(p, "would you like to sponsor", "true");
+                    }
+                }
+                break;
+            }
+            case "event complete":{
+                for (PlayerConnection p : players) {
+                    sendJSON(p, "event complete", "true");
+                }
+                break;
+            }
+            case "no sponsor":{
+                for (PlayerConnection p : players) {
+                    sendJSON(p, "no sponsor", "true");
                 }
                 break;
             }

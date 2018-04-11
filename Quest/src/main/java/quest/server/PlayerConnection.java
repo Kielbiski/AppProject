@@ -71,15 +71,21 @@ public class PlayerConnection {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
                             if (clientRequest.has("arguments")){
+                                System.out.println(name + " requested: " + clientRequest);
                                 Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
                                 Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
                                 applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
                             } else {
+                                System.out.println(name + " requested: " + clientRequest);
                                 applyClientAction(game, clientRequest.getString("methodName"));
                             }
                         }
-                        if (clientRequest.getString("type").equals("get")){
-                            playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
+                        else if (clientRequest.getString("type").equals("get")){
+                            if(clientRequest.getString("methodName").equals("getSelf")){
+                                playerDataRequest = mapper.writeValueAsString(game.getSpecificPlayer(player));
+                            } else {
+                                playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
+                            }
                             if(playerDataRequest != null){
                                 System.out.println(name + " requested: " + clientRequest);
                                 System.out.println("Server responded with: " + playerDataRequest + System.getProperty("line.separator"));
@@ -158,8 +164,8 @@ public class PlayerConnection {
     private void applyClientAction(Model game, String methodName){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName);
-            game.changed();
             method.invoke(game);
+            game.changed();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }
@@ -168,8 +174,8 @@ public class PlayerConnection {
     private void applyClientAction(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
-            game.changed();
             method.invoke(game, params);
+            game.changed();
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }
