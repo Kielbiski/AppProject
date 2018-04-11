@@ -71,10 +71,12 @@ public class PlayerConnection {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
                         if (clientRequest.getString("type").equals("set")) {
                             if (clientRequest.has("arguments")){
+                                System.out.println(name + " requested: " + clientRequest);
                                 Class<?>[] argumentTypes = convertJSONToClassList(new JSONArray(clientRequest.getJSONArray("argumentTypes")));
                                 Object[] arguments = convertJSONToObjectList(new JSONArray(clientRequest.getJSONArray("arguments")));
                                 applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
                             } else {
+                                System.out.println(name + " requested: " + clientRequest);
                                 applyClientAction(game, clientRequest.getString("methodName"));
                             }
                         }

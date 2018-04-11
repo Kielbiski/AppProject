@@ -444,7 +444,11 @@ public class Controller implements PropertyChangeListener {
         activePlayer = serverGetActivePlayer();
         ArrayList<Player> currentPlayers = serverGetPlayers();
         StoryCard serverResponse = serverGetCurrentStory();
+        //FIND OUT WHY NULL POINTER
+       // int currentTurnIndex = serverGetCurrentTurnIndex();
         if(serverResponse!=null) {
+            activeStoryImg.setVisible(true);
+            activeStoryImg.setDisable(false);
             activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
         }
         playerStatsVbox.getChildren().clear();
@@ -461,7 +465,12 @@ public class Controller implements PropertyChangeListener {
                 "-fx-translate-x: -80;");
         currentTurnPlayer = currentPlayers.get(0);
         /////////
-        currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
+        if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
+            currentTurnLabel.setText("It is your turn.");
+        }
+        else {
+            currentTurnLabel.setText("It is " + currentTurnPlayer.getPlayerName() + "'s turn.");
+        }
 
         for (Player player : currentPlayers) {
             Label playerLabel = new Label();
@@ -472,7 +481,7 @@ public class Controller implements PropertyChangeListener {
                 labelCSS = "-fx-border-color: #aaaaaa;\n";
             }
             if(player.getPlayerName().equals(thisPlayer.getPlayerName())){
-                labelCSS += "-fx-text-fill: #f44242;\n";
+                labelCSS += "-fx-text-fill: #FFFFE0;\n";
             }
             labelCSS += "-fx-background-color: rgba(0,0,0,0.8);\n"+
                     "-fx-border-insets: 5;\n" +
@@ -1442,6 +1451,19 @@ public class Controller implements PropertyChangeListener {
             E.printStackTrace();
         }
     }
+
+    @SuppressWarnings("unchecked")
+    private void genericSet(String methodName){
+        JSONObject json = new JSONObject();
+        json.put("type", "set");
+        json.put("methodName", methodName);
+        try {
+            dos.writeUTF(json.toJSONString());
+            dos.flush();
+        } catch (IOException E) {
+            E.printStackTrace();
+        }
+    }
     ///////////////////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     private void serverDrawStoryCard() {
@@ -1596,10 +1618,11 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     if(serverCommand.has("update")) {
-                        updateState.setValue(serverCommand.getString("update").equals("true"));
+                        updateState.setValue(true);
                         thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
                         System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println("Update called? " + getUpdateState());
+                        updateState.setValue(false);
                     }
                     if(serverCommand.has("player")) {
                         thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
@@ -1614,6 +1637,12 @@ public class Controller implements PropertyChangeListener {
                         alertTextHeader = thisPlayer.getPlayerName() + ", would you like to sponsor " + serverGetCurrentQuest().getName() + "?";
                         alertText = "Sponsor " + serverGetCurrentQuest().getName() + "?";
                         alert.setValue("yesNoSponsor");
+                    }
+                    if(serverCommand.has("event complete")) {
+                        if(thisPlayer.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
+                            nextTurnButton.setValue(true);
+                            continueButton.setValue(false);
+                        }
                     }
                     if(serverCommand.has("no sponsor")) {
                         alertTextHeader = "No Sponsor";

@@ -594,6 +594,7 @@ public class Model implements PropertyChangeListener
 
     public void drawStoryCard(){
         if(!(deckOfStoryCards.isEmpty())) {
+
             currentStory = deckOfStoryCards.pop();
             currentPlayerOrder.clear();
             int currentTurn = players.indexOf(activePlayer);
@@ -609,6 +610,7 @@ public class Model implements PropertyChangeListener
             } else if (currentStory instanceof Event) {
                 Event gameEvent = (Event) currentStory;
                 applyEventEffect(gameEvent);
+                notifyListeners("event complete",this);
             } else if (currentStory instanceof Tournament) {
                 setCurrentTournament((Tournament) currentStory);
                 //performTournament(currentPlayerOrder, serverGetCurrentTournament());
