@@ -105,7 +105,9 @@ public class Controller implements PropertyChangeListener {
             dos.flush();
 
             backgroundWorker.updateState.addListener((observable, oldValue, newValue) -> {
-                Platform.runLater(this::update);
+                if (newValue) {
+                    Platform.runLater(this::update);
+                }
             });
             backgroundWorker.continueButton.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
@@ -454,6 +456,10 @@ public class Controller implements PropertyChangeListener {
         //Vbox display player data
         ArrayList<Player> currentPlayers = serverGetPlayers();
         StoryCard serverResponse = serverGetCurrentStory();
+        for (Player p: currentPlayers){
+            System.out.println("UPDATE: GET CURRENT PLAYERS:" + p.getCardsInHand());
+
+        }
         //FIND OUT WHY NULL POINTER
         int currentTurnIndex = serverGetCurrentTurnIndex();
         if(serverResponse!=null) {
@@ -734,6 +740,7 @@ public class Controller implements PropertyChangeListener {
     private void handFull(){
 //        if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())) {
             if(!(thisPlayer instanceof AbstractAI)){
+            //    update();
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
                 }
@@ -1279,13 +1286,11 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     //Server Actions
     ///////////////////////////////////////////////////////////////////////////
-    private ArrayList<Object> listArguments(Object ...args){
-        return new ArrayList<>(asList(args));
-    }
     private static <T> T getServerObject(final String jsonFromServer, TypeReference<T> objectClass){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
             e.printStackTrace();
@@ -1651,7 +1656,7 @@ public class Controller implements PropertyChangeListener {
                         System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println(thisPlayer.getPlayerName());
                         System.out.println("Update called? " + getUpdateState());
-//                        updateState.setValue(false);
+                        updateState.setValue(false);
                     }
                     if(serverCommand.has("unable to sponsor")) {
                         alertText = thisPlayer.getPlayerName() + ", you cannot sponsor the quest! Sponsorship failed.";
