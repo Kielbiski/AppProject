@@ -61,11 +61,12 @@ public class PlayerConnection {
         this.pdis = pdis;
 
         ObjectMapper mapper = new ObjectMapper();
-        Player test = game.getSpecificPlayer(player);
-        System.out.println("Returning player: " + (new ReflectionToStringBuilder(test, new RecursiveToStringStyle()).toString()));
         try {
-            playerDataRequest = mapper.writeValueAsString(test);
-        } catch (JsonProcessingException e) {
+            org.json.simple.JSONObject json = new org.json.simple.JSONObject();
+            json.put("player", mapper.writeValueAsString(player));
+            this.pdos.writeUTF(json.toJSONString());
+            this.pdos.flush();
+        } catch (IOException e) {
             e.printStackTrace();
         }
         new Thread(() -> {
@@ -74,15 +75,14 @@ public class PlayerConnection {
                     //this is where the player input will need to be parsed
                     try {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
-                        System.out.println("\n-----------------------\n");
+                        System.out.println("\n\n-----------------------\n\n");
                         if (clientRequest.getString("type").equals("set")) {
                             System.out.println("Method Name: "+ clientRequest.getString("methodName"));
                             if (clientRequest.has("arguments")){
                                 if(clientRequest.getString("methodName").equals("syncPlayer")) {
-                                    System.out.println("Arguments: " + clientRequest.getJSONArray("arguments"));
-                                    System.out.println("Syncing player " + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
-                                    player = getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>(){});
-                                    System.out.println("After player " + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                    System.out.println("Syncing player " + name + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                    player.syncPlayer(getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>(){}));
+                                    System.out.println("After player "+  name+ (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
                                     game.changed();
                                 } else {
                                     //fix
@@ -98,9 +98,11 @@ public class PlayerConnection {
                         }
                         else if (clientRequest.getString("type").equals("get")){
                             if(clientRequest.getString("methodName").equals("getSelf")){
-                                Player testP = game.getSpecificPlayer(player);
-                                System.out.println("Returning player: " + (new ReflectionToStringBuilder(testP, new RecursiveToStringStyle()).toString()));
-                                playerDataRequest = mapper.writeValueAsString(testP);
+                                Player self = game.getSpecificPlayer(player);
+                                System.out.println("Self -> " +name + self);
+                                System.out.println(name + " requested: " + clientRequest);
+                                playerDataRequest = mapper.writeValueAsString(self);
+                                System.out.println("RETURNED-> " +name+ playerDataRequest);
                             } else {
                                 playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
                             }

@@ -65,6 +65,7 @@ public class Model implements PropertyChangeListener
         return null;
     }
 
+
     public void setCurrentTournament(Tournament currentTournament) {
         this.currentTournament = currentTournament;
     }
