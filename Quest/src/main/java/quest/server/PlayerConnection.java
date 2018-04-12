@@ -14,6 +14,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.RecursiveToStringStyle;
+
 
 
 //TO DO HERE: associate a player with this list
@@ -72,19 +75,21 @@ public class PlayerConnection {
                     //this is where the player input will need to be parsed
                     try {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
+                        System.out.println("\n\n-----------------------\n\n");
                         if (clientRequest.getString("type").equals("set")) {
-                            System.out.println("METHODNAMEIS"+ clientRequest.getString("methodName"));
-                            System.out.println(clientRequest);
+                            System.out.println("Method Name: "+ clientRequest.getString("methodName"));
                             if (clientRequest.has("arguments")){
                                 if(clientRequest.getString("methodName").equals("syncPlayer")) {
-                                    Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
-                                    System.out.println("syncing");
-                                    player = (Player) getObject(arguments[0]);
-                                    System.out.println(player);
+                                    System.out.println("Arguments: " + clientRequest.getJSONArray("arguments"));
+                                    System.out.println("Syncing player " + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                    player = getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>(){});
+                                    System.out.println("After player " + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                    game.changed();
                                 } else {
+                                    //fix
+                                    Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     System.out.println(name + " requested: " + clientRequest);
                                     Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
-                                    Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
                                 }
                             } else {
@@ -109,13 +114,14 @@ public class PlayerConnection {
                                 dos.flush();
                             }
                         }
-                        if (clientRequest.getString("type").equals("getWithParams")){
+                        else if (clientRequest.getString("type").equals("getWithParams")){
                             System.out.println(clientRequest);
                             Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
                             Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                             playerDataRequest = mapper.writeValueAsString(getObjectWithParamsForClient(game, clientRequest.getString("methodName"), argumentTypes, arguments));
                             if(playerDataRequest != null){
-                                System.out.println("Server returned: " + playerDataRequest);
+                                System.out.println(name + " requested: " + clientRequest);
+                                System.out.println("Server responded with: " + playerDataRequest);
                                 dos.writeUTF(playerDataRequest);
                                 dos.flush();
                             }
@@ -153,32 +159,69 @@ public class PlayerConnection {
             }
         }).start();
     }
-    private Class<?>[] convertJSONToClassList(JSONArray json){
-        Class<?>[] returnList = new Class<?>[json.length()];
-        if (json.length() != 0) {
-            int len = json.length();
-            for (int i=0;i<len;i++){
-                returnList[i] = (Class)json.get(i);
+    private Object[] convertJSONToObjectList(JSONArray jsonArray){
+//        ArrayList<Object> returnObjects = new ArrayList<>();
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+//        try {
+//            returnObjects.add(objectMapper.readValue(json.getString("arguments"), Object[].class));
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//        System.out.println(returnObjects);
+//        return returnObjects;
+        Object[] objectList = new Object[jsonArray.length()];
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        for(int i = 0; i < jsonArray.length(); i++)
+        {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            System.out.println(jsonObject);
+                try {
+                    objectList[i] = objectMapper.readValue(jsonObject.getString(String.valueOf(i)),Object.class);
+                } catch (IOException e) {
             }
-            return returnList;
-        } else {
-            return null;
         }
+        return objectList;
     }
-    private Object[] convertJSONToObjectList(JSONArray json){
-        Object[] returnList = new Object[json.length()];
-        if (json.length() != 0) {
-            int len = json.length();
-            for (int i=0;i<len;i++){
-                returnList[i] = getObject(json.get(i), new TypeReference<T>(){});
+
+    private Class<?>[] convertJSONToClassList(JSONArray jsonArray){
+        Class<?>[] classList = new Class<?>[jsonArray.length()];
+        ObjectMapper objectMapper = new ObjectMapper();
+        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        for(int i = 0; i < jsonArray.length(); i++)
+        {
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            System.out.println(jsonObject);
+            try {
+                classList[i] = objectMapper.readValue(jsonObject.getString(String.valueOf(i)),Class.class);
+            } catch (IOException e) {
             }
-            return returnList;
-        } else {
+        }
+        return classList;
+    }
+    private static <T> T getObjectWithKnownType(final JSONObject jsonFromServer, final String index, TypeReference<T> objectClass){
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            String test = jsonFromServer.getJSONObject(index).toString();
+            System.out.println("test: " + test);
+            return objectMapper.readValue(test, objectClass);
+        } catch (IOException e) {
             return null;
         }
     }
 
-    private static <T> T getObject(final String jsonFromServer, TypeReference<T> objectClass){
+//    private static Object[] convertObjectList(Object[] list, Class[] classList){
+//        Object[] objectList = new Object[list.length];
+//        for(int i = 0; i < list.length; i++){
+//            Class currentClass = classList[i];
+//            objectList[i] = (currentClass) list[i];
+//        }
+//        return objectList;
+//    }
+
+    private static Object getObject(final String jsonFromServer, Class<?> objectClass){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

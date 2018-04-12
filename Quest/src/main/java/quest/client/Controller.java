@@ -105,9 +105,7 @@ public class Controller implements PropertyChangeListener {
             dos.flush();
 
             backgroundWorker.updateState.addListener((observable, oldValue, newValue) -> {
-                if (newValue) {
-                    Platform.runLater(this::update);
-                }
+                Platform.runLater(this::update);
             });
             backgroundWorker.continueButton.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
@@ -475,7 +473,8 @@ public class Controller implements PropertyChangeListener {
                 "-fx-border-style: solid;\n" +
                 "-fx-padding: 10;\n" +
                 "-fx-translate-x: -80;");
-        System.out.println(currentPlayers);
+        System.out.println("\nCurrent players: " + currentPlayers);
+        System.out.println("Current turn index: " + currentTurnIndex);
         currentTurnPlayer = currentPlayers.get(currentTurnIndex);
         /////////
         if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
@@ -755,12 +754,12 @@ public class Controller implements PropertyChangeListener {
                     }
                 }
             }
-            serverSyncPlayer();
+//            serverSyncPlayer();
 //        }
     }
 
     public void storyDeckDraw(){
-        serverSyncPlayer();
+//        serverSyncPlayer();
         if(currentBehaviour!=Behaviour.DISABLED) {
             serverDrawStoryCard();
             storyDeckImg.setDisable(true);
@@ -1289,6 +1288,7 @@ public class Controller implements PropertyChangeListener {
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -1346,7 +1346,7 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        for(int i = 0; i < 30; i++){
+        for(int i = 0; i < 50; i++){
             try {
                 if(dis.available() == 0) {//reads????
                     try {
@@ -1420,7 +1420,6 @@ public class Controller implements PropertyChangeListener {
         return getServerObject(
                 genericGet("isKingsRecognition()"), new TypeReference<Boolean>(){});
     }
-    @SuppressWarnings("unchecked")
     private Boolean serverIsValidDrop(AdventureCard card, Integer stageNum) {
         return getServerObject(
                 genericGetWithParams("isValidDrop",
@@ -1451,32 +1450,35 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     @SuppressWarnings("unchecked")
     private void genericSet(String methodName, Object... args){
+        System.out.println("Setter called with args " + args);
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", methodName);
-        JSONArray argumentTypes = new JSONArray();
-        List<Object> argsu = Arrays.asList(args);
-        for(int i = 0; i < argsu.size(); i++) {
-            JSONObject j = new JSONObject();
-            try {
-                j.put(String.valueOf(argsu.get(i)), argsu.get(i).getClass());
-            } catch (JSONException E) {
-                E.printStackTrace();
-            }
-            argumentTypes.put(j);
-        }
-        json.put("argumentTypes", argumentTypes);
+        List<Object> ar = Arrays.asList(args);
+
         JSONArray arguments = new JSONArray();
-        for(int k = 0; k < argsu.size(); k++) {
+        for(int k = 0; k < ar.size(); k++) {
             JSONObject j = new JSONObject();
             try {
-                j.put(String.valueOf(argsu.get(k)), argsu.get(k));
+                j.put(String.valueOf(k), ar.get(k));
             } catch (JSONException E) {
                 E.printStackTrace();
             }
             arguments.put(j);
         }
         json.put("arguments", arguments);
+
+        JSONArray argumentTypes = new JSONArray();
+        for(int i = 0; i < ar.size(); i++) {
+            JSONObject j = new JSONObject();
+            try {
+                j.put(String.valueOf(i), ar.get(i).getClass());
+            } catch (JSONException E) {
+                E.printStackTrace();
+            }
+            argumentTypes.put(j);
+        }
+        json.put("argumentTypes", argumentTypes);
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
@@ -1486,7 +1488,7 @@ public class Controller implements PropertyChangeListener {
     }
     @SuppressWarnings("unchecked")
     private void genericSet(String methodName){
-        System.out.println("no args");
+        System.out.println("No-args setter called.");
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", methodName);
@@ -1649,7 +1651,7 @@ public class Controller implements PropertyChangeListener {
                         System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println(thisPlayer.getPlayerName());
                         System.out.println("Update called? " + getUpdateState());
-                        updateState.setValue(false);
+//                        updateState.setValue(false);
                     }
                     if(serverCommand.has("unable to sponsor")) {
                         alertText = thisPlayer.getPlayerName() + ", you cannot sponsor the quest! Sponsorship failed.";
