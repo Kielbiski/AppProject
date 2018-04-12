@@ -603,7 +603,6 @@ public class Model implements PropertyChangeListener
                 currentPlayerOrder.add(players.get(currentTurn));
                 currentTurn = nextPlayerIndex(currentTurn);
             }
-
             if (currentStory instanceof Quest) {
                 setCurrentQuest((Quest) currentStory);
                 currentPlayerOrderIndex = 0;
@@ -626,7 +625,7 @@ public class Model implements PropertyChangeListener
     private void questDraw(Player player) {
         //Player sponsor;
         setActivePlayer(player);
-        changed();
+        //changed();
         int validCardCount = 0;
         for(AdventureCard adventureCard : player.getCardsInHand()){
             if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
@@ -681,6 +680,7 @@ public class Model implements PropertyChangeListener
             notifyListeners("no sponsor", activePlayer);
         }
         else {
+            currentPlayerOrderIndex++;
             questDraw(players.get(currentPlayerOrderIndex));
         }
     }

@@ -77,7 +77,8 @@ public class Server implements PropertyChangeListener {
     private void initialize() {
         Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
         Collections.shuffle(deckOfAdventureCards);
-        switch (this.scenario){
+        //overrode for boarhunt
+        switch ("Boar Hunt"){
             case "Regular":
                 break;
             case "Boar Hunt":
@@ -160,7 +161,7 @@ public class Server implements PropertyChangeListener {
             }
             case "unable to sponsor":{
                 for (PlayerConnection p : players) {
-                    if(p.player == change.getSource()) {
+                    if(p.player.getPlayerName().equals(game.getActivePlayer().getPlayerName())) {
                         sendJSON(p, "quest can't sponsor", "true");
                     }
                 }
@@ -168,7 +169,7 @@ public class Server implements PropertyChangeListener {
             }
             case "would you like to sponsor":{
                 for (PlayerConnection p : players) {
-                    if(p.player == change.getSource()) {
+                    if(p.player.getPlayerName().equals(game.getActivePlayer().getPlayerName())) {
                         sendJSON(p, "would you like to sponsor", "true");
                     }
                 }
