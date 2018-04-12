@@ -143,6 +143,7 @@ public class Server implements PropertyChangeListener {
         switch (change.getPropertyName()) {
             case "changed": {
                 for (PlayerConnection player : players) {
+                    System.out.println("CHANGE TIRGGERED");
                     sendJSON(player, "update", "true");
                 }
                 break;
@@ -175,9 +176,7 @@ public class Server implements PropertyChangeListener {
             }
             case "event complete":{
                 for (PlayerConnection p : players) {
-                    if(p.player == change.getSource()) {
-                        sendJSON(p, "event complete", "true");
-                    }
+                    sendJSON(p, "event complete", "true");
                 }
                 break;
             }

@@ -80,10 +80,9 @@ public class PlayerConnection {
                             System.out.println("Method Name: "+ clientRequest.getString("methodName"));
                             if (clientRequest.has("arguments")){
                                 if(clientRequest.getString("methodName").equals("syncPlayer")) {
-                                    System.out.println("Arguments: " + clientRequest.getJSONArray("arguments"));
-                                    System.out.println("Syncing player " + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
-                                    player = getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>(){});
-                                    System.out.println("After player " + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                    System.out.println("Syncing player " + name + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                    player.syncPlayer(getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>(){}));
+                                    System.out.println("After player "+  name+ (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
                                     game.changed();
                                 } else {
                                     //fix
@@ -99,11 +98,11 @@ public class PlayerConnection {
                         }
                         else if (clientRequest.getString("type").equals("get")){
                             if(clientRequest.getString("methodName").equals("getSelf")){
-                                Player test = game.getSpecificPlayer(player);
-                                System.out.println("TEST -> " + test);
+                                Player self = game.getSpecificPlayer(player);
+                                System.out.println("Self -> " +name + self);
                                 System.out.println(name + " requested: " + clientRequest);
-                                playerDataRequest = mapper.writeValueAsString(test);
-                                System.out.println("RETURNED-> " + playerDataRequest);
+                                playerDataRequest = mapper.writeValueAsString(self);
+                                System.out.println("RETURNED-> " +name+ playerDataRequest);
                             } else {
                                 playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
                             }

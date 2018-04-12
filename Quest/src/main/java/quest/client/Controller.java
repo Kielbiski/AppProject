@@ -314,10 +314,10 @@ public class Controller implements PropertyChangeListener {
                     currentBehaviour = previousBehaviour;
                     previousBehaviour = null;
                     discardPane.setVisible(false);
-//                    if(currentBehaviour==Behaviour.DEFAULT) {
-//                            nextTurnButton.setVisible(true);
-//                            nextTurnButton.setDisable(false);
-//                      //  }
+                    if(currentBehaviour==Behaviour.DEFAULT) {
+                        nextTurnButton.setVisible(true);
+                        nextTurnButton.setDisable(false);
+                    }
 ////                        update();
 //                    }
                     success = true;
@@ -1351,11 +1351,11 @@ public class Controller implements PropertyChangeListener {
         } catch (IOException E){
             E.printStackTrace();
         }
-        for(int i = 0; i < 50; i++){
+        for(int i = 0; i < 1000; i++){
             try {
                 if(dis.available() == 0) {//reads????
                     try {
-                        TimeUnit.MILLISECONDS.sleep(100);
+                        TimeUnit.MILLISECONDS.sleep(1);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -1669,8 +1669,10 @@ public class Controller implements PropertyChangeListener {
                         alert.setValue("yesNoSponsor");
                     }
                     if(serverCommand.has("event complete")) {
-                        if(thisPlayer.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
-                            nextTurnButton.setValue(true);
+                        if(thisPlayer.getPlayerName().equals(serverGetPlayers().get(serverGetCurrentTurnIndex()).getPlayerName())){
+                            if(currentBehaviour != Behaviour.DISCARD) {
+                                nextTurnButton.setValue(true);
+                            }
                             continueButton.setValue(false);
                         }
                     }

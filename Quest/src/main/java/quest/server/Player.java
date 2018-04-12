@@ -42,6 +42,20 @@ public class Player {
 
     Player(){}
 
+
+    public void syncPlayer(Player aPlayer){
+        this.playerName = aPlayer.playerName;
+        this.battlePoints = aPlayer.battlePoints;
+        this.shields = aPlayer.shields;
+        this.currentBid = aPlayer.currentBid;
+        this.playerRank = aPlayer.playerRank;
+        this.cardsOnTable = aPlayer.cardsOnTable;
+        this.cardsInHand = aPlayer.cardsInHand;
+        this.tournamentCards = aPlayer.tournamentCards;
+        this.listener = aPlayer.listener;
+        this.handFull = aPlayer.handFull;
+    }
+
     public void setPlayerName(String playerName) {
         this.playerName = playerName;
     }
@@ -177,6 +191,7 @@ public class Player {
         logger.info("Returning " + this.playerName+ " bids:" +currentBid+" .");
         return currentBid ;
     }
+
 
     public void setCardsOnTable(ArrayList<AdventureCard> cardsOnTable)
     {
