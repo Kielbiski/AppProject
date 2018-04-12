@@ -1,4 +1,5 @@
 package quest.server;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,21 +53,19 @@ public class PlayerConnection {
     @SuppressWarnings({"InfiniteLoopStatement", "unchecked"})
     PlayerConnection(DataOutputStream dos, DataInputStream dis, DataOutputStream pdos, DataInputStream pdis, String name, Model game) {
         player = new Player(name);
-        player.setShields(10); //to be removed
         game.addPlayerToGame(player);
         this.name = name;
         this.dos = dos;
         this.dis = dis;
         this.pdos = pdos;
         this.pdis = pdis;
-        
+
         ObjectMapper mapper = new ObjectMapper();
+        Player test = game.getSpecificPlayer(player);
+        System.out.println("Returning player: " + (new ReflectionToStringBuilder(test, new RecursiveToStringStyle()).toString()));
         try {
-            org.json.simple.JSONObject json = new org.json.simple.JSONObject();
-            json.put("player", mapper.writeValueAsString(player));
-            this.pdos.writeUTF(json.toJSONString());
-            this.pdos.flush();
-        } catch (IOException e) {
+            playerDataRequest = mapper.writeValueAsString(test);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
         new Thread(() -> {
@@ -75,7 +74,7 @@ public class PlayerConnection {
                     //this is where the player input will need to be parsed
                     try {
                         JSONObject clientRequest = new JSONObject(dis.readUTF());
-                        System.out.println("\n\n-----------------------\n\n");
+                        System.out.println("\n-----------------------\n");
                         if (clientRequest.getString("type").equals("set")) {
                             System.out.println("Method Name: "+ clientRequest.getString("methodName"));
                             if (clientRequest.has("arguments")){
@@ -99,11 +98,9 @@ public class PlayerConnection {
                         }
                         else if (clientRequest.getString("type").equals("get")){
                             if(clientRequest.getString("methodName").equals("getSelf")){
-                                Player test = game.getSpecificPlayer(player);
-                                System.out.println("TEST -> " + test);
-                                System.out.println(name + " requested: " + clientRequest);
-                                playerDataRequest = mapper.writeValueAsString(test);
-                                System.out.println("RETURNED-> " + playerDataRequest);
+                                Player testP = game.getSpecificPlayer(player);
+                                System.out.println("Returning player: " + (new ReflectionToStringBuilder(testP, new RecursiveToStringStyle()).toString()));
+                                playerDataRequest = mapper.writeValueAsString(testP);
                             } else {
                                 playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
                             }
@@ -236,6 +233,7 @@ public class PlayerConnection {
             Method method = game.getClass().getDeclaredMethod(methodName);
             method.invoke(game);
             game.changed();
+//            System.out.println("Changed at: " + System.currentTimeMillis());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }
@@ -246,6 +244,7 @@ public class PlayerConnection {
             Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
             method.invoke(game, params);
             game.changed();
+//            System.out.println("Changed at: " + System.currentTimeMillis());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }

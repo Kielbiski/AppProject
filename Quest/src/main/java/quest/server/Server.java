@@ -143,6 +143,7 @@ public class Server implements PropertyChangeListener {
         switch (change.getPropertyName()) {
             case "changed": {
                 for (PlayerConnection player : players) {
+                    System.out.println("sending update to " + player.player);
                     sendJSON(player, "update", "true");
                 }
                 break;
@@ -176,6 +177,7 @@ public class Server implements PropertyChangeListener {
             case "event complete":{
                 for (PlayerConnection p : players) {
                     if(p.player == change.getSource()) {
+                        System.out.println("sending event complete notification");
                         sendJSON(p, "event complete", "true");
                     }
                 }
@@ -184,7 +186,6 @@ public class Server implements PropertyChangeListener {
             case "handfull":{
                 for (PlayerConnection p : players) {
                     if(p.player == change.getSource()) {
-
                         sendJSON(p, "handfull", "true");
                     }
                 }

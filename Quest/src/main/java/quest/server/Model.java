@@ -451,6 +451,7 @@ public class Model implements PropertyChangeListener
 
     public void addPlayerToGame(Player player){
         players.add(player);
+        System.out.println(players);
     }
 
     public void addPlayer(String playerType, String name){
@@ -609,7 +610,15 @@ public class Model implements PropertyChangeListener
                 questDraw(currentPlayerOrder.get(currentPlayerOrderIndex));
             } else if (currentStory instanceof Event) {
                 Event gameEvent = (Event) currentStory;
+                System.out.println("PRE-EVENT: " + gameEvent);
+                for(Player p : players){
+                    System.out.println(p.getCardsInHand().size());
+                }
                 applyEventEffect(gameEvent);
+                System.out.println("APPLIED EVENT: " + gameEvent);
+                for(Player p : players){
+                    System.out.println(p.getCardsInHand().size());
+                }
                 notifyListeners("event complete",Boolean.TRUE);
             } else if (currentStory instanceof Tournament) {
                 setCurrentTournament((Tournament) currentStory);

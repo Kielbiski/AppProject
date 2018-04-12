@@ -105,7 +105,10 @@ public class Controller implements PropertyChangeListener {
             dos.flush();
 
             backgroundWorker.updateState.addListener((observable, oldValue, newValue) -> {
-                Platform.runLater(this::update);
+                if (newValue) {
+                    System.out.println("update should be called now");
+                    Platform.runLater(this::update);
+                }
             });
             backgroundWorker.continueButton.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
@@ -451,16 +454,20 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void update() {
+//        activeStoryImg.setVisible(true);
+//        activeStoryImg.setDisable(false);
         //Vbox display player data
+        System.out.println("UPDATE STARTED");
         ArrayList<Player> currentPlayers = serverGetPlayers();
         StoryCard serverResponse = serverGetCurrentStory();
-        //FIND OUT WHY NULL POINTER
-        int currentTurnIndex = serverGetCurrentTurnIndex();
+        System.out.println("RESPONSE: "+serverResponse);
         if(serverResponse!=null) {
-            activeStoryImg.setVisible(true);
-            activeStoryImg.setDisable(false);
             activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
         }
+        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+        System.out.println("HAND: " + thisPlayer.getCardsInHand());
+        //FIND OUT WHY NULL POINTER
+        int currentTurnIndex = serverGetCurrentTurnIndex();
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
@@ -592,6 +599,7 @@ public class Controller implements PropertyChangeListener {
                 }
             }
         }
+        System.out.println("UPDATE COMPLETED");
     }
 
     //ALERTS
@@ -763,6 +771,7 @@ public class Controller implements PropertyChangeListener {
         if(currentBehaviour!=Behaviour.DISABLED) {
             serverDrawStoryCard();
             storyDeckImg.setDisable(true);
+            activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
         }
     }
 
@@ -1149,7 +1158,6 @@ public class Controller implements PropertyChangeListener {
         previousBehaviour =currentBehaviour;
         setCurrentBehaviour(Behaviour.CALL_TO_ARMS);
         setActivePlayer(player);
-        update();
         int foeCount =0;
         int weaponCount =0;
         for(AdventureCard card: player.getCardsInHand()){
@@ -1646,12 +1654,8 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     if(serverCommand.has("update")) {
-                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
                         updateState.setValue(true);
-                        System.out.println("THIS PLAYER SET" + thisPlayer);
-                        System.out.println(thisPlayer.getPlayerName());
-                        System.out.println("Update called? " + getUpdateState());
-//                        updateState.setValue(false);
+                        updateState.setValue(false);
                     }
                     if(serverCommand.has("unable to sponsor")) {
                         alertText = thisPlayer.getPlayerName() + ", you cannot sponsor the quest! Sponsorship failed.";
@@ -1664,14 +1668,13 @@ public class Controller implements PropertyChangeListener {
                         alert.setValue("yesNoSponsor");
                     }
                     if(serverCommand.has("event complete")) {
-                        if(thisPlayer.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
-                            nextTurnButton.setValue(true);
-                            continueButton.setValue(false);
-                        }
+                        nextTurnButton.setValue(true);
+                        continueButton.setValue(false);
                     }
                     if(serverCommand.has("handfull")) {
+                        updateState.setValue(true);
                         handFull.setValue(true);
-                        handFull.setValue(false);
+                        handFull.setValue(true);
                     }
                     if(serverCommand.has("no sponsor")) {
                         alertTextHeader = "No Sponsor";
