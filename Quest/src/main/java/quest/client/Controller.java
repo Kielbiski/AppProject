@@ -106,7 +106,6 @@ public class Controller implements PropertyChangeListener {
 
             backgroundWorker.updateState.addListener((observable, oldValue, newValue) -> {
                 if (newValue) {
-                    System.out.println("update should be called now");
                     Platform.runLater(this::update);
                 }
             });
@@ -454,20 +453,20 @@ public class Controller implements PropertyChangeListener {
     }
 
     public void update() {
-//        activeStoryImg.setVisible(true);
-//        activeStoryImg.setDisable(false);
         //Vbox display player data
-        System.out.println("UPDATE STARTED");
         ArrayList<Player> currentPlayers = serverGetPlayers();
         StoryCard serverResponse = serverGetCurrentStory();
-        System.out.println("RESPONSE: "+serverResponse);
-        if(serverResponse!=null) {
-            activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
+        for (Player p: currentPlayers){
+            System.out.println("UPDATE: GET CURRENT PLAYERS:" + p.getCardsInHand());
+
         }
-        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
-        System.out.println("HAND: " + thisPlayer.getCardsInHand());
         //FIND OUT WHY NULL POINTER
         int currentTurnIndex = serverGetCurrentTurnIndex();
+        if(serverResponse!=null) {
+            activeStoryImg.setVisible(true);
+            activeStoryImg.setDisable(false);
+            activeStoryImg.setImage(getCardImage(serverResponse.getImageFilename()));
+        }
         playerStatsVbox.getChildren().clear();
         cardsHbox.getChildren().clear();
         tableHbox.getChildren().clear();
@@ -599,7 +598,6 @@ public class Controller implements PropertyChangeListener {
                 }
             }
         }
-        System.out.println("UPDATE COMPLETED");
     }
 
     //ALERTS
@@ -742,6 +740,7 @@ public class Controller implements PropertyChangeListener {
     private void handFull(){
 //        if(player.getPlayerName().equals(serverGetActivePlayer().getPlayerName())) {
             if(!(thisPlayer instanceof AbstractAI)){
+            //    update();
                 if(currentBehaviour!=Behaviour.DISCARD){
                     previousBehaviour = currentBehaviour;
                 }
@@ -771,7 +770,6 @@ public class Controller implements PropertyChangeListener {
         if(currentBehaviour!=Behaviour.DISABLED) {
             serverDrawStoryCard();
             storyDeckImg.setDisable(true);
-            activeStoryImg.setImage(getCardImage(serverGetCurrentStory().getImageFilename()));
         }
     }
 
@@ -1287,13 +1285,11 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     //Server Actions
     ///////////////////////////////////////////////////////////////////////////
-    private ArrayList<Object> listArguments(Object ...args){
-        return new ArrayList<>(asList(args));
-    }
     private static <T> T getServerObject(final String jsonFromServer, TypeReference<T> objectClass){
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
             e.printStackTrace();
@@ -1654,7 +1650,11 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     if(serverCommand.has("update")) {
+                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
                         updateState.setValue(true);
+                        System.out.println("THIS PLAYER SET" + thisPlayer);
+                        System.out.println(thisPlayer.getPlayerName());
+                        System.out.println("Update called? " + getUpdateState());
                         updateState.setValue(false);
                     }
                     if(serverCommand.has("unable to sponsor")) {
@@ -1668,13 +1668,14 @@ public class Controller implements PropertyChangeListener {
                         alert.setValue("yesNoSponsor");
                     }
                     if(serverCommand.has("event complete")) {
-                        nextTurnButton.setValue(true);
-                        continueButton.setValue(false);
+                        if(thisPlayer.getPlayerName().equals(serverGetActivePlayer().getPlayerName())){
+                            nextTurnButton.setValue(true);
+                            continueButton.setValue(false);
+                        }
                     }
                     if(serverCommand.has("handfull")) {
-                        updateState.setValue(true);
                         handFull.setValue(true);
-                        handFull.setValue(true);
+                        handFull.setValue(false);
                     }
                     if(serverCommand.has("no sponsor")) {
                         alertTextHeader = "No Sponsor";
