@@ -458,7 +458,6 @@ public class Controller implements PropertyChangeListener {
         StoryCard serverResponse = serverGetCurrentStory();
         for (Player p: currentPlayers){
             System.out.println("UPDATE: GET CURRENT PLAYERS:" + p.getCardsInHand());
-
         }
         //FIND OUT WHY NULL POINTER
         int currentTurnIndex = serverGetCurrentTurnIndex();
@@ -483,6 +482,9 @@ public class Controller implements PropertyChangeListener {
         System.out.println("Current turn index: " + currentTurnIndex);
         currentTurnPlayer = currentPlayers.get(currentTurnIndex);
         /////////
+        thisPlayer = thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+        System.out.println("Shouldn't be null:");
+        System.out.println(thisPlayer);
         if(currentTurnPlayer.getPlayerName().equals(thisPlayer.getPlayerName())){
             currentTurnLabel.setText("It is your turn.");
         }
@@ -1287,6 +1289,7 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     private static <T> T getServerObject(final String jsonFromServer, TypeReference<T> objectClass){
         try {
+            System.out.println("JSONFROMSERVER: " + jsonFromServer);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -1513,6 +1516,7 @@ public class Controller implements PropertyChangeListener {
     }
     private void serverSyncPlayer() {
         genericSet("syncPlayer", thisPlayer);
+//        update();
     }
     private void serverSetActivePlayer(Player player) {
         genericSet("setActivePlayer", player);
@@ -1651,6 +1655,7 @@ public class Controller implements PropertyChangeListener {
                     }
                     if(serverCommand.has("update")) {
                         thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+                        System.out.println(thisPlayer);
                         updateState.setValue(true);
                         System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println(thisPlayer.getPlayerName());
