@@ -447,7 +447,39 @@ public class Model implements PropertyChangeListener
             currentTurnIndex++;
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
+        if(players.get(currentTurnIndex) instanceof AbstractAI){
+            runAITurn();
+        }
         notifyListeners("nextTurn", Boolean.TRUE, -1, currentTurnIndex);
+    }
+
+    private void runAITurn(){
+        drawStoryCard();
+        ArrayList<Player> serverplayers = players;
+        System.out.println("storyDeckDraw(): " + currentStory.getName());
+        changed();
+        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
+        int currentTurn = serverplayers.indexOf(activePlayer);
+        for(int i = 0; i < players.size(); i++){
+            currentPlayerOrder.add(serverplayers.get(currentTurn));
+            currentTurn = nextPlayerIndex(currentTurn);
+        }
+//        ArrayList<Player> noAIPlayers = new ArrayList<>();
+//        for(Player player : serverGetPlayers()){
+//            if(!(player instanceof AbstractAI)){
+//                noAIPlayers.add(player);
+//            }
+//        }
+        if (currentStory instanceof Quest) {
+            setCurrentQuest((Quest) currentStory);
+            questDraw(activePlayer);
+        } else if (currentStory instanceof Event) {
+            Event gameEvent = (Event) currentStory;
+            applyEventEffect(gameEvent);
+        } else if (currentStory instanceof Tournament) {
+            setCurrentTournament((Tournament) currentStory);
+//            performTournament(currentPlayerOrder, getCurrentTournament());
+        }
     }
 
     public void addPlayerToGame(Player player){
@@ -637,18 +669,18 @@ public class Model implements PropertyChangeListener
         setActivePlayer(player);
         changed();
         int validCardCount = 0;
-        for(AdventureCard adventureCard : player.getCardsInHand()){
-            if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+        for (AdventureCard adventureCard : player.getCardsInHand()) {
+            if ((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
                 validCardCount++;
             }
         }
-        if(validCardCount < currentQuest.getNumStage()){
-            if(!(player instanceof AbstractAI)) {
+        if (validCardCount < currentQuest.getNumStage()) {
+            if (!(player instanceof AbstractAI)) {
                 notifyListeners("unable to sponsor", player);
             }
         } else {
-            if (!(player instanceof AbstractAI)){
-                notifyListeners("would you like to sponsor",player);
+            if (!(player instanceof AbstractAI)) {
+                notifyListeners("would you like to sponsor", player);
 //                    if (alertResult) {
 //                        sponsor = activePlayer;
 //                        serverSetSponsor(sponsor);
@@ -657,19 +689,15 @@ public class Model implements PropertyChangeListener
 //                        continueButton.setVisible(true);
 //                        break;
 //                    }
-            }
-            else{
+            } else {
                 //AI CODE
-//                    player.getCardsInHand();
-//                    ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverResponse);
-//                    boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest)serverResponse);
-//                    if (aiResult) {
-//                        sponsor = activePlayer;
-//                        serverSetSponsor(sponsor);
-//                        performQuest(sponsor, (Quest) serverResponse);
-//                        nextTurnButton.setVisible(false);
-//                        continueButton.setVisible(true);
-//                        break;
+                player.getCardsInHand();
+                ((AbstractAI) player).doISponsor(currentPlayerOrder, player.getCardsInHand(), (Quest) currentQuest);
+                boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder, player.getCardsInHand(), (Quest) currentQuest);
+                if (aiResult) {
+                    sponsor = activePlayer;
+                    setSponsor(sponsor);
+//                    performQuest(sponsor, (Quest) currentQuest);
                 }
             }
         }
@@ -680,21 +708,21 @@ public class Model implements PropertyChangeListener
 //            nextTurnButton.setDisable(false);
 //            continueButton.setVisible(false);
 //        }
-
-    public void declineSponsor(){
-        currentPlayerOrderIndex++;
-        if (currentPlayerOrderIndex > players.size()){
-            currentPlayerOrderIndex = 0;
-            setActivePlayer(players.get(currentTurnIndex));
-            changed();
-            notifyListeners("no sponsor", activePlayer);
-        }
-        else {
-            questDraw(players.get(currentPlayerOrderIndex));
-        }
     }
 
-    private void performQuest(Player sponsor, Quest quest) {
+        public void declineSponsor() {
+            currentPlayerOrderIndex++;
+            if (currentPlayerOrderIndex > players.size()) {
+                currentPlayerOrderIndex = 0;
+                setActivePlayer(players.get(currentTurnIndex));
+                changed();
+                notifyListeners("no sponsor", activePlayer);
+            } else {
+                questDraw(players.get(currentPlayerOrderIndex));
+            }
+        }
+
+        private void performQuest (Player sponsor, Quest quest){
 //        quest.addChangeListener(this);
 //        serverSetSponsor(sponsor);
 //        quest.setSponsor(sponsor);
@@ -728,8 +756,6 @@ public class Model implements PropertyChangeListener
 //            update();
 //        }
     }
-
-
 
     private void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI

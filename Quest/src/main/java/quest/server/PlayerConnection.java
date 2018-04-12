@@ -126,7 +126,7 @@ public class PlayerConnection {
                             }
                         }
                     } catch(Exception E){
-                        E.printStackTrace();
+//                        E.printStackTrace();
                     }
                 }
             } catch (Exception E) { //IOException

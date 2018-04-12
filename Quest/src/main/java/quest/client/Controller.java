@@ -30,8 +30,6 @@ import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import static java.lang.System.exit;
-import static java.lang.System.setOut;
-import static java.util.Arrays.asList;
 
 enum Behaviour {SPONSOR, QUEST_MEMBER, BID, DISCARD, CALL_TO_ARMS, TOURNAMENT, DEFAULT, DISABLED}
 
@@ -42,7 +40,6 @@ public class Controller implements PropertyChangeListener {
     private Player currentTurnPlayer;
     private Player thisPlayer;
     private int NUM_PLAYERS = 0;
-    private int currentPlayerIndex = 0;
     private AdventureCard selectedAdventureCard;
     private  Behaviour previousBehaviour;
     private Behaviour currentBehaviour;
@@ -448,11 +445,11 @@ public class Controller implements PropertyChangeListener {
         stagesGridPane.add(stagePane,stageIndex,0);
     }
 
-    public void setCurrentBehaviour(Behaviour behave){
+    private void setCurrentBehaviour(Behaviour behave){
         currentBehaviour = behave;
     }
 
-    public void update() {
+    private void update() {
         //Vbox display player data
         ArrayList<Player> currentPlayers = serverGetPlayers();
         StoryCard serverResponse = serverGetCurrentStory();
@@ -615,7 +612,7 @@ public class Controller implements PropertyChangeListener {
         return (questAlert.getResult() == ButtonType.YES);
     }
 
-    public void okAlert(String contentText, String headerText){
+    private void okAlert(String contentText, String headerText){
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, contentText, ButtonType.OK);
         DialogPane dialog = alert.getDialogPane();
         alert.setHeaderText(headerText);
@@ -727,9 +724,7 @@ public class Controller implements PropertyChangeListener {
 //
 //        currentTurnPlayer = serverGetPlayers().get(currentPlayerIndex);
 //        setActivePlayer(currentTurnPlayer);
-//        if(activePlayer instanceof AbstractAI){
-//            runAITurn();
-//        }
+//
 //        else{
 //            storyDeckImg.setDisable(false);
         serverNextTurn();
@@ -1137,12 +1132,7 @@ public class Controller implements PropertyChangeListener {
         continueButton.setVisible(false);
         setActivePlayer(serverGetPlayers().get(serverGetCurrentTurnIndex()));
         getWinningPlayers();
-        update();
-        if(activePlayer instanceof AbstractAI){
-            runAITurn();
-        }
     }
-
 
     //EVENTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1206,45 +1196,6 @@ public class Controller implements PropertyChangeListener {
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     //MOVE AI TURN TO AI
-   private void runAITurn(){
-//        StoryCard currentStory = serverGetCurrentStory();
-//        serverDrawStoryCard();
-//        ArrayList<Player> serverplayers = serverGetPlayers();
-//        System.out.println("storyDeckDraw(): " + currentStory.getName());
-//        //activeStoryImg = createStoryCardImageView();
-//        activeStoryImg.setImage(getCardImage(currentStory.getImageFilename()));
-//        update();
-//
-//        ArrayList<Player> currentPlayerOrder = new ArrayList<>();
-//        int currentTurn = serverplayers.indexOf(activePlayer);
-//        for(int i = 0; i < NUM_PLAYERS; i++){
-//            currentPlayerOrder.add(serverplayers.get(currentTurn));
-//            currentTurn = nextPlayerIndex(currentTurn);
-//        }
-////        ArrayList<Player> noAIPlayers = new ArrayList<>();
-////        for(Player player : serverGetPlayers()){
-////            if(!(player instanceof AbstractAI)){
-////                noAIPlayers.add(player);
-////            }
-////        }
-//        if (currentStory instanceof Quest) {
-//            serverSetCurrentQuest((Quest) currentStory);
-//            questDraw(currentPlayerOrder);
-//        } else if (currentStory instanceof Event) {
-//            nextTurnButton.setVisible(true);
-//            Event gameEvent = (Event) currentStory;
-//            callEventEffect(gameEvent);
-//        } else if (currentStory instanceof Tournament) {
-//            nextTurnButton.setVisible(true);
-//            serverSetCurrentTournament((Tournament) currentStory);
-//            performTournament(currentPlayerOrder, serverGetCurrentTournament());
-//            nextTurnButton.setDisable(false);
-//        }
-//        currentPlayerIndex = nextPlayerIndex(currentPlayerIndex);
-//        storyDeckImg.setDisable(true);
-//        update();
-    }
-
 
     private void setActivePlayer(Player player){
         activePlayer = player;
@@ -1594,19 +1545,19 @@ public class Controller implements PropertyChangeListener {
             setDaemon(true);
         }
 
-        public boolean getUpdateState() { return updateState.get(); }
+        boolean getUpdateState() { return updateState.get(); }
 
         public BooleanProperty updateState() { return updateState; }
 
-        public String getAlert() { return alert.get(); }
+        String getAlert() { return alert.get(); }
 
         public StringProperty alert() { return alert; }
 
-        public boolean getContinueButton() { return continueButton.get(); }
+        boolean getContinueButton() { return continueButton.get(); }
 
         public BooleanProperty continueButton() { return continueButton; }
 
-        public boolean getNextTurnButton() { return nextTurnButton.get(); }
+        boolean getNextTurnButton() { return nextTurnButton.get(); }
 
         public BooleanProperty nextTurnButton() { return nextTurnButton; }
 
@@ -1695,11 +1646,9 @@ public class Controller implements PropertyChangeListener {
                     }
                 } catch(Exception ignored) {
                 }
-
             }
         }
     }
-
 }
 
 
