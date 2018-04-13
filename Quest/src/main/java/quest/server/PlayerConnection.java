@@ -191,16 +191,23 @@ public class PlayerConnection {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             System.out.println("jsonObject" + jsonObject);
             if(jsonObject.get(String.valueOf(i)) instanceof JSONObject) {
+                System.out.println(jsonObject.get(String.valueOf(i)) +"INSTANCE OF JSONOBJECT");
                 if ((!(jsonObject.getJSONObject(String.valueOf(i)).has("integer"))) && (!(jsonObject.getJSONObject(String.valueOf(i)).has("string")))) {
                     objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).toString();
+                    System.out.println(jsonObject.getJSONObject(String.valueOf(i)).toString() +" created");
                 } else {
                     if(jsonObject.getJSONObject(String.valueOf(i)).has("integer")){
                         objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).getString("integer");
                     } else if (jsonObject.getJSONObject(String.valueOf(i)).has("string")){
-                        objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).getString("string");
+                        try {
+                            objectList[i] = objectMapper.writeValueAsString(jsonObject.getJSONObject(String.valueOf(i)).getString("string"));
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
                     } else {
                         objectList[i] = "";
                     }
+                    System.out.println("MADE OBJECT: " + objectList[i]);
                 }
             } else {
                 objectList[i] = jsonObject.getString(String.valueOf(i));
@@ -256,7 +263,6 @@ public class PlayerConnection {
         for(int i = 0; i < list.length; i++){
             objectList[i] = getObject(list[i], classList[i]);
         }
-        System.out.println(Arrays.toString(objectList));
         return objectList;
     }
 
@@ -283,6 +289,8 @@ public class PlayerConnection {
     }
     private void applyClientAction(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
         try {
+            System.out.println("paramTypes: " + Arrays.toString(paramTypes));
+            System.out.println("params: " + Arrays.toString(params));
             Method method = Model.class.getDeclaredMethod(methodName, paramTypes);
             method.invoke(game, params);
             System.out.println("Invoked " + methodName);

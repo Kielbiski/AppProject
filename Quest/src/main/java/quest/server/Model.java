@@ -189,28 +189,30 @@ public class Model implements PropertyChangeListener
         return null;
     }
 
-    public boolean validateQuestStages() {
+    private boolean validateQuestStages() {
         int lastStageBattlePoints = 0;
         int testCount =0;
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
             int currentStageBattlePoints = 0;
             int foeCount = 0;
-            if(getPreQuestStageSetup().get(i) == null){
+            if (getPreQuestStageSetup().get(i) == null) {
                 return false;
             }
-            for (AdventureCard adventureCard :  getPreQuestStageSetup().get(i)) {
+            for (AdventureCard adventureCard : getPreQuestStageSetup().get(i)) {
                 int adventureCardBattlePoints = adventureCard.getBattlePoints();
-                if (adventureCard instanceof Test) {
-                    if(getPreQuestStageSetup().get(i).size() > 1) {
+                if (adventureCard.getClassName().equals("Test")) {
+                    System.out.println("INSTANCEOFTEST");
+                    if (getPreQuestStageSetup().get(i).size() > 1) {
                         return false;
                     }
                     testCount++;
                     break;
-                } else if ((adventureCard instanceof Ally)) {
+                } else if (adventureCard.getClassName().equals("Ally")) {
                     return false;
-                } else if (adventureCard instanceof Foe) {
-                    for(AdventureCard foe : currentQuest.getQuestFoes()){
-                        if(adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())){
+                } else if (adventureCard.getClassName().equals("Foe")) {
+                    System.out.println("INSTANCE OF FOE");
+                    for (AdventureCard foe : currentQuest.getQuestFoes()) {
+                        if (adventureCard.getName().toLowerCase().equals(foe.getName().toLowerCase())) {
                             adventureCardBattlePoints += adventureCard.getBonusBattlePoints();
                             break;
                         }
@@ -219,10 +221,13 @@ public class Model implements PropertyChangeListener
                 }
                 currentStageBattlePoints += adventureCardBattlePoints;
             }
-            if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
-                lastStageBattlePoints = currentStageBattlePoints;
-            } else {
-                return false;
+            System.out.println("PREQUESTSTAGES: " + getPreQuestStageSetup());
+            if(getPreQuestStageSetup().get(i).size() != 0){
+                if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
+                    lastStageBattlePoints = currentStageBattlePoints;
+                } else {
+                    return false;
+                }
             }
             if(foeCount == 0 && testCount == 0 || foeCount > 1){
                 return false;
@@ -557,6 +562,7 @@ public class Model implements PropertyChangeListener
     public void addToPotentialStage(AdventureCard card, Integer stageNum){
         logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
+        System.out.println(preQuestStageSetup);
     }
     public void setPotentialStage(ArrayList<AdventureCard> stage, Integer stageNum){
         logger.info("Set the following potential stage"+stageNum+"to pre-stage");
@@ -572,7 +578,6 @@ public class Model implements PropertyChangeListener
             preQuestStageSetup.put(i,new ArrayList<>());
         }
         logger.info("Resetting potential pre-stage");
-        changed();
     }
 
 //    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
@@ -762,6 +767,7 @@ public class Model implements PropertyChangeListener
     public void continueAction(String behaviour){
         switch (behaviour) {
             case "SPONSOR":
+                System.out.println("SPONSOR GOES HERE");
                 continueSponsor();
                 break;
             case "QUEST_MEMBER":
@@ -778,12 +784,12 @@ public class Model implements PropertyChangeListener
             for(int i = 0; i<getCurrentQuest().getNumStage();i++){
                 addStageToCurrentQuest(i);
             }
-            notifyListeners("set behaviour", Boolean.TRUE, "","QUEST_MEMBER");
+            System.out.println("STARTING");
             currentQuest.startQuest();
-            if(!getCurrentQuest().isInTest()){
-                notifyListeners("set behaviour", Boolean.TRUE, "","QUEST_MEMBER");
-                setActivePlayer(getCurrentQuest().getCurrentPlayer());
-            }
+//            if(!getCurrentQuest().isInTest()){
+//                notifyListeners("set behaviour", Boolean.TRUE, "","QUEST_MEMBER");
+//                setActivePlayer(getCurrentQuest().getCurrentPlayer());
+//            }
         } else {
             notifyListeners("setup valid quest", activePlayer);
             for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
@@ -792,6 +798,7 @@ public class Model implements PropertyChangeListener
                     addCardToSponsorHand(card);
                 }
             }
+            System.out.println("RESETTING");
             resetPotentialStages();
         }
     }

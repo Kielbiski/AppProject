@@ -8,9 +8,7 @@ public class Ally extends AdventureCard {
 
     private static final Logger logger = LogManager.getLogger(App.class);
     private String affectedEntity;
-    Ally(){
-        classType="Ally";
-    }
+    Ally(){className = "Ally";}
 
     public void setAffectedEntity(String affectedEntity) {
         this.affectedEntity = affectedEntity;
@@ -19,7 +17,7 @@ public class Ally extends AdventureCard {
     public Ally(String paramName, String paramImageFilename, int paramBattlePoints, int paramBids, int paramBonusBattlePoints, int paramBonusBids, String paramAffectedEntities)
     {
         super(paramName, paramImageFilename);
-        classType="Ally";
+        className = "Ally";
         battlePoints = paramBattlePoints;
         bids = paramBids;
         bonusBattlePoints = paramBonusBattlePoints;
