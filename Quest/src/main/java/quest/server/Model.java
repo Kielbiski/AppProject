@@ -724,12 +724,13 @@ public class Model implements PropertyChangeListener
         }
     }
 
-    public void performQuest(Player sponsor, Quest quest) {
-       quest.addChangeListener(this);
+    public void performQuest(Player sponsor) {
+       currentQuest.addChangeListener(this);
        setSponsor(sponsor);
-       quest.setSponsor(sponsor);
+       currentQuest.setSponsor(sponsor);
        setActivePlayer(sponsor);
        //add these bits to the notification
+        System.out.println("BIG FUCK");
         notifyListeners("perform quest",sponsor);
 
 //        for(int i = 0;i<quest.getNumStage();i++){
