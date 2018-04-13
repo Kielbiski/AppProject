@@ -791,6 +791,7 @@ public class Model implements PropertyChangeListener
             }
             System.out.println("STARTING");
             currentQuest.startQuest();
+            changed();
 //            if(!getCurrentQuest().isInTest()){
 //                notifyListeners("set behaviour", Boolean.TRUE, "","QUEST_MEMBER");
 //                setActivePlayer(getCurrentQuest().getCurrentPlayer());
@@ -806,6 +807,8 @@ public class Model implements PropertyChangeListener
             System.out.println("RESETTING");
             resetPotentialStages();
         }
+        getCurrentQuest().nextTurn();
+        nextTurn();
     }
 
     private void continueQuestMember(){
@@ -821,6 +824,8 @@ public class Model implements PropertyChangeListener
                 setActivePlayer(getCurrentQuest().getCurrentPlayer());
             }
         }
+        changed();
+        nextTurn();
     }
 
     private void continueTournament(){

@@ -6,7 +6,7 @@ import quest.client.App;
 
 import java.util.ArrayList;
 
-public abstract class QuestStage {
+public class QuestStage {
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
