@@ -91,6 +91,7 @@ public class PlayerConnection {
                                     game.changed();
                                 } else {
                                     //fix
+                                    System.out.println("MASSSIVE FUCk");
                                     Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     System.out.println(name + " requested: " + clientRequest);
                                     Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
@@ -131,7 +132,7 @@ public class PlayerConnection {
                             }
                         }
                     } catch(Exception E){
-//                        E.printStackTrace();
+                        E.printStackTrace();
                     }
                 }
             } catch (Exception E) { //IOException
@@ -178,6 +179,7 @@ public class PlayerConnection {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
         for(int i = 0; i < jsonArray.length(); i++)
         {
             String jsonString = jsonArray.getString(i);
@@ -212,6 +214,7 @@ public class PlayerConnection {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
+
             String test = jsonFromServer.getJSONObject(index).toString();
             System.out.println("test: " + test);
             return objectMapper.readValue(test, objectClass);
@@ -237,6 +240,7 @@ public class PlayerConnection {
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -257,6 +261,7 @@ public class PlayerConnection {
             Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
             method.invoke(game, params);
             game.changed();
+            System.out.println("invoked: "+methodName);
 //            System.out.println("Changed at: " + System.currentTimeMillis());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();

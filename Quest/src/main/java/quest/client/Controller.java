@@ -153,7 +153,6 @@ public class Controller implements PropertyChangeListener {
 
         sponsorStatus = yesNoAlert(alertText,alertTextHeader);
         if(sponsorStatus){
-            System.out.println("FUCK");
             serverPerformQuest(thisPlayer);
         }
         else{
