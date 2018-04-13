@@ -1,4 +1,5 @@
 package quest.server;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -52,14 +53,13 @@ public class PlayerConnection {
     @SuppressWarnings({"InfiniteLoopStatement", "unchecked"})
     PlayerConnection(DataOutputStream dos, DataInputStream dis, DataOutputStream pdos, DataInputStream pdis, String name, Model game) {
         player = new Player(name);
-        player.setShields(10); //to be removed
         game.addPlayerToGame(player);
         this.name = name;
         this.dos = dos;
         this.dis = dis;
         this.pdos = pdos;
         this.pdis = pdis;
-        
+
         ObjectMapper mapper = new ObjectMapper();
         try {
             org.json.simple.JSONObject json = new org.json.simple.JSONObject();
@@ -126,7 +126,7 @@ public class PlayerConnection {
                             }
                         }
                     } catch(Exception E){
-                        E.printStackTrace();
+//                        E.printStackTrace();
                     }
                 }
             } catch (Exception E) { //IOException
@@ -235,6 +235,7 @@ public class PlayerConnection {
             Method method = game.getClass().getDeclaredMethod(methodName);
             method.invoke(game);
             game.changed();
+//            System.out.println("Changed at: " + System.currentTimeMillis());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }
@@ -245,6 +246,7 @@ public class PlayerConnection {
             Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
             method.invoke(game, params);
             game.changed();
+//            System.out.println("Changed at: " + System.currentTimeMillis());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }

@@ -144,7 +144,7 @@ public class Server implements PropertyChangeListener {
         switch (change.getPropertyName()) {
             case "changed": {
                 for (PlayerConnection player : players) {
-                    System.out.println("CHANGE TIRGGERED");
+                    System.out.println("CHANGE TRIGGERED");
                     sendJSON(player, "update", "true");
                 }
                 break;
