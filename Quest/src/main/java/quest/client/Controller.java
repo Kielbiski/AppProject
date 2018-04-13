@@ -472,7 +472,7 @@ public class Controller implements PropertyChangeListener {
         else{
             if (yesNoAlert("Join Quest"+ serverGetCurrentQuest().getName() + "?", "Join quest?")) {
                 System.out.println(thisPlayer);
-                serverAddPlayerToQuest(thisPlayer);
+                serverAddPlayerToQuest();
             }
             serverIncPlayers();
 
@@ -1325,8 +1325,8 @@ public class Controller implements PropertyChangeListener {
     private void serverPerformQuest(Player player) {
         genericSet("performQuest", player);
     }
-    private void serverAddPlayerToQuest(Player player){
-        genericSet("addPlayerToQuest", player);
+    private void serverAddPlayerToQuest(){
+        genericSet("addPlayerToQuest", thisPlayer);
     }
     private void serverDeclineSponsor() {
         genericSet("declineSponsor");

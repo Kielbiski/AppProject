@@ -925,11 +925,17 @@ public class Model implements PropertyChangeListener
     }
 
     public void addPlayerToQuest(Player player){
-        System.out.println("CURRENTQUEST" + currentQuest);
-        System.out.println("PLAYER" + player);
-        currentQuest.addPlayer(player);
-        drawAdventureCard(player);
-        changed();
+        for(Player p: players){
+            if( player.getPlayerName().equals(p.getPlayerName())){
+                System.out.println("PLAYER HAND BEFORE" + p.getCardsInHand().size());
+                currentQuest.addPlayer(p);
+                drawAdventureCard(p);
+                System.out.println("PLAYER HAND AFTER" + p.getCardsInHand().size());
+
+                changed();
+            }
+        }
+
 
     }
 
