@@ -456,6 +456,7 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void setupQuest() {
+        System.out.println("GOT HERE");
         if(thisPlayer.getPlayerName().equals(serverGetSponsor().getPlayerName())) {
             setCurrentBehaviour(Behaviour.SPONSOR);
             continueButton.setVisible(true);
