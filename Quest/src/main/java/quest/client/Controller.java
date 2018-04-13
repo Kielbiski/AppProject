@@ -281,7 +281,7 @@ public class Controller implements PropertyChangeListener {
                         System.out.println("Bid.");
                     }
                     else if(currentBehaviour == Behaviour.TOURNAMENT){
-                        if (!(selectedAdventureCard instanceof Foe)) {
+                        if (!(selectedAdventureCard.getClassName().equals("Foe"))){
                             thisPlayer.addCardToTournamnet(selectedAdventureCard);
                             thisPlayer.removeCardFromHand(selectedAdventureCard);
                             serverSyncPlayer();
@@ -616,16 +616,19 @@ public class Controller implements PropertyChangeListener {
 
         if(currentBehaviour == Behaviour.SPONSOR) {
             Quest current = serverGetCurrentQuest();
-            HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
-            for(int i =0; i < current.getNumStage(); i++){
-                if (flowPaneArray!= null) {
-                    flowPaneArray.get(i).getChildren().clear();
-                }
-                for (AdventureCard card : pre.get(i)) {
-                    ImageView imgView = createAdventureCardImageView(card);
-                    imgView.setImage(getCardImage(card.getImageFilename()));
-                    imgView.toFront();
-                    flowPaneArray.get(i).getChildren().add(imgView);
+            System.out.println("CURRENT QUEST (SPONSOR) -> " + current);
+            if(current!=null) {
+                HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
+                for (int i = 0; i < current.getNumStage(); i++) {
+                    if (flowPaneArray != null) {
+                        flowPaneArray.get(i).getChildren().clear();
+                    }
+                    for (AdventureCard card : pre.get(i)) {
+                        ImageView imgView = createAdventureCardImageView(card);
+                        imgView.setImage(getCardImage(card.getImageFilename()));
+                        imgView.toFront();
+                        flowPaneArray.get(i).getChildren().add(imgView);
+                    }
                 }
             }
         }
@@ -634,12 +637,7 @@ public class Controller implements PropertyChangeListener {
             System.out.println("CURRENT QUEST -> " + current);
             if(current!=null) {
                 System.out.println("num stage: " +current.getNumStage());
-                for (int i = 0; i < current.getNumStage(); i++) {
-                    flowPaneArray.get(i).getChildren().clear();
-                    System.out.println("------------");
-                    System.out.println(current.getCurrentStage());
-                    System.out.println(current.getStages());
-                    System.out.println(current.getStages().get(i));
+                for (int i = 0; i < current.getStages().size(); i++) {
                     if (current.getCurrentStage() == current.getStages().get(i)) {
                         HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
                         for (AdventureCard card : pre.get(i)) {
