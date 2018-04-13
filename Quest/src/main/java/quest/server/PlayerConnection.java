@@ -203,7 +203,7 @@ public class PlayerConnection {
             try {
 //                objectMapper.readValue(
 //                classList[i] = Player.class;
-                classList[i] = Class.forName(jsonString);
+                classList[i] = Class.forName(jsonString.substring(1,jsonString.length()-1));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
