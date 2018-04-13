@@ -731,7 +731,6 @@ public class Model implements PropertyChangeListener
        currentQuest.setSponsor(sponsor);
        setActivePlayer(sponsor);
        //add these bits to the notification
-        System.out.println("BIG FUCK");
         notifyListeners("perform quest",sponsor);
 
 //        for(int i = 0;i<quest.getNumStage();i++){

@@ -91,8 +91,6 @@ public class PlayerConnection {
                                     System.out.println("After player "+  name+ (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
                                     game.changed();
                                 } else {
-                                    //fix
-                                    System.out.println("MASSSIVE FUCk");
                                     String[] argumentStrings = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     System.out.println(name + " requested: " + clientRequest);
                                     Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
