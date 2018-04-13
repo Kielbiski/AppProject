@@ -468,11 +468,13 @@ public class Controller implements PropertyChangeListener {
 
     private void update() {
         //Vbox display player data
+        System.out.println("first line");
         ArrayList<Player> currentPlayers = serverGetPlayers();
-        StoryCard serverResponse = serverGetCurrentStory();
         for (Player p: currentPlayers){
             System.out.println("UPDATE: GET CURRENT PLAYERS:" + p.getCardsInHand());
         }
+        StoryCard serverResponse = serverGetCurrentStory();
+        System.out.println("story: " + serverResponse);
         //FIND OUT WHY NULL POINTER
         int currentTurnIndex = serverGetCurrentTurnIndex();
         if(serverResponse!=null) {
@@ -1108,7 +1110,7 @@ public class Controller implements PropertyChangeListener {
                 } else {
                     try {
                         serverJSON = dis.readUTF();
-                        System.out.println("Server responded with: " + serverJSON);
+                        System.out.println("Server responded to: " + methodName + " with: " + serverJSON);
                         return serverJSON;
                     } catch (IOException E) {
                         E.printStackTrace();
@@ -1123,24 +1125,49 @@ public class Controller implements PropertyChangeListener {
         return serverJSON;
     }
     @SuppressWarnings("unchecked")
-    private String genericGetWithParams(String methodName, ArrayList<Class<?>> argumentTypes, ArrayList<Object> arguments){
+    private String genericGetWithParams(String methodName, Object... args){
+        System.out.println("Getter called with args " + args);
         String serverJSON = "";
         JSONObject json = new JSONObject();
         json.put("type", "getWithParams");
         json.put("methodName", methodName);
-        json.put("argumentTypes", argumentTypes);
+        List<Object> ar = Arrays.asList(args);
+
+        JSONArray arguments = new JSONArray();
+        for(int k = 0; k < ar.size(); k++) {
+            JSONObject j = new JSONObject();
+            try {
+                j.put(String.valueOf(k), ar.get(k));
+            } catch (JSONException E) {
+                E.printStackTrace();
+            }
+            arguments.put(j);
+        }
         json.put("arguments", arguments);
+
+        ObjectMapper mapper = new ObjectMapper();
+        JSONArray argumentTypes = new JSONArray();
+        for(int i = 0; i < ar.size(); i++) {
+            JSONObject j = new JSONObject();
+            try {
+                j.put(String.valueOf(i), mapper.writeValueAsString(ar.get(i).getClass().getName()));
+            } catch (JSONException | JsonProcessingException E) {
+                E.printStackTrace();
+            }
+            argumentTypes.put(j);
+        }
+        json.put("argumentTypes", argumentTypes);
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();
-        } catch (IOException E){
+        } catch (IOException E) {
             E.printStackTrace();
         }
-        for(int i = 0; i < 1000; i++){
+        for(int i = 0; i < 100; i++){
             try {
                 if(dis.available() == 0) {//reads????
                     try {
-                        TimeUnit.MILLISECONDS.sleep(1);
+                        TimeUnit.MILLISECONDS.sleep(100);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -1212,28 +1239,13 @@ public class Controller implements PropertyChangeListener {
     }
     private Boolean serverIsValidDrop(AdventureCard card, Integer stageNum) {
         return getServerObject(
-                genericGetWithParams("isValidDrop",
-                        new ArrayList<Class<?>>(){{
-                            add(card.getClass());
-                            add(stageNum.getClass());
-                }},
-                        new ArrayList<Object>(){{
-                            add(card);
-                            add(stageNum);
-                }})
+                genericGetWithParams("isValidDrop",card, stageNum)
                 ,new TypeReference<Boolean>(){});
     }
     private Boolean serverGetMerlinIsUsed(AdventureCard card){
         return getServerObject(
-                genericGetWithParams("getMerlinIsUsed",
-                new ArrayList<Class<?>>(){
-                    {
-                        add(card.getClass());
-                    }},
-                new ArrayList<Object>(){{
-                        add(card);
-                    }}),
-                new TypeReference<Boolean>(){});
+                genericGetWithParams("getMerlinIsUsed",card)
+                ,new TypeReference<Boolean>(){});
     }
     ///////////////////////////////////////////////////////////////////////////
     //Setters
@@ -1263,7 +1275,7 @@ public class Controller implements PropertyChangeListener {
         for(int i = 0; i < ar.size(); i++) {
             JSONObject j = new JSONObject();
             try {
-                j.put(String.valueOf(i), mapper.writeValueAsString(ar.get(i).getClass().getCanonicalName()));
+                j.put(String.valueOf(i), mapper.writeValueAsString(ar.get(i).getClass().getName()));
             } catch (JSONException | JsonProcessingException E) {
                 E.printStackTrace();
             }

@@ -458,7 +458,6 @@ public class Model implements PropertyChangeListener
         drawStoryCard();
         ArrayList<Player> serverplayers = players;
         System.out.println("storyDeckDraw(): " + currentStory.getName());
-        changed();
         ArrayList<Player> currentPlayerOrder = new ArrayList<>();
         int currentTurn = serverplayers.indexOf(activePlayer);
         for(int i = 0; i < players.size(); i++){
@@ -667,7 +666,6 @@ public class Model implements PropertyChangeListener
     private void questDraw(Player player) {
         //Player sponsor;
         setActivePlayer(player);
-        //changed();
         int validCardCount = 0;
         for(AdventureCard adventureCard : player.getCardsInHand()){
             if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
@@ -716,7 +714,6 @@ public class Model implements PropertyChangeListener
         if (currentPlayerOrderIndex > players.size()){
             currentPlayerOrderIndex = 0;
             setActivePlayer(players.get(currentTurnIndex));
-            changed();
             notifyListeners("no sponsor", activePlayer);
         }
         else {

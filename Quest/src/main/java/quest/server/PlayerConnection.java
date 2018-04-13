@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.RecursiveToStringStyle;
@@ -78,63 +79,77 @@ public class PlayerConnection {
         new Thread(() -> {
             try {
                while(true) {
-                    //this is where the player input will need to be parsed
-                    try {
-                        JSONObject clientRequest = new JSONObject(dis.readUTF());
-                        System.out.println("\n\n-----------------------\n\n");
-                        if (clientRequest.getString("type").equals("set")) {
-                            System.out.println("Method Name: "+ clientRequest.getString("methodName"));
-                            if (clientRequest.has("arguments")){
-                                if(clientRequest.getString("methodName").equals("syncPlayer")) {
-                                    System.out.println("Syncing player " + name + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
-                                    player.syncPlayer(getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>(){}));
-                                    System.out.println("After player "+  name+ (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
-                                    game.changed();
-                                } else {
-                                    String[] argumentStrings = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
-                                    System.out.println(name + " requested: " + clientRequest);
-                                    Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
-                                    Object[] arguments = convertObjectList(argumentStrings, argumentTypes);
-                                    System.out.println(Arrays.toString(arguments));
-                                    applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
-                                }
-                            } else {
-                                System.out.println(name + " requested: " + clientRequest);
-                                applyClientAction(game, clientRequest.getString("methodName"));
-                            }
-                        }
-                        else if (clientRequest.getString("type").equals("get")){
-                            if(clientRequest.getString("methodName").equals("getSelf")){
-                                Player self = game.getSpecificPlayer(player);
-                                System.out.println("Self -> " +name + self);
-                                System.out.println(name + " requested: " + clientRequest);
-                                playerDataRequest = mapper.writeValueAsString(self);
-                                System.out.println("RETURNED-> " +name+ playerDataRequest);
-                            } else {
-                                playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
-                            }
-                            if(playerDataRequest != null){
-                                System.out.println(name + " requested: " + clientRequest);
-                                System.out.println("Server responded with: " + playerDataRequest + System.getProperty("line.separator"));
-                                dos.writeUTF(playerDataRequest);
-                                dos.flush();
-                            }
-                        }
-                        else if (clientRequest.getString("type").equals("getWithParams")){
-                            System.out.println(clientRequest);
-                            Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
-                            Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
-                            playerDataRequest = mapper.writeValueAsString(getObjectWithParamsForClient(game, clientRequest.getString("methodName"), argumentTypes, arguments));
-                            if(playerDataRequest != null){
-                                System.out.println(name + " requested: " + clientRequest);
-                                System.out.println("Server responded with: " + playerDataRequest);
-                                dos.writeUTF(playerDataRequest);
-                                dos.flush();
-                            }
-                        }
-                    } catch(Exception E){
-                        E.printStackTrace();
-                    }
+                   //this is where the player input will need to be parsed
+                   try {
+                       if (dis.available() == 0) {//reads????
+                       try {
+                           TimeUnit.MILLISECONDS.sleep(100);
+                       } catch (InterruptedException e) {
+                           e.printStackTrace();
+                       }
+                   } else {
+                       try {
+                           JSONObject clientRequest = new JSONObject(dis.readUTF());
+                           System.out.println("\n-----------------------\n");
+                           System.out.println("Method Name: " + clientRequest.getString("methodName"));
+                           if (clientRequest.getString("type").equals("set")) {
+                               if (clientRequest.has("arguments")) {
+                                   if (clientRequest.getString("methodName").equals("syncPlayer")) {
+                                       System.out.println("Syncing player " + name + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                       player.syncPlayer(getObjectWithKnownType(clientRequest.getJSONArray("arguments").getJSONObject(0), "0", new TypeReference<Player>() {
+                                       }));
+                                       game.changed();
+                                       System.out.println("After player " + name + (new ReflectionToStringBuilder(player, new RecursiveToStringStyle()).toString()));
+                                   } else {
+                                       //fix
+                                       String[] argumentStrings = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
+                                       System.out.println(name + " requested: " + clientRequest);
+                                       Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
+                                       Object[] arguments = convertObjectList(argumentStrings, argumentTypes);
+                                       System.out.println(Arrays.toString(arguments));
+                                       applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
+                                   }
+                               } else {
+                                   System.out.println(name + " requested: " + clientRequest);
+                                   applyClientAction(game, clientRequest.getString("methodName"));
+                               }
+                           } else if (clientRequest.getString("type").equals("get")) {
+                               if (clientRequest.getString("methodName").equals("getSelf")) {
+                                   Player self = game.getSpecificPlayer(player);
+                                   System.out.println("Self -> " + name + self);
+                                   System.out.println(name + " requested: " + clientRequest);
+                                   playerDataRequest = mapper.writeValueAsString(self);
+                                   System.out.println("RETURNED-> " + name + playerDataRequest);
+                               } else {
+                                   playerDataRequest = mapper.writeValueAsString(getObjectForClient(game, clientRequest.getString("methodName")));
+                               }
+                               if (playerDataRequest != null) {
+                                   System.out.println(name + " requested: " + clientRequest);
+                                   System.out.println("Server responded with: " + playerDataRequest + System.getProperty("line.separator"));
+                                   dos.writeUTF(playerDataRequest);
+                                   dos.flush();
+                               }
+                           } else if (clientRequest.getString("type").equals("getWithParams")) {
+                               String[] argumentStrings = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
+                               System.out.println(name + " requested: " + clientRequest);
+                               Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
+                               Object[] arguments = convertObjectList(argumentStrings, argumentTypes);
+                               System.out.println(Arrays.toString(arguments));
+                               playerDataRequest = mapper.writeValueAsString(getObjectWithParamsForClient(game, clientRequest.getString("methodName"), argumentTypes, arguments));
+                               if (playerDataRequest != null) {
+                                   System.out.println(name + " requested: " + clientRequest);
+                                   System.out.println("Server responded with: " + playerDataRequest);
+                                   dos.writeUTF(playerDataRequest);
+                                   dos.flush();
+                               }
+                           }
+                       } catch (Exception E) {
+                           E.printStackTrace();
+                       }
+                   }
+               } catch (IOException e) {
+                       e.printStackTrace();
+                   }
                 }
             } catch (Exception E) { //IOException
                 E.printStackTrace();
@@ -166,6 +181,7 @@ public class PlayerConnection {
         }).start();
     }
     private String[] convertJSONToObjectList(JSONArray jsonArray){
+        System.out.println("JSONArray: " + jsonArray);
         String[] objectList = new String[jsonArray.length()];
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -247,7 +263,6 @@ public class PlayerConnection {
         try {
             Method method = game.getClass().getDeclaredMethod(methodName);
             method.invoke(game);
-            game.changed();
 //            System.out.println("Changed at: " + System.currentTimeMillis());
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
@@ -255,13 +270,9 @@ public class PlayerConnection {
     }
     private void applyClientAction(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
         try {
-            System.out.println("paramTypes: "+Arrays.toString(paramTypes));
-            System.out.println("params: " +Arrays.toString(params));
             Method method = Model.class.getDeclaredMethod(methodName, paramTypes);
             method.invoke(game, params);
-            game.changed();
-            System.out.println("invoked: "+methodName);
-//            System.out.println("Changed at: " + System.currentTimeMillis());
+            System.out.println("Invoked " + methodName);
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
         }
@@ -270,7 +281,9 @@ public class PlayerConnection {
     private Object getObjectForClient(Model game, String methodName){
         try {
             Method method = game.getClass().getDeclaredMethod(methodName);
-            return method.invoke(game);
+            Object result = method.invoke(game);
+            System.out.println("Got object: " + result.toString());
+            return result;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
             E.printStackTrace();
             return null;
