@@ -8,15 +8,21 @@ import static java.lang.System.exit;
 public class Controller {
 
     private int numberOfPlayers;
+    private int numberOfAI;
     private String scenario;
     private int portNumber;
+
+
 
     public Controller() {
         serverSettingsSplash();
 
-        new Server(getNumberOfPlayers(), getScenario(), getPortNumber());
+        new Server(getNumberOfPlayers(), getScenario(), getPortNumber(), getNumberOfAI());
         exit(0);
 }
+    public int getNumberOfAI() {
+        return numberOfAI;
+    }
 
     public int getPortNumber() {
         return portNumber;
@@ -50,11 +56,14 @@ public class Controller {
         String scenario = "Regular";
         result.ifPresent(this::setScenario);
         int numberOfPlayersResult = askNumberOfPlayers();
+
         if(numberOfPlayersResult == 0){
             okAlert("Error starting game, not enough players!", "Error.");
             exit(0);
         }
         setNumberOfPlayers(numberOfPlayersResult);
+        numberOfAI = askNumberOfAI();
+
         askPortNumber();
         setPortNumber(getPortNumber());
 
@@ -98,6 +107,38 @@ public class Controller {
             }
         }
         okAlert("Error starting game, not enough players!", "Error.");
+        exit(0);
+        return 0;
+    }
+
+    private int askNumberOfAI(){
+        List<String> choices = new ArrayList<>();
+
+        for(int i=0; i<numberOfPlayers-1; i++){
+            choices.add(i + " AI");
+        }
+
+        ChoiceDialog<String> dialog = new ChoiceDialog<>("0 AI", choices);
+        dialog.setTitle("Number of AI?");
+        dialog.setHeaderText("How many AI players would you like?");
+        dialog.setContentText("Please select number of AI:");
+        Optional<String> result = dialog.showAndWait();
+        // The Java 8 way to get the response value (with lambda expression).
+        if (result.isPresent()) {
+            String number = result.get();
+            switch (number) {
+                case "0 AI":
+                    return 0;
+                case "1 AI":
+                    return 1;
+                case "2 AI":
+                    return 2;
+                case "3 AI":
+                    return 3;
+                default:
+                    return 0;
+            }
+        }
         exit(0);
         return 0;
     }

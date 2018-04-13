@@ -472,6 +472,7 @@ public class Controller implements PropertyChangeListener {
         else{
             if (yesNoAlert("Join Quest"+ serverGetCurrentQuest().getName() + "?", "Join quest?")) {
                 System.out.println(thisPlayer);
+                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
                 serverAddPlayerToQuest();
             }
             serverIncPlayers();

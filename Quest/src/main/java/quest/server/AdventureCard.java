@@ -13,6 +13,7 @@ public class AdventureCard extends Card
     int bids;
     int bonusBattlePoints;
     int bonusBids;
+    String classType;
     AdventureCard(){}
     AdventureCard(String name, String imageFilename){
 

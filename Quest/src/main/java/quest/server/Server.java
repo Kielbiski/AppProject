@@ -24,13 +24,15 @@ public class Server implements PropertyChangeListener {
     private Socket playerBackgroundWorker;
 
     private int numberOfPlayers;
+    private int numberOfAI;
     private static Model game;
 
     private String scenario;
     @SuppressWarnings("InfiniteLoopStatement")
-    Server(int numberOfPlayers, String scenario, int portNumber) {
+    Server(int numberOfPlayers, String scenario, int portNumber, int numberOfAI) {
         this.numberOfPlayers = numberOfPlayers;
         this.scenario = scenario;
+        this.numberOfAI = numberOfAI;
         game = new Model();
         game.addChangeListener(this);
         System.out.println("________________________________________\n");
@@ -51,7 +53,7 @@ public class Server implements PropertyChangeListener {
             while (true) {
                 while (flag) {
                     System.out.println("Waiting for all players to join.");
-                    if (players.size() < numberOfPlayers) {
+                    if (players.size() < numberOfPlayers-numberOfAI) {
                         this.player = serverSocket.accept();
                         this.dis = new DataInputStream(player.getInputStream());
                         this.dos = new DataOutputStream(player.getOutputStream());
@@ -75,6 +77,9 @@ public class Server implements PropertyChangeListener {
         }
     }
     private void initialize() {
+        for (int i=0; i<numberOfAI;i++){
+            game.addPlayer("CPU","AI "+i);
+        }
         Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
         Collections.shuffle(deckOfAdventureCards);
         //overrode for boarhunt
@@ -122,7 +127,7 @@ public class Server implements PropertyChangeListener {
         }
         game.dealCards(deckOfAdventureCards);
         game.setActivePlayer(game.getPlayers().get(0));
-        for(int i = 0; i < game.getPlayers().size(); i++) {
+        for(int i = 0; i < game.getPlayers().size()-numberOfAI; i++) {
             if (i == game.getCurrentTurnIndex()) {
                 sendJSON(players.get(i), "behaviour", "DEFAULT");
             } else {
@@ -150,7 +155,7 @@ public class Server implements PropertyChangeListener {
                 break;
             }
             case "nextTurn": {
-                for(int i = 0; i < game.getPlayers().size(); i++) {
+                for(int i = 0; i < game.getPlayers().size()-numberOfAI; i++) {
                     if (i == game.getCurrentTurnIndex()) {
                         sendJSON(players.get(i), "behaviour", "DEFAULT");
                     } else {
