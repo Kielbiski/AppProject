@@ -124,10 +124,12 @@ public class Controller implements PropertyChangeListener {
                 }
             });
             backgroundWorker.alert.addListener((observable, oldValue, newValue) -> {
+                System.out.println("___________________________");
+                System.out.println(backgroundWorker.getAlert());
                 if (backgroundWorker.getAlert().equals("ok")) {
                     Platform.runLater(() -> okAlert(alertText,alertTextHeader));
                 }
-                else if(backgroundWorker.getAlert().equals("yesNoQuestSponsor")){
+                else if(backgroundWorker.getAlert().equals("yesNoSponsor")){
                    Platform.runLater(() -> sponsorQuest());
                     if(sponsorStatus){
                         serverPerformQuest(thisPlayer);
@@ -1619,6 +1621,7 @@ public class Controller implements PropertyChangeListener {
                         alert.setValue("ok");
                     }
                     if(serverCommand.has("would you like to sponsor")) {
+                        System.out.println("WOULD YOU LIKE TO SPONSOR");
                         alertTextHeader = thisPlayer.getPlayerName() + ", would you like to sponsor " + serverGetCurrentQuest().getName() + "?";
                         alertText = "Sponsor " + serverGetCurrentQuest().getName() + "?";
                         alert.setValue("yesNoSponsor");

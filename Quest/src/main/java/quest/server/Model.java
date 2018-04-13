@@ -484,7 +484,6 @@ public class Model implements PropertyChangeListener
 
     public void addPlayerToGame(Player player){
         players.add(player);
-        System.out.println(players);
     }
 
     public void addPlayer(String playerType, String name){
@@ -667,20 +666,20 @@ public class Model implements PropertyChangeListener
     private void questDraw(Player player) {
         //Player sponsor;
         setActivePlayer(player);
-        changed();
+        //changed();
         int validCardCount = 0;
-        for (AdventureCard adventureCard : player.getCardsInHand()) {
-            if ((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+        for(AdventureCard adventureCard : player.getCardsInHand()){
+            if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
                 validCardCount++;
             }
         }
-        if (validCardCount < currentQuest.getNumStage()) {
-            if (!(player instanceof AbstractAI)) {
+        if(validCardCount < currentQuest.getNumStage()){
+            if(!(player instanceof AbstractAI)) {
                 notifyListeners("unable to sponsor", player);
             }
         } else {
-            if (!(player instanceof AbstractAI)) {
-                notifyListeners("would you like to sponsor", player);
+            if (!(player instanceof AbstractAI)){
+                notifyListeners("would you like to sponsor",player);
 //                    if (alertResult) {
 //                        sponsor = activePlayer;
 //                        serverSetSponsor(sponsor);
@@ -689,7 +688,8 @@ public class Model implements PropertyChangeListener
 //                        continueButton.setVisible(true);
 //                        break;
 //                    }
-            } else {
+            }
+            else{
                 //AI CODE
                 player.getCardsInHand();
                 ((AbstractAI) player).doISponsor(currentPlayerOrder, player.getCardsInHand(), (Quest) currentQuest);
@@ -710,19 +710,21 @@ public class Model implements PropertyChangeListener
 //        }
     }
 
-        public void declineSponsor() {
-            currentPlayerOrderIndex++;
-            if (currentPlayerOrderIndex > players.size()) {
-                currentPlayerOrderIndex = 0;
-                setActivePlayer(players.get(currentTurnIndex));
-                changed();
-                notifyListeners("no sponsor", activePlayer);
-            } else {
-                questDraw(players.get(currentPlayerOrderIndex));
-            }
+    public void declineSponsor(){
+        currentPlayerOrderIndex++;
+        if (currentPlayerOrderIndex > players.size()){
+            currentPlayerOrderIndex = 0;
+            setActivePlayer(players.get(currentTurnIndex));
+            changed();
+            notifyListeners("no sponsor", activePlayer);
         }
+        else {
+            currentPlayerOrderIndex++;
+            questDraw(players.get(currentPlayerOrderIndex));
+        }
+    }
 
-        private void performQuest (Player sponsor, Quest quest){
+    private void performQuest(Player sponsor, Quest quest) {
 //        quest.addChangeListener(this);
 //        serverSetSponsor(sponsor);
 //        quest.setSponsor(sponsor);
@@ -756,6 +758,8 @@ public class Model implements PropertyChangeListener
 //            update();
 //        }
     }
+
+
 
     private void handFull(Player player,boolean oldFull){
         //later do somethign different here if player type is AI
