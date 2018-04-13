@@ -168,16 +168,6 @@ public class PlayerConnection {
         }).start();
     }
     private String[] convertJSONToObjectList(JSONArray jsonArray){
-//        ArrayList<Object> returnObjects = new ArrayList<>();
-//        ObjectMapper objectMapper = new ObjectMapper();
-//        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-//        try {
-//            returnObjects.add(objectMapper.readValue(json.getString("arguments"), Object[].class));
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        System.out.println(returnObjects);
-//        return returnObjects;
         String[] objectList = new String[jsonArray.length()];
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -195,7 +185,6 @@ public class PlayerConnection {
 //                    e.printStackTrace();
 //            }
         }
-        System.out.println(objectList[0]);
         return objectList;
     }
 
@@ -211,15 +200,15 @@ public class PlayerConnection {
             System.out.println("jsonObject" + jsonObject);
             String jsonString = jsonObject.getString(String.valueOf(i));
             System.out.println("jsonString" + jsonString);
-//            try {
+            try {
 //                objectMapper.readValue(
-                classList[i] = Player.class;
-//                classList[i] = Class.forName(jsonString);
-//            } catch (ClassNotFoundException e) {
-//                e.printStackTrace();
-//            }
+//                classList[i] = Player.class;
+                classList[i] = Class.forName(jsonString);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println("classlist: " + classList);
+        System.out.println("classlist: " + Arrays.toString(classList));
         return classList;
     }
     private static <T> T getObjectWithKnownType(final JSONObject jsonFromServer, final String index, TypeReference<T> objectClass){
@@ -240,7 +229,7 @@ public class PlayerConnection {
         for(int i = 0; i < list.length; i++){
             objectList[i] = getObject(list[i], classList[i]);
         }
-        System.out.println(objectList);
+        System.out.println(Arrays.toString(objectList));
         return objectList;
     }
 
