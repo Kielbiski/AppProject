@@ -778,12 +778,12 @@ public class Model implements PropertyChangeListener
             for(int i = 0; i<getCurrentQuest().getNumStage();i++){
                 addStageToCurrentQuest(i);
             }
-//                setCurrentBehaviour("QUEST_MEMBER");
-            getCurrentQuest().startQuest();
-//            if(!getCurrentQuest().isInTest()){
-////                    setCurrentBehaviour("QUEST_MEMBER");
-//                setActivePlayer(getCurrentQuest().getCurrentPlayer());
-//            }
+            notifyListeners("set behaviour", Boolean.TRUE, "","QUEST_MEMBER");
+            currentQuest.startQuest();
+            if(!getCurrentQuest().isInTest()){
+                notifyListeners("set behaviour", Boolean.TRUE, "","QUEST_MEMBER");
+                setActivePlayer(getCurrentQuest().getCurrentPlayer());
+            }
         } else {
             notifyListeners("setup valid quest", activePlayer);
             for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
@@ -952,6 +952,13 @@ public class Model implements PropertyChangeListener
     }
 
     private void notifyListeners(String property, Object object, int oldFull, int newFull) {
+        logger.info("Inform listener of the "+ property);
+        for (PropertyChangeListener name : listener) {
+            name.propertyChange(new PropertyChangeEvent(object, property, oldFull, newFull));
+        }
+    }
+
+    private void notifyListeners(String property, Object object, String oldFull, String newFull) {
         logger.info("Inform listener of the "+ property);
         for (PropertyChangeListener name : listener) {
             name.propertyChange(new PropertyChangeEvent(object, property, oldFull, newFull));

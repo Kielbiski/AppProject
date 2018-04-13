@@ -1484,6 +1484,10 @@ public class Controller implements PropertyChangeListener {
                         setupQuest.setValue(true);
                         setupQuest.setValue(false);
                     }
+                    else if(serverCommand.has("set behaviour")) {
+                        setupQuest.setValue(true);
+                        setupQuest.setValue(false);
+                    }
                     else if(serverCommand.has("join tournament")){
                         alertTextHeader = "Join " + serverGetCurrentStory().getName() + " " + thisPlayer.getPlayerName() + "?";
                         alertText = "Join " + serverGetCurrentStory().getName() + "?";

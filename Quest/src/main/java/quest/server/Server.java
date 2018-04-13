@@ -187,6 +187,14 @@ public class Server implements PropertyChangeListener {
                 }
                 break;
             }
+            case "set behaviour":{
+                for (PlayerConnection p : players) {
+                    if(p.player != game.getSponsor()) {
+                        sendJSON(p, "behaviour", (String)change.getNewValue());
+                    }
+                }
+                break;
+            }
             case "handfull":{
                 for (PlayerConnection p : players) {
                     if(p.player == change.getSource()) {

@@ -201,7 +201,9 @@ public class PlayerConnection {
             String jsonString = jsonObject.getString(String.valueOf(i));
             System.out.println("jsonString" + jsonString);
             try {
-                classList[i] = Class.forName(jsonString.substring(1, jsonString.length()-1));
+//                objectMapper.readValue(
+//                classList[i] = Player.class;
+                classList[i] = Class.forName(jsonString.substring(1,jsonString.length()-1));
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             }
