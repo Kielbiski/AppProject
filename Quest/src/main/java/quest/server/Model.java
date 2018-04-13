@@ -36,6 +36,7 @@ public class Model implements PropertyChangeListener
     private ArrayList<Player> winningPlayers = new ArrayList<>();
     private boolean kingsRecognition = false;
     private boolean change = false;
+    private int numResponsesForJoin =0;
 
     /////////////////////////////////////////////////
     public boolean getMerlinIsUsed(AdventureCard card){
@@ -717,7 +718,6 @@ public class Model implements PropertyChangeListener
             notifyListeners("no sponsor", activePlayer);
         }
         else {
-            currentPlayerOrderIndex++;
             questDraw(players.get(currentPlayerOrderIndex));
         }
     }
@@ -917,6 +917,28 @@ public class Model implements PropertyChangeListener
             }
         } else {
             notifyListeners("handfull", player, oldFull, true);
+        }
+    }
+
+    public void addPlayerToQuest(Player player){
+        System.out.println("CURRENTQUEST" + currentQuest);
+        System.out.println("PLAYER" + player);
+        currentQuest.addPlayer(player);
+        drawAdventureCard(player);
+        changed();
+
+    }
+
+    public void incPlayers(){
+        numResponsesForJoin++;
+        if(numResponsesForJoin == players.size()-1){
+            if (currentQuest.getPlayerList().size()==0){
+                //no quest
+            }
+            else{
+                notifyListeners("stage panes",Boolean.TRUE);
+            }
+            numResponsesForJoin=0;
         }
     }
 

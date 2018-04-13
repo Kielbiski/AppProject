@@ -130,6 +130,11 @@ public class Controller implements PropertyChangeListener {
                     Platform.runLater(this::setupQuest);
                 }
             });
+            backgroundWorker.stagesPane.addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    Platform.runLater(this::createStages);
+                }
+            });
             backgroundWorker.alert.addListener((observable, oldValue, newValue) -> {
                 if (backgroundWorker.getAlert().equals("ok")) {
                     Platform.runLater(() -> okAlert(alertText,alertTextHeader));
@@ -456,13 +461,47 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void setupQuest() {
-        System.out.println("GOT HERE");
         if(thisPlayer.getPlayerName().equals(serverGetSponsor().getPlayerName())) {
             setCurrentBehaviour(Behaviour.SPONSOR);
             continueButton.setVisible(true);
         }
+        else{
+            if (yesNoAlert("Join Quest"+ serverGetCurrentQuest().getName() + "?", "Join quest?")) {
+                System.out.println(thisPlayer);
+                serverAddPlayerToQuest(thisPlayer);
+            }
+            serverIncPlayers();
+
+        }
+    }
+    private void createStages(){
         for(int i = 0;i<serverGetCurrentQuest().getNumStage();i++){
             createStagePane(i);
+        }
+    }
+    private void addQuestPlayers(Quest currentQuest){
+        ArrayList<Player> playersInQuest = new ArrayList<>();
+        ArrayList<Player> serverPlayers = serverGetPlayers();
+        for(int i = 0; i < NUM_PLAYERS; i++){
+            if(serverPlayers.get(i) != serverGetSponsor()) {
+                activePlayer = serverPlayers.get(i);
+                update();
+                if(activePlayer instanceof AbstractAI){
+                    if(((AbstractAI)activePlayer).doIParticipateInQuest(activePlayer.getCardsInHand(),currentQuest.getNumStage())){
+                        playersInQuest.add(activePlayer);
+                    }
+                } else {
+                    if (yesNoAlert("Join " + serverGetCurrentQuest().getName() + " " + activePlayer.getPlayerName() + "?", "Join quest?")) {
+                        playersInQuest.add(activePlayer);
+                    }
+                }
+            }
+        }
+        if(playersInQuest.size() == 0){
+            questOver();
+        }
+        else {
+            currentQuest.setPlayerList(playersInQuest);
         }
     }
 
@@ -574,7 +613,9 @@ public class Controller implements PropertyChangeListener {
             Quest current = serverGetCurrentQuest();
             HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
             for(int i =0; i < current.getNumStage(); i++){
-                flowPaneArray.get(i).getChildren().clear();
+                if (flowPaneArray!= null) {
+                    flowPaneArray.get(i).getChildren().clear();
+                }
                 for (AdventureCard card : pre.get(i)) {
                     ImageView imgView = createAdventureCardImageView(card);
                     imgView.setImage(getCardImage(card.getImageFilename()));
@@ -709,56 +750,6 @@ public class Controller implements PropertyChangeListener {
     //QUESTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
-    private void questDraw(ArrayList<Player> currentPlayerOrder) {
-        StoryCard serverResponse = serverGetCurrentStory();
-        Player sponsor;
-        for (Player player : currentPlayerOrder) {//////////////////////////////////////
-            setActivePlayer(player);
-            update();
-            int validCardCount = 0;
-            for(AdventureCard adventureCard : player.getCardsInHand()){
-                if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
-                    validCardCount++;
-                }
-            }
-            if(validCardCount < serverGetCurrentQuest().getNumStage()){
-                if(!(player instanceof AbstractAI)) {
-                    okAlert(player.getPlayerName() + ", you cannot sponsor " + serverResponse.getName() + "!", "Sponsorship failed.");
-                }
-            } else {
-                if (!(player instanceof AbstractAI)){
-                    boolean alertResult = yesNoAlert(player.getPlayerName() + ", would you like to sponsor " + serverResponse.getName() + "?", "Sponsor " + serverResponse.getName() + "?");
-                    if (alertResult) {
-                        sponsor = activePlayer;
-                        serverSetSponsor(sponsor);
-                        performQuest(sponsor, (Quest) serverResponse);
-                        nextTurnButton.setVisible(false);
-                        continueButton.setVisible(true);
-                        break;
-                    }
-                }
-                else{
-                    player.getCardsInHand();
-                    ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest) serverResponse);
-                    boolean aiResult = ((AbstractAI) player).doISponsor(currentPlayerOrder,player.getCardsInHand(),(Quest)serverResponse);
-                    if (aiResult) {
-                        sponsor = activePlayer;
-                        serverSetSponsor(sponsor);
-                        performQuest(sponsor, (Quest) serverResponse);
-                        nextTurnButton.setVisible(false);
-                        continueButton.setVisible(true);
-                        break;
-                    }
-                }
-            }
-        }
-        if(serverGetSponsor() == null){
-            setActivePlayer(currentTurnPlayer);
-            nextTurnButton.setVisible(true);
-            nextTurnButton.setDisable(false);
-            continueButton.setVisible(false);
-        }
-    }
 
     private void questOver(){
         if(serverGetCurrentQuest().isWinner()) {
@@ -802,35 +793,7 @@ public class Controller implements PropertyChangeListener {
 //        update();
     }
 
-    private void performQuest(Player sponsor, Quest quest) {
-        quest.addChangeListener(this);
-        serverSetSponsor(sponsor);
-        quest.setSponsor(sponsor);
-        setActivePlayer(sponsor);
 
-        addQuestPlayers(quest);
-        setActivePlayer(sponsor);
-        if(sponsor instanceof AbstractAI){
-            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
-            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()));
-            for(int i=1; i<quest.getNumStage()-1;i++){
-                serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
-                sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()));
-            }
-            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
-            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
-            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
-                serverAddStageToCurrentQuest(i);
-            }
-            setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-            serverGetCurrentQuest().startQuest();
-            if(!serverGetCurrentQuest().isInTest()){
-                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-                setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
-            }
-            update();
-        }
-    }
 
     private void performTest(){
 
@@ -950,31 +913,6 @@ public class Controller implements PropertyChangeListener {
 
     }
 
-    private void addQuestPlayers(Quest currentQuest){
-        ArrayList<Player> playersInQuest = new ArrayList<>();
-        ArrayList<Player> serverPlayers = serverGetPlayers();
-        for(int i = 0; i < NUM_PLAYERS; i++){
-            if(serverPlayers.get(i) != serverGetSponsor()) {
-                activePlayer = serverPlayers.get(i);
-                update();
-                if(activePlayer instanceof AbstractAI){
-                    if(((AbstractAI)activePlayer).doIParticipateInQuest(activePlayer.getCardsInHand(),currentQuest.getNumStage())){
-                        playersInQuest.add(activePlayer);
-                    }
-                } else {
-                    if (yesNoAlert("Join " + serverGetCurrentQuest().getName() + " " + activePlayer.getPlayerName() + "?", "Join quest?")) {
-                        playersInQuest.add(activePlayer);
-                    }
-                }
-            }
-        }
-        if(playersInQuest.size() == 0){
-            questOver();
-        }
-        else {
-            currentQuest.setPlayerList(playersInQuest);
-        }
-    }
 
     //EVENTS
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1360,12 +1298,19 @@ public class Controller implements PropertyChangeListener {
     private void serverPerformQuest(Player player) {
         genericSet("performQuest", player);
     }
+    private void serverAddPlayerToQuest(Player player){
+        genericSet("addPlayerToQuest", player);
+    }
     private void serverDeclineSponsor() {
         genericSet("declineSponsor");
     }
     private void serverClearPreQuestStageSetup() {
         genericSet("clearPreQuestStageSetup");
     }
+    private void serverIncPlayers(){
+        genericSet("incPlayers");
+    }
+
     private void serverApplyEventEffect(Event event) {
         genericSet("applyEventEffect", event);
     }
@@ -1373,13 +1318,15 @@ public class Controller implements PropertyChangeListener {
         genericSet("addStageToCurrentQuest", stageNum);
     }
     ///////////////////////////////////////////////////////////////////////////
-    //Daemon
+    //Bakcground worker
     ///////////////////////////////////////////////////////////////////////////
     class BackgroundWorker extends Thread {
         private BooleanProperty updateState;
         private BooleanProperty continueButton;
         private BooleanProperty nextTurnButton;
         private BooleanProperty setupQuest;
+        private BooleanProperty stagesPane;
+
 
         private BooleanProperty handFull;
 
@@ -1390,6 +1337,8 @@ public class Controller implements PropertyChangeListener {
             nextTurnButton = new SimpleBooleanProperty(this, "bool", false);
             handFull = new SimpleBooleanProperty(this, "bool", false);
             setupQuest = new SimpleBooleanProperty(this, "bool", false);
+            stagesPane = new SimpleBooleanProperty(this, "bool", false);
+
             alert = new SimpleStringProperty();
             setDaemon(true);
         }
@@ -1417,6 +1366,10 @@ public class Controller implements PropertyChangeListener {
         public boolean setupQuest() { return setupQuest.get(); }
 
         public BooleanProperty getSetupQuest() { return setupQuest; }
+
+        public boolean stagesPane() { return stagesPane.get(); }
+
+        public BooleanProperty getStagesPane() { return stagesPane; }
 
 
         @Override
@@ -1496,6 +1449,10 @@ public class Controller implements PropertyChangeListener {
                     else if(serverCommand.has("perform quest")) {
                         setupQuest.setValue(true);
                         setupQuest.setValue(false);
+                    }
+                    else if(serverCommand.has("stage panes")) {
+                        stagesPane.setValue(true);
+                        stagesPane.setValue(false);
                     }
                     else if(serverCommand.has("set behaviour")) {
                         setupQuest.setValue(true);

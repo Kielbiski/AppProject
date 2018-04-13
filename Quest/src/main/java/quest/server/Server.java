@@ -209,6 +209,12 @@ public class Server implements PropertyChangeListener {
                 }
                 break;
             }
+            case "stage panes":{
+                for (PlayerConnection p : players) {
+                    sendJSON(p, "stage panes", "true");
+                }
+                break;
+            }
         }
     }
 }

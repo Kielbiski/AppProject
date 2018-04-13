@@ -13,7 +13,7 @@ public class Quest extends StoryCard { //story card
 
     private static final Logger logger = LogManager.getLogger(App.class);
 
-    private ArrayList <Player> playerList;
+    private ArrayList <Player> playerList = new ArrayList<>();
     private ArrayList <Player> originalPlayerList;
     private ArrayList<QuestStage> stages = new ArrayList<>();
     private Player sponsor;
@@ -150,6 +150,10 @@ public class Quest extends StoryCard { //story card
         this.playerList = playerList;
         this.originalPlayerList = playerList;
 
+    }
+
+    public void addPlayer(Player player){
+        playerList.add(player);
     }
 
     public Player getSponsor()
