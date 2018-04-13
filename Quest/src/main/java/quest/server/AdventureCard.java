@@ -13,6 +13,8 @@ public class AdventureCard extends Card
     int bids;
     int bonusBattlePoints;
     int bonusBids;
+    String className;
+
     AdventureCard(){}
     AdventureCard(String name, String imageFilename){
 
@@ -42,6 +44,14 @@ public class AdventureCard extends Card
     public int getBonusBids(){
         logger.info("Returning AdventureCard bonus bids");
         return bonusBids;
+    }
+
+    public String getClassName() {
+        return className;
+    }
+
+    public void setClassName(String className) {
+        this.className = className;
     }
 
     public void setBattlePoints(int paramBattlePoints) {

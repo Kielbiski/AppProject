@@ -1080,7 +1080,7 @@ public class Controller implements PropertyChangeListener {
         for(int k = 0; k < ar.size(); k++) {
             JSONObject j = new JSONObject();
             try {
-                if(ClassUtils.isPrimitiveOrWrapper(ar.get(k).getClass())) {
+                    if ((ar.get(k) instanceof Integer) || (ar.get(k) instanceof String)) {
                     String type = "";
                     if (ar.get(k).getClass() == Integer.class) {
                         type = "integer";
@@ -1216,12 +1216,14 @@ public class Controller implements PropertyChangeListener {
         JSONArray arguments = new JSONArray();
         for(int k = 0; k < ar.size(); k++) {
             JSONObject j = new JSONObject();
-            if(ClassUtils.isPrimitiveOrWrapper(ar.get(k).getClass())) {
+            System.out.println("PRE-CHECK: "  + ar.get(k) + ar.get(k).getClass());
+            if((ar.get(k) instanceof Integer) || (ar.get(k) instanceof String)) {
+                System.out.println("PRIMITIVE");
                 String type = "";
-                if(ar.get(k).getClass() == Integer.class) {
+                if(ar.get(k) instanceof Integer) {
                     System.out.println("inthere");
                     type = "integer";
-                } else if(ar.get(k).getClass() == String.class) {
+                } else if(ar.get(k) instanceof String) {
                     System.out.println("here");
                     type = "string";
                 }
@@ -1272,7 +1274,7 @@ public class Controller implements PropertyChangeListener {
         genericSet("nextTurn");
     }
     private void serverContinue(String behaviour){
-        genericSet("continue", behaviour);
+        genericSet("continueAction", behaviour);
     }
     private void serverDrawStoryCard() {
         genericSet("drawStoryCard");
