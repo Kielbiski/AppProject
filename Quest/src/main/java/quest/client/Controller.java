@@ -1,5 +1,6 @@
 package quest.client;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -289,9 +290,7 @@ public class Controller implements PropertyChangeListener {
             }
         }
         event.setDropCompleted(success);
-//        update();
         event.consume();
-
     }
 
     public void onDiscardDragOver(DragEvent event){
@@ -312,20 +311,19 @@ public class Controller implements PropertyChangeListener {
                 if (currentBehaviour == Behaviour.DISCARD) {
                     thisPlayer.removeCardFromHand(selectedAdventureCard);
                     serverSyncPlayer();
-//                    if(thisPlayer.isHandFull()){
-//                        handFull(thisPlayer);
-//                    }
-                  //  else{
-                    currentBehaviour = previousBehaviour;
-                    previousBehaviour = null;
-                    discardPane.setVisible(false);
-                    if(currentBehaviour==Behaviour.DEFAULT) {
-                        nextTurnButton.setVisible(true);
-                        nextTurnButton.setDisable(false);
+                    if(thisPlayer.isHandFull()){
+                        handFull();
                     }
-////                        update();
-//                    }
-                    success = true;
+                    else {
+                        currentBehaviour = previousBehaviour;
+                        previousBehaviour = null;
+                        discardPane.setVisible(false);
+                        if (currentBehaviour == Behaviour.DEFAULT) {
+                            nextTurnButton.setVisible(true);
+                            nextTurnButton.setDisable(false);
+                        }
+                        success = true;
+                    }
                 }
                 else if(currentBehaviour == Behaviour.BID){
                     thisPlayer.removeCardFromHand(selectedAdventureCard);
@@ -1074,7 +1072,6 @@ public class Controller implements PropertyChangeListener {
     ///////////////////////////////////////////////////////////////////////////
     private static <T> T getServerObject(final String jsonFromServer, TypeReference<T> objectClass){
         try {
-            System.out.println("JSONFROMSERVER: " + jsonFromServer);
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
@@ -1260,12 +1257,13 @@ public class Controller implements PropertyChangeListener {
         }
         json.put("arguments", arguments);
 
+        ObjectMapper mapper = new ObjectMapper();
         JSONArray argumentTypes = new JSONArray();
         for(int i = 0; i < ar.size(); i++) {
             JSONObject j = new JSONObject();
             try {
-                j.put(String.valueOf(i), ar.get(i).getClass());
-            } catch (JSONException E) {
+                j.put(String.valueOf(i), mapper.writeValueAsString(ar.get(i).getClass().getCanonicalName()));
+            } catch (JSONException | JsonProcessingException E) {
                 E.printStackTrace();
             }
             argumentTypes.put(j);
@@ -1284,7 +1282,6 @@ public class Controller implements PropertyChangeListener {
         JSONObject json = new JSONObject();
         json.put("type", "set");
         json.put("methodName", methodName);
-        System.out.println(json.toJSONString());
         try {
             dos.writeUTF(json.toJSONString());
             dos.flush();

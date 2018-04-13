@@ -447,10 +447,11 @@ public class Model implements PropertyChangeListener
             currentTurnIndex++;
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
-        if(players.get(currentTurnIndex) instanceof AbstractAI){
+        if(activePlayer instanceof AbstractAI){
             runAITurn();
+        } else {
+            notifyListeners("nextTurn", Boolean.TRUE, -1, currentTurnIndex);
         }
-        notifyListeners("nextTurn", Boolean.TRUE, -1, currentTurnIndex);
     }
 
     private void runAITurn(){
