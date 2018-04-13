@@ -78,7 +78,7 @@ public class Server implements PropertyChangeListener {
         Stack<AdventureCard> deckOfAdventureCards = game.getDeckOfAdventureCards();
         Collections.shuffle(deckOfAdventureCards);
         //overrode for boarhunt
-        switch ("Boar Hunt"){
+        switch (scenario){
             case "Regular":
                 break;
             case "Boar Hunt":
