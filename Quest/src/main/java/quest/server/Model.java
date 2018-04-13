@@ -87,27 +87,35 @@ public class Model implements PropertyChangeListener
     public void applyEventEffect(Event event){
         switch (event.getName()) {
             case "Chivalrous Deed":
+                logger.info("Calling Chivalrous Deed event .");
                 event.applyEvent(players, null);
                 break;
             case "Court Called To Camelot":
+                logger.info("Calling Court Called To Camelot.");
                 event.applyEvent(players, null);
                 break;
             case "King's Call To Arms":
+                logger.info("Calling the King's Call To Arms.");
                 event.applyEvent(players, activePlayer);
                 break;
             case "King's Recognition":
+                logger.info("Calling King's Recognition.");
                 event.applyEvent(null, null);
                 break;
             case "Plague":
+                logger.info("Calling Plague event ");
                 event.applyEvent(null, activePlayer);
                 break;
             case "Pox":
+                logger.info("Calling pox event ");
                 event.applyEvent(players, activePlayer);
                 break;
             case "Prosperity Throughout The Realm":
+                logger.info("Calling Prosperity Throughout The Realm event ");
                 event.applyEvent(players, null);
                 break;
             case "Queen's Favor": {
+                logger.info("Calling Queen's Favor event ");
                 event.applyEvent(players, null);
                 break;
             }
@@ -125,14 +133,17 @@ public class Model implements PropertyChangeListener
 
     public void setCurrentQuest(Quest currentQuest) {
         this.currentQuest = currentQuest;
+        logger.info("Setting current quest:"+ currentQuest.getName());
         currentQuest.addChangeListener(this);
         preQuestStageSetup.clear();
+        logger.info("Storing how many stage quest has. ");
         for(int i = 0; i<currentQuest.getNumStage();i++){
             preQuestStageSetup.put(i,new ArrayList<>());
         }
     }
 
     public void clearQuest(){
+        logger.info("Clear a quest play");
         for(Player player: players){
             ArrayList<AdventureCard> found = new ArrayList<>();
             for(AdventureCard card:player.getCardsOnTable()){
@@ -147,41 +158,50 @@ public class Model implements PropertyChangeListener
     }
 
     public Quest getCurrentQuest() {
+        logger.info("Getting current quest "+ currentQuest.getName() );
         return currentQuest;
     }
 
     public boolean isKingsRecognition() {
+
+        logger.info("getting king of recognition" );
         return kingsRecognition;
     }
 
     public void setKingsRecognition(boolean kingsRecognition) {
+        logger.info("Setting the kingsRecognition");
         this.kingsRecognition = kingsRecognition;
     }
 
     public Player getSponsor() {
-        logger.info("Returning the sponsor.");
+        logger.info("Returning the sponsor."+ sponsor);
         return sponsor;
     }
 
     public void setSponsor(Player sponsor) {
-        logger.info("Set the sponsor.");
+        logger.info("Set the sponsor:" + sponsor);
         this.sponsor = sponsor;
     }
     public void clearPreQuestStageSetup(){
+        logger.info("Clearing prequestStage setup");
         preQuestStageSetup.clear();
     }
     public void addStageToCurrentQuest(int stageNum){
+        logger.info("Adding a stage to current quest:"+ currentQuest.getName());
         currentQuest.addStage(createStage(preQuestStageSetup.get(stageNum)));
     }
 
     public QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
+        logger.info("Creating a stage");
         for(AdventureCard adventureCard : cardsForStage) {
             if (adventureCard instanceof Foe) {
                 if(currentQuest.getQuestFoes().contains(adventureCard)){
                     adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
                 }
+                logger.info("Creating foeStage");
                 return new FoeStage(cardsForStage, new ArrayList<>());
             } else if (adventureCard instanceof Test) {
+                logger.info("Creating testStage");
                 return new TestStage(adventureCard, new ArrayList<>());
             }
         }
@@ -189,6 +209,7 @@ public class Model implements PropertyChangeListener
     }
 
     public boolean validateQuestStages() {
+        logger.info("Validating if the stage respect the game rules");
         int lastStageBattlePoints = 0;
         int testCount =0;
         for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
@@ -239,7 +260,7 @@ public class Model implements PropertyChangeListener
         //Initializing all cards
 
         //Allies
-
+        logger.info("Calling model constructor");
         ArrayList<Foe> allFoes = new ArrayList<>();
         allFoes.add(new BlackKnight());
         allFoes.add(new Boar());
@@ -434,7 +455,7 @@ public class Model implements PropertyChangeListener
     }
 
     public int getCurrentTurnIndex() {
-        logger.info("Returning current index for player turn.");
+        logger.info("Returning current index for player turn:"+ currentTurnIndex);
         return currentTurnIndex;
     }
 
@@ -447,11 +468,10 @@ public class Model implements PropertyChangeListener
             currentTurnIndex++;
             logger.info("Set current index for player turn to "+ currentTurnIndex +".");
         }
-        if(activePlayer instanceof AbstractAI){
+        if(players.get(currentTurnIndex) instanceof AbstractAI){
             runAITurn();
-        } else {
-            notifyListeners("nextTurn", Boolean.TRUE, -1, currentTurnIndex);
         }
+        notifyListeners("nextTurn", Boolean.TRUE, -1, currentTurnIndex);
     }
 
     private void runAITurn(){
@@ -472,18 +492,22 @@ public class Model implements PropertyChangeListener
 //            }
 //        }
         if (currentStory instanceof Quest) {
+            logger.info("Current story card:"+ currentStory.getName()+"updated current quest");
             setCurrentQuest((Quest) currentStory);
             questDraw(activePlayer);
         } else if (currentStory instanceof Event) {
+            logger.info("Current story card:"+ currentStory.getName()+"is Event, therefore apply Event");
             Event gameEvent = (Event) currentStory;
             applyEventEffect(gameEvent);
         } else if (currentStory instanceof Tournament) {
+            logger.info("Current story card:"+ currentStory.getName()+"is tournament, play to tournament.");
             setCurrentTournament((Tournament) currentStory);
 //            performTournament(currentPlayerOrder, getCurrentTournament());
         }
     }
 
     public void addPlayerToGame(Player player){
+        logger.info("Add the following player "+ player + "to the game.");
         players.add(player);
     }
 
@@ -538,6 +562,7 @@ public class Model implements PropertyChangeListener
     }
 
     public void addToStoryDeck(StoryCard storyCard){
+        logger.info("Adding the follow story card to the deck:"+ storyCard.getName());
         deckOfStoryCards.push(storyCard);
     }
 
@@ -647,6 +672,7 @@ public class Model implements PropertyChangeListener
                 for(Player p : players){
                     System.out.println(p.getCardsInHand().size());
                 }
+                logger.info("Event is being applied");
                 applyEventEffect(gameEvent);
                 System.out.println("APPLIED EVENT: " + gameEvent);
                 for(Player p : players){
@@ -725,37 +751,38 @@ public class Model implements PropertyChangeListener
         }
     }
 
-    public void performQuest(Player sponsor) {
-       currentQuest.addChangeListener(this);
-       setSponsor(sponsor);
-       currentQuest.setSponsor(sponsor);
-       setActivePlayer(sponsor);
-       //add these bits to the notification
-        System.out.println("BIG FUCK");
-        notifyListeners("perform quest",sponsor);
-
+    private void performQuest(Player sponsor, Quest quest) {
+//        quest.addChangeListener(this);
+//        setSponsor(sponsor);
+//        quest.setSponsor(sponsor);
+//        setActivePlayer(sponsor);
+//        setCurrentBehaviour(Behaviour.SPONSOR);
+//        continueButton.setVisible(true);
+//
 //        for(int i = 0;i<quest.getNumStage();i++){
 //            createStagePane(i);
 //        }
 //        addQuestPlayers(quest);
+//        setActivePlayer(sponsor);
 //        if(sponsor instanceof AbstractAI){
-//            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
+//            setPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
 //            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()));
 //            for(int i=1; i<quest.getNumStage()-1;i++){
-//                serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
+//                setPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
 //                sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()));
 //            }
-//            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
+//            setPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
 //            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
-//            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
+//            for(int i = 0; i<getCurrentQuest().getNumStage();i++){
 //                serverAddStageToCurrentQuest(i);
 //            }
 //            setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-//            serverGetCurrentQuest().startQuest();
-//            if(!serverGetCurrentQuest().isInTest()){
+//            getCurrentQuest().startQuest();
+//            if(!getCurrentQuest().isInTest()){
 //                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-//                setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
+//                setActivePlayer(getCurrentQuest().getCurrentPlayer());
 //            }
+//            update();
 //        }
     }
 
@@ -831,6 +858,7 @@ public class Model implements PropertyChangeListener
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     private void performTournament(ArrayList<Player> currentPlayerOrder, Tournament tournament) {
+        logger.info(" performing a tournament");
         addTournamentPlayers(tournament);
         if(!tournament.isTournamentOver()){
             tournament.setCurrentPlayer(tournament.getPlayerList().get(0));
@@ -994,5 +1022,4 @@ public class Model implements PropertyChangeListener
         }
     }
 }
-
 
