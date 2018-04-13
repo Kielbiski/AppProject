@@ -83,7 +83,7 @@ public class PlayerConnection {
                    try {
                        if (dis.available() == 0) {//reads????
                        try {
-                           TimeUnit.MILLISECONDS.sleep(100);
+                           TimeUnit.MILLISECONDS.sleep(5);
                        } catch (InterruptedException e) {
                            e.printStackTrace();
                        }
@@ -186,12 +186,25 @@ public class PlayerConnection {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-
         for(int i = 0; i < jsonArray.length(); i++)
         {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
             System.out.println("jsonObject" + jsonObject);
-            objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).toString();
+            if(jsonObject.get(String.valueOf(i)) instanceof JSONObject) {
+                if ((!(jsonObject.getJSONObject(String.valueOf(i)).has("integer"))) && (!(jsonObject.getJSONObject(String.valueOf(i)).has("string")))) {
+                    objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).toString();
+                } else {
+                    if(jsonObject.getJSONObject(String.valueOf(i)).has("integer")){
+                        objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).getString("integer");
+                    } else if (jsonObject.getJSONObject(String.valueOf(i)).has("string")){
+                        objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).getString("string");
+                    } else {
+                        objectList[i] = "";
+                    }
+                }
+            } else {
+                objectList[i] = jsonObject.getString(String.valueOf(i));
+            }
 //            System.out.println("jsonString" + jsonString);
 //                try {
 //                    objectList[i] = objectMapper.readValue(jsonString,Object.class).toString();
@@ -282,10 +295,12 @@ public class PlayerConnection {
         try {
             Method method = game.getClass().getDeclaredMethod(methodName);
             Object result = method.invoke(game);
-            System.out.println("Got object: " + result.toString());
+            if(result != null) {
+                System.out.println("Got object: " + result.toString());
+            }
             return result;
         } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException E) {
-            E.printStackTrace();
+//            E.printStackTrace();
             return null;
         }
     }

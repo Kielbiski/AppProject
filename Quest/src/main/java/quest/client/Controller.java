@@ -14,6 +14,7 @@ import javafx.scene.input.*;
 import javafx.scene.layout.*;
 import javafx.fxml.FXML;
 import javafx.scene.text.TextAlignment;
+import org.apache.commons.lang3.ClassUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.json.JSONArray;
@@ -296,6 +297,7 @@ public class Controller implements PropertyChangeListener {
         }
         event.setDropCompleted(success);
         event.consume();
+        serverSyncPlayer();
     }
 
     public void onDiscardDragOver(DragEvent event){
@@ -420,8 +422,9 @@ public class Controller implements PropertyChangeListener {
                     if (db.getString().equals(cardsHbox.getId())) {
                         if (serverIsValidDrop(selectedAdventureCard, stageIndex)) {
                             serverAddToPotentialStage(selectedAdventureCard, stageIndex);
-                            serverGetSponsor().removeCardFromHand(selectedAdventureCard);
+                            thisPlayer.removeCardFromHand(selectedAdventureCard);
                             success = true;
+                            serverSyncPlayer();
                         }
                     } else {
                         for (int i = 0; i < serverGetCurrentQuest().getNumStage(); i++) {
@@ -430,6 +433,7 @@ public class Controller implements PropertyChangeListener {
                                     serverAddToPotentialStage(selectedAdventureCard, stageIndex);
                                     serverRemoveFromPotentialStage(selectedAdventureCard, i);
                                     success = true;
+                                    serverSyncPlayer();
                                 }
                             }
                         }
@@ -1064,26 +1068,39 @@ public class Controller implements PropertyChangeListener {
     }
     @SuppressWarnings("unchecked")
     private String genericGetWithParams(String methodName, Object... args){
-        System.out.println("Getter called with args " + args);
+        System.out.println("Getter called with args " + Arrays.toString(args));
         String serverJSON = "";
         JSONObject json = new JSONObject();
         json.put("type", "getWithParams");
         json.put("methodName", methodName);
         List<Object> ar = Arrays.asList(args);
 
+        ObjectMapper mapper = new ObjectMapper();
         JSONArray arguments = new JSONArray();
         for(int k = 0; k < ar.size(); k++) {
             JSONObject j = new JSONObject();
             try {
-                j.put(String.valueOf(k), ar.get(k));
+                if(ClassUtils.isPrimitiveOrWrapper(ar.get(k).getClass())) {
+                    String type = "";
+                    if (ar.get(k).getClass() == Integer.class) {
+                        type = "integer";
+                    } else if (ar.get(k).getClass() == String.class) {
+                        type = "string";
+                    }
+                    JSONObject intermediate = new JSONObject();
+                    intermediate.put(type, String.valueOf(ar.get(k)));
+                    j.put(String.valueOf(k), intermediate);
+                } else {
+                    j.put(String.valueOf(k), ar.get(k));
+                }
             } catch (JSONException E) {
                 E.printStackTrace();
             }
             arguments.put(j);
+            System.out.println("json: "+ j);
         }
         json.put("arguments", arguments);
 
-        ObjectMapper mapper = new ObjectMapper();
         JSONArray argumentTypes = new JSONArray();
         for(int i = 0; i < ar.size(); i++) {
             JSONObject j = new JSONObject();
@@ -1199,10 +1216,20 @@ public class Controller implements PropertyChangeListener {
         JSONArray arguments = new JSONArray();
         for(int k = 0; k < ar.size(); k++) {
             JSONObject j = new JSONObject();
-            try {
+            if(ClassUtils.isPrimitiveOrWrapper(ar.get(k).getClass())) {
+                String type = "";
+                if(ar.get(k).getClass() == Integer.class) {
+                    System.out.println("inthere");
+                    type = "integer";
+                } else if(ar.get(k).getClass() == String.class) {
+                    System.out.println("here");
+                    type = "string";
+                }
+                JSONObject intermediate = new JSONObject();
+                intermediate.put(type, String.valueOf(ar.get(k)));
+                j.put(String.valueOf(k), intermediate);
+            } else {
                 j.put(String.valueOf(k), ar.get(k));
-            } catch (JSONException E) {
-                E.printStackTrace();
             }
             arguments.put(j);
         }
@@ -1411,7 +1438,7 @@ public class Controller implements PropertyChangeListener {
                         }
                     }
                     else if(serverCommand.has("update")) {
-                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
+                        thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<List<Player>>() {}).get(0);
                         updateState.setValue(true);
                         System.out.println("THIS PLAYER SET" + thisPlayer);
                         System.out.println(thisPlayer.getPlayerName());

@@ -545,31 +545,34 @@ public class Model implements PropertyChangeListener
         logger.info(ActivePlayer.getPlayerName() + " draw an adventure card.");
         //check if hand is full, if so set some state in the player is full. then in controller create an alert that says hand is full.
         ActivePlayer.addCardToHand(deckOfAdventureCards.pop());
+//        changed();
     }
 
     void addToDiscardAdventure(AdventureCard card){
         logger.info("Discarding :"+card.getName()+" to the discard card.");
         discardOfAdventureCards.add(card);
+        changed();
     }
 
-    public void addToPotentialStage(AdventureCard card, int stageNum){
+    public void addToPotentialStage(AdventureCard card, Integer stageNum){
         logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
     }
-    public void setPotentialStage(ArrayList<AdventureCard> stage, int stageNum){
+    public void setPotentialStage(ArrayList<AdventureCard> stage, Integer stageNum){
         logger.info("Set the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.put(stageNum,stage);
     }
-    public void removeFromPotentialStage(AdventureCard card, int stageNum){
+    public void removeFromPotentialStage(AdventureCard card, Integer stageNum){
         logger.info("Remove the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).remove(card);
     }
-    public void resetPotentialStages(){
+    private void resetPotentialStages(){
         preQuestStageSetup.clear();
         for(int i = 0; i<currentQuest.getNumStage();i++){
             preQuestStageSetup.put(i,new ArrayList<>());
         }
         logger.info("Resetting potential pre-stage");
+        changed();
     }
 
 //    private ArrayList<Player> finalTournament(ArrayList<Player> tournamentParticipants){
@@ -582,7 +585,7 @@ public class Model implements PropertyChangeListener
         return winningPlayers;
     }
 
-    public boolean isValidDrop(AdventureCard card, int stageNum){
+    public boolean isValidDrop(AdventureCard card, Integer stageNum){
         if (card instanceof Ally) {//?
             return false;
         }
@@ -594,7 +597,7 @@ public class Model implements PropertyChangeListener
         return true;
     }
 
-    public boolean isWinner() {
+    private boolean isWinner() {
         logger.info(" Verifying if there only one winner");
         ArrayList<Player> knightsOfTheRoundTable = new ArrayList<>();
         for(Player player : players){
@@ -615,7 +618,7 @@ public class Model implements PropertyChangeListener
 
     }
 
-    private int nextPlayerIndex(int index){
+    private int nextPlayerIndex(Integer index){
         int nextIndex = index;
         if(nextIndex >= players.size()-1){
             nextIndex = 0;
@@ -708,6 +711,7 @@ public class Model implements PropertyChangeListener
 //            nextTurnButton.setDisable(false);
 //            continueButton.setVisible(false);
 //        }
+//        changed();
     }
 
     public void declineSponsor(){
