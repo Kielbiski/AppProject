@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.RecursiveToStringStyle;
 
+import static org.apache.logging.log4j.util.LoaderUtil.loadClass;
 
 
 //TO DO HERE: associate a player with this list
@@ -92,9 +93,11 @@ public class PlayerConnection {
                                 } else {
                                     //fix
                                     System.out.println("MASSSIVE FUCk");
-                                    Object[] arguments = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
+                                    String[] argumentStrings = convertJSONToObjectList(clientRequest.getJSONArray("arguments"));
                                     System.out.println(name + " requested: " + clientRequest);
                                     Class<?>[] argumentTypes = convertJSONToClassList(clientRequest.getJSONArray("argumentTypes"));
+                                    Object[] arguments = convertObjectList(argumentStrings, argumentTypes);
+                                    System.out.println(Arrays.toString(arguments));
                                     applyClientAction(game, clientRequest.getString("methodName"), argumentTypes, arguments);
                                 }
                             } else {
@@ -164,7 +167,7 @@ public class PlayerConnection {
             }
         }).start();
     }
-    private Object[] convertJSONToObjectList(JSONArray jsonArray){
+    private String[] convertJSONToObjectList(JSONArray jsonArray){
 //        ArrayList<Object> returnObjects = new ArrayList<>();
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
@@ -175,21 +178,24 @@ public class PlayerConnection {
 //        }
 //        System.out.println(returnObjects);
 //        return returnObjects;
-        Object[] objectList = new Object[jsonArray.length()];
+        String[] objectList = new String[jsonArray.length()];
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
         objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
         for(int i = 0; i < jsonArray.length(); i++)
         {
-            String jsonString = jsonArray.getString(i);
-                try {
-                    objectList[i] = objectMapper.readValue(jsonString,Object.class);
-                } catch (IOException e) {
-                    e.printStackTrace();
-            }
+            JSONObject jsonObject = jsonArray.getJSONObject(i);
+            System.out.println("jsonObject" + jsonObject);
+            objectList[i] = jsonObject.getJSONObject(String.valueOf(i)).toString();
+//            System.out.println("jsonString" + jsonString);
+//                try {
+//                    objectList[i] = objectMapper.readValue(jsonString,Object.class).toString();
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//            }
         }
-        System.out.println(objectList);
+        System.out.println(objectList[0]);
         return objectList;
     }
 
@@ -201,12 +207,19 @@ public class PlayerConnection {
         for(int i = 0; i < jsonArray.length(); i++)
         {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
-            System.out.println(jsonObject);
-            try {
-                classList[i] = objectMapper.readValue(jsonObject.getString(String.valueOf(i)),Class.class);
-            } catch (IOException e) {
-            }
+            System.out.println("\n\n");
+            System.out.println("jsonObject" + jsonObject);
+            String jsonString = jsonObject.getString(String.valueOf(i));
+            System.out.println("jsonString" + jsonString);
+//            try {
+//                objectMapper.readValue(
+                classList[i] = Player.class;
+//                classList[i] = Class.forName(jsonString);
+//            } catch (ClassNotFoundException e) {
+//                e.printStackTrace();
+//            }
         }
+        System.out.println("classlist: " + classList);
         return classList;
     }
     private static <T> T getObjectWithKnownType(final JSONObject jsonFromServer, final String index, TypeReference<T> objectClass){
@@ -214,9 +227,7 @@ public class PlayerConnection {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
             objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
-
             String test = jsonFromServer.getJSONObject(index).toString();
-            System.out.println("test: " + test);
             return objectMapper.readValue(test, objectClass);
         } catch (IOException e) {
             e.printStackTrace();
@@ -224,14 +235,14 @@ public class PlayerConnection {
         }
     }
 
-//    private static Object[] convertObjectList(Object[] list, Class[] classList){
-//        Object[] objectList = new Object[list.length];
-//        for(int i = 0; i < list.length; i++){
-//            Class currentClass = classList[i];
-//            objectList[i] = (currentClass) list[i];
-//        }
-//        return objectList;
-//    }
+    private static Object[] convertObjectList(String[] list, Class<?>[] classList){
+        Object[] objectList = new Object[list.length];
+        for(int i = 0; i < list.length; i++){
+            objectList[i] = getObject(list[i], classList[i]);
+        }
+        System.out.println(objectList);
+        return objectList;
+    }
 
     private static Object getObject(final String jsonFromServer, Class<?> objectClass){
         try {
@@ -255,10 +266,11 @@ public class PlayerConnection {
             E.printStackTrace();
         }
     }
-
     private void applyClientAction(Model game, String methodName, Class<?>[] paramTypes, Object[] params){
         try {
-            Method method = game.getClass().getDeclaredMethod(methodName, paramTypes);
+            System.out.println("paramTypes: "+Arrays.toString(paramTypes));
+            System.out.println("params: " +Arrays.toString(params));
+            Method method = Model.class.getDeclaredMethod(methodName, paramTypes);
             method.invoke(game, params);
             game.changed();
             System.out.println("invoked: "+methodName);
