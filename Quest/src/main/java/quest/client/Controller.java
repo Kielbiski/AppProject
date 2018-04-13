@@ -290,9 +290,7 @@ public class Controller implements PropertyChangeListener {
             }
         }
         event.setDropCompleted(success);
-//        update();
         event.consume();
-
     }
 
     public void onDiscardDragOver(DragEvent event){
@@ -313,20 +311,19 @@ public class Controller implements PropertyChangeListener {
                 if (currentBehaviour == Behaviour.DISCARD) {
                     thisPlayer.removeCardFromHand(selectedAdventureCard);
                     serverSyncPlayer();
-//                    if(thisPlayer.isHandFull()){
-//                        handFull(thisPlayer);
-//                    }
-                  //  else{
-                    currentBehaviour = previousBehaviour;
-                    previousBehaviour = null;
-                    discardPane.setVisible(false);
-                    if(currentBehaviour==Behaviour.DEFAULT) {
-                        nextTurnButton.setVisible(true);
-                        nextTurnButton.setDisable(false);
+                    if(thisPlayer.isHandFull()){
+                        handFull();
                     }
-////                        update();
-//                    }
-                    success = true;
+                    else {
+                        currentBehaviour = previousBehaviour;
+                        previousBehaviour = null;
+                        discardPane.setVisible(false);
+                        if (currentBehaviour == Behaviour.DEFAULT) {
+                            nextTurnButton.setVisible(true);
+                            nextTurnButton.setDisable(false);
+                        }
+                        success = true;
+                    }
                 }
                 else if(currentBehaviour == Behaviour.BID){
                     thisPlayer.removeCardFromHand(selectedAdventureCard);

@@ -53,6 +53,11 @@ public class PlayerConnection {
     @SuppressWarnings({"InfiniteLoopStatement", "unchecked"})
     PlayerConnection(DataOutputStream dos, DataInputStream dis, DataOutputStream pdos, DataInputStream pdis, String name, Model game) {
         player = new Player(name);
+        for(Player p : game.getPlayers()){
+            if(player.getPlayerName().equals(p.getPlayerName())){
+                player.setPlayerName(name + "-");
+            }
+        }
         game.addPlayerToGame(player);
         this.name = name;
         this.dos = dos;
@@ -172,15 +177,17 @@ public class PlayerConnection {
         Object[] objectList = new Object[jsonArray.length()];
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         for(int i = 0; i < jsonArray.length(); i++)
         {
-            JSONObject jsonObject = jsonArray.getJSONObject(i);
-            System.out.println(jsonObject);
+            String jsonString = jsonArray.getString(i);
                 try {
-                    objectList[i] = objectMapper.readValue(jsonObject.getString(String.valueOf(i)),Object.class);
+                    objectList[i] = objectMapper.readValue(jsonString,Object.class);
                 } catch (IOException e) {
+                    e.printStackTrace();
             }
         }
+        System.out.println(objectList);
         return objectList;
     }
 
@@ -188,6 +195,7 @@ public class PlayerConnection {
         Class<?>[] classList = new Class<?>[jsonArray.length()];
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         for(int i = 0; i < jsonArray.length(); i++)
         {
             JSONObject jsonObject = jsonArray.getJSONObject(i);
@@ -203,10 +211,12 @@ public class PlayerConnection {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             String test = jsonFromServer.getJSONObject(index).toString();
             System.out.println("test: " + test);
             return objectMapper.readValue(test, objectClass);
         } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -224,6 +234,7 @@ public class PlayerConnection {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
             return objectMapper.readValue(jsonFromServer, objectClass);
         } catch (IOException e) {
             return null;
