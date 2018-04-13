@@ -181,10 +181,15 @@ public class Server implements PropertyChangeListener {
                 }
                 break;
             }
+            case "perform quest":{
+                for (PlayerConnection p : players) {
+                    sendJSON(p, "perform quest", "true");
+                }
+                break;
+            }
             case "handfull":{
                 for (PlayerConnection p : players) {
                     if(p.player == change.getSource()) {
-
                         sendJSON(p, "handfull", "true");
                     }
                 }

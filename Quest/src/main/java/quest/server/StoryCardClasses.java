@@ -298,6 +298,7 @@ class ProsperityThroughoutTheRealm extends Event {
     public void applyEvent(ArrayList<Player> playersToAffect, Player activePlayer) {
         for (Player player : playersToAffect) {
             notifyListeners(player, "deckDraw");
+            notifyListeners(player, "deckDraw");
         }
     }
 

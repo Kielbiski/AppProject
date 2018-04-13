@@ -685,19 +685,18 @@ public class Model implements PropertyChangeListener
         }
     }
 
-    private void performQuest(Player sponsor, Quest quest) {
-//        quest.addChangeListener(this);
-//        serverSetSponsor(sponsor);
-//        quest.setSponsor(sponsor);
-//        setActivePlayer(sponsor);
-//        setCurrentBehaviour(Behaviour.SPONSOR);
-//        continueButton.setVisible(true);
-//
+    public void performQuest(Player sponsor, Quest quest) {
+       quest.addChangeListener(this);
+       setSponsor(sponsor);
+       quest.setSponsor(sponsor);
+       setActivePlayer(sponsor);
+       //add these bits to the notification
+        notifyListeners("perform quest",sponsor);
+
 //        for(int i = 0;i<quest.getNumStage();i++){
 //            createStagePane(i);
 //        }
 //        addQuestPlayers(quest);
-//        setActivePlayer(sponsor);
 //        if(sponsor instanceof AbstractAI){
 //            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
 //            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()));
@@ -716,7 +715,6 @@ public class Model implements PropertyChangeListener
 //                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
 //                setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
 //            }
-//            update();
 //        }
     }
 

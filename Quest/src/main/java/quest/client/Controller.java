@@ -126,20 +126,18 @@ public class Controller implements PropertyChangeListener {
                     Platform.runLater(this::handFull);
                 }
             });
+            backgroundWorker.setupQuest.addListener((observable, oldValue, newValue) -> {
+                if (newValue) {
+                    Platform.runLater(this::setupQuest);
+                }
+            });
             backgroundWorker.alert.addListener((observable, oldValue, newValue) -> {
-                System.out.println("___________________________");
-                System.out.println(backgroundWorker.getAlert());
                 if (backgroundWorker.getAlert().equals("ok")) {
                     Platform.runLater(() -> okAlert(alertText,alertTextHeader));
                 }
                 else if(backgroundWorker.getAlert().equals("yesNoSponsor")){
                    Platform.runLater(() -> sponsorQuest());
-                    if(sponsorStatus){
-                        serverPerformQuest(thisPlayer);
-                    }
-                    else{
-                        serverDeclineSponsor();
-                    }
+
                 }
             });
             backgroundWorker.start();
@@ -154,7 +152,15 @@ public class Controller implements PropertyChangeListener {
     }
 
     private void sponsorQuest(){
+
         sponsorStatus = yesNoAlert(alertText,alertTextHeader);
+        if(sponsorStatus){
+            System.out.println("FUCK");
+            serverPerformQuest(thisPlayer);
+        }
+        else{
+            serverDeclineSponsor();
+        }
     }
 
     private ImageView createAdventureCardImageView(AdventureCard card){
@@ -452,6 +458,16 @@ public class Controller implements PropertyChangeListener {
 
     public void setCurrentBehaviour(Behaviour behave){
         currentBehaviour = behave;
+    }
+
+    private void setupQuest() {
+        if(thisPlayer.getPlayerName().equals(serverGetSponsor().getPlayerName())) {
+            setCurrentBehaviour(Behaviour.SPONSOR);
+            continueButton.setVisible(true);
+        }
+        for(int i = 0;i<serverGetCurrentQuest().getNumStage();i++){
+            createStagePane(i);
+        }
     }
 
     public void update() {
@@ -876,12 +892,7 @@ public class Controller implements PropertyChangeListener {
         serverSetSponsor(sponsor);
         quest.setSponsor(sponsor);
         setActivePlayer(sponsor);
-        setCurrentBehaviour(Behaviour.SPONSOR);
-        continueButton.setVisible(true);
 
-        for(int i = 0;i<quest.getNumStage();i++){
-            createStagePane(i);
-        }
         addQuestPlayers(quest);
         setActivePlayer(sponsor);
         if(sponsor instanceof AbstractAI){
@@ -1581,6 +1592,8 @@ public class Controller implements PropertyChangeListener {
         private BooleanProperty updateState;
         private BooleanProperty continueButton;
         private BooleanProperty nextTurnButton;
+        private BooleanProperty setupQuest;
+
         private BooleanProperty handFull;
 
         private StringProperty alert;
@@ -1589,6 +1602,7 @@ public class Controller implements PropertyChangeListener {
             continueButton = new SimpleBooleanProperty(this, "bool", false);
             nextTurnButton = new SimpleBooleanProperty(this, "bool", false);
             handFull = new SimpleBooleanProperty(this, "bool", false);
+            setupQuest = new SimpleBooleanProperty(this, "bool", false);
             alert = new SimpleStringProperty();
             setDaemon(true);
         }
@@ -1612,6 +1626,10 @@ public class Controller implements PropertyChangeListener {
         public boolean getHandFull() { return handFull.get(); }
 
         public BooleanProperty handFull() { return handFull; }
+
+        public boolean setupQuest() { return setupQuest.get(); }
+
+        public BooleanProperty getSetupQuest() { return setupQuest; }
 
 
         @Override
@@ -1652,7 +1670,7 @@ public class Controller implements PropertyChangeListener {
                                 break;
                         }
                     }
-                    if(serverCommand.has("update")) {
+                    else if(serverCommand.has("update")) {
                         thisPlayer = getServerObject(genericGet("getSelf"), new TypeReference<Player>() {});
                         updateState.setValue(true);
                         System.out.println("THIS PLAYER SET" + thisPlayer);
@@ -1660,18 +1678,18 @@ public class Controller implements PropertyChangeListener {
                         System.out.println("Update called? " + getUpdateState());
                         updateState.setValue(false);
                     }
-                    if(serverCommand.has("unable to sponsor")) {
+                    else if(serverCommand.has("unable to sponsor")) {
                         alertText = thisPlayer.getPlayerName() + ", you cannot sponsor the quest! Sponsorship failed.";
                         alertTextHeader = "Cannot Sponsor";
                         alert.setValue("ok");
                     }
-                    if(serverCommand.has("would you like to sponsor")) {
+                    else if(serverCommand.has("would you like to sponsor")) {
                         System.out.println("WOULD YOU LIKE TO SPONSOR");
                         alertTextHeader = thisPlayer.getPlayerName() + ", would you like to sponsor " + serverGetCurrentQuest().getName() + "?";
                         alertText = "Sponsor " + serverGetCurrentQuest().getName() + "?";
                         alert.setValue("yesNoSponsor");
                     }
-                    if(serverCommand.has("event complete")) {
+                    else if(serverCommand.has("event complete")) {
                         if(thisPlayer.getPlayerName().equals(serverGetPlayers().get(serverGetCurrentTurnIndex()).getPlayerName())){
                             if(currentBehaviour != Behaviour.DISCARD) {
                                 nextTurnButton.setValue(true);
@@ -1679,11 +1697,15 @@ public class Controller implements PropertyChangeListener {
                             continueButton.setValue(false);
                         }
                     }
-                    if(serverCommand.has("handfull")) {
+                    else if(serverCommand.has("handfull")) {
                         handFull.setValue(true);
                         handFull.setValue(false);
                     }
-                    if(serverCommand.has("no sponsor")) {
+                    else if(serverCommand.has("perform quest")) {
+                        setupQuest.setValue(true);
+                        setupQuest.setValue(false);
+                    }
+                    else if(serverCommand.has("no sponsor")) {
                         alertTextHeader = "No Sponsor";
                         alertText = "Nobody chose to be sponsor, quest cancelled";
                         alert.setValue("ok");
