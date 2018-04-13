@@ -137,7 +137,7 @@ public class Model implements PropertyChangeListener
         for(Player player: players){
             ArrayList<AdventureCard> found = new ArrayList<>();
             for(AdventureCard card:player.getCardsOnTable()){
-                if(card instanceof Amour){
+                if(card.getClassName().equals("Amour")){
                     found.add(card);
                 }
             }
@@ -172,17 +172,22 @@ public class Model implements PropertyChangeListener
         preQuestStageSetup.clear();
     }
     public void addStageToCurrentQuest(int stageNum){
-        currentQuest.addStage(createStage(preQuestStageSetup.get(stageNum)));
+        QuestStage testStage = createStage(preQuestStageSetup.get(stageNum));
+        System.out.println(testStage);
+        currentQuest.addStage(testStage);
     }
 
     public QuestStage createStage(ArrayList<AdventureCard> cardsForStage){
         for(AdventureCard adventureCard : cardsForStage) {
-            if (adventureCard instanceof Foe) {
+            System.out.println(adventureCard);
+            if (adventureCard.getClassName().equals("Foe")) {
                 if(currentQuest.getQuestFoes().contains(adventureCard)){
                     adventureCard.setBattlePoints(adventureCard.getBattlePoints() + adventureCard.getBonusBattlePoints());
                 }
+                System.out.println("FOESTAGE");
                 return new FoeStage(cardsForStage, new ArrayList<>());
-            } else if (adventureCard instanceof Test) {
+            } else if ((adventureCard.getClassName().equals("Test"))) {
+                System.out.println("TESTSTAGE");
                 return new TestStage(adventureCard, new ArrayList<>());
             }
         }
@@ -223,7 +228,7 @@ public class Model implements PropertyChangeListener
             }
             System.out.println("PREQUESTSTAGES: " + getPreQuestStageSetup());
             if(getPreQuestStageSetup().get(i).size() != 0){
-                if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
+                if ((getPreQuestStageSetup().get(i).get(0).getClassName().equals("Test")) || (currentStageBattlePoints > lastStageBattlePoints)) {
                     lastStageBattlePoints = currentStageBattlePoints;
                 } else {
                     return false;
@@ -562,7 +567,6 @@ public class Model implements PropertyChangeListener
     public void addToPotentialStage(AdventureCard card, Integer stageNum){
         logger.info("Add the following card"+ card.getName()+ "the following potential stage"+stageNum+"to pre-stage");
         preQuestStageSetup.get(stageNum).add(card);
-        System.out.println(preQuestStageSetup);
     }
     public void setPotentialStage(ArrayList<AdventureCard> stage, Integer stageNum){
         logger.info("Set the following potential stage"+stageNum+"to pre-stage");
@@ -677,7 +681,7 @@ public class Model implements PropertyChangeListener
         setActivePlayer(player);
         int validCardCount = 0;
         for(AdventureCard adventureCard : player.getCardsInHand()){
-            if((adventureCard instanceof Foe) || (adventureCard instanceof Test)) {
+            if((adventureCard.getClassName().equals("Test")) || (adventureCard.getClassName().equals("Foe"))) {
                 validCardCount++;
             }
         }
@@ -782,6 +786,7 @@ public class Model implements PropertyChangeListener
     private void continueSponsor(){
         if (validateQuestStages()) {
             for(int i = 0; i<getCurrentQuest().getNumStage();i++){
+                System.out.println(i);
                 addStageToCurrentQuest(i);
             }
             System.out.println("STARTING");
@@ -935,7 +940,10 @@ public class Model implements PropertyChangeListener
         for(Player p: players){
             if( player.getPlayerName().equals(p.getPlayerName())){
                 System.out.println("PLAYER HAND BEFORE" + p.getCardsInHand().size());
+                System.out.println(currentQuest);
+                System.out.println("BEFORE" + currentQuest.getPlayerList());
                 currentQuest.addPlayer(p);
+                System.out.println("AFTER" + currentQuest.getPlayerList());
                 drawAdventureCard(p);
                 System.out.println("PLAYER HAND AFTER" + p.getCardsInHand().size());
 

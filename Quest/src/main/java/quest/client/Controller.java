@@ -631,9 +631,15 @@ public class Controller implements PropertyChangeListener {
         }
         else if(currentBehaviour == Behaviour.QUEST_MEMBER||currentBehaviour == Behaviour.BID){
             Quest current = serverGetCurrentQuest();
+            System.out.println("CURRENT QUEST -> " + current);
             if(current!=null) {
+                System.out.println("num stage: " +current.getNumStage());
                 for (int i = 0; i < current.getNumStage(); i++) {
                     flowPaneArray.get(i).getChildren().clear();
+                    System.out.println("------------");
+                    System.out.println(current.getCurrentStage());
+                    System.out.println(current.getStages());
+                    System.out.println(current.getStages().get(i));
                     if (current.getCurrentStage() == current.getStages().get(i)) {
                         HashMap<Integer, ArrayList<AdventureCard>> pre = serverGetPreQuestStageSetup();
                         for (AdventureCard card : pre.get(i)) {

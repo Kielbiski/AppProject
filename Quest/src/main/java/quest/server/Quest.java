@@ -206,7 +206,11 @@ public class Quest extends StoryCard { //story card
     }
 
     public void startQuest(){
+        System.out.println("stages: " + stages);
+        System.out.println(stages.get(currentStageIndex));
         currentStage = stages.get(currentStageIndex);
+        System.out.println(currentStage);
+        System.out.println(playerList);
         currentStage.setParticipatingPlayers(playerList);
         currentTurnIndex = 0;
         currentPlayer = playerList.get(currentTurnIndex);
@@ -237,7 +241,7 @@ public class Quest extends StoryCard { //story card
             for (Player player : playerList) {
                 ArrayList<AdventureCard> found = new ArrayList<>();
                 for (AdventureCard card : player.getCardsOnTable()) {
-                    if (card instanceof Weapon) {
+                    if (card.getClassName().equals("Weapon")) {
                         found.add(card);
                     }
                 }
