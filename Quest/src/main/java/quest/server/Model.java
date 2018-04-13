@@ -1,15 +1,17 @@
 package quest.server;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quest.client.App;
-//import quest.client.Behaviour;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
 import java.util.*;
 
+import static java.lang.System.exit;
 import static quest.server.Rank.KNIGHT_OF_THE_ROUND_TABLE;
 
 public class Model implements PropertyChangeListener
@@ -213,10 +215,8 @@ public class Model implements PropertyChangeListener
                         }
                     }
                     foeCount++;
-
                 }
                 currentStageBattlePoints += adventureCardBattlePoints;
-
             }
             if ((getPreQuestStageSetup().get(i).get(0) instanceof Test) || (currentStageBattlePoints > lastStageBattlePoints)) {
                 lastStageBattlePoints = currentStageBattlePoints;
@@ -465,7 +465,7 @@ public class Model implements PropertyChangeListener
             currentTurn = nextPlayerIndex(currentTurn);
         }
 //        ArrayList<Player> noAIPlayers = new ArrayList<>();
-//        for(Player player : serverGetPlayers()){
+//        for(Player player : getPlayers()){
 //            if(!(player instanceof AbstractAI)){
 //                noAIPlayers.add(player);
 //            }
@@ -654,7 +654,7 @@ public class Model implements PropertyChangeListener
                 notifyListeners("event complete",Boolean.TRUE);
             } else if (currentStory instanceof Tournament) {
                 setCurrentTournament((Tournament) currentStory);
-                //performTournament(currentPlayerOrder, serverGetCurrentTournament());
+                //performTournament(currentPlayerOrder, getCurrentTournament());
             }
             if(currentStory instanceof KingsRecognition){
                 kingsRecognition = true;
@@ -682,7 +682,7 @@ public class Model implements PropertyChangeListener
                 notifyListeners("would you like to sponsor",player);
 //                    if (alertResult) {
 //                        sponsor = activePlayer;
-//                        serverSetSponsor(sponsor);
+//                        setSponsor(sponsor);
 //                        performQuest(sponsor, (Quest) serverResponse);
 //                        nextTurnButton.setVisible(false);
 //                        continueButton.setVisible(true);
@@ -702,7 +702,7 @@ public class Model implements PropertyChangeListener
             }
         }
         //MOVE TO OWN METHOD
-//        if(serverGetSponsor() == null){
+//        if(getSponsor() == null){
 //            setActivePlayer(currentTurnPlayer);
 //            nextTurnButton.setVisible(true);
 //            nextTurnButton.setDisable(false);
@@ -726,7 +726,7 @@ public class Model implements PropertyChangeListener
 
     private void performQuest(Player sponsor, Quest quest) {
 //        quest.addChangeListener(this);
-//        serverSetSponsor(sponsor);
+//        setSponsor(sponsor);
 //        quest.setSponsor(sponsor);
 //        setActivePlayer(sponsor);
 //        setCurrentBehaviour(Behaviour.SPONSOR);
@@ -738,35 +738,192 @@ public class Model implements PropertyChangeListener
 //        addQuestPlayers(quest);
 //        setActivePlayer(sponsor);
 //        if(sponsor instanceof AbstractAI){
-//            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
+//            setPotentialStage(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()),0);
 //            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestFirstStage(sponsor.getCardsInHand()));
 //            for(int i=1; i<quest.getNumStage()-1;i++){
-//                serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
+//                setPotentialStage(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()),i);
 //                sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestMidStage(sponsor.getCardsInHand()));
 //            }
-//            serverSetPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
+//            setPotentialStage(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()),quest.getNumStage()-1);
 //            sponsor.removeCardsAI(((AbstractAI) sponsor).sponsorQuestLastStage(sponsor.getCardsInHand()));
-//            for(int i = 0; i<serverGetCurrentQuest().getNumStage();i++){
+//            for(int i = 0; i<getCurrentQuest().getNumStage();i++){
 //                serverAddStageToCurrentQuest(i);
 //            }
 //            setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-//            serverGetCurrentQuest().startQuest();
-//            if(!serverGetCurrentQuest().isInTest()){
+//            getCurrentQuest().startQuest();
+//            if(!getCurrentQuest().isInTest()){
 //                setCurrentBehaviour(Behaviour.QUEST_MEMBER);
-//                setActivePlayer(serverGetCurrentQuest().getCurrentPlayer());
+//                setActivePlayer(getCurrentQuest().getCurrentPlayer());
 //            }
 //            update();
 //        }
     }
 
+    public void continueAction(String behaviour){
+        switch (behaviour) {
+            case "SPONSOR":
+                continueSponsor();
+                break;
+            case "QUEST_MEMBER":
+                continueQuestMember();
+                break;
+            case "TOURNAMENT":
+                continueTournament();
+                break;
+        }
+    }
 
+    private void continueSponsor(){
+        if (validateQuestStages()) {
+            for(int i = 0; i<getCurrentQuest().getNumStage();i++){
+                addStageToCurrentQuest(i);
+            }
+//                setCurrentBehaviour("QUEST_MEMBER");
+            getCurrentQuest().startQuest();
+//            if(!getCurrentQuest().isInTest()){
+////                    setCurrentBehaviour("QUEST_MEMBER");
+//                setActivePlayer(getCurrentQuest().getCurrentPlayer());
+//            }
+        } else {
+            notifyListeners("setup valid quest", activePlayer);
+            for (int i = 0; i < getCurrentQuest().getNumStage(); i++) {
+                for (AdventureCard card : getPreQuestStageSetup().get(i)) {
+                    //ADD METHOD ADD CARD TO SPONSOR HAND
+                    addCardToSponsorHand(card);
+                }
+            }
+            resetPotentialStages();
+        }
+    }
 
-    private void handFull(Player player,boolean oldFull){
-        //later do somethign different here if player type is AI
-        logger.info("Notify of the hand is full.");
-        notifyListeners("handfull", player,oldFull,true);
+    private void continueQuestMember(){
+        getCurrentQuest().nextTurn();
+        if(getCurrentQuest().isFinished()){
+            getWinningPlayers();
+        }
+        else{
+            if(getCurrentQuest().isInTest()) {
+                setActivePlayer(getCurrentQuest().getCurrentPlayer());
+            }
+            else{
+                setActivePlayer(getCurrentQuest().getCurrentPlayer());
+            }
+        }
+    }
+
+    private void continueTournament(){
+        getCurrentTournament().nextTurn();
+        if(getCurrentTournament().isTournamentOver()){
+            if(isWinner()){
+                System.out.println("Game over," + getWinningPlayers().get(0) + " wins");
+                System.exit(0);
+            }
+            else{
+                tournamentOver();
+            }
+        }
+        else{
+            setActivePlayer(getCurrentTournament().getCurrentPlayer());
+        }
+    }
+
+    //TOURNAMENT
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
+    private void performTournament(ArrayList<Player> currentPlayerOrder, Tournament tournament) {
+        addTournamentPlayers(tournament);
+        if(!tournament.isTournamentOver()){
+            tournament.setCurrentPlayer(tournament.getPlayerList().get(0));
+            activePlayer =tournament.getCurrentPlayer();
+            if(tournament.getPlayerList().size()==1){
+                tournament.setTournamentOver(true);
+                tournament.setWinners(tournament.getPlayerList());
+                tournament.rewardWinner(tournament.getPlayerList().get(0));
+                tournamentOver();
+            }else {
+                if(activePlayer instanceof AbstractAI){
+                    AbstractAI ai = (AbstractAI)activePlayer;
+                    ai.playCardsAI(ai.whatIPlay(ai.getCardsInHand(), getPlayers(), getCurrentTournament().getShields()));
+                    getCurrentTournament().nextTurn();
+                    if(getCurrentTournament().isTournamentOver()){
+                        tournamentOver();
+                    }
+                    else{
+                        setActivePlayer(getCurrentTournament().getCurrentPlayer());
+                    }
+                }
+            }
+        }
 
     }
+
+    private void addTournamentPlayers(Tournament currentTournament){
+        ArrayList<Player> tournamentPlayers = new ArrayList<>();
+        ArrayList<Player> serverPlayers = getPlayers();
+        for(int i = 0; i < players.size(); i++){
+            activePlayer = serverPlayers.get(i);
+            if(!(activePlayer instanceof AbstractAI)) {
+                    notifyListeners("join tournament", activePlayer);
+                    //-----------------------------------------------------------
+                     tournamentPlayers.add(serverPlayers.get(i));
+                     //----------------------------------------------------------
+            } else {
+                if(((AbstractAI) activePlayer).doIParticipateInTournament(tournamentPlayers, currentTournament.getShields())){
+                    tournamentPlayers.add(activePlayer);
+                }
+            }
+        }
+        if(tournamentPlayers.size() == 0){
+            tournamentOver();
+        }
+        else {
+            currentTournament.setPlayerList(tournamentPlayers);
+        }
+    }
+
+    private void tournamentOver(){
+        if(getCurrentTournament().getName().equals("Tournament Final")){
+            for (Player player : getCurrentTournament().getWinners()) {
+                Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Game!");
+                DialogPane dialog = alert.getDialogPane();
+                dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
+                dialog.getStyleClass().add("alertDialogs");
+                alert.showAndWait();
+            }
+            exit(0);
+        }
+
+        for (Player player : getCurrentTournament().getWinners()) {
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, player.getPlayerName() + " won the the Tournament, and received " + getCurrentTournament().getShields() + " shields!", ButtonType.OK);
+            DialogPane dialog = alert.getDialogPane();
+            dialog.getStylesheets().add(getClass().getResource("/CSS/Alerts.css").toExternalForm());
+            dialog.getStyleClass().add("alertDialogs");
+            alert.showAndWait();
+        }
+        getCurrentTournament().setTournamentOver(true);
+        setCurrentTournament(null);
+        setActivePlayer(getPlayers().get(getCurrentTurnIndex()));
+        getWinningPlayers();
+    }
+
+    private void handFull(Player player,boolean oldFull){
+        logger.info("Notify that the hand is full.");
+        if(player instanceof AbstractAI){
+            ArrayList<AdventureCard> toRemove = new ArrayList<>();
+            for(AdventureCard card: player.getCardsInHand()){
+                if(toRemove.size()<(player.getCardsInHand().size()-12)) {
+                    toRemove.add(card);
+                }
+                else {
+                    player.removeCardsAI(toRemove);
+                    break;
+                }
+            }
+        } else {
+            notifyListeners("handfull", player, oldFull, true);
+        }
+    }
+
     private void callToArms(Player player){
         //later do somethign different here if player type is AI
         logger.info("Call the arm to track for this"+player.getPlayerName()+".");
