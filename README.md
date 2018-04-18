@@ -18,3 +18,5 @@ Networked version runs but is buggy, due to JavaFX UI process thread updating is
 
 To test game, run the JAR. To contribute, fork repo.
 
+Source for non-networked JAR available upon request.
+
