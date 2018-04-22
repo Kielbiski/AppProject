@@ -1,11 +1,17 @@
 package quest.server;
 
 import javafx.scene.control.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import quest.client.App;
+
 import java.util.*;
 
 import static java.lang.System.exit;
 
 public class Controller {
+
+    private static final Logger logger = LogManager.getLogger(App.class);
 
     private int numberOfPlayers;
     private int numberOfAI;
@@ -25,18 +31,22 @@ public class Controller {
     }
 
     public int getPortNumber() {
+        logger.info("Returning port number:"+ portNumber );
         return portNumber;
     }
 
     public void setNumberOfPlayers(int numberOfPlayers) {
+        logger.info("Setting the number of player:"+numberOfPlayers );
         this.numberOfPlayers = numberOfPlayers;
     }
 
     public String getScenario() {
+        logger.info("Getting the scenario to be played :"+scenario );
         return scenario;
     }
 
     public void setScenario(String scenario) {
+        logger.info("Setting :"+ scenario + "as a scenario" );
         this.scenario = scenario;
     }
 
@@ -78,6 +88,7 @@ public class Controller {
     }
 
     public int getNumberOfPlayers(){
+        logger.info("Getting the number of players :" + numberOfPlayers);
         return numberOfPlayers;
     }
 
@@ -86,7 +97,7 @@ public class Controller {
         choices.add("2 Players");
         choices.add("3 Players");
         choices.add("4 Players");
-
+        logger.info("Asking how many players are joining the game");
         ChoiceDialog<String> dialog = new ChoiceDialog<>("2 Players", choices);
         dialog.setTitle("Number of Players?");
         dialog.setHeaderText("How many players would you like?");
@@ -144,6 +155,7 @@ public class Controller {
     }
 
     public void askPortNumber() {
+        logger.info("Asking for the port number");
         TextInputDialog dialog = new TextInputDialog("10001");
         dialog.setTitle("Port number.");
         dialog.setHeaderText("Please type the desired port number for the sever.");
@@ -153,10 +165,9 @@ public class Controller {
     }
 
     public void setPortNumber(int portNumber){
+
+        logger.info("Setting the port number to :" + this.portNumber);
         this.portNumber = portNumber;
     }
 
 }
-
-
-
